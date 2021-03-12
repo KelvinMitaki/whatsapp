@@ -6,6 +6,9 @@ import inspect from "../inspect";
 const Message = () => {
   const messages = [] as JSX.Element[];
   for (let i = 0; i < 100; i++) {
+    if (i === 0) {
+      messages.push(<View style={{ marginTop: 25 }} />);
+    }
     messages.push(
       <>
         <View style={styles.me}>

@@ -30,33 +30,45 @@ const TabNavigator = createMaterialTopTabNavigator(
     }
   }
 );
-const stackNavigator = createStackNavigator({
-  Tab: {
-    screen: TabNavigator,
-    navigationOptions: {
-      headerStyle: {
-        backgroundColor: "#20272b"
-      },
-      headerTintColor: "white",
-      headerTitle: "ChatApp",
-      cardStyle: {
-        backgroundColor: "#191f23"
+const stackNavigator = createStackNavigator(
+  {
+    Tab: {
+      screen: TabNavigator,
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: "#20272b"
+        },
+        headerTintColor: "white",
+        headerTitle: "ChatApp",
+        cardStyle: {
+          backgroundColor: "#191f23"
+        }
+      }
+    },
+    Chat: {
+      screen: ChatScreen,
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: "#20272b"
+        },
+        headerTintColor: "white",
+        cardStyle: {
+          backgroundColor: "#191f23"
+        }
       }
     }
   },
-  Chat: {
-    screen: ChatScreen,
-    navigationOptions: {
-      headerStyle: {
-        backgroundColor: "#20272b"
-      },
-      headerTintColor: "white",
-      cardStyle: {
-        backgroundColor: "#191f23"
-      }
+  {
+    defaultNavigationOptions: {
+      cardStyle: { backgroundColor: "transparent", opacity: 1, flex: 1 },
+      cardStyleInterpolator: ({ current, closing }) => ({
+        cardStyle: {
+          opacity: current.progress
+        }
+      })
     }
   }
-});
+);
 const App = createAppContainer(stackNavigator);
 const store = createStore(reducer);
 export default () => (
