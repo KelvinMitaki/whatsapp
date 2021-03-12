@@ -1,16 +1,18 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TextInput, View } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import inspect from "../inspect";
 import { TouchableNativeFeedback } from "react-native-gesture-handler";
 import Message from "../components/Message";
+import Input from "../components/Input";
 
 const ChatScreen: NavigationStackScreenComponent = () => {
   return (
     <View>
       <Message />
+      <Input />
     </View>
   );
 };

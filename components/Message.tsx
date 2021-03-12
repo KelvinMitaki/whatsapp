@@ -23,15 +23,16 @@ const Message = () => {
         </View>
       </>
     );
+    if (i === 99) {
+      messages.push(<View style={{ marginBottom: 50 }} />);
+    }
   }
   return (
-    <View style={styles.prt}>
-      <FlatList
-        data={messages}
-        keyExtractor={(_, i) => i.toLocaleString()}
-        renderItem={({ item }) => item}
-      />
-    </View>
+    <FlatList
+      data={messages}
+      keyExtractor={(_, i) => i.toLocaleString()}
+      renderItem={({ item }) => item}
+    />
   );
 };
 
@@ -39,7 +40,8 @@ export default Message;
 
 const styles = StyleSheet.create({
   prt: {
-    marginVertical: 10
+    marginTop: 10,
+    marginBottom: 50
   },
   me: {
     alignSelf: "flex-end",
