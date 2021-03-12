@@ -17,8 +17,11 @@ const TabNavigator = createMaterialTopTabNavigator(
   },
   {
     tabBarOptions: {
-      tabStyle: {
-        backgroundColor: "#323739"
+      style: {
+        backgroundColor: "#1e2529"
+      },
+      indicatorStyle: {
+        backgroundColor: "#fff"
       }
     }
   }
@@ -28,8 +31,10 @@ const stackNavigator = createStackNavigator({
     screen: TabNavigator,
     navigationOptions: {
       headerStyle: {
-        backgroundColor: "#323739"
-      }
+        backgroundColor: "#1e2529"
+      },
+      headerTintColor: "white",
+      headerTitle: "ChatApp"
     }
   }
 });
