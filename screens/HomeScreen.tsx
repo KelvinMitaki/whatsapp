@@ -11,7 +11,7 @@ import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 import { users } from "../data";
 import inspect from "../inspect";
 
-const HomeScreen: NavigationMaterialTabScreenComponent = () => {
+const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   return (
     <View style={styles.prt}>
       <FlatList
@@ -21,7 +21,7 @@ const HomeScreen: NavigationMaterialTabScreenComponent = () => {
           <TouchableNativeFeedback
             //@ts-ignore
             background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
-            onPress={() => console.log("pressed")}
+            onPress={() => navigation.navigate("Chat")}
           >
             <View style={styles.contact}>
               <Avatar

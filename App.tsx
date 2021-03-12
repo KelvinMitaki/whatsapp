@@ -8,6 +8,7 @@ import reducer from "./redux/reducer";
 import HomeScreen from "./screens/HomeScreen";
 import GroupScreen from "./screens/GroupScreen";
 import StatusScreen from "./screens/StatusScreen";
+import ChatScreen from "./screens/ChatScreen";
 
 const TabNavigator = createMaterialTopTabNavigator(
   {
@@ -29,6 +30,19 @@ const TabNavigator = createMaterialTopTabNavigator(
 const stackNavigator = createStackNavigator({
   Tab: {
     screen: TabNavigator,
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: "#20272b"
+      },
+      headerTintColor: "white",
+      headerTitle: "ChatApp",
+      cardStyle: {
+        backgroundColor: "#191f23"
+      }
+    }
+  },
+  Chat: {
+    screen: ChatScreen,
     navigationOptions: {
       headerStyle: {
         backgroundColor: "#20272b"
