@@ -9,6 +9,9 @@ import HomeScreen from "./screens/HomeScreen";
 import GroupScreen from "./screens/GroupScreen";
 import StatusScreen from "./screens/StatusScreen";
 import ChatScreen from "./screens/ChatScreen";
+import { enableScreens } from "react-native-screens";
+
+enableScreens();
 
 const TabNavigator = createMaterialTopTabNavigator(
   {
