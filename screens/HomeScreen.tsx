@@ -50,7 +50,7 @@ const HomeScreen: NavigationMaterialTabScreenComponent = () => {
                 </Text>
                 <Card.Divider
                   style={{
-                    marginTop: 14,
+                    marginTop: 15,
                     backgroundColor: "rgba(255,255,255,.3)"
                   }}
                 />
