@@ -28,13 +28,24 @@ const HomeScreen: NavigationMaterialTabScreenComponent = () => {
                     justifyContent: "space-between"
                   }}
                 >
-                  <Text style={{ fontSize: 22, fontWeight: "400" }}>
+                  <Text
+                    style={{ fontSize: 22, fontWeight: "400", color: "#fff" }}
+                  >
                     {i.item.name}
                   </Text>
-                  <Text style={{ right: 1 }}>Yesterday</Text>
+                  <Text style={{ right: 1, color: "rgba(255,255,255,.6)" }}>
+                    Yesterday
+                  </Text>
                 </View>
-                <Text style={{ marginTop: 5 }}>hello</Text>
-                <Card.Divider style={{ marginTop: 10 }} />
+                <Text style={{ marginTop: 5, color: "rgba(255,255,255,.6)" }}>
+                  hello
+                </Text>
+                <Card.Divider
+                  style={{
+                    marginTop: 10,
+                    backgroundColor: "rgba(255,255,255,.3)"
+                  }}
+                />
               </View>
             </View>
           </>
