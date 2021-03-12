@@ -1,4 +1,4 @@
-export default (color?: string) => ({
+export default (color?: string, width?: number) => ({
   borderColor: color ? color : "red",
-  borderWidth: 2
+  borderWidth: width ? width : 2
 });

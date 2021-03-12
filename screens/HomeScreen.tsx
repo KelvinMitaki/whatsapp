@@ -2,6 +2,10 @@ import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
 import { Card, Avatar } from "react-native-elements";
+import {
+  TouchableNativeFeedback,
+  TouchableOpacity
+} from "react-native-gesture-handler";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 import { users } from "../data";
@@ -14,7 +18,11 @@ const HomeScreen: NavigationMaterialTabScreenComponent = () => {
         data={users}
         keyExtractor={(_, i) => i.toLocaleString()}
         renderItem={i => (
-          <>
+          <TouchableNativeFeedback
+            //@ts-ignore
+            background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
+            onPress={() => console.log("pressed")}
+          >
             <View style={styles.contact}>
               <Avatar
                 rounded
@@ -42,13 +50,13 @@ const HomeScreen: NavigationMaterialTabScreenComponent = () => {
                 </Text>
                 <Card.Divider
                   style={{
-                    marginTop: 10,
+                    marginTop: 14,
                     backgroundColor: "rgba(255,255,255,.3)"
                   }}
                 />
               </View>
             </View>
-          </>
+          </TouchableNativeFeedback>
         )}
       />
     </View>
@@ -58,13 +66,12 @@ const HomeScreen: NavigationMaterialTabScreenComponent = () => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-  prt: {
-    padding: 10
-  },
+  prt: {},
   contact: {
     flexDirection: "row",
     alignItems: "center",
-    height: 70
+    height: 70,
+    paddingHorizontal: 10
   },
   contactTxt: {
     paddingLeft: 10,
