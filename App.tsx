@@ -48,7 +48,6 @@ const stackNavigator = createStackNavigator({
         backgroundColor: "#20272b"
       },
       headerTintColor: "white",
-      headerTitle: "ChatApp",
       cardStyle: {
         backgroundColor: "#191f23"
       }
