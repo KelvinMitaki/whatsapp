@@ -5,11 +5,12 @@ import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import inspect from "../inspect";
 import { TouchableNativeFeedback } from "react-native-gesture-handler";
+import Message from "../components/Message";
 
 const ChatScreen: NavigationStackScreenComponent = () => {
   return (
     <View>
-      <Text>ChatScreen ChatScreen</Text>
+      <Message />
     </View>
   );
 };
