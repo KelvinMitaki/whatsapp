@@ -1,6 +1,6 @@
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import { Text } from "react-native-elements";
+import { Badge, Text } from "react-native-elements";
 import { Card, Avatar } from "react-native-elements";
 import {
   TouchableNativeFeedback,
@@ -45,9 +45,25 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
                     Yesterday
                   </Text>
                 </View>
-                <Text style={{ marginTop: 5, color: "rgba(255,255,255,.6)" }}>
-                  hello
-                </Text>
+                <View style={styles.msg}>
+                  <Text
+                    numberOfLines={1}
+                    style={{
+                      marginTop: 5,
+                      color: "rgba(255,255,255,.6)",
+                      width: "90%"
+                    }}
+                  >
+                    hello Lorem ipsum dolor, sit amet consectetur adipisicing
+                    elit. Ea cumque iure a facilis corporis expedita assumenda
+                    fuga quisquam aliquid! Eos dignissimos cum maxime, quasi
+                    ducimus natus reiciendis. Alias, recusandae dolorem.
+                  </Text>
+                  <Badge
+                    value="99"
+                    badgeStyle={{ backgroundColor: "#00af9c" }}
+                  />
+                </View>
                 <Card.Divider
                   style={{
                     marginTop: 15,
@@ -78,5 +94,10 @@ const styles = StyleSheet.create({
     width: "85%",
     justifyContent: "space-between",
     height: "100%"
+  },
+  msg: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around"
   }
 });
