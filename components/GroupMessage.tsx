@@ -21,7 +21,9 @@ const GroupMessage = () => {
             asperiores repellendus iusto quam eveniet quidem molestias id, illum
             rerum eligendi voluptate
           </Text>
-          <Text style={styles.meta}>1:38 PM</Text>
+          <Text style={styles.meta}>
+            1:38 PM <Ionicons name="checkmark" size={18} />
+          </Text>
         </View>
         <View style={{ flexDirection: "row" }}>
           <View style={styles.person}>
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingBottom: 20,
     marginBottom: 10,
-    marginLeft: 10
+    marginLeft: 5
   },
   meta: {
     color: "rgba(255,255,255,.7)",

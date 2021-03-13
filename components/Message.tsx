@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import { Ionicons } from "@expo/vector-icons";
 import inspect from "../inspect";
 
 const Message = () => {
@@ -18,7 +19,9 @@ const Message = () => {
             asperiores repellendus iusto quam eveniet quidem molestias id, illum
             rerum eligendi voluptate
           </Text>
-          <Text style={styles.meta}>1:38 PM</Text>
+          <Text style={styles.meta}>
+            1:38 PM <Ionicons name="checkmark-done" size={18} />
+          </Text>
         </View>
         <View style={styles.sender}>
           <Text style={{ color: "#fff" }}>Message Message</Text>
