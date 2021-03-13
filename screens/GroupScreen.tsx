@@ -18,7 +18,7 @@ const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
           <TouchableNativeFeedback
             //@ts-ignore
             background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
-            onPress={() => navigation.navigate("Chat")}
+            onPress={() => navigation.navigate("GroupChat")}
           >
             <View style={styles.contact}>
               {/* <Avatar

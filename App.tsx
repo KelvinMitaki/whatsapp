@@ -10,6 +10,7 @@ import GroupScreen from "./screens/GroupScreen";
 import StatusScreen from "./screens/StatusScreen";
 import ChatScreen from "./screens/ChatScreen";
 import { enableScreens } from "react-native-screens";
+import GroupChatScreen from "./screens/GroupChatScreen";
 
 enableScreens();
 
@@ -48,6 +49,18 @@ const stackNavigator = createStackNavigator(
     },
     Chat: {
       screen: ChatScreen,
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: "#20272b"
+        },
+        headerTintColor: "white",
+        cardStyle: {
+          backgroundColor: "#191f23"
+        }
+      }
+    },
+    GroupChat: {
+      screen: GroupChatScreen,
       navigationOptions: {
         headerStyle: {
           backgroundColor: "#20272b"
