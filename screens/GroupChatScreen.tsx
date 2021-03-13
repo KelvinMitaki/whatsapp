@@ -5,13 +5,13 @@ import { MaterialIcons, Ionicons, FontAwesome } from "@expo/vector-icons";
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import inspect from "../inspect";
 import { TouchableNativeFeedback } from "react-native-gesture-handler";
-import Message from "../components/Message";
 import Input from "../components/Input";
+import GroupMessage from "../components/GroupMessage";
 
 const GroupChatScreen: NavigationStackScreenComponent = () => {
   return (
     <View>
-      <Message />
+      <GroupMessage />
       <Input />
     </View>
   );
