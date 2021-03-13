@@ -2,11 +2,8 @@ import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { Badge, Text } from "react-native-elements";
 import { Card, Avatar } from "react-native-elements";
-import {
-  TouchableNativeFeedback,
-  TouchableOpacity
-} from "react-native-gesture-handler";
-import { NavigationStackScreenComponent } from "react-navigation-stack";
+import { TouchableNativeFeedback } from "react-native-gesture-handler";
+import { Ionicons } from "@expo/vector-icons";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 import { users } from "../data";
 import inspect from "../inspect";
@@ -24,11 +21,18 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
             onPress={() => navigation.navigate("Chat")}
           >
             <View style={styles.contact}>
-              <Avatar
+              {/* <Avatar
                 rounded
                 source={require("../assets/blank.png")}
                 size={55}
-              />
+              /> */}
+              <View style={styles.person}>
+                <Ionicons
+                  name="person"
+                  size={35}
+                  color="rgba(241, 241, 242, 0.8)"
+                />
+              </View>
               <View style={styles.contactTxt}>
                 <View
                   style={{
@@ -99,5 +103,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around"
+  },
+  person: {
+    height: 45,
+    width: 45,
+    borderRadius: 500,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "grey"
   }
 });

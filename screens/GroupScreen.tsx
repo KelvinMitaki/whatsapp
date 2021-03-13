@@ -2,11 +2,8 @@ import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { Badge, Text } from "react-native-elements";
 import { Card, Avatar } from "react-native-elements";
-import {
-  TouchableNativeFeedback,
-  TouchableOpacity
-} from "react-native-gesture-handler";
-import { NavigationStackScreenComponent } from "react-navigation-stack";
+import { TouchableNativeFeedback } from "react-native-gesture-handler";
+import { FontAwesome } from "@expo/vector-icons";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 import { users } from "../data";
 import inspect from "../inspect";
@@ -24,11 +21,18 @@ const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
             onPress={() => navigation.navigate("Chat")}
           >
             <View style={styles.contact}>
-              <Avatar
+              {/* <Avatar
                 rounded
                 source={require("../assets/blank.png")}
                 size={55}
-              />
+              /> */}
+              <View style={styles.group}>
+                <FontAwesome
+                  name="group"
+                  size={35}
+                  color="rgba(241, 241, 242, 0.8)"
+                />
+              </View>
               <View style={styles.contactTxt}>
                 <View
                   style={{
@@ -100,5 +104,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around"
+  },
+  group: {
+    borderRadius: 70,
+    backgroundColor: "grey",
+    height: 50,
+    width: 50,
+    alignItems: "center",
+    justifyContent: "center"
   }
 });
