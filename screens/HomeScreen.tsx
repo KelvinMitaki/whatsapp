@@ -105,8 +105,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-around"
   },
   person: {
-    height: 45,
-    width: 45,
+    height: 50,
+    width: 50,
     borderRadius: 500,
     alignItems: "center",
     justifyContent: "center",

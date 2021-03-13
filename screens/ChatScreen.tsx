@@ -28,6 +28,7 @@ ChatScreen.navigationOptions = ({}) => {
           size={40}
         />
         <Text
+          numberOfLines={1}
           style={{
             color: "white",
             marginLeft: 10,

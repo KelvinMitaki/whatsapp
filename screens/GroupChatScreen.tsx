@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
-import { MaterialIcons, Ionicons } from "@expo/vector-icons";
+import { MaterialIcons, Ionicons, FontAwesome } from "@expo/vector-icons";
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import inspect from "../inspect";
 import { TouchableNativeFeedback } from "react-native-gesture-handler";
@@ -21,22 +21,35 @@ GroupChatScreen.navigationOptions = ({}) => {
   return {
     headerTitle: () => (
       <View style={styles.headerLeft}>
-        <Avatar
+        {/* <Avatar
           rounded
           source={require("../assets/blank.png")}
           containerStyle={{ marginLeft: "-8%" }}
           size={40}
-        />
-        <Text
-          style={{
-            color: "white",
-            marginLeft: 10,
-            fontSize: 20,
-            fontWeight: "400"
-          }}
-        >
-          Kevin
-        </Text>
+        /> */}
+        <View style={styles.group}>
+          <FontAwesome
+            name="group"
+            size={25}
+            color="rgba(241, 241, 242, 0.8)"
+          />
+        </View>
+        <View style={{ width: "75%" }}>
+          <Text
+            numberOfLines={1}
+            style={{
+              color: "white",
+              marginLeft: 10,
+              fontSize: 20,
+              fontWeight: "400"
+            }}
+          >
+            Group 1
+          </Text>
+          <Text numberOfLines={1} style={{ color: "white", marginLeft: 10 }}>
+            Kevin, Brian, Jemo, Arnold, Blake, Amos
+          </Text>
+        </View>
       </View>
     ),
     headerRight: () => (
@@ -52,7 +65,7 @@ GroupChatScreen.navigationOptions = ({}) => {
               TouchableNativeFeedback.Ripple("#fff", true)
             }
           >
-            <MaterialIcons name="call" size={25} color={"#fff"} />
+            <MaterialIcons name="add-ic-call" size={25} color={"#fff"} />
           </TouchableNativeFeedback>
         </View>
         <View
@@ -83,11 +96,20 @@ export default GroupChatScreen;
 const styles = StyleSheet.create({
   headerLeft: {
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    marginLeft: "-10%"
   },
   headerRight: {
     flexDirection: "row",
     width: 100,
     justifyContent: "space-around"
+  },
+  group: {
+    borderRadius: 70,
+    backgroundColor: "grey",
+    height: 40,
+    width: 40,
+    alignItems: "center",
+    justifyContent: "center"
   }
 });
