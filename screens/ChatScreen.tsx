@@ -28,11 +28,7 @@ ChatScreen.navigationOptions = ({}) => {
           size={40}
         /> */}
         <View style={styles.group}>
-          <FontAwesome
-            name="group"
-            size={25}
-            color="rgba(241, 241, 242, 0.8)"
-          />
+          <Ionicons name="person" size={25} color="rgba(241, 241, 242, 0.8)" />
         </View>
         <Text
           numberOfLines={1}
