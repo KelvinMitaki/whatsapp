@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import { Ionicons } from "@expo/vector-icons";
 import inspect from "../inspect";
 
 const genRandomNum = () => Math.random() * (255 - 1) + 1;
@@ -22,30 +23,39 @@ const GroupMessage = () => {
           </Text>
           <Text style={styles.meta}>1:38 PM</Text>
         </View>
-        <View style={styles.sender}>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
-            <Text
-              style={{
-                color: `rgb(${genRandomNum()},${genRandomNum()},${genRandomNum()})`
-              }}
-            >
-              +2547 2155 9392
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={{
-                color: "rgba(255,255,255,.7)",
-                marginLeft: 10,
-                maxWidth: "55%"
-              }}
-            >
-              ~Kevin
-            </Text>
+        <View style={{ flexDirection: "row" }}>
+          <View style={styles.person}>
+            <Ionicons
+              name="person"
+              size={25}
+              color="rgba(241, 241, 242, 0.8)"
+            />
           </View>
-          <Text style={{ color: "#fff" }}>Message Message</Text>
-          <Text style={styles.meta}>1:39 PM</Text>
+          <View style={{ ...styles.sender }}>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <Text
+                style={{
+                  color: `rgb(${genRandomNum()},${genRandomNum()},${genRandomNum()})`
+                }}
+              >
+                +2547 2155 9392
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={{
+                  color: "rgba(255,255,255,.7)",
+                  marginLeft: 10,
+                  maxWidth: "55%"
+                }}
+              >
+                ~Kevin
+              </Text>
+            </View>
+            <Text style={{ color: "#fff" }}>Message Message</Text>
+            <Text style={styles.meta}>1:39 PM</Text>
+          </View>
         </View>
       </>
     );
@@ -100,5 +110,14 @@ const styles = StyleSheet.create({
     bottom: 3,
     right: 5,
     paddingLeft: 10
+  },
+  person: {
+    borderRadius: 70,
+    backgroundColor: "grey",
+    height: 40,
+    width: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: "1%"
   }
 });

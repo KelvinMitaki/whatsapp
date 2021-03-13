@@ -27,7 +27,7 @@ ChatScreen.navigationOptions = ({}) => {
           containerStyle={{ marginLeft: "-8%" }}
           size={40}
         /> */}
-        <View style={styles.group}>
+        <View style={styles.person}>
           <Ionicons name="person" size={25} color="rgba(241, 241, 242, 0.8)" />
         </View>
         <Text
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     width: 100,
     justifyContent: "space-around"
   },
-  group: {
+  person: {
     borderRadius: 70,
     backgroundColor: "grey",
     height: 40,
