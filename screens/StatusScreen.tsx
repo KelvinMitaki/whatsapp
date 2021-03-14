@@ -13,7 +13,7 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   }
   return (
     <ScrollView>
-      <TouchableNativeFeedback>
+      <TouchableNativeFeedback onPress={() => {}}>
         <View style={styles.statusPrt}>
           <View style={styles.statusImgPrt}>
             <Image
@@ -56,7 +56,7 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
         Recent Updates
       </Text>
       {status.map((_, i) => (
-        <TouchableNativeFeedback key={i}>
+        <TouchableNativeFeedback key={i} onPress={() => {}}>
           <View style={styles.statusPrt}>
             <View style={styles.statusImgPrt}>
               <Image

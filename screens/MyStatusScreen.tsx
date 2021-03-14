@@ -19,7 +19,7 @@ const MyStatusScreen: NavigationStackScreenComponent = () => {
   return (
     <ScrollView>
       {status.map((_, i) => (
-        <TouchableNativeFeedback key={i}>
+        <TouchableNativeFeedback key={i} onPress={() => {}}>
           <View style={styles.statusPrt}>
             <View style={styles.statusImgPrt}>
               <Image
