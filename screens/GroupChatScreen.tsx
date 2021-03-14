@@ -68,11 +68,7 @@ GroupChatScreen.navigationOptions = ({}) => {
             <MaterialIcons name="add-ic-call" size={25} color={"#fff"} />
           </TouchableNativeFeedback>
         </View>
-        <View
-          style={{
-            borderRadius: 100
-          }}
-        >
+        <View style={styles.ellipsis}>
           <TouchableNativeFeedback
             background={
               //@ts-ignore
@@ -80,7 +76,7 @@ GroupChatScreen.navigationOptions = ({}) => {
             }
             onPress={() => {}}
           >
-            <View style={styles.ellipsis}>
+            <View>
               <Ionicons
                 name="ellipsis-vertical-sharp"
                 size={25}
@@ -119,6 +115,9 @@ const styles = StyleSheet.create({
     height: 35,
     width: 35,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    borderRadius: 35,
+    borderWidth: 1,
+    borderColor: "transparent"
   }
 });

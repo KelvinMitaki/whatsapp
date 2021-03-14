@@ -68,7 +68,7 @@ ChatScreen.navigationOptions = ({}) => {
             }
             onPress={() => {}}
           >
-            <View style={styles.ellipsis}>
+            <View>
               <Ionicons
                 name="ellipsis-vertical-sharp"
                 size={25}
@@ -107,6 +107,9 @@ const styles = StyleSheet.create({
     height: 35,
     width: 35,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    borderRadius: 35,
+    borderWidth: 1,
+    borderColor: "transparent"
   }
 });
