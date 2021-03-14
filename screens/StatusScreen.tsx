@@ -7,21 +7,9 @@ import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 
 const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   const status = [];
-  const statusUpdate = (
-    <TouchableNativeFeedback>
-      <View style={styles.statusPrt}>
-        <View style={styles.statusImgPrt}>
-          <Image source={require("../assets/1.jpg")} style={styles.statusImg} />
-        </View>
-        <View style={styles.statusMetaData}>
-          <Text style={{ color: "white", fontSize: 18 }}>Kevin</Text>
-          <Text style={{ color: "rgba(255,255,255,.5)" }}>Today, 7:44 PM</Text>
-        </View>
-      </View>
-    </TouchableNativeFeedback>
-  );
+
   for (let i = 0; i < 100; i++) {
-    status.push(statusUpdate);
+    status.push("statusUpdate");
   }
   return (
     <ScrollView>
@@ -67,7 +55,24 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
       >
         Recent Updates
       </Text>
-      {status}
+      {status.map((_, i) => (
+        <TouchableNativeFeedback key={i}>
+          <View style={styles.statusPrt}>
+            <View style={styles.statusImgPrt}>
+              <Image
+                source={require("../assets/1.jpg")}
+                style={styles.statusImg}
+              />
+            </View>
+            <View style={styles.statusMetaData}>
+              <Text style={{ color: "white", fontSize: 18 }}>Kevin</Text>
+              <Text style={{ color: "rgba(255,255,255,.5)" }}>
+                Today, 7:44 PM
+              </Text>
+            </View>
+          </View>
+        </TouchableNativeFeedback>
+      ))}
     </ScrollView>
   );
 };

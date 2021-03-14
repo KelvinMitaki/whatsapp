@@ -4,7 +4,7 @@ import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons, Ionicons, FontAwesome } from "@expo/vector-icons";
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import inspect from "../inspect";
-import { TouchableNativeFeedback } from "react-native-gesture-handler";
+import { TouchableNativeFeedback } from "react-native";
 import Message from "../components/Message";
 import Input from "../components/Input";
 
@@ -60,22 +60,21 @@ ChatScreen.navigationOptions = ({}) => {
             <MaterialIcons name="call" size={25} color={"#fff"} />
           </TouchableNativeFeedback>
         </View>
-        <View
-          style={{
-            borderRadius: 100
-          }}
-        >
+        <View style={styles.ellipsis}>
           <TouchableNativeFeedback
             background={
               //@ts-ignore
               TouchableNativeFeedback.Ripple("#fff", true)
             }
+            onPress={() => {}}
           >
-            <Ionicons
-              name="ellipsis-vertical-sharp"
-              size={25}
-              color={"rgba(255,255,255,.5)"}
-            />
+            <View style={styles.ellipsis}>
+              <Ionicons
+                name="ellipsis-vertical-sharp"
+                size={25}
+                color={"rgba(255,255,255,.5)"}
+              />
+            </View>
           </TouchableNativeFeedback>
         </View>
       </View>
@@ -101,6 +100,12 @@ const styles = StyleSheet.create({
     backgroundColor: "grey",
     height: 40,
     width: 40,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  ellipsis: {
+    height: 35,
+    width: 35,
     alignItems: "center",
     justifyContent: "center"
   }

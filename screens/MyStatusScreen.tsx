@@ -12,44 +12,47 @@ import { Ionicons } from "@expo/vector-icons";
 import inspect from "../inspect";
 
 const MyStatusScreen: NavigationStackScreenComponent = () => {
-  const statusUpdate = (
-    <TouchableNativeFeedback>
-      <View style={styles.statusPrt}>
-        <View style={styles.statusImgPrt}>
-          <Image source={require("../assets/1.jpg")} style={styles.statusImg} />
-        </View>
-        <View style={styles.statusMetaData}>
-          <Text style={{ color: "white", fontSize: 18 }}>20 views</Text>
-          <Text style={{ color: "rgba(255,255,255,.5)" }}>Today, 7:44 PM</Text>
-        </View>
-        <View style={{ marginLeft: "-10%" }}>
-          <TouchableNativeFeedback
-            background={
-              //@ts-ignore
-              TouchableNativeFeedback.Ripple("#fff", true)
-            }
-            onPress={() => {}}
-          >
-            <View style={styles.ellipsis}>
-              <Ionicons
-                name="ellipsis-vertical"
-                size={25}
-                color="rgba(255,255,255,.5)"
-                style={{}}
-              />
-            </View>
-          </TouchableNativeFeedback>
-        </View>
-      </View>
-    </TouchableNativeFeedback>
-  );
   const status = [];
   for (let i = 0; i < 5; i++) {
-    status.push(statusUpdate);
+    status.push("statusUpdate");
   }
   return (
     <ScrollView>
-      {status}
+      {status.map((_, i) => (
+        <TouchableNativeFeedback key={i}>
+          <View style={styles.statusPrt}>
+            <View style={styles.statusImgPrt}>
+              <Image
+                source={require("../assets/1.jpg")}
+                style={styles.statusImg}
+              />
+            </View>
+            <View style={styles.statusMetaData}>
+              <Text style={{ color: "white", fontSize: 18 }}>20 views</Text>
+              <Text style={{ color: "rgba(255,255,255,.5)" }}>
+                Today, 7:44 PM
+              </Text>
+            </View>
+            <View style={{ marginLeft: "-10%" }}>
+              <TouchableNativeFeedback
+                background={
+                  //@ts-ignore
+                  TouchableNativeFeedback.Ripple("#fff", true)
+                }
+                onPress={() => {}}
+              >
+                <View style={styles.ellipsis}>
+                  <Ionicons
+                    name="ellipsis-vertical"
+                    size={25}
+                    color="rgba(255,255,255,.5)"
+                  />
+                </View>
+              </TouchableNativeFeedback>
+            </View>
+          </View>
+        </TouchableNativeFeedback>
+      ))}
       <Text
         style={{
           color: "rgba(255,255,255,.5)",
