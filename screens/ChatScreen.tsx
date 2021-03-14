@@ -48,7 +48,8 @@ ChatScreen.navigationOptions = ({}) => {
       <View style={styles.headerRight}>
         <View
           style={{
-            borderRadius: 100
+            borderRadius: 100,
+            alignSelf: "center"
           }}
         >
           <TouchableNativeFeedback
