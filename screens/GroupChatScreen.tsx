@@ -56,8 +56,8 @@ GroupChatScreen.navigationOptions = ({}) => {
       <View style={styles.headerRight}>
         <View
           style={{
-            borderRadius: 100,
-            alignSelf: "center"
+            alignSelf: "center",
+            ...styles.ellipsis
           }}
         >
           <TouchableNativeFeedback
@@ -65,8 +65,11 @@ GroupChatScreen.navigationOptions = ({}) => {
               //@ts-ignore
               TouchableNativeFeedback.Ripple("#fff", true)
             }
+            onPress={() => {}}
           >
-            <MaterialIcons name="add-ic-call" size={25} color={"#fff"} />
+            <View>
+              <MaterialIcons name="add-ic-call" size={25} color={"#fff"} />
+            </View>
           </TouchableNativeFeedback>
         </View>
         <View style={styles.ellipsis}>

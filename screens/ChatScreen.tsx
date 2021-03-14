@@ -48,8 +48,8 @@ ChatScreen.navigationOptions = ({}) => {
       <View style={styles.headerRight}>
         <View
           style={{
-            borderRadius: 100,
-            alignSelf: "center"
+            alignSelf: "center",
+            ...styles.ellipsis
           }}
         >
           <TouchableNativeFeedback
@@ -57,8 +57,11 @@ ChatScreen.navigationOptions = ({}) => {
               //@ts-ignore
               TouchableNativeFeedback.Ripple("#fff", true)
             }
+            onPress={() => {}}
           >
-            <MaterialIcons name="call" size={25} color={"#fff"} />
+            <View>
+              <MaterialIcons name="call" size={25} color={"#fff"} />
+            </View>
           </TouchableNativeFeedback>
         </View>
         <View style={styles.ellipsis}>
