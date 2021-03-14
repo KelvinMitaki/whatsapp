@@ -41,18 +41,19 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
           </View>
           <View style={{ marginLeft: "-12%" }}>
             <TouchableNativeFeedback
-              style={styles.ellipsis}
-              // background={
-              //   //@ts-ignore
-              //   TouchableNativeFeedback.Ripple("#fff", true)
-              // }
+              background={
+                //@ts-ignore
+                TouchableNativeFeedback.Ripple("#fff", true)
+              }
               onPress={() => navigation.navigate("MyStatus")}
             >
-              <Ionicons
-                name="ellipsis-horizontal"
-                size={25}
-                color="rgba(255,255,255,.5)"
-              />
+              <View style={styles.ellipsis}>
+                <Ionicons
+                  name="ellipsis-horizontal"
+                  size={25}
+                  color="rgba(255,255,255,.5)"
+                />
+              </View>
             </TouchableNativeFeedback>
           </View>
         </View>

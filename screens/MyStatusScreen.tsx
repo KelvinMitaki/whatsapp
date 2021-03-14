@@ -28,7 +28,7 @@ const MyStatusScreen: NavigationStackScreenComponent = () => {
               //@ts-ignore
               TouchableNativeFeedback.Ripple("#fff", true)
             }
-            style={styles.ellipsis}
+            onPress={() => {}}
           >
             <View style={styles.ellipsis}>
               <Ionicons
