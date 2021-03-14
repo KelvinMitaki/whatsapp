@@ -1,9 +1,6 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-import {
-  ScrollView,
-  TouchableNativeFeedback
-} from "react-native-gesture-handler";
+import { ScrollView, TouchableNativeFeedback } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../inspect";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
@@ -45,10 +42,10 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
           <View style={{ marginLeft: "-12%" }}>
             <TouchableNativeFeedback
               style={styles.ellipsis}
-              background={
-                //@ts-ignore
-                TouchableNativeFeedback.Ripple("#fff", true)
-              }
+              // background={
+              //   //@ts-ignore
+              //   TouchableNativeFeedback.Ripple("#fff", true)
+              // }
               onPress={() => navigation.navigate("MyStatus")}
             >
               <Ionicons
