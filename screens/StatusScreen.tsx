@@ -8,7 +8,7 @@ import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   const status = [];
 
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 50; i++) {
     status.push("statusUpdate");
   }
   return (
@@ -46,19 +46,35 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
           </View>
         </View>
       </TouchableNativeFeedback>
-      <Text
-        style={{
-          color: "rgba(255,255,255,.5)",
-          marginLeft: 15,
-          marginVertical: 10
-        }}
-      >
-        Recent Updates
-      </Text>
+      <Text style={styles.title}>Recent Updates</Text>
       {status.map((_, i) => (
         <TouchableNativeFeedback key={i} onPress={() => {}}>
           <View style={styles.statusPrt}>
             <View style={styles.statusImgPrt}>
+              <Image
+                source={require("../assets/1.jpg")}
+                style={styles.statusImg}
+              />
+            </View>
+            <View style={styles.statusMetaData}>
+              <Text style={{ color: "white", fontSize: 18 }}>Kevin</Text>
+              <Text style={{ color: "rgba(255,255,255,.5)" }}>
+                Today, 7:44 PM
+              </Text>
+            </View>
+          </View>
+        </TouchableNativeFeedback>
+      ))}
+      <Text style={styles.title}>Viewed Updates</Text>
+      {status.map((_, i) => (
+        <TouchableNativeFeedback key={i} onPress={() => {}}>
+          <View style={styles.statusPrt}>
+            <View
+              style={{
+                ...styles.statusImgPrt,
+                borderColor: "rgba(255,255,255,.5)"
+              }}
+            >
               <Image
                 source={require("../assets/1.jpg")}
                 style={styles.statusImg}
@@ -114,5 +130,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 50
+  },
+  title: {
+    color: "rgba(255,255,255,.5)",
+    marginLeft: 15,
+    marginVertical: 10
   }
 });
