@@ -1,6 +1,9 @@
 import React from "react";
 import { FlatList, Image, StyleSheet, Text, View } from "react-native";
-import { TouchableNativeFeedback } from "react-native-gesture-handler";
+import {
+  ScrollView,
+  TouchableNativeFeedback
+} from "react-native-gesture-handler";
 import inspect from "../inspect";
 
 const StatusScreen = () => {
@@ -8,27 +11,27 @@ const StatusScreen = () => {
   for (let i = 0; i < 100; i++) {
     status.push(
       <>
-        <View style={styles.statusPrt}>
-          <View style={styles.statusImgPrt}>
-            <Image
-              source={require("../assets/1.jpg")}
-              style={styles.statusImg}
-            />
-          </View>
-          <View style={styles.statusMetaData}>
-            <TouchableNativeFeedback style={{ ...inspect() }}>
+        <TouchableNativeFeedback>
+          <View style={styles.statusPrt}>
+            <View style={styles.statusImgPrt}>
+              <Image
+                source={require("../assets/1.jpg")}
+                style={styles.statusImg}
+              />
+            </View>
+            <View style={styles.statusMetaData}>
               <Text style={{ color: "white", fontSize: 18 }}>Kevin</Text>
               <Text style={{ color: "rgba(255,255,255,.5)" }}>
                 Today, 7:44 PM
               </Text>
-            </TouchableNativeFeedback>
+            </View>
           </View>
-        </View>
+        </TouchableNativeFeedback>
       </>
     );
   }
   return (
-    <View>
+    <ScrollView>
       <Text
         style={{
           color: "rgba(255,255,255,.5)",
@@ -38,12 +41,8 @@ const StatusScreen = () => {
       >
         Recent Updates
       </Text>
-      <FlatList
-        data={status}
-        keyExtractor={(_, i) => i.toLocaleString()}
-        renderItem={({ item }) => item}
-      />
-    </View>
+      {status}
+    </ScrollView>
   );
 };
 
@@ -53,7 +52,7 @@ const styles = StyleSheet.create({
   statusPrt: {
     flexDirection: "row",
     alignItems: "center",
-    height: 85
+    height: 75
   },
   statusImgPrt: {
     borderColor: "#00af9c",
