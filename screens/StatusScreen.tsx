@@ -1,7 +1,11 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { ScrollView, TouchableNativeFeedback } from "react-native";
-import { Ionicons, FontAwesome } from "@expo/vector-icons";
+import {
+  Ionicons,
+  FontAwesome,
+  MaterialCommunityIcons
+} from "@expo/vector-icons";
 import inspect from "../inspect";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 
@@ -92,6 +96,11 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
         ))}
       </ScrollView>
       <TouchableNativeFeedback onPress={() => {}}>
+        <View style={styles.pencil}>
+          <MaterialCommunityIcons name="pencil" size={20} color="#fff" />
+        </View>
+      </TouchableNativeFeedback>
+      <TouchableNativeFeedback onPress={() => {}}>
         <View style={styles.camera}>
           <FontAwesome name="camera" size={20} color="#fff" />
         </View>
@@ -152,6 +161,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#00af9c",
     height: 55,
     width: 55,
+    borderRadius: 55
+  },
+  pencil: {
+    position: "absolute",
+    right: "5%",
+    bottom: "15%",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#00af9c",
+    height: 45,
+    width: 45,
     borderRadius: 55
   }
 });
