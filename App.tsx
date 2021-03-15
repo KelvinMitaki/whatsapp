@@ -13,6 +13,7 @@ import { enableScreens } from "react-native-screens";
 import GroupChatScreen from "./screens/GroupChatScreen";
 import MyStatusScreen from "./screens/MyStatusScreen";
 import ContactScreen from "./screens/ContactScreen";
+import HomeHeaderRight from "./components/HomeHeaderRight";
 
 enableScreens();
 
@@ -31,9 +32,13 @@ const TabNavigator = createMaterialTopTabNavigator(
         backgroundColor: "#00af9c"
       },
       activeTintColor: "#00af9c"
+    },
+    navigationOptions: {
+      headerRight: () => <HomeHeaderRight />
     }
   }
 );
+
 const stackNavigator = createStackNavigator(
   {
     Tab: {
