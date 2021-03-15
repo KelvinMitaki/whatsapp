@@ -128,15 +128,15 @@ const styles = StyleSheet.create({
   meta: {
     flexDirection: "row",
     alignItems: "center",
-    paddingLeft: 20,
+    paddingLeft: 10,
     height: 70
   },
   textPrt: {
     justifyContent: "center",
     height: "100%",
     width: "85%",
-    borderTopWidth: 0.5,
-    borderTopColor: "rgba(255,255,255,.3)"
+    borderBottomWidth: 0.5,
+    borderBottomColor: "rgba(255,255,255,.3)"
   },
   metaText: {
     color: "#fff",

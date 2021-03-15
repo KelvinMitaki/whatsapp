@@ -12,6 +12,7 @@ import { Badge } from "react-native-elements";
 import { Card } from "react-native-elements";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { ScrollView } from "react-native-gesture-handler";
+import inspect from "../inspect";
 
 const Contact: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   return (
@@ -37,28 +38,12 @@ const Contact: React.FC<NavigationInjectedProps> = ({ navigation }) => {
               />
             </View>
             <View style={styles.contactTxt}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}
-              >
-                <Text
-                  style={{ fontSize: 22, fontWeight: "400", color: "#fff" }}
-                >
-                  {usr.name}
-                </Text>
-                <Text style={{ right: 1, color: "rgba(255,255,255,.6)" }}>
-                  Yesterday
-                </Text>
-              </View>
-              <View style={styles.msg}>
+              <View style={{ justifyContent: "center", height: "100%" }}>
+                <Text style={{ fontSize: 22, color: "#fff" }}>{usr.name}</Text>
                 <Text
                   numberOfLines={1}
                   style={{
-                    marginTop: 5,
-                    color: "rgba(255,255,255,.6)",
-                    width: "90%"
+                    color: "rgba(255,255,255,.6)"
                   }}
                 >
                   hello Lorem ipsum dolor, sit amet consectetur adipisicing
@@ -66,23 +51,11 @@ const Contact: React.FC<NavigationInjectedProps> = ({ navigation }) => {
                   fuga quisquam aliquid! Eos dignissimos cum maxime, quasi
                   ducimus natus reiciendis. Alias, recusandae dolorem.
                 </Text>
-                <Badge value="99" badgeStyle={{ backgroundColor: "#00af9c" }} />
               </View>
-              <Card.Divider
-                style={{
-                  marginTop: 15,
-                  backgroundColor: "rgba(255,255,255,.3)"
-                }}
-              />
             </View>
           </View>
         </TouchableNativeFeedback>
       ))}
-      <TouchableNativeFeedback onPress={() => navigation.navigate("Contact")}>
-        <View style={styles.message}>
-          <MaterialIcons name="message" size={25} color="#fff" />
-        </View>
-      </TouchableNativeFeedback>
     </>
   );
 };
@@ -98,32 +71,17 @@ const styles = StyleSheet.create({
   },
   contactTxt: {
     paddingLeft: 10,
-    width: "85%",
-    justifyContent: "space-between",
-    height: "100%"
-  },
-  msg: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-around"
+    width: "87%",
+    height: "100%",
+    borderBottomColor: "rgba(255,255,255,.3)",
+    borderBottomWidth: 0.5
   },
   person: {
-    height: 50,
-    width: 50,
+    height: 45,
+    width: 45,
     borderRadius: 500,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "grey"
-  },
-  message: {
-    position: "absolute",
-    right: "5%",
-    bottom: "3%",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#00af9c",
-    height: 55,
-    width: 55,
-    borderRadius: 55
   }
 });
