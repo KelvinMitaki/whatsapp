@@ -3,7 +3,7 @@ import { Alert, FlatList, StyleSheet, View } from "react-native";
 import { Badge, Text } from "react-native-elements";
 import { Card, Avatar } from "react-native-elements";
 import { TouchableNativeFeedback } from "react-native";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 import { users } from "../data";
 import inspect from "../inspect";
@@ -81,7 +81,7 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
       />
       <TouchableNativeFeedback onPress={() => {}}>
         <View style={styles.plus}>
-          <AntDesign name="plus" size={25} color="#fff" />
+          <MaterialIcons name="message" size={25} color="#fff" />
         </View>
       </TouchableNativeFeedback>
     </View>

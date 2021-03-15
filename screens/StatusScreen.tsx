@@ -93,7 +93,7 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
       </ScrollView>
       <TouchableNativeFeedback onPress={() => {}}>
         <View style={styles.camera}>
-          <FontAwesome name="camera" size={25} color="#fff" />
+          <FontAwesome name="camera" size={20} color="#fff" />
         </View>
       </TouchableNativeFeedback>
     </View>
