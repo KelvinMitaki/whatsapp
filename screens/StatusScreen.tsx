@@ -62,7 +62,12 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
                 />
               </View>
               <View style={styles.statusMetaData}>
-                <Text style={{ color: "white", fontSize: 18 }}>Kevin</Text>
+                <Text
+                  style={{ color: "white", fontSize: 18 }}
+                  numberOfLines={1}
+                >
+                  Kevin
+                </Text>
                 <Text style={{ color: "rgba(255,255,255,.5)" }}>
                   Today, 7:44 PM
                 </Text>
@@ -86,7 +91,12 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
                 />
               </View>
               <View style={styles.statusMetaData}>
-                <Text style={{ color: "white", fontSize: 18 }}>Kevin</Text>
+                <Text
+                  style={{ color: "white", fontSize: 18 }}
+                  numberOfLines={1}
+                >
+                  Kevin
+                </Text>
                 <Text style={{ color: "rgba(255,255,255,.5)" }}>
                   Today, 7:44 PM
                 </Text>

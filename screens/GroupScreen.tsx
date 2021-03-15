@@ -89,6 +89,10 @@ const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   );
 };
 
+GroupScreen.navigationOptions = {
+  title: "GROUPS"
+};
+
 export default GroupScreen;
 
 const styles = StyleSheet.create({
