@@ -21,12 +21,6 @@ GroupChatScreen.navigationOptions = ({}) => {
   return {
     headerTitle: () => (
       <View style={styles.headerLeft}>
-        {/* <Avatar
-          rounded
-          source={require("../assets/blank.png")}
-          containerStyle={{ marginLeft: "-8%" }}
-          size={40}
-        /> */}
         <View style={styles.group}>
           <FontAwesome
             name="group"
@@ -35,15 +29,7 @@ GroupChatScreen.navigationOptions = ({}) => {
           />
         </View>
         <View style={{ width: "75%" }}>
-          <Text
-            numberOfLines={1}
-            style={{
-              color: "white",
-              marginLeft: 10,
-              fontSize: 20,
-              fontWeight: "400"
-            }}
-          >
+          <Text numberOfLines={1} style={styles.grpName}>
             Group 1
           </Text>
           <Text numberOfLines={1} style={{ color: "white", marginLeft: 10 }}>
@@ -123,5 +109,11 @@ const styles = StyleSheet.create({
     borderRadius: 35,
     borderWidth: 1,
     borderColor: "transparent"
+  },
+  grpName: {
+    color: "white",
+    marginLeft: 10,
+    fontSize: 20,
+    fontWeight: "400"
   }
 });

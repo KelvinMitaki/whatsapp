@@ -42,6 +42,7 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
                 >
                   <Text
                     style={{ fontSize: 22, fontWeight: "400", color: "#fff" }}
+                    numberOfLines={1}
                   >
                     {i.item.name}
                   </Text>

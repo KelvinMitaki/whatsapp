@@ -25,11 +25,6 @@ const Contact: React.FC<NavigationInjectedProps> = ({ navigation }) => {
           key={i}
         >
           <View style={styles.contact}>
-            {/* <Avatar
-                  rounded
-                  source={require("../assets/blank.png")}
-                  size={55}
-                /> */}
             <View style={styles.person}>
               <Ionicons
                 name="person"
@@ -39,17 +34,16 @@ const Contact: React.FC<NavigationInjectedProps> = ({ navigation }) => {
             </View>
             <View style={styles.contactTxt}>
               <View style={{ justifyContent: "center", height: "100%" }}>
-                <Text style={{ fontSize: 22, color: "#fff" }}>{usr.name}</Text>
+                <Text style={{ fontSize: 22, color: "#fff" }} numberOfLines={1}>
+                  {usr.name}
+                </Text>
                 <Text
                   numberOfLines={1}
                   style={{
                     color: "rgba(255,255,255,.6)"
                   }}
                 >
-                  hello Lorem ipsum dolor, sit amet consectetur adipisicing
-                  elit. Ea cumque iure a facilis corporis expedita assumenda
-                  fuga quisquam aliquid! Eos dignissimos cum maxime, quasi
-                  ducimus natus reiciendis. Alias, recusandae dolorem.
+                  Hey there! I'm using WhatsApp
                 </Text>
               </View>
             </View>

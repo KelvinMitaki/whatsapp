@@ -41,7 +41,13 @@ const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
                   }}
                 >
                   <Text
-                    style={{ fontSize: 22, fontWeight: "400", color: "#fff" }}
+                    style={{
+                      fontSize: 22,
+                      fontWeight: "400",
+                      color: "#fff",
+                      width: "78%"
+                    }}
+                    numberOfLines={1}
                   >
                     Group {i.index + 1}
                   </Text>
