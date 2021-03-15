@@ -80,7 +80,7 @@ const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
           </TouchableNativeFeedback>
         )}
       />
-      <TouchableNativeFeedback onPress={() => {}}>
+      <TouchableNativeFeedback onPress={() => navigation.navigate("Contact")}>
         <View style={styles.plus}>
           <MaterialIcons name="message" size={25} color="#fff" />
         </View>
