@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View } from "react-native";
 import { Badge, Text } from "react-native-elements";
 import { Card, Avatar } from "react-native-elements";
 import { TouchableNativeFeedback } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, AntDesign } from "@expo/vector-icons";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 import { users } from "../data";
 import inspect from "../inspect";
@@ -80,6 +80,11 @@ const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
           </TouchableNativeFeedback>
         )}
       />
+      <TouchableNativeFeedback onPress={() => {}}>
+        <View style={styles.plus}>
+          <AntDesign name="plus" size={25} color="#fff" />
+        </View>
+      </TouchableNativeFeedback>
     </View>
   );
 };
@@ -112,5 +117,16 @@ const styles = StyleSheet.create({
     width: 50,
     alignItems: "center",
     justifyContent: "center"
+  },
+  plus: {
+    position: "absolute",
+    right: "5%",
+    bottom: "3%",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#00af9c",
+    height: 55,
+    width: 55,
+    borderRadius: 55
   }
 });
