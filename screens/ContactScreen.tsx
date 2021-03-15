@@ -1,12 +1,19 @@
 import React from "react";
-import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableNativeFeedback,
+  View
+} from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import inspect from "../inspect";
+import Contact from "../components/Contact";
 
 const ContactScreen: NavigationStackScreenComponent = () => {
   return (
-    <View>
+    <ScrollView>
       <View>
         <TouchableNativeFeedback
           background={
@@ -49,7 +56,8 @@ const ContactScreen: NavigationStackScreenComponent = () => {
           </View>
         </TouchableNativeFeedback>
       </View>
-    </View>
+      <Contact />
+    </ScrollView>
   );
 };
 
