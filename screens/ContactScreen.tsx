@@ -1,13 +1,54 @@
 import React from "react";
 import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import inspect from "../inspect";
 
 const ContactScreen: NavigationStackScreenComponent = () => {
   return (
     <View>
-      <Text>ContactScreen ContactScreen</Text>
+      <View>
+        <TouchableNativeFeedback
+          background={
+            //@ts-ignore
+            TouchableNativeFeedback.Ripple("#fff", true)
+          }
+          onPress={() => {}}
+        >
+          <View style={styles.meta}>
+            <View style={styles.person}>
+              <MaterialCommunityIcons
+                name="account-group"
+                size={25}
+                color="#fff"
+              />
+            </View>
+            <View style={styles.textPrt}>
+              <View>
+                <Text style={styles.metaText}>New Group</Text>
+              </View>
+            </View>
+          </View>
+        </TouchableNativeFeedback>
+      </View>
+      <View>
+        <TouchableNativeFeedback
+          background={
+            //@ts-ignore
+            TouchableNativeFeedback.Ripple("#fff", true)
+          }
+          onPress={() => {}}
+        >
+          <View style={styles.meta}>
+            <View style={styles.person}>
+              <Ionicons name="person-add" size={25} color="#fff" />
+            </View>
+            <View style={styles.textPrt}>
+              <Text style={styles.metaText}>New Contact</Text>
+            </View>
+          </View>
+        </TouchableNativeFeedback>
+      </View>
     </View>
   );
 };
@@ -67,5 +108,31 @@ const styles = StyleSheet.create({
     borderRadius: 35,
     borderWidth: 1,
     borderColor: "transparent"
+  },
+  person: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#00af9c",
+    height: 45,
+    width: 45,
+    borderRadius: 55
+  },
+  meta: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingLeft: 20,
+    height: 70
+  },
+  textPrt: {
+    justifyContent: "center",
+    height: "100%",
+    width: "85%",
+    borderTopWidth: 0.5,
+    borderTopColor: "rgba(255,255,255,.3)"
+  },
+  metaText: {
+    color: "#fff",
+    marginLeft: 10,
+    fontSize: 17
   }
 });

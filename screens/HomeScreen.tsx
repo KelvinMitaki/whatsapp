@@ -80,7 +80,7 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
         )}
       />
       <TouchableNativeFeedback onPress={() => navigation.navigate("Contact")}>
-        <View style={styles.plus}>
+        <View style={styles.message}>
           <MaterialIcons name="message" size={25} color="#fff" />
         </View>
       </TouchableNativeFeedback>
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "grey"
   },
-  plus: {
+  message: {
     position: "absolute",
     right: "5%",
     bottom: "3%",
