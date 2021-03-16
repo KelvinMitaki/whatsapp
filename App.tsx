@@ -14,6 +14,7 @@ import GroupChatScreen from "./screens/GroupChatScreen";
 import MyStatusScreen from "./screens/MyStatusScreen";
 import ContactScreen from "./screens/ContactScreen";
 import HomeHeaderRight from "./components/HomeHeaderRight";
+import { Platform } from "react-native";
 
 enableScreens();
 
@@ -26,10 +27,14 @@ const TabNavigator = createMaterialTopTabNavigator(
   {
     tabBarOptions: {
       style: {
-        backgroundColor: "#20272b"
+        backgroundColor: "#20272b",
+        zIndex: 1,
+        elevation: Platform.OS === "android" ? 1 : 0
       },
       indicatorStyle: {
-        backgroundColor: "#00af9c"
+        backgroundColor: "#00af9c",
+        zIndex: 1,
+        elevation: Platform.OS === "android" ? 1 : 0
       },
       activeTintColor: "#00af9c"
     },
@@ -105,7 +110,13 @@ const stackNavigator = createStackNavigator(
   },
   {
     defaultNavigationOptions: {
-      cardStyle: { backgroundColor: "transparent", opacity: 1, flex: 1 },
+      cardStyle: {
+        backgroundColor: "transparent",
+        opacity: 1,
+        flex: 1,
+        zIndex: 1,
+        elevation: Platform.OS === "android" ? 1 : 0
+      },
       cardStyleInterpolator: ({ current, closing }) => ({
         cardStyle: {
           opacity: current.progress
