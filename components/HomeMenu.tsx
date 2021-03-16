@@ -6,86 +6,115 @@ import {
   TouchableNativeFeedback,
   View
 } from "react-native";
+import Menu, { MenuItem } from "react-native-material-menu";
+import inspect from "../inspect";
 
-const HomeMenu = () => {
+interface Props {
+  menuRef: Menu;
+}
+
+const HomeMenu: React.FC<Props> = ({ menuRef }) => {
   return (
     <View style={styles.prt}>
-      <TouchableNativeFeedback
-        onPress={() => {}}
-        background={
-          //@ts-ignore
-          TouchableNativeFeedback.Ripple("#FFFFFF", false)
-        }
+      <MenuItem
+        onPress={() => {
+          //   menuRef.hide();
+        }}
       >
         <View>
-          <Text
-            style={{
-              color: "#fff",
-              paddingHorizontal: 20,
-              paddingVertical: 15
-            }}
+          <TouchableNativeFeedback
+            background={
+              //@ts-ignore
+              TouchableNativeFeedback.Ripple("#FFFFFF", false)
+            }
+            style={{ backgroundColor: "red", width: "100%", height: 30 }}
           >
-            New group
-          </Text>
+            <View>
+              <Text
+                style={{
+                  color: "#fff"
+                  // paddingHorizontal: 20,
+                  // paddingVertical: 15
+                }}
+              >
+                New group
+              </Text>
+            </View>
+          </TouchableNativeFeedback>
         </View>
-      </TouchableNativeFeedback>
-      <TouchableNativeFeedback
-        onPress={() => {}}
-        background={
-          //@ts-ignore
-          TouchableNativeFeedback.Ripple("#FFFFFF", false)
-        }
+      </MenuItem>
+      <MenuItem
+        onPress={() => {
+          menuRef.hide();
+        }}
       >
-        <View>
-          <Text
-            style={{
-              color: "#fff",
-              paddingHorizontal: 20,
-              paddingVertical: 15
-            }}
-          >
-            New broadcast
-          </Text>
-        </View>
-      </TouchableNativeFeedback>
-      <TouchableNativeFeedback
-        onPress={() => {}}
-        background={
-          //@ts-ignore
-          TouchableNativeFeedback.Ripple("#FFFFFF", false)
-        }
+        <TouchableNativeFeedback
+          background={
+            //@ts-ignore
+            TouchableNativeFeedback.Ripple("#FFFFFF", false)
+          }
+        >
+          <View>
+            <Text
+              style={{
+                color: "#fff"
+                // paddingHorizontal: 20,
+                // paddingVertical: 15
+              }}
+            >
+              New broadcast
+            </Text>
+          </View>
+        </TouchableNativeFeedback>
+      </MenuItem>
+      <MenuItem
+        onPress={() => {
+          menuRef.hide();
+        }}
       >
-        <View>
-          <Text
-            style={{
-              color: "#fff",
-              paddingHorizontal: 20,
-              paddingVertical: 15
-            }}
-          >
-            Starred messages
-          </Text>
-        </View>
-      </TouchableNativeFeedback>
-      <TouchableNativeFeedback
-        onPress={() => {}}
-        background={
-          //@ts-ignore
-          TouchableNativeFeedback.Ripple("#FFFFFF", false)
-        }
+        <TouchableNativeFeedback
+          background={
+            //@ts-ignore
+            TouchableNativeFeedback.Ripple("#FFFFFF", false)
+          }
+        >
+          <View>
+            <Text
+              style={{
+                color: "#fff"
+                // paddingHorizontal: 20,
+                // paddingVertical: 15
+              }}
+            >
+              Starred messages
+            </Text>
+          </View>
+        </TouchableNativeFeedback>
+      </MenuItem>
+      <MenuItem
+        onPress={() => {
+          menuRef.hide();
+        }}
       >
-        <View>
-          <Text
-            style={{
-              color: "#fff",
-              paddingHorizontal: 20,
-              paddingVertical: 15
-            }}
-          >
-            Settings
-          </Text>
-        </View>
-      </TouchableNativeFeedback>
+        <TouchableNativeFeedback
+          background={
+            //@ts-ignore
+            TouchableNativeFeedback.Ripple("#FFFFFF", false)
+          }
+        >
+          <View>
+            <Text
+              style={{
+                color: "#fff"
+                // paddingHorizontal: 20,
+                // paddingVertical: 15
+              }}
+            >
+              Settings
+            </Text>
+          </View>
+        </TouchableNativeFeedback>
+      </MenuItem>
     </View>
   );
 };
@@ -94,11 +123,12 @@ export default HomeMenu;
 
 const styles = StyleSheet.create({
   prt: {
-    backgroundColor: "#14191d",
-    position: "absolute",
-    width: 170,
-    right: "-30%",
-    zIndex: 10,
-    elevation: Platform.OS === "android" ? 50 : 0
+    backgroundColor: "#14191d"
+    // position: "absolute",
+    // width: 170
+    // right: "0%",
+    // top: "-20%",
+    // zIndex: 10,
+    // elevation: Platform.OS === "android" ? 50 : 0,
   }
 });
