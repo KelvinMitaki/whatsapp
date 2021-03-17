@@ -4,64 +4,117 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableNativeFeedback
+  TouchableNativeFeedback,
+  TouchableOpacity,
+  TouchableWithoutFeedback
 } from "react-native";
+import inspect from "../inspect";
 
-const CustomModal = () => {
+interface Props {
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showModal: boolean;
+}
+
+const CustomModal: React.FC<Props> = ({ setShowModal, showModal }) => {
   return (
-    <Modal transparent>
-      <View
-        style={{
-          backgroundColor: "#14191d",
-          width: "35%",
-          alignSelf: "flex-end"
-        }}
+    <Modal
+      transparent
+      onRequestClose={() => setShowModal(false)}
+      visible={showModal}
+    >
+      <TouchableWithoutFeedback
+        accessible={false}
+        onPress={() => setShowModal(false)}
       >
-        <TouchableNativeFeedback
-          onPress={() => {}}
-          background={
-            //@ts-ignore
-            TouchableNativeFeedback.Ripple("#FFFFFF", false)
-          }
-        >
-          <View>
-            <Text style={{ color: "#fff", padding: 10 }}>Name</Text>
+        <View style={{ height: "100%", width: "100%" }}>
+          <View
+            style={{
+              backgroundColor: "#14191d",
+              width: 150,
+              alignSelf: "flex-end",
+              marginRight: 5,
+              marginTop: 5
+            }}
+          >
+            <TouchableNativeFeedback
+              onPress={() => setShowModal(false)}
+              background={
+                //@ts-ignore
+                TouchableNativeFeedback.Ripple("#FFFFFF", false)
+              }
+            >
+              <View>
+                <Text
+                  style={{
+                    color: "#fff",
+                    paddingVertical: 15,
+                    paddingLeft: 15
+                  }}
+                >
+                  New group
+                </Text>
+              </View>
+            </TouchableNativeFeedback>
+            <TouchableNativeFeedback
+              onPress={() => setShowModal(false)}
+              background={
+                //@ts-ignore
+                TouchableNativeFeedback.Ripple("#FFFFFF", false)
+              }
+            >
+              <View>
+                <Text
+                  style={{
+                    color: "#fff",
+                    paddingVertical: 15,
+                    paddingLeft: 15
+                  }}
+                >
+                  New broadcast
+                </Text>
+              </View>
+            </TouchableNativeFeedback>
+            <TouchableNativeFeedback
+              onPress={() => setShowModal(false)}
+              background={
+                //@ts-ignore
+                TouchableNativeFeedback.Ripple("#FFFFFF", false)
+              }
+            >
+              <View>
+                <Text
+                  style={{
+                    color: "#fff",
+                    paddingVertical: 15,
+                    paddingLeft: 15
+                  }}
+                >
+                  Starred messages
+                </Text>
+              </View>
+            </TouchableNativeFeedback>
+            <TouchableNativeFeedback
+              onPress={() => setShowModal(false)}
+              background={
+                //@ts-ignore
+                TouchableNativeFeedback.Ripple("#FFFFFF", false)
+              }
+            >
+              <View>
+                <Text
+                  style={{
+                    color: "#fff",
+                    paddingVertical: 15,
+                    paddingLeft: 15
+                  }}
+                >
+                  Settings
+                </Text>
+              </View>
+            </TouchableNativeFeedback>
           </View>
-        </TouchableNativeFeedback>
-        <TouchableNativeFeedback
-          onPress={() => {}}
-          background={
-            //@ts-ignore
-            TouchableNativeFeedback.Ripple("#FFFFFF", false)
-          }
-        >
-          <View>
-            <Text style={{ color: "#fff", padding: 10 }}>Name</Text>
-          </View>
-        </TouchableNativeFeedback>
-        <TouchableNativeFeedback
-          onPress={() => {}}
-          background={
-            //@ts-ignore
-            TouchableNativeFeedback.Ripple("#FFFFFF", false)
-          }
-        >
-          <View>
-            <Text style={{ color: "#fff", padding: 10 }}>Name</Text>
-          </View>
-        </TouchableNativeFeedback>
-        <TouchableNativeFeedback
-          onPress={() => {}}
-          background={
-            //@ts-ignore
-            TouchableNativeFeedback.Ripple("#FFFFFF", false)
-          }
-        >
-          <View>
-            <Text style={{ color: "#fff", padding: 10 }}>Name</Text>
-          </View>
-        </TouchableNativeFeedback>
-      </View>
+        </View>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 };

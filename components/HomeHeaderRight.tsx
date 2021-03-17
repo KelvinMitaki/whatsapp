@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   Modal,
   StyleSheet,
@@ -13,6 +13,7 @@ import CustomModal from "./CustomModal";
 
 const HomeHeaderRight = () => {
   const menuRef = useRef<Menu | null>();
+  const [showModal, setShowModal] = useState<boolean>(false);
   const menu = (
     <View style={styles.ellipsis}>
       <TouchableNativeFeedback
@@ -20,7 +21,7 @@ const HomeHeaderRight = () => {
           //@ts-ignore
           TouchableNativeFeedback.Ripple("#fff", true)
         }
-        onPress={() => menuRef.current && menuRef.current.show()}
+        onPress={() => setShowModal(true)}
       >
         <View>
           <Ionicons name="ellipsis-vertical-sharp" size={25} color="#fff" />
@@ -47,7 +48,7 @@ const HomeHeaderRight = () => {
         {menuRef.current && <HomeMenu menuRef={menuRef.current} />}
       </Menu> */}
       {menu}
-      <CustomModal />
+      <CustomModal showModal={showModal} setShowModal={setShowModal} />
     </View>
   );
 };
