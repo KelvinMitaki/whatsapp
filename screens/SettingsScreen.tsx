@@ -1,12 +1,13 @@
 import React from "react";
 import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { Ionicons, Foundation, MaterialIcons } from "@expo/vector-icons";
+import { NavigationStackScreenComponent } from "react-navigation-stack";
 
-const SettingsScreen = () => {
+const SettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
     <View>
       <TouchableNativeFeedback
-        onPress={() => {}}
+        onPress={() => navigation.navigate("Profile")}
         background={TouchableNativeFeedback.Ripple("#fff", false)}
       >
         <View style={styles.profile}>

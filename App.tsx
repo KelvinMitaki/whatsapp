@@ -16,6 +16,7 @@ import ContactScreen from "./screens/ContactScreen";
 import HomeHeaderRight from "./components/HomeHeaderRight";
 import { Platform } from "react-native";
 import SettingsScreen from "./screens/SettingsScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 
 enableScreens();
 
@@ -45,80 +46,51 @@ const TabNavigator = createMaterialTopTabNavigator(
   }
 );
 
+const stackScreenSettings = {
+  navigationOptions: {
+    headerStyle: {
+      backgroundColor: "#20272b"
+    },
+    headerTintColor: "white",
+    cardStyle: {
+      backgroundColor: "#191f23"
+    }
+  }
+};
+
 const stackNavigator = createStackNavigator(
   {
     Tab: {
       screen: TabNavigator,
+      ...stackScreenSettings,
       navigationOptions: {
-        headerStyle: {
-          backgroundColor: "#20272b"
-        },
-        headerTintColor: "white",
         headerTitle: "ChatApp",
-        cardStyle: {
-          backgroundColor: "#191f23"
-        }
+        ...stackScreenSettings.navigationOptions
       }
     },
     Chat: {
       screen: ChatScreen,
-      navigationOptions: {
-        headerStyle: {
-          backgroundColor: "#20272b"
-        },
-        headerTintColor: "white",
-        cardStyle: {
-          backgroundColor: "#191f23"
-        }
-      }
+      ...stackScreenSettings
     },
     GroupChat: {
       screen: GroupChatScreen,
-      navigationOptions: {
-        headerStyle: {
-          backgroundColor: "#20272b"
-        },
-        headerTintColor: "white",
-        cardStyle: {
-          backgroundColor: "#191f23"
-        }
-      }
+      ...stackScreenSettings
     },
     MyStatus: {
       screen: MyStatusScreen,
-      navigationOptions: {
-        headerStyle: {
-          backgroundColor: "#20272b"
-        },
-        headerTintColor: "white",
-        cardStyle: {
-          backgroundColor: "#191f23"
-        }
-      }
+      ...stackScreenSettings
     },
     Contact: {
       screen: ContactScreen,
-      navigationOptions: {
-        headerStyle: {
-          backgroundColor: "#20272b"
-        },
-        headerTintColor: "white",
-        cardStyle: {
-          backgroundColor: "#191f23"
-        }
-      }
+      ...stackScreenSettings
     },
     Settings: {
       screen: SettingsScreen,
-      navigationOptions: {
-        headerStyle: {
-          backgroundColor: "#20272b"
-        },
-        headerTintColor: "white",
-        cardStyle: {
-          backgroundColor: "#191f23"
-        }
-      }
+      ...stackScreenSettings
+    },
+    Profile: {
+      screen: ProfileScreen,
+      ...stackScreenSettings
     }
   },
   {
