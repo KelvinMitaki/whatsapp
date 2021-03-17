@@ -26,7 +26,7 @@ const ProfileScreen = () => {
               <Ionicons
                 name="person"
                 size={20}
-                color="rgba(241, 241, 242, 0.8)"
+                color="rgba(241, 241, 242, 0.7)"
               />
             </View>
             <View style={styles.edit}>
@@ -42,6 +42,52 @@ const ProfileScreen = () => {
               This is not your username or pin. This name will be visible to
               your WhatsApp contacts
             </Text>
+          </View>
+        </View>
+      </TouchableNativeFeedback>
+      <TouchableNativeFeedback
+        background={TouchableNativeFeedback.Ripple("#fff", false)}
+        onPress={() => {}}
+      >
+        <View style={{ flexDirection: "row", paddingTop: 20 }}>
+          <View
+            style={{
+              width: "20%",
+              alignItems: "center"
+            }}
+          >
+            <MaterialIcons
+              name="info-outline"
+              size={25}
+              color="rgba(241, 241, 242, 0.7)"
+            />
+          </View>
+          <View style={{ width: "80%" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "95%"
+              }}
+            >
+              <View>
+                <Text style={{ color: "rgba(241, 241, 242, 0.7)" }}>About</Text>
+                <Text style={{ color: "#fff" }}>
+                  Hey there! I am using ChatApp
+                </Text>
+              </View>
+              <View style={{}}>
+                <MaterialIcons name="edit" size={20} color="#00af9c" />
+              </View>
+            </View>
+            <View
+              style={{
+                borderBottomColor: "rgba(241, 241, 242, 0.3)",
+                borderBottomWidth: 0.4,
+                paddingTop: 20
+              }}
+            ></View>
           </View>
         </View>
       </TouchableNativeFeedback>
