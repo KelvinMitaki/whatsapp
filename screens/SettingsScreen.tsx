@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Foundation, MaterialIcons } from "@expo/vector-icons";
 
 const SettingsScreen = () => {
   return (
@@ -25,6 +25,54 @@ const SettingsScreen = () => {
             <Text style={{ color: "#fff", fontSize: 20 }}>Kevin</Text>
             <Text style={{ color: "rgba(255,255,255,.7)" }}>
               Hey there, I am using WhatsApp
+            </Text>
+          </View>
+        </View>
+      </TouchableNativeFeedback>
+      <TouchableNativeFeedback
+        background={TouchableNativeFeedback.Ripple("#fff", false)}
+        onPress={() => {}}
+      >
+        <View
+          style={{ flexDirection: "row", alignItems: "center", padding: 20 }}
+        >
+          <MaterialIcons name="lock" size={25} color="rgba(255,255,255,.7)" />
+          <View style={{ marginLeft: 20 }}>
+            <Text style={{ color: "#fff", fontSize: 17 }}>Privacy</Text>
+            <Text numberOfLines={1} style={{ color: "rgba(255,255,255,.7)" }}>
+              Last seen, profile photo, about
+            </Text>
+          </View>
+        </View>
+      </TouchableNativeFeedback>
+      <TouchableNativeFeedback
+        background={TouchableNativeFeedback.Ripple("#fff", false)}
+        onPress={() => {}}
+      >
+        <View
+          style={{ flexDirection: "row", alignItems: "center", padding: 20 }}
+        >
+          <MaterialIcons name="group" size={25} color="rgba(255,255,255,.7)" />
+          <View style={{ marginLeft: 20 }}>
+            <Text style={{ color: "#fff", fontSize: 17 }}>Invite a friend</Text>
+            <Text numberOfLines={1} style={{ color: "rgba(255,255,255,.7)" }}>
+              Share the link with a friend to join ChatApp
+            </Text>
+          </View>
+        </View>
+      </TouchableNativeFeedback>
+      <TouchableNativeFeedback
+        background={TouchableNativeFeedback.Ripple("#fff", false)}
+        onPress={() => {}}
+      >
+        <View
+          style={{ flexDirection: "row", alignItems: "center", padding: 20 }}
+        >
+          <Foundation name="trash" size={25} color="rgba(255,255,255,.7)" />
+          <View style={{ marginLeft: 20 }}>
+            <Text style={{ color: "#fff", fontSize: 17 }}>Delete account</Text>
+            <Text numberOfLines={1} style={{ color: "rgba(255,255,255,.7)" }}>
+              All your data in the system will be deleted.
             </Text>
           </View>
         </View>
