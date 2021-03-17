@@ -1,6 +1,11 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableNativeFeedback } from "react-native";
-import { Ionicons, FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  FontAwesome,
+  MaterialIcons,
+  FontAwesome5
+} from "@expo/vector-icons";
 import inspect from "../inspect";
 
 const ProfileScreen = () => {
@@ -88,6 +93,30 @@ const ProfileScreen = () => {
                 paddingTop: 20
               }}
             ></View>
+          </View>
+        </View>
+      </TouchableNativeFeedback>
+      <TouchableNativeFeedback
+        background={TouchableNativeFeedback.Ripple("#fff", false)}
+        onPress={() => {}}
+      >
+        <View style={{ flexDirection: "row", paddingVertical: 20 }}>
+          <View
+            style={{
+              width: "20%",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <FontAwesome5
+              name="phone-alt"
+              size={20}
+              color="rgba(241, 241, 242, 0.7)"
+            />
+          </View>
+          <View>
+            <Text style={{ color: "rgba(241, 241, 242, 0.7)" }}>Phone</Text>
+            <Text style={{ color: "#fff" }}>+254 721 559392</Text>
           </View>
         </View>
       </TouchableNativeFeedback>
