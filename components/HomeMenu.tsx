@@ -20,16 +20,16 @@ const HomeMenu: React.FC<Props> = ({ menuRef }) => {
         onPress={() => {
           //   menuRef.hide();
         }}
+        style={{ ...inspect(), padding: 0 }}
       >
-        <View>
+        <View style={{}}>
           <TouchableNativeFeedback
             background={
               //@ts-ignore
               TouchableNativeFeedback.Ripple("#FFFFFF", false)
             }
-            style={{ backgroundColor: "red", width: "100%", height: 30 }}
           >
-            <View>
+            <View style={{ height: 50 }}>
               <Text
                 style={{
                   color: "#fff"
