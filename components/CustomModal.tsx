@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback
 } from "react-native";
+import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import inspect from "../inspect";
 
 interface Props {
@@ -15,7 +16,11 @@ interface Props {
   showModal: boolean;
 }
 
-const CustomModal: React.FC<Props> = ({ setShowModal, showModal }) => {
+const CustomModal: React.FC<Props & NavigationInjectedProps> = ({
+  setShowModal,
+  showModal,
+  navigation
+}) => {
   return (
     <Modal
       transparent
@@ -96,7 +101,10 @@ const CustomModal: React.FC<Props> = ({ setShowModal, showModal }) => {
               </View>
             </TouchableNativeFeedback>
             <TouchableNativeFeedback
-              onPress={() => setShowModal(false)}
+              onPress={() => {
+                setShowModal(false);
+                navigation.navigate("Settings");
+              }}
               background={
                 //@ts-ignore
                 TouchableNativeFeedback.Ripple("#FFFFFF", false)
@@ -121,6 +129,6 @@ const CustomModal: React.FC<Props> = ({ setShowModal, showModal }) => {
   );
 };
 
-export default CustomModal;
+export default withNavigation(CustomModal);
 
 const styles = StyleSheet.create({});

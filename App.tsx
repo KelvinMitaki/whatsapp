@@ -15,6 +15,7 @@ import MyStatusScreen from "./screens/MyStatusScreen";
 import ContactScreen from "./screens/ContactScreen";
 import HomeHeaderRight from "./components/HomeHeaderRight";
 import { Platform } from "react-native";
+import SettingsScreen from "./screens/SettingsScreen";
 
 enableScreens();
 
@@ -97,6 +98,18 @@ const stackNavigator = createStackNavigator(
     },
     Contact: {
       screen: ContactScreen,
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: "#20272b"
+        },
+        headerTintColor: "white",
+        cardStyle: {
+          backgroundColor: "#191f23"
+        }
+      }
+    },
+    Settings: {
+      screen: SettingsScreen,
       navigationOptions: {
         headerStyle: {
           backgroundColor: "#20272b"
