@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import Menu, { MenuItem } from "react-native-material-menu";
 import CustomModal from "./CustomModal";
 
 const HomeHeaderRight = () => {
