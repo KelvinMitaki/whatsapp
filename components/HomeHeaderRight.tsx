@@ -1,34 +1,12 @@
 import React, { useRef, useState } from "react";
-import {
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableNativeFeedback,
-  View
-} from "react-native";
+import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import HomeMenu from "./HomeMenu";
 import Menu, { MenuItem } from "react-native-material-menu";
 import CustomModal from "./CustomModal";
 
 const HomeHeaderRight = () => {
-  const menuRef = useRef<Menu | null>();
   const [showModal, setShowModal] = useState<boolean>(false);
-  const menu = (
-    <View style={styles.ellipsis}>
-      <TouchableNativeFeedback
-        background={
-          //@ts-ignore
-          TouchableNativeFeedback.Ripple("#fff", true)
-        }
-        onPress={() => setShowModal(true)}
-      >
-        <View>
-          <Ionicons name="ellipsis-vertical-sharp" size={25} color="#fff" />
-        </View>
-      </TouchableNativeFeedback>
-    </View>
-  );
+
   return (
     <View style={styles.headerRight}>
       <View style={styles.ellipsis}>
@@ -44,10 +22,19 @@ const HomeHeaderRight = () => {
           </View>
         </TouchableNativeFeedback>
       </View>
-      {/* <Menu ref={ref => (menuRef.current = ref)} button={menu}>
-        {menuRef.current && <HomeMenu menuRef={menuRef.current} />}
-      </Menu> */}
-      {menu}
+      <View style={styles.ellipsis}>
+        <TouchableNativeFeedback
+          background={
+            //@ts-ignore
+            TouchableNativeFeedback.Ripple("#fff", true)
+          }
+          onPress={() => setShowModal(true)}
+        >
+          <View>
+            <Ionicons name="ellipsis-vertical-sharp" size={25} color="#fff" />
+          </View>
+        </TouchableNativeFeedback>
+      </View>
       <CustomModal showModal={showModal} setShowModal={setShowModal} />
     </View>
   );

@@ -21,10 +21,12 @@ const CustomModal: React.FC<Props> = ({ setShowModal, showModal }) => {
       transparent
       onRequestClose={() => setShowModal(false)}
       visible={showModal}
+      animationType="fade"
     >
       <TouchableWithoutFeedback
         accessible={false}
         onPress={() => setShowModal(false)}
+        touchSoundDisabled
       >
         <View style={{ height: "100%", width: "100%" }}>
           <View
