@@ -18,7 +18,7 @@ const ContactScreen: NavigationStackScreenComponent = () => {
         <TouchableNativeFeedback
           background={
             //@ts-ignore
-            TouchableNativeFeedback.Ripple("#fff", true)
+            TouchableNativeFeedback.Ripple("#fff", false)
           }
           onPress={() => {}}
         >
@@ -42,7 +42,7 @@ const ContactScreen: NavigationStackScreenComponent = () => {
         <TouchableNativeFeedback
           background={
             //@ts-ignore
-            TouchableNativeFeedback.Ripple("#fff", true)
+            TouchableNativeFeedback.Ripple("#fff", false)
           }
           onPress={() => {}}
         >
@@ -74,7 +74,7 @@ ContactScreen.navigationOptions = {
         <TouchableNativeFeedback
           background={
             //@ts-ignore
-            TouchableNativeFeedback.Ripple("#fff", true)
+            TouchableNativeFeedback.Ripple("#fff", false)
           }
           onPress={() => {}}
         >
@@ -87,7 +87,7 @@ ContactScreen.navigationOptions = {
         <TouchableNativeFeedback
           background={
             //@ts-ignore
-            TouchableNativeFeedback.Ripple("#fff", true)
+            TouchableNativeFeedback.Ripple("#fff", false)
           }
           onPress={() => {}}
         >
