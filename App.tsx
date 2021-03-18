@@ -100,7 +100,14 @@ const stackNavigator = createStackNavigator(
     },
     NewGroupInfo: {
       screen: NewGroupInfoScreen,
-      ...stackScreenSettings
+      ...stackScreenSettings,
+      navigationOptions: {
+        ...stackScreenSettings.navigationOptions,
+        cardStyle: {
+          // backgroundColor: "#191f23"
+          backgroundColor: "#12171a"
+        }
+      }
     }
   },
   {
