@@ -15,7 +15,15 @@ import { ScrollView } from "react-native-gesture-handler";
 import inspect from "../inspect";
 
 interface Props {
-  setGrpContacts?: React.Dispatch<React.SetStateAction<typeof users>>;
+  setGrpContacts?: React.Dispatch<
+    React.SetStateAction<
+      {
+        name: string;
+        avatar: string;
+        id: number;
+      }[]
+    >
+  >;
 }
 
 const Contact: React.FC<NavigationInjectedProps & Props> = ({
@@ -26,13 +34,19 @@ const Contact: React.FC<NavigationInjectedProps & Props> = ({
     <>
       {users.map((usr, i) => (
         <TouchableNativeFeedback
-          //@ts-ignore
           background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
           onPress={() => {
             if (!setGrpContacts) {
               navigation.navigate("Chat");
             } else {
-              setGrpContacts(contacts => [...contacts, usr]);
+              setGrpContacts(contacts => {
+                const userExist = contacts.find(usr => usr.id === i);
+                if (userExist) {
+                  return contacts;
+                }
+
+                return [...contacts, { ...usr, id: i }];
+              });
             }
           }}
           key={i}

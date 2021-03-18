@@ -1,24 +1,58 @@
 import React, { useState } from "react";
-import { StyleSheet, TouchableNativeFeedback, View } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  TouchableNativeFeedback,
+  View
+} from "react-native";
 import { Text } from "react-native-elements";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import inspect from "../inspect";
 import Contact from "../components/Contact";
 import { ScrollView } from "react-native-gesture-handler";
 import { users } from "../data";
 
 const NewGroupScreen: NavigationStackScreenComponent = () => {
-  const [grpContacts, setGrpContacts] = useState<typeof users>([]);
+  const [grpContacts, setGrpContacts] = useState<
+    {
+      name: string;
+      avatar: string;
+      id: number;
+    }[]
+  >([]);
   return (
-    <ScrollView>
-      {grpContacts.map((ct, i) => (
-        <Text key={i} style={{ color: "#fff" }}>
-          {ct.name}
-        </Text>
-      ))}
-      <Contact setGrpContacts={setGrpContacts} />
-    </ScrollView>
+    <>
+      {grpContacts.length !== 0 && (
+        <View style={{ height: 85 }}>
+          <FlatList
+            data={grpContacts}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(_, i) => i.toLocaleString()}
+            renderItem={({ item }) => (
+              <View style={styles.selectedContact}>
+                <View style={styles.person}>
+                  <Ionicons
+                    name="person"
+                    size={35}
+                    color="rgba(241, 241, 242, 0.8)"
+                  />
+                </View>
+                <View>
+                  <Text style={{ color: "#fff" }} numberOfLines={1}>
+                    {item.name}
+                  </Text>
+                </View>
+              </View>
+            )}
+          />
+        </View>
+      )}
+      <ScrollView>
+        <Contact setGrpContacts={setGrpContacts} />
+      </ScrollView>
+    </>
   );
 };
 
@@ -32,7 +66,7 @@ NewGroupScreen.navigationOptions = {
     </View>
   ),
   headerRight: () => (
-    <View style={{ width: "150%", alignItems: "center" }}>
+    <View style={{ width: "125%", alignItems: "center" }}>
       <View style={styles.searchBorder}>
         <TouchableNativeFeedback
           onPress={() => {}}
@@ -68,6 +102,19 @@ const styles = StyleSheet.create({
     width: 50,
     alignItems: "center",
     justifyContent: "center"
-    // ...inspect()
+  },
+  person: {
+    height: 55,
+    width: 55,
+    borderRadius: 500,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "grey"
+  },
+  selectedContact: {
+    width: 75,
+    marginHorizontal: 2.5,
+    alignItems: "center",
+    justifyContent: "center"
   }
 });
