@@ -3,14 +3,14 @@ import {
   FlatList,
   StyleSheet,
   TouchableNativeFeedback,
-  View
+  View,
+  ScrollView
 } from "react-native";
 import { Text } from "react-native-elements";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons, Ionicons, Feather } from "@expo/vector-icons";
 import inspect from "../inspect";
 import Contact from "../components/Contact";
-import { ScrollView } from "react-native-gesture-handler";
 import { users } from "../data";
 
 const NewGroupScreen: NavigationStackScreenComponent = () => {
@@ -64,7 +64,7 @@ const NewGroupScreen: NavigationStackScreenComponent = () => {
         </View>
       )}
       <ScrollView>
-        <Contact setGrpContacts={setGrpContacts} />
+        <Contact setGrpContacts={setGrpContacts} grpContacts={grpContacts} />
       </ScrollView>
     </>
   );

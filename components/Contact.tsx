@@ -6,12 +6,11 @@ import {
   TouchableNativeFeedback,
   View
 } from "react-native";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons, Octicons } from "@expo/vector-icons";
 import { users } from "../data";
 import { Badge } from "react-native-elements";
 import { Card } from "react-native-elements";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
-import { ScrollView } from "react-native-gesture-handler";
 import inspect from "../inspect";
 
 interface Props {
@@ -24,11 +23,17 @@ interface Props {
       }[]
     >
   >;
+  grpContacts?: {
+    name: string;
+    avatar: string;
+    id: number;
+  }[];
 }
 
 const Contact: React.FC<NavigationInjectedProps & Props> = ({
   navigation,
-  setGrpContacts
+  setGrpContacts,
+  grpContacts
 }) => {
   return (
     <>
@@ -52,12 +57,23 @@ const Contact: React.FC<NavigationInjectedProps & Props> = ({
           key={i}
         >
           <View style={styles.contact}>
-            <View style={styles.person}>
-              <Ionicons
-                name="person"
-                size={35}
-                color="rgba(241, 241, 242, 0.8)"
-              />
+            <View>
+              <View style={styles.person}>
+                <Ionicons
+                  name="person"
+                  size={35}
+                  color="rgba(241, 241, 242, 0.8)"
+                />
+              </View>
+              {grpContacts && grpContacts.find(ct => ct.id === i) && (
+                <View
+                  style={{
+                    ...styles.selectedContact
+                  }}
+                >
+                  <Octicons name="check" size={15} />
+                </View>
+              )}
             </View>
             <View style={styles.contactTxt}>
               <View style={{ justifyContent: "center", height: "100%" }}>
@@ -104,5 +120,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "grey"
+  },
+  selectedContact: {
+    position: "absolute",
+    right: "-10%",
+    bottom: "-5%",
+    backgroundColor: "#00af9c",
+    borderRadius: 500,
+    height: 25,
+    width: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: "#111",
+    borderWidth: 1.5
   }
 });
