@@ -66,7 +66,9 @@ const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
       <View style={styles.continue}>
         <TouchableNativeFeedback
           background={TouchableNativeFeedback.Ripple("#fff", true)}
-          onPress={() => navigation.navigate("NewGroupInfo")}
+          onPress={() =>
+            grpContacts.length && navigation.navigate("NewGroupInfo")
+          }
         >
           <View style={styles.foward}>
             <MaterialIcons name="arrow-forward" size={25} color="#fff" />
