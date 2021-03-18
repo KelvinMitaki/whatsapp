@@ -47,9 +47,8 @@ const Contact: React.FC<NavigationInjectedProps & Props> = ({
               setGrpContacts(contacts => {
                 const userExist = contacts.find(usr => usr.id === i);
                 if (userExist) {
-                  return contacts;
+                  return contacts.filter(ct => ct.id !== i);
                 }
-
                 return [...contacts, { ...usr, id: i }];
               });
             }
@@ -66,11 +65,7 @@ const Contact: React.FC<NavigationInjectedProps & Props> = ({
                 />
               </View>
               {grpContacts && grpContacts.find(ct => ct.id === i) && (
-                <View
-                  style={{
-                    ...styles.selectedContact
-                  }}
-                >
+                <View style={styles.selectedContact}>
                   <Octicons name="check" size={15} />
                 </View>
               )}
