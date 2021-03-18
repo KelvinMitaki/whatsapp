@@ -13,7 +13,7 @@ import inspect from "../inspect";
 import Contact from "../components/Contact";
 import { users } from "../data";
 
-const NewGroupScreen: NavigationStackScreenComponent = () => {
+const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [grpContacts, setGrpContacts] = useState<
     {
       name: string;
@@ -66,7 +66,7 @@ const NewGroupScreen: NavigationStackScreenComponent = () => {
       <View style={styles.continue}>
         <TouchableNativeFeedback
           background={TouchableNativeFeedback.Ripple("#fff", true)}
-          onPress={() => {}}
+          onPress={() => navigation.navigate("NewGroupInfo")}
         >
           <View style={styles.foward}>
             <MaterialIcons name="arrow-forward" size={25} color="#fff" />

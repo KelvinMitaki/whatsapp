@@ -18,6 +18,7 @@ import { Platform } from "react-native";
 import SettingsScreen from "./screens/SettingsScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import NewGroupScreen from "./screens/NewGroupScreen";
+import NewGroupInfoScreen from "./screens/NewGroupInfoScreen";
 
 enableScreens();
 
@@ -95,6 +96,10 @@ const stackNavigator = createStackNavigator(
     },
     NewGroup: {
       screen: NewGroupScreen,
+      ...stackScreenSettings
+    },
+    NewGroupInfo: {
+      screen: NewGroupInfoScreen,
       ...stackScreenSettings
     }
   },
