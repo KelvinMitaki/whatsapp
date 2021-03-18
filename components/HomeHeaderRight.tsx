@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import CustomModal from "./CustomModal";
 
 const HomeHeaderRight = () => {
@@ -10,27 +10,21 @@ const HomeHeaderRight = () => {
     <View style={styles.headerRight}>
       <View style={styles.ellipsis}>
         <TouchableNativeFeedback
-          background={
-            //@ts-ignore
-            TouchableNativeFeedback.Ripple("#fff", true)
-          }
+          background={TouchableNativeFeedback.Ripple("#fff", true)}
           onPress={() => {}}
         >
           <View>
-            <Ionicons name="ios-search" size={25} color="#fff" />
+            <MaterialIcons name="search" size={25} color="#fff" />
           </View>
         </TouchableNativeFeedback>
       </View>
       <View style={styles.ellipsis}>
         <TouchableNativeFeedback
-          background={
-            //@ts-ignore
-            TouchableNativeFeedback.Ripple("#fff", true)
-          }
+          background={TouchableNativeFeedback.Ripple("#fff", true)}
           onPress={() => setShowModal(true)}
         >
           <View>
-            <Ionicons name="ellipsis-vertical-sharp" size={25} color="#fff" />
+            <Ionicons name="ellipsis-vertical-sharp" size={20} color="#fff" />
           </View>
         </TouchableNativeFeedback>
       </View>

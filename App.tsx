@@ -17,6 +17,7 @@ import HomeHeaderRight from "./components/HomeHeaderRight";
 import { Platform } from "react-native";
 import SettingsScreen from "./screens/SettingsScreen";
 import ProfileScreen from "./screens/ProfileScreen";
+import NewGroupScreen from "./screens/NewGroupScreen";
 
 enableScreens();
 
@@ -90,6 +91,10 @@ const stackNavigator = createStackNavigator(
     },
     Profile: {
       screen: ProfileScreen,
+      ...stackScreenSettings
+    },
+    NewGroup: {
+      screen: NewGroupScreen,
       ...stackScreenSettings
     }
   },

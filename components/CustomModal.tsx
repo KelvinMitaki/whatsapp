@@ -44,7 +44,10 @@ const CustomModal: React.FC<Props & NavigationInjectedProps> = ({
             }}
           >
             <TouchableNativeFeedback
-              onPress={() => setShowModal(false)}
+              onPress={() => {
+                setShowModal(false);
+                navigation.navigate("NewGroup");
+              }}
               background={
                 //@ts-ignore
                 TouchableNativeFeedback.Ripple("#FFFFFF", false)
