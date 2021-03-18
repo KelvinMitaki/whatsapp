@@ -15,13 +15,13 @@ import {
 import inspect from "../inspect";
 import Contact from "../components/Contact";
 
-const ContactScreen: NavigationStackScreenComponent = () => {
+const ContactScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
     <ScrollView>
       <View>
         <TouchableNativeFeedback
           background={TouchableNativeFeedback.Ripple("#fff", false)}
-          onPress={() => {}}
+          onPress={() => navigation.navigate("NewGroup")}
         >
           <View style={styles.meta}>
             <View style={styles.person}>

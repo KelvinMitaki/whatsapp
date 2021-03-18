@@ -63,6 +63,16 @@ const NewGroupScreen: NavigationStackScreenComponent = () => {
           />
         </View>
       )}
+      <View style={styles.continue}>
+        <TouchableNativeFeedback
+          background={TouchableNativeFeedback.Ripple("#fff", true)}
+          onPress={() => {}}
+        >
+          <View style={styles.foward}>
+            <MaterialIcons name="arrow-forward" size={25} color="#fff" />
+          </View>
+        </TouchableNativeFeedback>
+      </View>
       <ScrollView>
         <Contact setGrpContacts={setGrpContacts} grpContacts={grpContacts} />
       </ScrollView>
@@ -144,5 +154,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderColor: "#111",
     borderWidth: 1.5
+  },
+  continue: {
+    position: "absolute",
+    right: "2%",
+    bottom: "2%",
+    backgroundColor: "#00af9c",
+    borderRadius: 500,
+    height: 50,
+    width: 50,
+    zIndex: 10
+  },
+  foward: {
+    height: "100%",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center"
   }
 });
