@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, TouchableNativeFeedback, View } from "react-native";
 import { Text } from "react-native-elements";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons } from "@expo/vector-icons";
 import inspect from "../inspect";
+import Contact from "../components/Contact";
+import { ScrollView } from "react-native-gesture-handler";
+import { users } from "../data";
 
 const NewGroupScreen: NavigationStackScreenComponent = () => {
+  const [grpContacts, setGrpContacts] = useState<typeof users>([]);
   return (
-    <View>
-      <Text>NewGroupScreen NewGroupScreen</Text>
-    </View>
+    <ScrollView>
+      {grpContacts.map((ct, i) => (
+        <Text key={i} style={{ color: "#fff" }}>
+          {ct.name}
+        </Text>
+      ))}
+      <Contact setGrpContacts={setGrpContacts} />
+    </ScrollView>
   );
 };
 

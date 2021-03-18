@@ -14,14 +14,27 @@ import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { ScrollView } from "react-native-gesture-handler";
 import inspect from "../inspect";
 
-const Contact: React.FC<NavigationInjectedProps> = ({ navigation }) => {
+interface Props {
+  setGrpContacts?: React.Dispatch<React.SetStateAction<typeof users>>;
+}
+
+const Contact: React.FC<NavigationInjectedProps & Props> = ({
+  navigation,
+  setGrpContacts
+}) => {
   return (
     <>
       {users.map((usr, i) => (
         <TouchableNativeFeedback
           //@ts-ignore
           background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
-          onPress={() => navigation.navigate("Chat")}
+          onPress={() => {
+            if (!setGrpContacts) {
+              navigation.navigate("Chat");
+            } else {
+              setGrpContacts(contacts => [...contacts, usr]);
+            }
+          }}
           key={i}
         >
           <View style={styles.contact}>

@@ -7,7 +7,11 @@ import {
   View
 } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons
+} from "@expo/vector-icons";
 import inspect from "../inspect";
 import Contact from "../components/Contact";
 
@@ -70,7 +74,7 @@ ContactScreen.navigationOptions = {
           onPress={() => {}}
         >
           <View>
-            <Ionicons name="ios-search" size={25} color="#fff" />
+            <MaterialIcons name="search" size={25} color="#fff" />
           </View>
         </TouchableNativeFeedback>
       </View>
@@ -80,7 +84,7 @@ ContactScreen.navigationOptions = {
           onPress={() => {}}
         >
           <View>
-            <Ionicons name="ellipsis-vertical-sharp" size={25} color="#fff" />
+            <Ionicons name="ellipsis-vertical-sharp" size={20} color="#fff" />
           </View>
         </TouchableNativeFeedback>
       </View>
