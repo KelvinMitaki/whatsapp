@@ -24,12 +24,16 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
           background={TouchableNativeFeedback.Ripple("#fff", false)}
         >
           <View style={styles.statusPrt}>
-            <View style={styles.statusImgPrt}>
-              <Image
-                source={require("../assets/1.jpg")}
-                style={styles.statusImg}
-              />
-            </View>
+            <DashedCircularIndicator
+              radius={32.5}
+              label={
+                <Image
+                  source={require("../assets/1.jpg")}
+                  style={styles.statusImg}
+                />
+              }
+              backgroundColor="#191f23"
+            />
             <View style={styles.statusMetaData}>
               <Text style={{ color: "white", fontSize: 18 }}>My Status</Text>
               <Text style={{ color: "rgba(255,255,255,.5)" }}>
@@ -72,7 +76,6 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
                 selectedValue={6}
                 activeStrokeColor="#00af9c"
               />
-
               <View style={styles.statusMetaData}>
                 <Text
                   style={{ color: "white", fontSize: 18 }}
@@ -95,17 +98,16 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
             background={TouchableNativeFeedback.Ripple("#fff", false)}
           >
             <View style={styles.statusPrt}>
-              <View
-                style={{
-                  ...styles.statusImgPrt,
-                  borderColor: "rgba(255,255,255,.5)"
-                }}
-              >
-                <Image
-                  source={require("../assets/1.jpg")}
-                  style={styles.statusImg}
-                />
-              </View>
+              <DashedCircularIndicator
+                radius={32.5}
+                label={
+                  <Image
+                    source={require("../assets/1.jpg")}
+                    style={styles.statusImg}
+                  />
+                }
+                backgroundColor="#191f23"
+              />
               <View style={styles.statusMetaData}>
                 <Text
                   style={{ color: "white", fontSize: 18 }}
