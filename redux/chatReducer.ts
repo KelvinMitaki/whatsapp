@@ -1,4 +1,5 @@
 import { AnyAction } from "redux";
+import { ResetGrpContacts } from "../screens/NewGroupInfoScreen";
 import { SetGrpContacts } from "../screens/NewGroupScreen";
 
 export interface ChatState {
@@ -9,7 +10,7 @@ export interface ChatState {
   }[];
 }
 
-type Action = SetGrpContacts;
+type Action = SetGrpContacts | ResetGrpContacts;
 
 const INITIAL_STATE: ChatState = {
   grpContacts: []
@@ -31,6 +32,8 @@ const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
         ...state,
         grpContacts: [...state.grpContacts, action.payload]
       };
+    case "resetGrpContacts":
+      return { ...state, grpContacts: [] };
     default:
       return state;
   }

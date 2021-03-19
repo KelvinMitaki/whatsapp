@@ -11,13 +11,24 @@ import { Input, Text } from "react-native-elements";
 import { FontAwesome, Fontisto, Ionicons } from "@expo/vector-icons";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import inspect from "../inspect";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../interfaces/Redux";
+import { NavigationEvents } from "react-navigation";
+
+export interface ResetGrpContacts {
+  type: "resetGrpContacts";
+}
 
 const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { grpContacts } = useSelector((state: Redux) => state.chat);
+  const dispatch = useDispatch();
   return (
     <View style={{ flex: 1 }}>
+      <NavigationEvents
+        onDidBlur={() =>
+          dispatch<ResetGrpContacts>({ type: "resetGrpContacts" })
+        }
+      />
       <View
         style={{
           height: 125,
@@ -57,16 +68,16 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
         <Text style={{ color: "rgba(255,255,255,.5)", paddingLeft: 10 }}>
           Provide a group subject and optional group icon
         </Text>
-        <View style={styles.selectedContact}>
-          <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple("#fff", true)}
-            onPress={() => navigation.navigate("GroupChat")}
-          >
-            <View style={styles.checkMark}>
-              <Ionicons name="checkmark-sharp" size={25} color="#fff" />
-            </View>
-          </TouchableNativeFeedback>
-        </View>
+      </View>
+      <View style={styles.selectedContact}>
+        <TouchableNativeFeedback
+          background={TouchableNativeFeedback.Ripple("#fff", true)}
+          onPress={() => navigation.navigate("GroupChat")}
+        >
+          <View style={styles.checkMark}>
+            <Ionicons name="checkmark-sharp" size={25} color="#fff" />
+          </View>
+        </TouchableNativeFeedback>
       </View>
       <View style={{ flex: 1 }}>
         <Text style={{ color: "rgba(255,255,255,.5)", margin: 20 }}>
@@ -131,14 +142,15 @@ const styles = StyleSheet.create({
   selectedContact: {
     position: "absolute",
     right: "2%",
-    bottom: "-20%",
+    top: "14.5%",
     backgroundColor: "#00af9c",
     borderRadius: 500,
     height: 50,
     width: 50,
     alignItems: "center",
     justifyContent: "center",
-    zIndex: 10
+    zIndex: 10,
+    elevation: 10
   },
   smiley: {
     height: 35,
