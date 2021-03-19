@@ -13,6 +13,15 @@ import inspect from "../inspect";
 import Contact from "../components/Contact";
 import { users } from "../data";
 
+export interface SetGrpContacts {
+  type: "setGrpContacts";
+  payload: {
+    name: string;
+    avatar: string;
+    id: number;
+  };
+}
+
 const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [grpContacts, setGrpContacts] = useState<
     {
