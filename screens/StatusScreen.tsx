@@ -8,6 +8,7 @@ import {
 } from "@expo/vector-icons";
 import inspect from "../inspect";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
+import { DashedCircularIndicator } from "../components/DashedCircularIndicator";
 
 const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   const status = [];
@@ -59,12 +60,19 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
             background={TouchableNativeFeedback.Ripple("#fff", false)}
           >
             <View style={styles.statusPrt}>
-              <View style={styles.statusImgPrt}>
-                <Image
-                  source={require("../assets/1.jpg")}
-                  style={styles.statusImg}
-                />
-              </View>
+              <DashedCircularIndicator
+                radius={32.5}
+                label={
+                  <Image
+                    source={require("../assets/1.jpg")}
+                    style={styles.statusImg}
+                  />
+                }
+                backgroundColor="#191f23"
+                selectedValue={6}
+                activeStrokeColor="#00af9c"
+              />
+
               <View style={styles.statusMetaData}>
                 <Text
                   style={{ color: "white", fontSize: 18 }}

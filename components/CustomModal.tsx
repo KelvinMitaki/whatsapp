@@ -79,7 +79,10 @@ const CustomModal: React.FC<Props & NavigationInjectedProps> = ({
               </View>
             </TouchableNativeFeedback>
             <TouchableNativeFeedback
-              onPress={() => setShowModal(false)}
+              onPress={() => {
+                setShowModal(false);
+                navigation.navigate("StarredMessages");
+              }}
               background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
             >
               <View>
