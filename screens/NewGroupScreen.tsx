@@ -12,6 +12,8 @@ import { MaterialIcons, Ionicons, Feather } from "@expo/vector-icons";
 import inspect from "../inspect";
 import Contact from "../components/Contact";
 import { users } from "../data";
+import { useDispatch, useSelector } from "react-redux";
+import { Redux } from "../interfaces/Redux";
 
 export interface SetGrpContacts {
   type: "setGrpContacts";
@@ -23,13 +25,8 @@ export interface SetGrpContacts {
 }
 
 const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
-  const [grpContacts, setGrpContacts] = useState<
-    {
-      name: string;
-      avatar: string;
-      id: number;
-    }[]
-  >([]);
+  const { grpContacts } = useSelector((state: Redux) => state.chat);
+  const dispatch = useDispatch();
   return (
     <>
       {grpContacts.length !== 0 && (
@@ -42,9 +39,10 @@ const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
             renderItem={({ item }) => (
               <TouchableNativeFeedback
                 onPress={() =>
-                  setGrpContacts(contacts =>
-                    contacts.filter(ct => ct.id !== item.id)
-                  )
+                  dispatch<SetGrpContacts>({
+                    type: "setGrpContacts",
+                    payload: item
+                  })
                 }
               >
                 <View style={styles.selectedContact}>
@@ -85,7 +83,12 @@ const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
         </TouchableNativeFeedback>
       </View>
       <ScrollView>
-        <Contact setGrpContacts={setGrpContacts} grpContacts={grpContacts} />
+        <Contact
+          setGrpContacts={usr =>
+            dispatch<SetGrpContacts>({ type: "setGrpContacts", payload: usr })
+          }
+          grpContacts={grpContacts}
+        />
       </ScrollView>
     </>
   );

@@ -14,15 +14,7 @@ import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import inspect from "../inspect";
 
 interface Props {
-  setGrpContacts?: React.Dispatch<
-    React.SetStateAction<
-      {
-        name: string;
-        avatar: string;
-        id: number;
-      }[]
-    >
-  >;
+  setGrpContacts?: (usr: { name: string; avatar: string; id: number }) => void;
   grpContacts?: {
     name: string;
     avatar: string;
@@ -44,13 +36,7 @@ const Contact: React.FC<NavigationInjectedProps & Props> = ({
             if (!setGrpContacts) {
               navigation.navigate("Chat");
             } else {
-              setGrpContacts(contacts => {
-                const userExist = contacts.find(usr => usr.id === i);
-                if (userExist) {
-                  return contacts.filter(ct => ct.id !== i);
-                }
-                return [...contacts, { ...usr, id: i }];
-              });
+              setGrpContacts({ ...usr, id: i });
             }
           }}
           key={i}
