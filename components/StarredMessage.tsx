@@ -2,12 +2,13 @@ import React from "react";
 import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { Ionicons, MaterialIcons, Entypo } from "@expo/vector-icons";
 import inspect from "../inspect";
+import { NavigationInjectedProps, withNavigation } from "react-navigation";
 
-const StarredMessage = () => {
+const StarredMessage: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   return (
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#fff", false)}
-      onPress={() => {}}
+      onPress={() => navigation.navigate("Chat")}
     >
       <View style={styles.starredMsgPrt}>
         <View style={styles.starredMsgHeader}>
@@ -64,7 +65,8 @@ const StarredMessage = () => {
             rerum eligendi voluptate
           </Text>
           <Text style={styles.meta}>
-            1:38 PM <Ionicons name="checkmark-done" size={18} />
+            <Entypo name="star" size={15} /> 1:38 PM{" "}
+            <Ionicons name="checkmark-done" size={18} />
           </Text>
         </View>
       </View>
@@ -72,7 +74,7 @@ const StarredMessage = () => {
   );
 };
 
-export default StarredMessage;
+export default withNavigation(StarredMessage);
 
 const styles = StyleSheet.create({
   person: {
