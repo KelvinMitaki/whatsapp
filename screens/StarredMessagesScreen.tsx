@@ -62,6 +62,17 @@ const StarredMessagesScreen: NavigationStackScreenComponent = () => {
             />
           </View>
         </View>
+        <View style={styles.me}>
+          <Text style={{ color: "#fff" }}>
+            M Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat
+            velit eum doloremque quo, animi blanditiis alias, amet voluptatem
+            asperiores repellendus iusto quam eveniet quidem molestias id, illum
+            rerum eligendi voluptate
+          </Text>
+          <Text style={styles.meta}>
+            1:38 PM <Ionicons name="checkmark-done" size={18} />
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -87,5 +98,25 @@ const styles = StyleSheet.create({
     minHeight: 90,
     borderBottomWidth: 0.5,
     borderBottomColor: "rgba(255,255,255,.4)"
+  },
+  me: {
+    marginLeft: "15%",
+    backgroundColor: "#00af9c",
+    paddingHorizontal: 5,
+    maxWidth: "70%",
+    minWidth: "20%",
+    minHeight: 50,
+    borderRadius: 5,
+    paddingBottom: 20,
+    marginBottom: 10,
+    marginRight: 10
+  },
+  meta: {
+    color: "rgba(255,255,255,.7)",
+    fontSize: 12,
+    position: "absolute",
+    bottom: 3,
+    right: 5,
+    paddingLeft: 10
   }
 });
