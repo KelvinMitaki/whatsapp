@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import React, { useEffect } from "react";
+import { StyleSheet, Text, TextInput, View, BackHandler } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import {
   MaterialIcons,
@@ -13,7 +13,26 @@ import { TouchableNativeFeedback } from "react-native";
 import Input from "../components/Input";
 import GroupMessage from "../components/GroupMessage";
 
-const GroupChatScreen: NavigationStackScreenComponent = () => {
+const GroupChatScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  useEffect(() => {
+    BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBackBtnPressAndroid
+    );
+    return () => {
+      BackHandler.removeEventListener(
+        "hardwareBackPress",
+        handleBackBtnPressAndroid
+      );
+    };
+  }, []);
+  const handleBackBtnPressAndroid = () => {
+    if (!navigation.isFocused()) {
+      return false;
+    }
+    navigation.navigate("Group");
+    return true;
+  };
   return (
     <View>
       <GroupMessage />
