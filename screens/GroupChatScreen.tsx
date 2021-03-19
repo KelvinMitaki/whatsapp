@@ -1,7 +1,12 @@
 import React from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
-import { MaterialIcons, Ionicons, FontAwesome } from "@expo/vector-icons";
+import {
+  MaterialIcons,
+  Ionicons,
+  FontAwesome,
+  AntDesign
+} from "@expo/vector-icons";
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import inspect from "../inspect";
 import { TouchableNativeFeedback } from "react-native";
@@ -17,7 +22,7 @@ const GroupChatScreen: NavigationStackScreenComponent = () => {
   );
 };
 
-GroupChatScreen.navigationOptions = ({}) => {
+GroupChatScreen.navigationOptions = ({ navigation }) => {
   return {
     headerTitle: () => (
       <View style={styles.headerLeft}>
@@ -63,12 +68,22 @@ GroupChatScreen.navigationOptions = ({}) => {
             <View>
               <Ionicons
                 name="ellipsis-vertical-sharp"
-                size={25}
+                size={20}
                 color={"rgba(255,255,255,.5)"}
               />
             </View>
           </TouchableNativeFeedback>
         </View>
+      </View>
+    ),
+    headerBackImage: () => (
+      <View>
+        <AntDesign
+          name="arrowleft"
+          size={20}
+          color="#fff"
+          onPress={() => navigation.navigate("Group")}
+        />
       </View>
     )
   };

@@ -69,7 +69,7 @@ ChatScreen.navigationOptions = ({}) => {
             <View>
               <Ionicons
                 name="ellipsis-vertical-sharp"
-                size={25}
+                size={20}
                 color={"rgba(255,255,255,.5)"}
               />
             </View>
