@@ -25,6 +25,7 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
         >
           <View style={styles.statusPrt}>
             <DashedCircularIndicator
+              strokeWidth={2}
               radius={32.5}
               label={
                 <Image
@@ -65,6 +66,7 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
           >
             <View style={styles.statusPrt}>
               <DashedCircularIndicator
+                strokeWidth={2}
                 radius={32.5}
                 label={
                   <Image
@@ -99,6 +101,7 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
           >
             <View style={styles.statusPrt}>
               <DashedCircularIndicator
+                strokeWidth={2}
                 radius={32.5}
                 label={
                   <Image

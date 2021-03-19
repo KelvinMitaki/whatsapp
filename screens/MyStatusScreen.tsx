@@ -25,12 +25,10 @@ const MyStatusScreen: NavigationStackScreenComponent = () => {
           background={TouchableNativeFeedback.Ripple("#fff", false)}
         >
           <View style={styles.statusPrt}>
-            <View style={styles.statusImgPrt}>
-              <Image
-                source={require("../assets/1.jpg")}
-                style={styles.statusImg}
-              />
-            </View>
+            <Image
+              source={require("../assets/1.jpg")}
+              style={styles.statusImg}
+            />
             <View style={styles.statusMetaData}>
               <Text style={{ color: "white", fontSize: 18 }}>20 views</Text>
               <Text style={{ color: "rgba(255,255,255,.5)" }}>
@@ -77,6 +75,7 @@ const styles = StyleSheet.create({
   statusPrt: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     height: 75
   },
   statusImgPrt: {

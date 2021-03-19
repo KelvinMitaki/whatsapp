@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { AnimatedCircularProgress } from "react-native-circular-progress";
 
 const StarredMessagesScreen = () => {
   return (
