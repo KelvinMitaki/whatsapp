@@ -11,12 +11,11 @@ import { Input, Text } from "react-native-elements";
 import { FontAwesome, Fontisto, Ionicons } from "@expo/vector-icons";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import inspect from "../inspect";
+import { useSelector } from "react-redux";
+import { Redux } from "../interfaces/Redux";
 
 const NewGroupInfoScreen: NavigationStackScreenComponent = ({}) => {
-  const contacts = [];
-  for (let i = 0; i < 100; i++) {
-    contacts.push(i);
-  }
+  const { grpContacts } = useSelector((state: Redux) => state.chat);
   return (
     <View style={{ flex: 1 }}>
       <View
@@ -71,14 +70,14 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({}) => {
       </View>
       <View style={{ flex: 1 }}>
         <Text style={{ color: "rgba(255,255,255,.5)", margin: 20 }}>
-          Participants: 25
+          Participants: {grpContacts.length}
         </Text>
         <View style={{ flex: 1, alignItems: "center" }}>
           <FlatList
-            data={contacts}
+            data={grpContacts}
             keyExtractor={(_, i) => i.toLocaleString()}
             numColumns={Math.floor(Dimensions.get("screen").width / 60)}
-            renderItem={() => (
+            renderItem={({ item }) => (
               <View
                 style={{
                   width: 60,
@@ -96,10 +95,7 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({}) => {
                   numberOfLines={1}
                   style={{ color: "rgba(255,255,255,.8)" }}
                 >
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Deleniti, voluptas saepe tempora tenetur accusamus culpa, est
-                  soluta pariatur expedita a officiis corrupti doloribus numquam
-                  temporibus dignissimos consectetur amet nulla maiores?
+                  {item.name}
                 </Text>
               </View>
             )}
