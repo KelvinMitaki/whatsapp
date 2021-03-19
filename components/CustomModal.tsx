@@ -48,10 +48,7 @@ const CustomModal: React.FC<Props & NavigationInjectedProps> = ({
                 setShowModal(false);
                 navigation.navigate("NewGroup");
               }}
-              background={
-                //@ts-ignore
-                TouchableNativeFeedback.Ripple("#FFFFFF", false)
-              }
+              background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
             >
               <View>
                 <Text
@@ -67,10 +64,7 @@ const CustomModal: React.FC<Props & NavigationInjectedProps> = ({
             </TouchableNativeFeedback>
             <TouchableNativeFeedback
               onPress={() => setShowModal(false)}
-              background={
-                //@ts-ignore
-                TouchableNativeFeedback.Ripple("#FFFFFF", false)
-              }
+              background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
             >
               <View>
                 <Text
@@ -86,10 +80,7 @@ const CustomModal: React.FC<Props & NavigationInjectedProps> = ({
             </TouchableNativeFeedback>
             <TouchableNativeFeedback
               onPress={() => setShowModal(false)}
-              background={
-                //@ts-ignore
-                TouchableNativeFeedback.Ripple("#FFFFFF", false)
-              }
+              background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
             >
               <View>
                 <Text
@@ -108,10 +99,7 @@ const CustomModal: React.FC<Props & NavigationInjectedProps> = ({
                 setShowModal(false);
                 navigation.navigate("Settings");
               }}
-              background={
-                //@ts-ignore
-                TouchableNativeFeedback.Ripple("#FFFFFF", false)
-              }
+              background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
             >
               <View>
                 <Text

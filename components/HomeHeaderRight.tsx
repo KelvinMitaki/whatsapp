@@ -38,8 +38,8 @@ export default HomeHeaderRight;
 const styles = StyleSheet.create({
   headerRight: {
     flexDirection: "row",
-    width: "170%",
-    justifyContent: "space-evenly"
+    width: "150%",
+    justifyContent: "space-around"
   },
   ellipsis: {
     height: 35,

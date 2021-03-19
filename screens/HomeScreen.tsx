@@ -19,7 +19,6 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
     i: ListRenderItemInfo<{ name: string; avatar: string }>
   ) => (
     <TouchableNativeFeedback
-      //@ts-ignore
       background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
       onPress={() => navigation.navigate("Chat")}
     >

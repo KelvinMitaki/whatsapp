@@ -53,10 +53,7 @@ ChatScreen.navigationOptions = ({}) => {
           }}
         >
           <TouchableNativeFeedback
-            background={
-              //@ts-ignore
-              TouchableNativeFeedback.Ripple("#fff", true)
-            }
+            background={TouchableNativeFeedback.Ripple("#fff", true)}
             onPress={() => {}}
           >
             <View>
@@ -66,10 +63,7 @@ ChatScreen.navigationOptions = ({}) => {
         </View>
         <View style={styles.ellipsis}>
           <TouchableNativeFeedback
-            background={
-              //@ts-ignore
-              TouchableNativeFeedback.Ripple("#fff", true)
-            }
+            background={TouchableNativeFeedback.Ripple("#fff", true)}
             onPress={() => {}}
           >
             <View>

@@ -14,7 +14,7 @@ import inspect from "../inspect";
 import { useSelector } from "react-redux";
 import { Redux } from "../interfaces/Redux";
 
-const NewGroupInfoScreen: NavigationStackScreenComponent = ({}) => {
+const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { grpContacts } = useSelector((state: Redux) => state.chat);
   return (
     <View style={{ flex: 1 }}>
@@ -60,7 +60,7 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({}) => {
         <View style={styles.selectedContact}>
           <TouchableNativeFeedback
             background={TouchableNativeFeedback.Ripple("#fff", true)}
-            onPress={() => {}}
+            onPress={() => navigation.navigate("GroupChat")}
           >
             <View style={styles.checkMark}>
               <Ionicons name="checkmark-sharp" size={25} color="#fff" />

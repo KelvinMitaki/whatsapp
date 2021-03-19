@@ -16,7 +16,6 @@ const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
         keyExtractor={(_, i) => i.toLocaleString()}
         renderItem={i => (
           <TouchableNativeFeedback
-            //@ts-ignore
             background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
             onPress={() => navigation.navigate("GroupChat")}
           >

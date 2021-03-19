@@ -4,9 +4,9 @@ import {
   StyleSheet,
   Text,
   TouchableNativeFeedback,
-  View
+  View,
+  ScrollView
 } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../inspect";
@@ -19,7 +19,11 @@ const MyStatusScreen: NavigationStackScreenComponent = () => {
   return (
     <ScrollView>
       {status.map((_, i) => (
-        <TouchableNativeFeedback key={i} onPress={() => {}}>
+        <TouchableNativeFeedback
+          key={i}
+          onPress={() => {}}
+          background={TouchableNativeFeedback.Ripple("#fff", false)}
+        >
           <View style={styles.statusPrt}>
             <View style={styles.statusImgPrt}>
               <Image
@@ -35,16 +39,13 @@ const MyStatusScreen: NavigationStackScreenComponent = () => {
             </View>
             <View style={{ marginLeft: "-10%" }}>
               <TouchableNativeFeedback
-                background={
-                  //@ts-ignore
-                  TouchableNativeFeedback.Ripple("#fff", true)
-                }
+                background={TouchableNativeFeedback.Ripple("#fff", true)}
                 onPress={() => {}}
               >
                 <View style={styles.ellipsis}>
                   <Ionicons
                     name="ellipsis-vertical"
-                    size={25}
+                    size={20}
                     color="rgba(255,255,255,.5)"
                   />
                 </View>

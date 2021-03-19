@@ -47,10 +47,7 @@ GroupChatScreen.navigationOptions = ({}) => {
           }}
         >
           <TouchableNativeFeedback
-            background={
-              //@ts-ignore
-              TouchableNativeFeedback.Ripple("#fff", true)
-            }
+            background={TouchableNativeFeedback.Ripple("#fff", true)}
             onPress={() => {}}
           >
             <View>
@@ -60,10 +57,7 @@ GroupChatScreen.navigationOptions = ({}) => {
         </View>
         <View style={styles.ellipsis}>
           <TouchableNativeFeedback
-            background={
-              //@ts-ignore
-              TouchableNativeFeedback.Ripple("#fff", true)
-            }
+            background={TouchableNativeFeedback.Ripple("#fff", true)}
             onPress={() => {}}
           >
             <View>

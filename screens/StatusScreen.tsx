@@ -18,7 +18,10 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   return (
     <View>
       <ScrollView>
-        <TouchableNativeFeedback onPress={() => {}}>
+        <TouchableNativeFeedback
+          onPress={() => {}}
+          background={TouchableNativeFeedback.Ripple("#fff", false)}
+        >
           <View style={styles.statusPrt}>
             <View style={styles.statusImgPrt}>
               <Image
@@ -34,16 +37,13 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
             </View>
             <View style={{ marginLeft: "-12%" }}>
               <TouchableNativeFeedback
-                background={
-                  //@ts-ignore
-                  TouchableNativeFeedback.Ripple("#fff", true)
-                }
+                background={TouchableNativeFeedback.Ripple("#fff", true)}
                 onPress={() => navigation.navigate("MyStatus")}
               >
                 <View style={styles.ellipsis}>
                   <Ionicons
-                    name="ellipsis-horizontal"
-                    size={25}
+                    name="ellipsis-horizontal-sharp"
+                    size={20}
                     color="rgba(255,255,255,.5)"
                   />
                 </View>
@@ -53,7 +53,11 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
         </TouchableNativeFeedback>
         <Text style={styles.title}>Recent Updates</Text>
         {status.map((_, i) => (
-          <TouchableNativeFeedback key={i} onPress={() => {}}>
+          <TouchableNativeFeedback
+            key={i}
+            onPress={() => {}}
+            background={TouchableNativeFeedback.Ripple("#fff", false)}
+          >
             <View style={styles.statusPrt}>
               <View style={styles.statusImgPrt}>
                 <Image
@@ -77,7 +81,11 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
         ))}
         <Text style={styles.title}>Viewed Updates</Text>
         {status.map((_, i) => (
-          <TouchableNativeFeedback key={i} onPress={() => {}}>
+          <TouchableNativeFeedback
+            key={i}
+            onPress={() => {}}
+            background={TouchableNativeFeedback.Ripple("#fff", false)}
+          >
             <View style={styles.statusPrt}>
               <View
                 style={{
