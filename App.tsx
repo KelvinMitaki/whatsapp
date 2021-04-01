@@ -20,6 +20,7 @@ import ProfileScreen from "./screens/ProfileScreen";
 import NewGroupScreen from "./screens/NewGroupScreen";
 import NewGroupInfoScreen from "./screens/NewGroupInfoScreen";
 import StarredMessagesScreen from "./screens/StarredMessagesScreen";
+import BroadcastScreen from "./screens/BroadcastScreen";
 
 enableScreens();
 
@@ -112,6 +113,10 @@ const stackNavigator = createStackNavigator(
     },
     StarredMessages: {
       screen: StarredMessagesScreen,
+      ...stackScreenSettings
+    },
+    Broadcast: {
+      screen: BroadcastScreen,
       ...stackScreenSettings
     }
   },

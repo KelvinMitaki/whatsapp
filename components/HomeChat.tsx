@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
   Alert,
   FlatList,
@@ -75,12 +75,17 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
       </View>
     </TouchableNativeFeedback>
   );
+  const getItemLayout = useCallback(
+    (data: any, i: number) => ({ length: 70, offset: 70 * i, index: i }),
+    []
+  );
   return (
     <View style={styles.prt}>
       <FlatList
         data={users}
         keyExtractor={(_, i) => i.toLocaleString()}
         renderItem={renderItem}
+        getItemLayout={getItemLayout}
       />
     </View>
   );
