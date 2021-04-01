@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View } from "react-native";
 import { Badge, Text } from "react-native-elements";
 import { Card, Avatar } from "react-native-elements";
 import { TouchableNativeFeedback } from "react-native";
-import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 import { users } from "../data";
 import inspect from "../inspect";
@@ -15,7 +15,12 @@ const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
       <GroupChat />
       <TouchableNativeFeedback onPress={() => navigation.navigate("Contact")}>
         <View style={styles.plus}>
-          <MaterialIcons name="message" size={25} color="#fff" />
+          <MaterialCommunityIcons
+            name="android-messages"
+            size={30}
+            color="#fff"
+            style={styles.msgIcon}
+          />
         </View>
       </TouchableNativeFeedback>
     </View>
@@ -30,31 +35,6 @@ export default GroupScreen;
 
 const styles = StyleSheet.create({
   prt: {},
-  contact: {
-    flexDirection: "row",
-    alignItems: "center",
-    height: 70,
-    paddingHorizontal: 10
-  },
-  contactTxt: {
-    paddingLeft: 10,
-    width: "85%",
-    justifyContent: "space-between",
-    height: "100%"
-  },
-  msg: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-around"
-  },
-  group: {
-    borderRadius: 70,
-    backgroundColor: "grey",
-    height: 50,
-    width: 50,
-    alignItems: "center",
-    justifyContent: "center"
-  },
   plus: {
     position: "absolute",
     right: "5%",
@@ -65,5 +45,8 @@ const styles = StyleSheet.create({
     height: 55,
     width: 55,
     borderRadius: 55
+  },
+  msgIcon: {
+    transform: [{ scaleX: -1 }, { scaleY: 1 }]
   }
 });

@@ -119,16 +119,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "grey"
-  },
-  message: {
-    position: "absolute",
-    right: "5%",
-    bottom: "3%",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#00af9c",
-    height: 55,
-    width: 55,
-    borderRadius: 55
   }
 });
