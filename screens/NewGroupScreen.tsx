@@ -15,6 +15,8 @@ import { users } from "../data";
 import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../interfaces/Redux";
 import HorizontalScrollContacts from "../components/HorizontalScrollContacts";
+import { NavigationEvents } from "react-navigation";
+import { ResetContacts } from "./NewGroupInfoScreen";
 
 export interface SetContacts {
   type: "setContacts";
@@ -31,6 +33,9 @@ const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
     <>
       <HorizontalScrollContacts Contacts={Contacts} />
+      <NavigationEvents
+        onWillFocus={() => dispatch<ResetContacts>({ type: "resetContacts" })}
+      />
       <View style={styles.continue}>
         <TouchableNativeFeedback
           background={TouchableNativeFeedback.Ripple("#fff", true)}

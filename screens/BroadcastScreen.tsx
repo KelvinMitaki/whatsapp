@@ -13,12 +13,17 @@ import { Redux } from "../interfaces/Redux";
 import HorizontalScrollContacts from "../components/HorizontalScrollContacts";
 import Contact from "../components/Contact";
 import { SetContacts } from "./NewGroupScreen";
+import { NavigationEvents } from "react-navigation";
+import { ResetContacts } from "./NewGroupInfoScreen";
 
 const BroadcastScreen: NavigationStackScreenComponent = () => {
   const dispatch = useDispatch();
   const { Contacts } = useSelector((state: Redux) => state.chat);
   return (
     <View>
+      <NavigationEvents
+        onWillFocus={() => dispatch<ResetContacts>({ type: "resetContacts" })}
+      />
       <HorizontalScrollContacts Contacts={Contacts} />
       <ScrollView>
         <Contact
