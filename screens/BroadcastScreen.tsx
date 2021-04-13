@@ -7,7 +7,7 @@ import {
   View
 } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../interfaces/Redux";
 import HorizontalScrollContacts from "../components/HorizontalScrollContacts";
@@ -16,15 +16,27 @@ import { SetContacts } from "./NewGroupScreen";
 import { NavigationEvents } from "react-navigation";
 import { ResetContacts } from "./NewGroupInfoScreen";
 
-const BroadcastScreen: NavigationStackScreenComponent = () => {
+const BroadcastScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const dispatch = useDispatch();
   const { Contacts } = useSelector((state: Redux) => state.chat);
   return (
-    <View>
+    <>
       <NavigationEvents
         onWillFocus={() => dispatch<ResetContacts>({ type: "resetContacts" })}
       />
       <HorizontalScrollContacts Contacts={Contacts} />
+      <View style={styles.continue}>
+        <TouchableNativeFeedback
+          background={TouchableNativeFeedback.Ripple("#fff", true)}
+          onPress={() => {
+            //  Contacts.length && navigation.navigate("NewGroupInfo")
+          }}
+        >
+          <View style={styles.foward}>
+            <Ionicons name="checkmark" size={25} color="#fff" />
+          </View>
+        </TouchableNativeFeedback>
+      </View>
       <ScrollView>
         <Contact
           setContacts={usr =>
@@ -33,7 +45,7 @@ const BroadcastScreen: NavigationStackScreenComponent = () => {
           Contacts={Contacts}
         />
       </ScrollView>
-    </View>
+    </>
   );
 };
 
@@ -64,6 +76,22 @@ const styles = StyleSheet.create({
     borderColor: "transparent",
     height: 50,
     width: 50,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  continue: {
+    position: "absolute",
+    right: "2%",
+    bottom: "2%",
+    backgroundColor: "#00af9c",
+    borderRadius: 500,
+    height: 50,
+    width: 50,
+    zIndex: 10
+  },
+  foward: {
+    height: "100%",
+    width: "100%",
     alignItems: "center",
     justifyContent: "center"
   }
