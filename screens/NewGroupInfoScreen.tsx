@@ -15,19 +15,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../interfaces/Redux";
 import { NavigationEvents } from "react-navigation";
 
-export interface ResetGrpContacts {
-  type: "resetGrpContacts";
+export interface ResetContacts {
+  type: "resetContacts";
 }
 
 const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
-  const { grpContacts } = useSelector((state: Redux) => state.chat);
+  const { Contacts } = useSelector((state: Redux) => state.chat);
   const dispatch = useDispatch();
   return (
     <View style={{ flex: 1 }}>
       <NavigationEvents
-        onDidBlur={() =>
-          dispatch<ResetGrpContacts>({ type: "resetGrpContacts" })
-        }
+        onDidBlur={() => dispatch<ResetContacts>({ type: "resetContacts" })}
       />
       <View
         style={{
@@ -81,11 +79,11 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
       </View>
       <View style={{ flex: 1 }}>
         <Text style={{ color: "rgba(255,255,255,.5)", margin: 20 }}>
-          Participants: {grpContacts.length}
+          Participants: {Contacts.length}
         </Text>
         <View style={{ flex: 1, alignItems: "center" }}>
           <FlatList
-            data={grpContacts}
+            data={Contacts}
             keyExtractor={(_, i) => i.toLocaleString()}
             numColumns={Math.floor(Dimensions.get("screen").width / 60)}
             renderItem={({ item }) => (

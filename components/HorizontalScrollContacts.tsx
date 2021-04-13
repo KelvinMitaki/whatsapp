@@ -8,30 +8,30 @@ import {
 } from "react-native";
 import { MaterialIcons, Ionicons, Feather } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
-import { SetGrpContacts } from "../screens/NewGroupScreen";
+import { SetContacts } from "../screens/NewGroupScreen";
 
 interface Props {
-  grpContacts: {
+  Contacts: {
     id: number;
     name: string;
     avatar: string;
   }[];
 }
 
-const HorizontalScrollContacts: React.FC<Props> = ({ grpContacts }) => {
+const HorizontalScrollContacts: React.FC<Props> = ({ Contacts }) => {
   const dispatch = useDispatch();
-  return grpContacts.length !== 0 ? (
+  return Contacts.length !== 0 ? (
     <View style={{ height: 85 }}>
       <FlatList
-        data={grpContacts}
+        data={Contacts}
         horizontal
         showsHorizontalScrollIndicator={false}
         keyExtractor={(_, i) => i.toLocaleString()}
         renderItem={({ item }) => (
           <TouchableNativeFeedback
             onPress={() =>
-              dispatch<SetGrpContacts>({
-                type: "setGrpContacts",
+              dispatch<SetContacts>({
+                type: "setContacts",
                 payload: item
               })
             }

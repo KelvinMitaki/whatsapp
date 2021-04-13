@@ -14,8 +14,8 @@ import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import inspect from "../inspect";
 
 interface Props {
-  setGrpContacts?: (usr: { name: string; avatar: string; id: number }) => void;
-  grpContacts?: {
+  setContacts?: (usr: { name: string; avatar: string; id: number }) => void;
+  Contacts?: {
     name: string;
     avatar: string;
     id: number;
@@ -24,8 +24,8 @@ interface Props {
 
 const Contact: React.FC<NavigationInjectedProps & Props> = ({
   navigation,
-  setGrpContacts,
-  grpContacts
+  setContacts,
+  Contacts
 }) => {
   return (
     <>
@@ -33,10 +33,10 @@ const Contact: React.FC<NavigationInjectedProps & Props> = ({
         <TouchableNativeFeedback
           background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
           onPress={() => {
-            if (!setGrpContacts) {
+            if (!setContacts) {
               navigation.navigate("Chat");
             } else {
-              setGrpContacts({ ...usr, id: i });
+              setContacts({ ...usr, id: i });
             }
           }}
           key={i}
@@ -50,7 +50,7 @@ const Contact: React.FC<NavigationInjectedProps & Props> = ({
                   color="rgba(241, 241, 242, 0.8)"
                 />
               </View>
-              {grpContacts && grpContacts.find(ct => ct.id === i) && (
+              {Contacts && Contacts.find(ct => ct.id === i) && (
                 <View style={styles.selectedContact}>
                   <Octicons name="check" size={15} />
                 </View>

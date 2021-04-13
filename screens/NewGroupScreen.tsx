@@ -16,8 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../interfaces/Redux";
 import HorizontalScrollContacts from "../components/HorizontalScrollContacts";
 
-export interface SetGrpContacts {
-  type: "setGrpContacts";
+export interface SetContacts {
+  type: "setContacts";
   payload: {
     name: string;
     avatar: string;
@@ -26,17 +26,15 @@ export interface SetGrpContacts {
 }
 
 const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
-  const { grpContacts } = useSelector((state: Redux) => state.chat);
+  const { Contacts } = useSelector((state: Redux) => state.chat);
   const dispatch = useDispatch();
   return (
     <>
-      <HorizontalScrollContacts grpContacts={grpContacts} />
+      <HorizontalScrollContacts Contacts={Contacts} />
       <View style={styles.continue}>
         <TouchableNativeFeedback
           background={TouchableNativeFeedback.Ripple("#fff", true)}
-          onPress={() =>
-            grpContacts.length && navigation.navigate("NewGroupInfo")
-          }
+          onPress={() => Contacts.length && navigation.navigate("NewGroupInfo")}
         >
           <View style={styles.foward}>
             <MaterialIcons name="arrow-forward" size={25} color="#fff" />
@@ -45,10 +43,10 @@ const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
       </View>
       <ScrollView>
         <Contact
-          setGrpContacts={usr =>
-            dispatch<SetGrpContacts>({ type: "setGrpContacts", payload: usr })
+          setContacts={usr =>
+            dispatch<SetContacts>({ type: "setContacts", payload: usr })
           }
-          grpContacts={grpContacts}
+          Contacts={Contacts}
         />
       </ScrollView>
     </>

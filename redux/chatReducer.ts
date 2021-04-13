@@ -1,39 +1,39 @@
 import { AnyAction } from "redux";
-import { ResetGrpContacts } from "../screens/NewGroupInfoScreen";
-import { SetGrpContacts } from "../screens/NewGroupScreen";
+import { ResetContacts } from "../screens/NewGroupInfoScreen";
+import { SetContacts } from "../screens/NewGroupScreen";
 
 export interface ChatState {
-  grpContacts: {
+  Contacts: {
     id: number;
     name: string;
     avatar: string;
   }[];
 }
 
-type Action = SetGrpContacts | ResetGrpContacts;
+type Action = SetContacts | ResetContacts;
 
 const INITIAL_STATE: ChatState = {
-  grpContacts: []
+  Contacts: []
 };
 
 const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
   switch (action.type) {
-    case "setGrpContacts":
-      const contactExists = state.grpContacts.find(
+    case "setContacts":
+      const contactExists = state.Contacts.find(
         ct => ct.id === action.payload.id
       );
       if (contactExists) {
-        const newGrpContacts = state.grpContacts.filter(
+        const newContacts = state.Contacts.filter(
           ct => ct.id !== action.payload.id
         );
-        return { ...state, grpContacts: newGrpContacts };
+        return { ...state, Contacts: newContacts };
       }
       return {
         ...state,
-        grpContacts: [...state.grpContacts, action.payload]
+        Contacts: [...state.Contacts, action.payload]
       };
-    case "resetGrpContacts":
-      return { ...state, grpContacts: [] };
+    case "resetContacts":
+      return { ...state, Contacts: [] };
     default:
       return state;
   }

@@ -1,12 +1,33 @@
 import React from "react";
-import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableNativeFeedback,
+  View
+} from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { Redux } from "../interfaces/Redux";
+import HorizontalScrollContacts from "../components/HorizontalScrollContacts";
+import Contact from "../components/Contact";
+import { SetContacts } from "./NewGroupScreen";
 
 const BroadcastScreen: NavigationStackScreenComponent = () => {
+  const dispatch = useDispatch();
+  const { Contacts } = useSelector((state: Redux) => state.chat);
   return (
     <View>
-      <Text>qBroadcastScreen BroadcastScreen</Text>
+      <HorizontalScrollContacts Contacts={Contacts} />
+      <ScrollView>
+        <Contact
+          setContacts={usr =>
+            dispatch<SetContacts>({ type: "setContacts", payload: usr })
+          }
+          Contacts={Contacts}
+        />
+      </ScrollView>
     </View>
   );
 };
