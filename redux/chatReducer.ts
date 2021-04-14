@@ -1,5 +1,6 @@
 import { AnyAction } from "redux";
 import { messages } from "../data/messages";
+import { SetMessage } from "../screens/BroadcastScreen";
 import { ResetContacts } from "../screens/NewGroupInfoScreen";
 import { SetContacts } from "../screens/NewGroupScreen";
 
@@ -12,7 +13,7 @@ export interface ChatState {
   messages: typeof messages;
 }
 
-type Action = SetContacts | ResetContacts;
+type Action = SetContacts | ResetContacts | SetMessage;
 
 const INITIAL_STATE: ChatState = {
   Contacts: [],
@@ -37,6 +38,8 @@ const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
       };
     case "resetContacts":
       return { ...state, Contacts: [] };
+    case "setMessage":
+      return { ...state, messages: [action.payload, ...state.messages] };
     default:
       return state;
   }

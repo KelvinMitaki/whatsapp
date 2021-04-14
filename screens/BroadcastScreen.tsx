@@ -15,6 +15,12 @@ import Contact from "../components/Contact";
 import { SetContacts } from "./NewGroupScreen";
 import { NavigationEvents } from "react-navigation";
 import { ResetContacts } from "./NewGroupInfoScreen";
+import { messages } from "../data/messages";
+
+export interface SetMessage {
+  type: "setMessage";
+  payload: typeof messages[0];
+}
 
 const BroadcastScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -29,7 +35,18 @@ const BroadcastScreen: NavigationStackScreenComponent = ({ navigation }) => {
         <TouchableNativeFeedback
           background={TouchableNativeFeedback.Ripple("#fff", true)}
           onPress={() => {
-            //  Contacts.length && navigation.navigate("NewGroupInfo")
+            dispatch<SetMessage>({
+              type: "setMessage",
+              payload: {
+                avatar:
+                  "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg",
+                message: `You created a broadcast list with ${Contacts.length} receipients`,
+                name: `${Contacts.map(c => c.name)}`,
+                time: new Date().toLocaleDateString(),
+                type: "broadcast"
+              }
+            });
+            navigation.navigate("Home");
           }}
         >
           <View style={styles.foward}>

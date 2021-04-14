@@ -9,13 +9,23 @@ import {
 import { Badge, Text } from "react-native-elements";
 import { Card, Avatar } from "react-native-elements";
 import { TouchableNativeFeedback } from "react-native";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 import { users } from "../data/data";
 import inspect from "../inspect";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { useSelector } from "react-redux";
 import { Redux } from "../interfaces/Redux";
+
+const isValidJSON = (str: string) => {
+  try {
+    JSON.parse(str);
+    return true;
+  } catch (error) {
+    return false;
+  }
+  return true;
+};
 
 const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   const { messages } = useSelector((state: Redux) => state.chat);
@@ -33,7 +43,19 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
           size={55}
         /> */}
         <View style={styles.person}>
-          <Ionicons name="person" size={35} color="rgba(241, 241, 242, 0.8)" />
+          {type === "broadcast" ? (
+            <FontAwesome5
+              name="broadcast-tower"
+              size={25}
+              color="rgba(241, 241, 242, 0.8)"
+            />
+          ) : (
+            <Ionicons
+              name="person"
+              size={35}
+              color="rgba(241, 241, 242, 0.8)"
+            />
+          )}
         </View>
         <View style={styles.contactTxt}>
           <View
@@ -42,12 +64,31 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
               justifyContent: "space-between"
             }}
           >
-            <Text
-              style={{ fontSize: 22, fontWeight: "400", color: "#fff" }}
-              numberOfLines={1}
-            >
-              {name}
-            </Text>
+            {type === "broadcast" ? (
+              <Text
+                style={{
+                  fontSize: 22,
+                  fontWeight: "400",
+                  color: "#fff",
+                  width: "75%"
+                }}
+                numberOfLines={1}
+              >
+                {name.split(",").join(", ")}
+              </Text>
+            ) : (
+              <Text
+                style={{
+                  fontSize: 22,
+                  fontWeight: "400",
+                  color: "#fff",
+                  width: "75%"
+                }}
+                numberOfLines={1}
+              >
+                {name}
+              </Text>
+            )}
             <Text style={{ right: 1, color: "rgba(255,255,255,.6)" }}>
               {time}
             </Text>
@@ -58,15 +99,17 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
               style={{
                 marginTop: 5,
                 color: "rgba(255,255,255,.6)",
-                width: "90%"
+                width: messageNumber ? "90%" : "100%"
               }}
             >
               {message}
             </Text>
-            <Badge
-              value={messageNumber}
-              badgeStyle={{ backgroundColor: "#00af9c" }}
-            />
+            {messageNumber ? (
+              <Badge
+                value={messageNumber}
+                badgeStyle={{ backgroundColor: "#00af9c" }}
+              />
+            ) : null}
           </View>
           <Card.Divider
             style={{
@@ -113,7 +156,7 @@ const styles = StyleSheet.create({
   msg: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around"
+    justifyContent: "space-between"
   },
   person: {
     height: 50,

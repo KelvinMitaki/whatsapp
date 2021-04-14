@@ -4,7 +4,7 @@ export interface MessageMeta {
   type: "broadcast" | "message";
   message: string;
   time: string;
-  messageNumber: number;
+  messageNumber?: number;
 }
 
 export let messages: MessageMeta[] = [
