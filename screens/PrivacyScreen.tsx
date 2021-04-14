@@ -1,13 +1,39 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { Overlay } from "react-native-elements";
+import RadioButton from "../components/RadioButton";
 
 const PrivacyScreen = () => {
-  const [modal, setModal] = useState<"lastSeen" | "profilePhoto" | "about" | null>(null);
+  const [modal, setModal] = useState<"lastSeen" | "profilePhoto" | "about" | null>("profilePhoto");
+
+  const modalText = (): string => {
+    if (modal === "about") return "About";
+    if (modal === "lastSeen") return "Last Seen";
+    if (modal === "profilePhoto") return "Profile Photo";
+    return "";
+  };
   return (
     <View>
-      <Overlay isVisible={!!modal} onBackdropPress={() => setModal(null)}>
-        <Text>Hello from Overlay</Text>
+      <Overlay
+        isVisible
+        // onBackdropPress={() => setModal(null)}
+        overlayStyle={{ backgroundColor: "#1b252c", minHeight: "25%", width: "85%" }}
+      >
+        <View>
+          <Text style={{ color: "#fff", paddingVertical: 10, fontSize: 17 }}>{modalText()}</Text>
+          <View>
+            {/* <Text style={{ color: "#fff" }}>Everyone</Text>
+            <Text style={{ color: "#fff" }}>My Contacts</Text>
+            <Text style={{ color: "#fff" }}>Nobody</Text> */}
+            <RadioButton
+              entries={[
+                { label: "Everyone", determinant: "everyone" },
+                { label: "My Contacts", determinant: "myContacts" },
+                { label: "Nobody", determinant: "nobody" }
+              ]}
+            />
+          </View>
+        </View>
       </Overlay>
       <View style={styles.privacyItem}>
         <Text style={styles.PrivacyTitle}>Who can see my personal info</Text>
