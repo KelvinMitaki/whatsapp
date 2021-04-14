@@ -33,15 +33,9 @@ const SettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
       </TouchableNativeFeedback>
       <TouchableNativeFeedback
         background={TouchableNativeFeedback.Ripple("#fff", false)}
-        onPress={() => {}}
+        onPress={() => navigation.navigate("Privacy")}
       >
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            paddingVertical: 20
-          }}
-        >
+        <View style={styles.settingsItem}>
           <View style={{ width: "20%", alignItems: "center" }}>
             <MaterialIcons name="lock" size={25} color="rgba(255,255,255,.7)" />
           </View>
@@ -57,13 +51,7 @@ const SettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
         background={TouchableNativeFeedback.Ripple("#fff", false)}
         onPress={() => {}}
       >
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            paddingVertical: 20
-          }}
-        >
+        <View style={styles.settingsItem}>
           <View style={{ width: "20%", alignItems: "center" }}>
             <MaterialIcons
               name="group"
@@ -83,13 +71,7 @@ const SettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
         background={TouchableNativeFeedback.Ripple("#fff", false)}
         onPress={() => {}}
       >
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            paddingVertical: 20
-          }}
-        >
+        <View style={styles.settingsItem}>
           <View style={{ width: "20%", alignItems: "center" }}>
             <Foundation name="trash" size={25} color="rgba(255,255,255,.7)" />
           </View>
@@ -123,5 +105,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "grey"
+  },
+  settingsItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 20
   }
 });
