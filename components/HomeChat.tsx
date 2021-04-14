@@ -14,11 +14,14 @@ import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 import { users } from "../data/data";
 import inspect from "../inspect";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
+import { useSelector } from "react-redux";
+import { Redux } from "../interfaces/Redux";
 
 const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
-  const renderItem = (
-    i: ListRenderItemInfo<{ name: string; avatar: string }>
-  ) => (
+  const { messages } = useSelector((state: Redux) => state.chat);
+  const renderItem = ({
+    item: { message, messageNumber, type, time, name }
+  }: ListRenderItemInfo<typeof messages[0]>) => (
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
       onPress={() => navigation.navigate("Chat")}
@@ -43,10 +46,10 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
               style={{ fontSize: 22, fontWeight: "400", color: "#fff" }}
               numberOfLines={1}
             >
-              {i.item.name}
+              {name}
             </Text>
             <Text style={{ right: 1, color: "rgba(255,255,255,.6)" }}>
-              Yesterday
+              {time}
             </Text>
           </View>
           <View style={styles.msg}>
@@ -58,12 +61,12 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
                 width: "90%"
               }}
             >
-              hello Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ea
-              cumque iure a facilis corporis expedita assumenda fuga quisquam
-              aliquid! Eos dignissimos cum maxime, quasi ducimus natus
-              reiciendis. Alias, recusandae dolorem.
+              {message}
             </Text>
-            <Badge value="99" badgeStyle={{ backgroundColor: "#00af9c" }} />
+            <Badge
+              value={messageNumber}
+              badgeStyle={{ backgroundColor: "#00af9c" }}
+            />
           </View>
           <Card.Divider
             style={{
@@ -82,7 +85,7 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   return (
     <View style={styles.prt}>
       <FlatList
-        data={users}
+        data={messages}
         keyExtractor={(_, i) => i.toLocaleString()}
         renderItem={renderItem}
         getItemLayout={getItemLayout}
