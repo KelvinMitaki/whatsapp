@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { Ionicons, Foundation, MaterialIcons } from "@expo/vector-icons";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
+import inspect from "../inspect";
 
 const SettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
@@ -35,10 +36,16 @@ const SettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
         onPress={() => {}}
       >
         <View
-          style={{ flexDirection: "row", alignItems: "center", padding: 20 }}
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            paddingVertical: 20
+          }}
         >
-          <MaterialIcons name="lock" size={25} color="rgba(255,255,255,.7)" />
-          <View style={{ marginLeft: 20 }}>
+          <View style={{ width: "20%", alignItems: "center" }}>
+            <MaterialIcons name="lock" size={25} color="rgba(255,255,255,.7)" />
+          </View>
+          <View style={{ width: "80%" }}>
             <Text style={{ color: "#fff", fontSize: 17 }}>Privacy</Text>
             <Text numberOfLines={1} style={{ color: "rgba(255,255,255,.7)" }}>
               Last seen, profile photo, about
@@ -51,10 +58,20 @@ const SettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
         onPress={() => {}}
       >
         <View
-          style={{ flexDirection: "row", alignItems: "center", padding: 20 }}
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            paddingVertical: 20
+          }}
         >
-          <MaterialIcons name="group" size={25} color="rgba(255,255,255,.7)" />
-          <View style={{ marginLeft: 20 }}>
+          <View style={{ width: "20%", alignItems: "center" }}>
+            <MaterialIcons
+              name="group"
+              size={25}
+              color="rgba(255,255,255,.7)"
+            />
+          </View>
+          <View style={{ width: "80%" }}>
             <Text style={{ color: "#fff", fontSize: 17 }}>Invite a friend</Text>
             <Text numberOfLines={1} style={{ color: "rgba(255,255,255,.7)" }}>
               Share the link with a friend to join ChatApp
@@ -67,10 +84,16 @@ const SettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
         onPress={() => {}}
       >
         <View
-          style={{ flexDirection: "row", alignItems: "center", padding: 20 }}
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            paddingVertical: 20
+          }}
         >
-          <Foundation name="trash" size={25} color="rgba(255,255,255,.7)" />
-          <View style={{ marginLeft: 20 }}>
+          <View style={{ width: "20%", alignItems: "center" }}>
+            <Foundation name="trash" size={25} color="rgba(255,255,255,.7)" />
+          </View>
+          <View style={{ width: "80%" }}>
             <Text style={{ color: "#fff", fontSize: 17 }}>Delete account</Text>
             <Text numberOfLines={1} style={{ color: "rgba(255,255,255,.7)" }}>
               All your data in the system will be deleted.
