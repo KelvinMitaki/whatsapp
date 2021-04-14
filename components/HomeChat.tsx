@@ -11,21 +11,9 @@ import { Card, Avatar } from "react-native-elements";
 import { TouchableNativeFeedback } from "react-native";
 import { Ionicons, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
-import { users } from "../data/data";
-import inspect from "../inspect";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { useSelector } from "react-redux";
 import { Redux } from "../interfaces/Redux";
-
-const isValidJSON = (str: string) => {
-  try {
-    JSON.parse(str);
-    return true;
-  } catch (error) {
-    return false;
-  }
-  return true;
-};
 
 const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   const { messages } = useSelector((state: Redux) => state.chat);
