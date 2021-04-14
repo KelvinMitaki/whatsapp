@@ -143,20 +143,17 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   cameraPrt: {
-    alignItems: "center",
-    justifyContent: "center",
     position: "absolute",
     right: "30%",
     bottom: "7%",
-    borderRadius: 500
+    backgroundColor: "#00af9c",
+    borderRadius: 55
   },
   camera: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#00af9c",
     height: 55,
-    width: 55,
-    borderRadius: 55
+    width: 55
   },
   meta: {
     paddingTop: 10,
