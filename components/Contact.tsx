@@ -7,7 +7,7 @@ import {
   View
 } from "react-native";
 import { Ionicons, MaterialIcons, Octicons } from "@expo/vector-icons";
-import { users } from "../data";
+import { users } from "../data/data";
 import { Badge } from "react-native-elements";
 import { Card } from "react-native-elements";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";

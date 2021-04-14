@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { TouchableNativeFeedback } from "react-native";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
-import { users } from "../data";
+import { users } from "../data/data";
 import inspect from "../inspect";
 import HomeChat from "../components/HomeChat";
 

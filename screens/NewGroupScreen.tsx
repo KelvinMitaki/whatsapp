@@ -11,7 +11,7 @@ import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons } from "@expo/vector-icons";
 import inspect from "../inspect";
 import Contact from "../components/Contact";
-import { users } from "../data";
+import { users } from "../data/data";
 import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../interfaces/Redux";
 import HorizontalScrollContacts from "../components/HorizontalScrollContacts";
