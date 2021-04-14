@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableNativeFeedback,
-  View
-} from "react-native";
+import { FlatList, StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { Ionicons, MaterialIcons, Octicons } from "@expo/vector-icons";
 import { users } from "../data/data";
 import { Badge } from "react-native-elements";
@@ -44,11 +38,7 @@ const Contact: React.FC<NavigationInjectedProps & Props> = ({
           <View style={styles.contact}>
             <View>
               <View style={styles.person}>
-                <Ionicons
-                  name="person"
-                  size={35}
-                  color="rgba(241, 241, 242, 0.8)"
-                />
+                <Ionicons name="person" size={35} color="rgba(241, 241, 242, 0.8)" />
               </View>
               {Contacts && Contacts.find(ct => ct.id === i) && (
                 <View style={styles.selectedContact}>

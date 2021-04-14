@@ -13,10 +13,9 @@ const Message = () => {
       <>
         <View style={styles.me}>
           <Text style={{ color: "#fff" }}>
-            M Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat
-            velit eum doloremque quo, animi blanditiis alias, amet voluptatem
-            asperiores repellendus iusto quam eveniet quidem molestias id, illum
-            rerum eligendi voluptate
+            M Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat velit eum doloremque
+            quo, animi blanditiis alias, amet voluptatem asperiores repellendus iusto quam eveniet
+            quidem molestias id, illum rerum eligendi voluptate
           </Text>
           <Text style={styles.meta}>
             1:38 PM <Ionicons name="checkmark-done" size={18} />

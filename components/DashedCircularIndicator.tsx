@@ -66,9 +66,7 @@ export const DashedCircularIndicator: React.FC<Props> = React.memo(
 
     // ----  PIE render funciton --------
     const renderPie = (i: number) => {
-      const DIRECTION = anticlockwise
-        ? Direction.ANTI_CLOCKWISE
-        : Direction.CLOCKSWISE;
+      const DIRECTION = anticlockwise ? Direction.ANTI_CLOCKWISE : Direction.CLOCKSWISE;
       //Rotation Calculation
       const primaryRotationAngle = (maxValue - 1) * (360 / maxValue);
       const rotationAngle =
@@ -86,14 +84,7 @@ export const DashedCircularIndicator: React.FC<Props> = React.memo(
 
       const fillColor = i <= selectedValue ? activeColor : inactiveStrokeColor;
 
-      return (
-        <Path
-          key={i}
-          d={dValue}
-          fill={fillColor}
-          transform={rotationTransformation}
-        />
-      );
+      return <Path key={i} d={dValue} fill={fillColor} transform={rotationTransformation} />;
     };
 
     // ----  Creates a circle by combining the Pie(s) --------
@@ -122,12 +113,7 @@ export const DashedCircularIndicator: React.FC<Props> = React.memo(
           {renderOuterCircle()}
 
           {/* This is the overlay circle */}
-          <Circle
-            r={radius - strokeWidth}
-            cx={radius}
-            cy={radius}
-            fill={backgroundColor}
-          />
+          <Circle r={radius - strokeWidth} cx={radius} cy={radius} fill={backgroundColor} />
 
           <Text
             fill={textColor}

@@ -24,12 +24,7 @@ const StatusList: React.FC<NavigationInjectedProps> = ({ navigation }) => {
             <DashedCircularIndicator
               strokeWidth={2}
               radius={32.5}
-              label={
-                <Image
-                  source={require("../assets/1.jpg")}
-                  style={styles.statusImg}
-                />
-              }
+              label={<Image source={require("../assets/1.jpg")} style={styles.statusImg} />}
               backgroundColor="#191f23"
               selectedValue={6}
               activeStrokeColor="#00af9c"
@@ -38,9 +33,7 @@ const StatusList: React.FC<NavigationInjectedProps> = ({ navigation }) => {
               <Text style={{ color: "white", fontSize: 18 }} numberOfLines={1}>
                 Kevin
               </Text>
-              <Text style={{ color: "rgba(255,255,255,.5)" }}>
-                Today, 7:44 PM
-              </Text>
+              <Text style={{ color: "rgba(255,255,255,.5)" }}>Today, 7:44 PM</Text>
             </View>
           </View>
         </TouchableNativeFeedback>
@@ -56,21 +49,14 @@ const StatusList: React.FC<NavigationInjectedProps> = ({ navigation }) => {
             <DashedCircularIndicator
               strokeWidth={2}
               radius={32.5}
-              label={
-                <Image
-                  source={require("../assets/1.jpg")}
-                  style={styles.statusImg}
-                />
-              }
+              label={<Image source={require("../assets/1.jpg")} style={styles.statusImg} />}
               backgroundColor="#191f23"
             />
             <View style={styles.statusMetaData}>
               <Text style={{ color: "white", fontSize: 18 }} numberOfLines={1}>
                 Kevin
               </Text>
-              <Text style={{ color: "rgba(255,255,255,.5)" }}>
-                Today, 7:44 PM
-              </Text>
+              <Text style={{ color: "rgba(255,255,255,.5)" }}>Today, 7:44 PM</Text>
             </View>
           </View>
         </TouchableNativeFeedback>

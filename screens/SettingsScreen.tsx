@@ -13,11 +13,7 @@ const SettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
       >
         <View style={styles.profile}>
           <View style={styles.person}>
-            <Ionicons
-              name="person"
-              size={35}
-              color="rgba(241, 241, 242, 0.8)"
-            />
+            <Ionicons name="person" size={35} color="rgba(241, 241, 242, 0.8)" />
           </View>
           <View
             style={{
@@ -25,9 +21,7 @@ const SettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
             }}
           >
             <Text style={{ color: "#fff", fontSize: 20 }}>Kevin</Text>
-            <Text style={{ color: "rgba(255,255,255,.7)" }}>
-              Hey there, I am using WhatsApp
-            </Text>
+            <Text style={{ color: "rgba(255,255,255,.7)" }}>Hey there, I am using WhatsApp</Text>
           </View>
         </View>
       </TouchableNativeFeedback>
@@ -53,11 +47,7 @@ const SettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
       >
         <View style={styles.settingsItem}>
           <View style={{ width: "20%", alignItems: "center" }}>
-            <MaterialIcons
-              name="group"
-              size={25}
-              color="rgba(255,255,255,.7)"
-            />
+            <MaterialIcons name="group" size={25} color="rgba(255,255,255,.7)" />
           </View>
           <View style={{ width: "80%" }}>
             <Text style={{ color: "#fff", fontSize: 17 }}>Invite a friend</Text>

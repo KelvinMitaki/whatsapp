@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  TouchableNativeFeedback,
-  View,
-  ScrollView
-} from "react-native";
+import { FlatList, StyleSheet, TouchableNativeFeedback, View, ScrollView } from "react-native";
 import { Text } from "react-native-elements";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -33,9 +27,7 @@ const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
     <>
       <HorizontalScrollContacts Contacts={Contacts} />
-      <NavigationEvents
-        onWillFocus={() => dispatch<ResetContacts>({ type: "resetContacts" })}
-      />
+      <NavigationEvents onWillFocus={() => dispatch<ResetContacts>({ type: "resetContacts" })} />
       <View style={styles.continue}>
         <TouchableNativeFeedback
           background={TouchableNativeFeedback.Ripple("#fff", true)}
@@ -48,9 +40,7 @@ const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
       </View>
       <ScrollView>
         <Contact
-          setContacts={usr =>
-            dispatch<SetContacts>({ type: "setContacts", payload: usr })
-          }
+          setContacts={usr => dispatch<SetContacts>({ type: "setContacts", payload: usr })}
           Contacts={Contacts}
         />
       </ScrollView>

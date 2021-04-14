@@ -15,10 +15,9 @@ const GroupMessage = () => {
       <>
         <View style={styles.me}>
           <Text style={{ color: "#fff" }}>
-            M Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat
-            velit eum doloremque quo, animi blanditiis alias, amet voluptatem
-            asperiores repellendus iusto quam eveniet quidem molestias id, illum
-            rerum eligendi voluptate
+            M Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat velit eum doloremque
+            quo, animi blanditiis alias, amet voluptatem asperiores repellendus iusto quam eveniet
+            quidem molestias id, illum rerum eligendi voluptate
           </Text>
           <Text style={styles.meta}>
             1:38 PM <Ionicons name="checkmark" size={18} />
@@ -26,16 +25,10 @@ const GroupMessage = () => {
         </View>
         <View style={{ flexDirection: "row" }}>
           <View style={styles.person}>
-            <Ionicons
-              name="person"
-              size={25}
-              color="rgba(241, 241, 242, 0.8)"
-            />
+            <Ionicons name="person" size={25} color="rgba(241, 241, 242, 0.8)" />
           </View>
           <View style={{ ...styles.sender }}>
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
               <Text
                 style={{
                   color: `rgb(${genRandomNum()},${genRandomNum()},${genRandomNum()})`

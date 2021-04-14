@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableNativeFeedback,
-  View,
-  ScrollView
-} from "react-native";
+import { Image, StyleSheet, Text, TouchableNativeFeedback, View, ScrollView } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../inspect";
@@ -25,15 +18,10 @@ const MyStatusScreen: NavigationStackScreenComponent = () => {
           background={TouchableNativeFeedback.Ripple("#fff", false)}
         >
           <View style={styles.statusPrt}>
-            <Image
-              source={require("../assets/1.jpg")}
-              style={styles.statusImg}
-            />
+            <Image source={require("../assets/1.jpg")} style={styles.statusImg} />
             <View style={styles.statusMetaData}>
               <Text style={{ color: "white", fontSize: 18 }}>20 views</Text>
-              <Text style={{ color: "rgba(255,255,255,.5)" }}>
-                Today, 7:44 PM
-              </Text>
+              <Text style={{ color: "rgba(255,255,255,.5)" }}>Today, 7:44 PM</Text>
             </View>
             <View style={{ marginLeft: "-10%" }}>
               <TouchableNativeFeedback
@@ -41,11 +29,7 @@ const MyStatusScreen: NavigationStackScreenComponent = () => {
                 onPress={() => {}}
               >
                 <View style={styles.ellipsis}>
-                  <Ionicons
-                    name="ellipsis-vertical"
-                    size={20}
-                    color="rgba(255,255,255,.5)"
-                  />
+                  <Ionicons name="ellipsis-vertical" size={20} color="rgba(255,255,255,.5)" />
                 </View>
               </TouchableNativeFeedback>
             </View>

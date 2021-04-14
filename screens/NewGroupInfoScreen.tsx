@@ -24,9 +24,7 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const dispatch = useDispatch();
   return (
     <View style={{ flex: 1 }}>
-      <NavigationEvents
-        onDidBlur={() => dispatch<ResetContacts>({ type: "resetContacts" })}
-      />
+      <NavigationEvents onDidBlur={() => dispatch<ResetContacts>({ type: "resetContacts" })} />
       <View
         style={{
           height: 125,
@@ -94,16 +92,9 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
                 }}
               >
                 <View style={styles.person}>
-                  <Ionicons
-                    name="person"
-                    size={35}
-                    color="rgba(241, 241, 242, 0.8)"
-                  />
+                  <Ionicons name="person" size={35} color="rgba(241, 241, 242, 0.8)" />
                 </View>
-                <Text
-                  numberOfLines={1}
-                  style={{ color: "rgba(255,255,255,.8)" }}
-                >
+                <Text numberOfLines={1} style={{ color: "rgba(255,255,255,.8)" }}>
                   {item.name}
                 </Text>
               </View>

@@ -12,12 +12,7 @@ const Input = () => {
       <TextInput style={styles.inp} />
       <View style={{ flex: 1, alignItems: "center" }}>
         <View style={styles.send}>
-          <Ionicons
-            name="send-sharp"
-            size={25}
-            color="#fff"
-            style={{ marginLeft: "10%" }}
-          />
+          <Ionicons name="send-sharp" size={25} color="#fff" style={{ marginLeft: "10%" }} />
         </View>
       </View>
     </View>

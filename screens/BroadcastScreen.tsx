@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableNativeFeedback,
-  View
-} from "react-native";
+import { ScrollView, StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,9 +21,7 @@ const BroadcastScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const Contacts = useSelector((state: Redux) => state.chat.Contacts);
   return (
     <>
-      <NavigationEvents
-        onWillFocus={() => dispatch<ResetContacts>({ type: "resetContacts" })}
-      />
+      <NavigationEvents onWillFocus={() => dispatch<ResetContacts>({ type: "resetContacts" })} />
       <HorizontalScrollContacts Contacts={Contacts} />
       <View style={styles.continue}>
         <TouchableNativeFeedback
@@ -38,8 +30,7 @@ const BroadcastScreen: NavigationStackScreenComponent = ({ navigation }) => {
             dispatch<SetMessage>({
               type: "setMessage",
               payload: {
-                avatar:
-                  "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg",
+                avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg",
                 message: `You created a broadcast list with ${Contacts.length} receipients`,
                 name: `${Contacts.map(c => c.name)}`,
                 time: new Date().toLocaleDateString(),
@@ -56,9 +47,7 @@ const BroadcastScreen: NavigationStackScreenComponent = ({ navigation }) => {
       </View>
       <ScrollView>
         <Contact
-          setContacts={usr =>
-            dispatch<SetContacts>({ type: "setContacts", payload: usr })
-          }
+          setContacts={usr => dispatch<SetContacts>({ type: "setContacts", payload: usr })}
           Contacts={Contacts}
         />
       </ScrollView>

@@ -28,11 +28,7 @@ const GroupChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
         size={55}
       /> */}
           <View style={styles.group}>
-            <FontAwesome
-              name="group"
-              size={35}
-              color="rgba(241, 241, 242, 0.8)"
-            />
+            <FontAwesome name="group" size={35} color="rgba(241, 241, 242, 0.8)" />
           </View>
           <View style={styles.contactTxt}>
             <View
@@ -52,9 +48,7 @@ const GroupChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
               >
                 Group {i.index + 1}
               </Text>
-              <Text style={{ right: 1, color: "rgba(255,255,255,.6)" }}>
-                Yesterday
-              </Text>
+              <Text style={{ right: 1, color: "rgba(255,255,255,.6)" }}>Yesterday</Text>
             </View>
             <View style={styles.msg}>
               <Text
@@ -65,10 +59,9 @@ const GroupChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
                   width: "90%"
                 }}
               >
-                +2547 2155 9392: hello Lorem ipsum dolor sit amet, consectetur
-                adipisicing elit. Commodi sed et vel fuga quibusdam nihil
-                dolorum temporibus, veniam enim error? Saepe in vel enim,
-                repellat dicta distinctio porro molestias alias?
+                +2547 2155 9392: hello Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Commodi sed et vel fuga quibusdam nihil dolorum temporibus, veniam enim error? Saepe
+                in vel enim, repellat dicta distinctio porro molestias alias?
               </Text>
               <Badge value="99" badgeStyle={{ backgroundColor: "#00af9c" }} />
             </View>
@@ -84,10 +77,7 @@ const GroupChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
     ),
     []
   );
-  const keyExtractor = useCallback(
-    (_: any, i: number) => i.toLocaleString(),
-    []
-  );
+  const keyExtractor = useCallback((_: any, i: number) => i.toLocaleString(), []);
   const getItemLayout = useCallback(
     (data: any, i: number) => ({ length: 70, offset: 70 * i, index: i }),
     []

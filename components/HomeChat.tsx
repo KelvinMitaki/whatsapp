@@ -1,11 +1,5 @@
 import React, { useCallback } from "react";
-import {
-  Alert,
-  FlatList,
-  ListRenderItemInfo,
-  StyleSheet,
-  View
-} from "react-native";
+import { Alert, FlatList, ListRenderItemInfo, StyleSheet, View } from "react-native";
 import { Badge, Text } from "react-native-elements";
 import { Card, Avatar } from "react-native-elements";
 import { TouchableNativeFeedback } from "react-native";
@@ -33,17 +27,9 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
         /> */}
         <View style={styles.person}>
           {type === "broadcast" ? (
-            <FontAwesome5
-              name="broadcast-tower"
-              size={25}
-              color="rgba(241, 241, 242, 0.8)"
-            />
+            <FontAwesome5 name="broadcast-tower" size={25} color="rgba(241, 241, 242, 0.8)" />
           ) : (
-            <Ionicons
-              name="person"
-              size={35}
-              color="rgba(241, 241, 242, 0.8)"
-            />
+            <Ionicons name="person" size={35} color="rgba(241, 241, 242, 0.8)" />
           )}
         </View>
         <View style={styles.contactTxt}>
@@ -79,9 +65,7 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
                 {name}
               </Text>
             )}
-            <Text style={{ right: 1, color: "rgba(255,255,255,.6)" }}>
-              {time}
-            </Text>
+            <Text style={{ right: 1, color: "rgba(255,255,255,.6)" }}>{time}</Text>
           </View>
           <View style={styles.msg}>
             <Text
@@ -95,10 +79,7 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
               {message}
             </Text>
             {messageNumber ? (
-              <Badge
-                value={messageNumber}
-                badgeStyle={{ backgroundColor: "#00af9c" }}
-              />
+              <Badge value={messageNumber} badgeStyle={{ backgroundColor: "#00af9c" }} />
             ) : null}
           </View>
           <Card.Divider

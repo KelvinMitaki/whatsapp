@@ -1,11 +1,7 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { ScrollView, TouchableNativeFeedback } from "react-native";
-import {
-  Ionicons,
-  FontAwesome,
-  MaterialCommunityIcons
-} from "@expo/vector-icons";
+import { Ionicons, FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import inspect from "../inspect";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 import { DashedCircularIndicator } from "../components/DashedCircularIndicator";
@@ -28,19 +24,12 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
             <DashedCircularIndicator
               strokeWidth={2}
               radius={32.5}
-              label={
-                <Image
-                  source={require("../assets/1.jpg")}
-                  style={styles.statusImg}
-                />
-              }
+              label={<Image source={require("../assets/1.jpg")} style={styles.statusImg} />}
               backgroundColor="#191f23"
             />
             <View style={styles.statusMetaData}>
               <Text style={{ color: "white", fontSize: 18 }}>My Status</Text>
-              <Text style={{ color: "rgba(255,255,255,.5)" }}>
-                Today, 7:44 PM
-              </Text>
+              <Text style={{ color: "rgba(255,255,255,.5)" }}>Today, 7:44 PM</Text>
             </View>
             <View style={{ marginLeft: "-12%" }}>
               <TouchableNativeFeedback

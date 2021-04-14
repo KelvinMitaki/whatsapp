@@ -67,11 +67,7 @@ ChatScreen.navigationOptions = ({}) => {
             onPress={() => {}}
           >
             <View>
-              <Ionicons
-                name="ellipsis-vertical-sharp"
-                size={20}
-                color={"rgba(255,255,255,.5)"}
-              />
+              <Ionicons name="ellipsis-vertical-sharp" size={20} color={"rgba(255,255,255,.5)"} />
             </View>
           </TouchableNativeFeedback>
         </View>

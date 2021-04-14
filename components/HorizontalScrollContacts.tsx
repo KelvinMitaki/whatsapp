@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableNativeFeedback,
-  FlatList
-} from "react-native";
+import { StyleSheet, Text, View, TouchableNativeFeedback, FlatList } from "react-native";
 import { MaterialIcons, Ionicons, Feather } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { SetContacts } from "../screens/NewGroupScreen";
@@ -41,17 +35,10 @@ const HorizontalScrollContacts: React.FC<Props> = ({ Contacts }) => {
                 <Feather name="x" size={15} color="#111" />
               </View>
               <View style={styles.person}>
-                <Ionicons
-                  name="person"
-                  size={35}
-                  color="rgba(241, 241, 242, 0.8)"
-                />
+                <Ionicons name="person" size={35} color="rgba(241, 241, 242, 0.8)" />
               </View>
               <View>
-                <Text
-                  style={{ color: "rgba(255,255,255,.7)" }}
-                  numberOfLines={1}
-                >
+                <Text style={{ color: "rgba(255,255,255,.7)" }} numberOfLines={1}>
                   {item.name}
                 </Text>
               </View>

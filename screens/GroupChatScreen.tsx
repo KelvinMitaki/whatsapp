@@ -1,12 +1,7 @@
 import React, { useEffect } from "react";
 import { StyleSheet, Text, TextInput, View, BackHandler } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
-import {
-  MaterialIcons,
-  Ionicons,
-  FontAwesome,
-  AntDesign
-} from "@expo/vector-icons";
+import { MaterialIcons, Ionicons, FontAwesome, AntDesign } from "@expo/vector-icons";
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import inspect from "../inspect";
 import { TouchableNativeFeedback } from "react-native";
@@ -15,15 +10,9 @@ import GroupMessage from "../components/GroupMessage";
 
 const GroupChatScreen: NavigationStackScreenComponent = ({ navigation }) => {
   useEffect(() => {
-    BackHandler.addEventListener(
-      "hardwareBackPress",
-      handleBackBtnPressAndroid
-    );
+    BackHandler.addEventListener("hardwareBackPress", handleBackBtnPressAndroid);
     return () => {
-      BackHandler.removeEventListener(
-        "hardwareBackPress",
-        handleBackBtnPressAndroid
-      );
+      BackHandler.removeEventListener("hardwareBackPress", handleBackBtnPressAndroid);
     };
   }, []);
   const handleBackBtnPressAndroid = () => {
@@ -46,11 +35,7 @@ GroupChatScreen.navigationOptions = ({ navigation }) => {
     headerTitle: () => (
       <View style={styles.headerLeft}>
         <View style={styles.group}>
-          <FontAwesome
-            name="group"
-            size={25}
-            color="rgba(241, 241, 242, 0.8)"
-          />
+          <FontAwesome name="group" size={25} color="rgba(241, 241, 242, 0.8)" />
         </View>
         <View style={{ width: "75%" }}>
           <Text numberOfLines={1} style={styles.grpName}>
@@ -85,11 +70,7 @@ GroupChatScreen.navigationOptions = ({ navigation }) => {
             onPress={() => {}}
           >
             <View>
-              <Ionicons
-                name="ellipsis-vertical-sharp"
-                size={20}
-                color={"rgba(255,255,255,.5)"}
-              />
+              <Ionicons name="ellipsis-vertical-sharp" size={20} color={"rgba(255,255,255,.5)"} />
             </View>
           </TouchableNativeFeedback>
         </View>

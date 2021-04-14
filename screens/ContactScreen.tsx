@@ -1,17 +1,7 @@
 import React from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableNativeFeedback,
-  View
-} from "react-native";
+import { ScrollView, StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
-import {
-  Ionicons,
-  MaterialCommunityIcons,
-  MaterialIcons
-} from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import inspect from "../inspect";
 import Contact from "../components/Contact";
 
@@ -25,11 +15,7 @@ const ContactScreen: NavigationStackScreenComponent = ({ navigation }) => {
         >
           <View style={styles.meta}>
             <View style={styles.person}>
-              <MaterialCommunityIcons
-                name="account-group"
-                size={25}
-                color="#fff"
-              />
+              <MaterialCommunityIcons name="account-group" size={25} color="#fff" />
             </View>
             <View style={styles.textPrt}>
               <View>
