@@ -14,6 +14,7 @@ import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { useSelector } from "react-redux";
 import { Redux } from "../interfaces/Redux";
+import inspect from "../inspect";
 
 const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   const messages = useSelector((state: Redux) => state.chat.messages);
@@ -49,7 +50,8 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
           <View
             style={{
               flexDirection: "row",
-              justifyContent: "space-between"
+              justifyContent: "space-between",
+              alignItems: "center"
             }}
           >
             {type === "broadcast" ? (

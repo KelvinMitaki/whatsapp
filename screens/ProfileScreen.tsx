@@ -15,11 +15,16 @@ const ProfileScreen = () => {
         <View style={styles.person}>
           <Ionicons name="person" size={100} color="rgba(241, 241, 242, 0.8)" />
         </View>
-        <TouchableNativeFeedback onPress={() => {}}>
-          <View style={styles.camera}>
-            <FontAwesome name="camera" size={20} color="#fff" />
-          </View>
-        </TouchableNativeFeedback>
+        <View style={styles.cameraPrt}>
+          <TouchableNativeFeedback
+            onPress={() => {}}
+            background={TouchableNativeFeedback.Ripple("#fff", true)}
+          >
+            <View style={styles.camera}>
+              <FontAwesome name="camera" size={20} color="#fff" />
+            </View>
+          </TouchableNativeFeedback>
+        </View>
       </View>
       <TouchableNativeFeedback
         background={TouchableNativeFeedback.Ripple("#fff", false)}
@@ -137,10 +142,15 @@ const styles = StyleSheet.create({
     marginVertical: 25,
     alignSelf: "center"
   },
-  camera: {
+  cameraPrt: {
+    alignItems: "center",
+    justifyContent: "center",
     position: "absolute",
     right: "30%",
     bottom: "7%",
+    borderRadius: 500
+  },
+  camera: {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#00af9c",
