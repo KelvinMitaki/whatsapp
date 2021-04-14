@@ -28,7 +28,7 @@ export interface SetContacts {
 }
 
 const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
-  const { Contacts } = useSelector((state: Redux) => state.chat);
+  const Contacts = useSelector((state: Redux) => state.chat.Contacts);
   const dispatch = useDispatch();
   return (
     <>

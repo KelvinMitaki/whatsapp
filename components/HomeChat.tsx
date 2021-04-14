@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 import { Redux } from "../interfaces/Redux";
 
 const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
-  const { messages } = useSelector((state: Redux) => state.chat);
+  const messages = useSelector((state: Redux) => state.chat.messages);
   const renderItem = ({
     item: { message, messageNumber, type, time, name }
   }: ListRenderItemInfo<typeof messages[0]>) => (

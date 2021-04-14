@@ -20,7 +20,7 @@ export interface ResetContacts {
 }
 
 const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
-  const { Contacts } = useSelector((state: Redux) => state.chat);
+  const Contacts = useSelector((state: Redux) => state.chat.Contacts);
   const dispatch = useDispatch();
   return (
     <View style={{ flex: 1 }}>

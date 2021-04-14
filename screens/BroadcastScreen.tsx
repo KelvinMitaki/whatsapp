@@ -24,7 +24,7 @@ export interface SetMessage {
 
 const BroadcastScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { Contacts } = useSelector((state: Redux) => state.chat);
+  const Contacts = useSelector((state: Redux) => state.chat.Contacts);
   return (
     <>
       <NavigationEvents
