@@ -1,7 +1,11 @@
 import React from "react";
 import { createAppContainer } from "react-navigation";
 import { createMaterialTopTabNavigator } from "react-navigation-tabs";
-import { createStackNavigator } from "react-navigation-stack";
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+  TransitionSpecs
+} from "react-navigation-stack";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import reducer from "./redux/reducer";
@@ -24,6 +28,7 @@ import BroadcastScreen from "./screens/BroadcastScreen";
 import PrivacyScreen from "./screens/PrivacyScreen";
 import StatusPrivacyScreen from "./screens/StatusPrivacyScreen";
 import SelectContactsScreen from "./screens/SelectContactsScreen";
+import inspect from "./inspect";
 
 enableScreens();
 
@@ -138,18 +143,16 @@ const stackNavigator = createStackNavigator(
   {
     defaultNavigationOptions: {
       cardStyle: {
-        backgroundColor: "transparent",
+        backgroundColor: "#191f23",
         opacity: 1,
         flex: 1,
         zIndex: 1,
-        elevation: Platform.OS === "android" ? 1 : 0
+        elevation: Platform.OS === "android" ? 1 : 0,
+        ...inspect()
       },
-      cardStyleInterpolator: ({ current, closing }) => ({
-        cardStyle: {
-          opacity: current.progress
-        }
-      })
-    }
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+    },
+    mode: "modal"
   }
 );
 const App = createAppContainer(stackNavigator);

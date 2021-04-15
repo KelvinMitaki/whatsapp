@@ -15,7 +15,7 @@ interface Props {
   checked: Data[];
 }
 
-const SelectedContact: React.FC<Props> = ({ setChecked, index, item, checked }) => {
+const SelectedContact: React.FC<Props> = React.memo(({ setChecked, index, item, checked }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const fadeIn = () => {
     Animated.timing(fadeAnim, { toValue: 1, useNativeDriver: false, duration: 150 }).start();
@@ -58,7 +58,6 @@ const SelectedContact: React.FC<Props> = ({ setChecked, index, item, checked }) 
               style={[
                 styles.check,
                 {
-                  opacity: fadeAnim,
                   transform: [
                     {
                       scale: fadeAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 1] })
@@ -74,7 +73,7 @@ const SelectedContact: React.FC<Props> = ({ setChecked, index, item, checked }) 
       </View>
     </TouchableNativeFeedback>
   );
-};
+});
 
 export default SelectedContact;
 
@@ -83,7 +82,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    height: 50
+    height: 60
   },
   person: {
     height: 40,
@@ -94,9 +93,9 @@ const styles = StyleSheet.create({
     backgroundColor: "grey"
   },
   info: {
-    borderBottomColor: "rgba(241, 241, 242, 0.7)",
+    borderBottomColor: "rgba(241, 241, 242, 0.5)",
     borderBottomWidth: 0.5,
-    height: 50,
+    height: 60,
     width: "80%",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -106,7 +105,7 @@ const styles = StyleSheet.create({
     height: 20,
     width: 20,
     borderRadius: 20,
-    backgroundColor: "#fff",
+    backgroundColor: "#00af9c",
     alignItems: "center",
     justifyContent: "center"
   },
@@ -115,7 +114,7 @@ const styles = StyleSheet.create({
     width: 20,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "#fff",
+    borderColor: "rgba(241, 241, 242, 0.5)",
     alignItems: "center",
     justifyContent: "center"
   }
