@@ -4,7 +4,12 @@ import { Overlay } from "react-native-elements";
 import RadioButton from "../components/RadioButton";
 
 const PrivacyScreen = () => {
-  const [modal, setModal] = useState<"lastSeen" | "profilePhoto" | "about" | null>("profilePhoto");
+  const [modal, setModal] = useState<"lastSeen" | "profilePhoto" | "about" | null>(null);
+  const [lastSeen, setLastSeen] = useState<"everyone" | "myContacts" | "nobody">("everyone");
+  const [profilePhoto, setProfilePhoto] = useState<"everyone" | "myContacts" | "nobody">(
+    "everyone"
+  );
+  const [about, setAbout] = useState<"everyone" | "myContacts" | "nobody">("everyone");
 
   const modalText = (): string => {
     if (modal === "about") return "About";
@@ -12,25 +17,59 @@ const PrivacyScreen = () => {
     if (modal === "profilePhoto") return "Profile Photo";
     return "";
   };
+  const setVisibility = (visibility: typeof modal): string => {
+    if (visibility === "lastSeen") {
+      if (lastSeen === "everyone") return "Everyone";
+      if (lastSeen === "myContacts") return "My Contacts";
+      if (lastSeen === "nobody") return "Nobody";
+    }
+    if (visibility === "profilePhoto") {
+      if (profilePhoto === "everyone") return "Everyone";
+      if (profilePhoto === "myContacts") return "My Contacts";
+      if (profilePhoto === "nobody") return "Nobody";
+    }
+    if (visibility === "about") {
+      if (about === "everyone") return "Everyone";
+      if (about === "myContacts") return "My Contacts";
+      if (about === "nobody") return "Nobody";
+    }
+    return "";
+  };
+  const defaultDeterminant = (): string => {
+    if (modal === "about") return about;
+    if (modal === "lastSeen") return lastSeen;
+    if (modal === "profilePhoto") return profilePhoto;
+    return "";
+  };
   return (
     <View>
       <Overlay
-        isVisible
-        // onBackdropPress={() => setModal(null)}
+        isVisible={!!modal}
+        onBackdropPress={() => setModal(null)}
         overlayStyle={{ backgroundColor: "#1b252c", minHeight: "25%", width: "85%" }}
       >
         <View>
           <Text style={{ color: "#fff", paddingVertical: 10, fontSize: 17 }}>{modalText()}</Text>
           <View>
-            {/* <Text style={{ color: "#fff" }}>Everyone</Text>
-            <Text style={{ color: "#fff" }}>My Contacts</Text>
-            <Text style={{ color: "#fff" }}>Nobody</Text> */}
             <RadioButton
               entries={[
                 { label: "Everyone", determinant: "everyone" },
                 { label: "My Contacts", determinant: "myContacts" },
                 { label: "Nobody", determinant: "nobody" }
               ]}
+              defaultDeterminant={defaultDeterminant()}
+              onSelect={selected => {
+                if (modal === "lastSeen") {
+                  setLastSeen(selected as typeof lastSeen);
+                }
+                if (modal === "about") {
+                  setAbout(selected as typeof about);
+                }
+                if (modal === "profilePhoto") {
+                  setProfilePhoto(selected as typeof profilePhoto);
+                }
+                setModal(null);
+              }}
             />
           </View>
         </View>
@@ -47,7 +86,7 @@ const PrivacyScreen = () => {
       >
         <View style={styles.privacyItem}>
           <Text style={{ color: "#fff" }}>Last Seen</Text>
-          <Text style={{ color: "rgba(241, 241, 242, 0.7)" }}>Everyone</Text>
+          <Text style={{ color: "rgba(241, 241, 242, 0.7)" }}>{setVisibility("lastSeen")}</Text>
         </View>
       </TouchableNativeFeedback>
       <TouchableNativeFeedback
@@ -56,7 +95,7 @@ const PrivacyScreen = () => {
       >
         <View style={styles.privacyItem}>
           <Text style={{ color: "#fff" }}>Profile Photo</Text>
-          <Text style={{ color: "rgba(241, 241, 242, 0.7)" }}>Everyone</Text>
+          <Text style={{ color: "rgba(241, 241, 242, 0.7)" }}>{setVisibility("profilePhoto")}</Text>
         </View>
       </TouchableNativeFeedback>
       <TouchableNativeFeedback
@@ -65,7 +104,7 @@ const PrivacyScreen = () => {
       >
         <View style={styles.privacyItem}>
           <Text style={{ color: "#fff" }}>About</Text>
-          <Text style={{ color: "rgba(241, 241, 242, 0.7)" }}>Everyone</Text>
+          <Text style={{ color: "rgba(241, 241, 242, 0.7)" }}>{setVisibility("about")}</Text>
         </View>
       </TouchableNativeFeedback>
       <TouchableNativeFeedback
