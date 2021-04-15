@@ -23,6 +23,7 @@ import StarredMessagesScreen from "./screens/StarredMessagesScreen";
 import BroadcastScreen from "./screens/BroadcastScreen";
 import PrivacyScreen from "./screens/PrivacyScreen";
 import StatusPrivacyScreen from "./screens/StatusPrivacyScreen";
+import SelectContactsScreen from "./screens/SelectContactsScreen";
 
 enableScreens();
 
@@ -127,6 +128,10 @@ const stackNavigator = createStackNavigator(
     },
     StatusPrivacy: {
       screen: StatusPrivacyScreen,
+      ...stackScreenSettings
+    },
+    SelectContacts: {
+      screen: SelectContactsScreen,
       ...stackScreenSettings
     }
   },

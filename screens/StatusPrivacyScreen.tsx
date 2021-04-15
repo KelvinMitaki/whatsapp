@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import RadioButton from "../components/RadioButton";
 
-const StatusPrivacyScreen: NavigationStackScreenComponent = () => {
+const StatusPrivacyScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  const [selected, setSelected] = useState<"myContacts" | "myContactsExc" | "onlyShareWith">(
+    "myContacts"
+  );
   return (
     <View style={styles.prt}>
       <View>
@@ -17,7 +20,12 @@ const StatusPrivacyScreen: NavigationStackScreenComponent = () => {
               { label: "My Contacts except...", determinant: "myContactsExc" },
               { label: "Only share with...", determinant: "onlyShareWith" }
             ]}
-            onSelect={slctn => console.log(slctn)}
+            onSelect={slctn => {
+              if (slctn === "myContactsExc" || slctn === "onlyShareWith") {
+                navigation.navigate("SelectContacts");
+              }
+              setSelected(slctn as typeof selected);
+            }}
           />
         </View>
         <Text style={{ color: "rgba(241, 241, 242, 0.7)" }}>
@@ -28,7 +36,7 @@ const StatusPrivacyScreen: NavigationStackScreenComponent = () => {
         title="Done"
         buttonStyle={styles.btn}
         titleStyle={{ color: "#191f23" }}
-        onPress={() => {}}
+        onPress={() => navigation.goBack()}
       />
     </View>
   );
