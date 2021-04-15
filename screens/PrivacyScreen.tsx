@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { Overlay } from "react-native-elements";
+import { NavigationStackScreenComponent } from "react-navigation-stack";
 import RadioButton from "../components/RadioButton";
 
-const PrivacyScreen = () => {
+const PrivacyScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [modal, setModal] = useState<"lastSeen" | "profilePhoto" | "about" | null>(null);
   const [lastSeen, setLastSeen] = useState<"everyone" | "myContacts" | "nobody">("everyone");
   const [profilePhoto, setProfilePhoto] = useState<"everyone" | "myContacts" | "nobody">(
@@ -109,7 +110,7 @@ const PrivacyScreen = () => {
       </TouchableNativeFeedback>
       <TouchableNativeFeedback
         background={TouchableNativeFeedback.Ripple("#fff", false)}
-        onPress={() => {}}
+        onPress={() => navigation.navigate("StatusPrivacy")}
       >
         <View style={styles.privacyItem}>
           <Text style={{ color: "#fff" }}>Status</Text>

@@ -22,6 +22,7 @@ import NewGroupInfoScreen from "./screens/NewGroupInfoScreen";
 import StarredMessagesScreen from "./screens/StarredMessagesScreen";
 import BroadcastScreen from "./screens/BroadcastScreen";
 import PrivacyScreen from "./screens/PrivacyScreen";
+import StatusPrivacyScreen from "./screens/StatusPrivacyScreen";
 
 enableScreens();
 
@@ -122,6 +123,10 @@ const stackNavigator = createStackNavigator(
     },
     Privacy: {
       screen: PrivacyScreen,
+      ...stackScreenSettings
+    },
+    StatusPrivacy: {
+      screen: StatusPrivacyScreen,
       ...stackScreenSettings
     }
   },
