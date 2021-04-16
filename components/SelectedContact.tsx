@@ -16,20 +16,6 @@ interface Props {
 }
 
 const SelectedContact: React.FC<Props> = React.memo(({ setChecked, index, item, checked }) => {
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const fadeIn = () => {
-    Animated.timing(fadeAnim, { toValue: 1, useNativeDriver: false, duration: 150 }).start();
-  };
-  const fadeOut = () => {
-    Animated.timing(fadeAnim, { toValue: 0, useNativeDriver: false, duration: 150 }).start();
-  };
-  useEffect(() => {
-    if (checked.some(c => c.id === index)) {
-      fadeIn();
-    } else {
-      fadeOut();
-    }
-  }, [checked]);
   return (
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#fff", false)}
@@ -54,20 +40,9 @@ const SelectedContact: React.FC<Props> = React.memo(({ setChecked, index, item, 
             {item.name}
           </Text>
           <View style={styles.info_outline}>
-            <Animated.View
-              style={[
-                styles.check,
-                {
-                  transform: [
-                    {
-                      scale: fadeAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 1] })
-                    }
-                  ]
-                }
-              ]}
-            >
+            <View style={{ ...(checked.some(c => c.id === index) && styles.check) }}>
               <MaterialIcons name="check" size={18} color="#191f23" />
-            </Animated.View>
+            </View>
           </View>
         </View>
       </View>
