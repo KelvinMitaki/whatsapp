@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, TouchableNativeFeedback, View } from "react-native";
+import { FlatList, StyleSheet, TouchableNativeFeedback, View, ScrollView } from "react-native";
 import { Text } from "react-native-elements";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
@@ -13,6 +13,11 @@ interface Params {
   setChecked: React.Dispatch<React.SetStateAction<Data[]>>;
 }
 
+export interface SetChecked {
+  type: "setChecked";
+  payload: Data;
+}
+
 const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [checked, setChecked] = useState<Data[]>([]);
   useEffect(() => {
@@ -22,13 +27,11 @@ const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigati
 
   return (
     <View>
-      <FlatList
-        data={users}
-        keyExtractor={(_, i) => i.toLocaleString()}
-        renderItem={({ item, index }) => (
-          <SelectedContact item={item} index={index} setChecked={setChecked} checked={checked} />
-        )}
-      />
+      <ScrollView>
+        {users.map((u, i) => (
+          <SelectedContact item={u} key={i} index={i} setChecked={setChecked} checked={checked} />
+        ))}
+      </ScrollView>
     </View>
   );
 };

@@ -15,21 +15,21 @@ interface Props {
   checked: Data[];
 }
 
-const SelectedContact: React.FC<Props> = React.memo(({ setChecked, index, item, checked }) => {
+const SelectedContact: React.FC<Props> = ({ setChecked, index, item, checked }) => {
   return (
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#fff", false)}
-      onPress={() =>
-        setChecked(c => {
-          const items = [...c];
-          const itemIndex = c.findIndex(i => i.id === index);
-          if (itemIndex !== -1) {
-            items.splice(itemIndex, 1);
-            return items;
-          }
-          return [...c, { ...item, id: index }];
-        })
-      }
+      onPress={() => {
+        // setChecked(c => {
+        //   // const items = [...c];
+        //   // const itemIndex = c.findIndex(i => i.id === index);
+        //   // if (itemIndex !== -1) {
+        //   //   items.splice(itemIndex, 1);
+        //   //   return items;
+        //   // }
+        //   return [...c, { ...item, id: index }];
+        // });
+      }}
     >
       <View style={styles.contact}>
         <View style={styles.person}>
@@ -48,7 +48,7 @@ const SelectedContact: React.FC<Props> = React.memo(({ setChecked, index, item, 
       </View>
     </TouchableNativeFeedback>
   );
-});
+};
 
 export default SelectedContact;
 
