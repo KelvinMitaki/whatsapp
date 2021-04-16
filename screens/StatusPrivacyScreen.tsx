@@ -22,7 +22,7 @@ const StatusPrivacyScreen: NavigationStackScreenComponent = ({ navigation }) => 
             ]}
             onSelect={slctn => {
               if (slctn === "myContactsExc" || slctn === "onlyShareWith") {
-                navigation.navigate("SelectContacts");
+                navigation.navigate("SelectContacts", { slctn });
               }
               setSelected(slctn as typeof selected);
             }}

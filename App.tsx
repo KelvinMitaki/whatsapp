@@ -136,20 +136,13 @@ const stackNavigator = createStackNavigator(
       ...stackScreenSettings
     },
     SelectContacts: {
+      // @ts-ignore
       screen: SelectContactsScreen,
       ...stackScreenSettings
     }
   },
   {
     defaultNavigationOptions: {
-      cardStyle: {
-        backgroundColor: "#191f23",
-        opacity: 1,
-        flex: 1,
-        zIndex: 1,
-        elevation: Platform.OS === "android" ? 1 : 0,
-        ...inspect()
-      },
       cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
     },
     mode: "modal"

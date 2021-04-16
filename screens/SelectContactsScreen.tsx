@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableNativeFeedback, View } from "react-native";
 import { Text } from "react-native-elements";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
@@ -6,8 +6,16 @@ import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { users } from "../data/data";
 import SelectedContact, { Data } from "../components/SelectedContact";
 
-const SelectContactsScreen: NavigationStackScreenComponent = () => {
+interface Params {
+  slctn: "myContactsExc" | "onlyShareWith";
+  selected: number;
+}
+
+const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [checked, setChecked] = useState<Data[]>([]);
+  useEffect(() => {
+    navigation.setParams({ selected: checked.length });
+  }, [checked]);
   return (
     <View>
       <FlatList
@@ -21,12 +29,24 @@ const SelectContactsScreen: NavigationStackScreenComponent = () => {
   );
 };
 
-SelectContactsScreen.navigationOptions = () => {
+SelectContactsScreen.navigationOptions = ({ navigation }) => {
+  const slctn = navigation.getParam("slctn");
+  const selected = navigation.getParam("selected");
   return {
     headerTitle: () => (
       <View>
-        <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>Hide status from...</Text>
-        <Text style={{ color: "#fff" }}>No contacts excluded</Text>
+        <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>
+          {slctn === "myContactsExc" ? "Hide status from..." : "Share status with..."}
+        </Text>
+        <Text style={{ color: "#fff" }}>
+          {!selected
+            ? slctn === "myContactsExc"
+              ? "No contacts excluded"
+              : "No contacts selected"
+            : `${selected.toLocaleString()} ${selected === 1 ? "contact" : "contacts"} ${
+                slctn === "myContactsExc" ? "excluded" : "selected"
+              }`}
+        </Text>
       </View>
     ),
     headerRight: () => (
