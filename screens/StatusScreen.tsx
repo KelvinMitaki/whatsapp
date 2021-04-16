@@ -1,13 +1,15 @@
-import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import React, { useRef } from "react";
+import { Animated, Image, StyleSheet, Text, View } from "react-native";
 import { ScrollView, TouchableNativeFeedback } from "react-native";
 import { Ionicons, FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import inspect from "../inspect";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 import { DashedCircularIndicator } from "../components/DashedCircularIndicator";
 import StatusList from "../components/StatusList";
+import { NavigationEvents } from "react-navigation";
 
 const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
+  const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
   const status = [];
 
   for (let i = 0; i < 50; i++) {
@@ -15,6 +17,18 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   }
   return (
     <View>
+      <NavigationEvents
+        onDidFocus={() => {
+          Animated.timing(position, {
+            toValue: { x: 0, y: -100 },
+            useNativeDriver: false,
+            duration: 300
+          }).start();
+        }}
+        onWillBlur={() => {
+          Animated.timing(position, { toValue: { x: 0, y: 0 }, useNativeDriver: false }).start();
+        }}
+      />
       <ScrollView>
         <TouchableNativeFeedback
           onPress={() => {}}
@@ -49,11 +63,13 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
         </TouchableNativeFeedback>
         <StatusList />
       </ScrollView>
-      <TouchableNativeFeedback onPress={() => {}}>
-        <View style={styles.pencil}>
-          <MaterialCommunityIcons name="pencil" size={20} color="#fff" />
-        </View>
-      </TouchableNativeFeedback>
+      <Animated.View style={position.getLayout()}>
+        <TouchableNativeFeedback onPress={() => {}}>
+          <View style={styles.pencil}>
+            <MaterialCommunityIcons name="pencil" size={20} color="#fff" />
+          </View>
+        </TouchableNativeFeedback>
+      </Animated.View>
       <TouchableNativeFeedback onPress={() => {}}>
         <View style={styles.camera}>
           <FontAwesome name="camera" size={20} color="#fff" />
