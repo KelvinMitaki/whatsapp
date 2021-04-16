@@ -9,13 +9,17 @@ import SelectedContact, { Data } from "../components/SelectedContact";
 interface Params {
   slctn: "myContactsExc" | "onlyShareWith";
   selected: number;
+  selectAll: boolean;
+  setChecked: React.Dispatch<React.SetStateAction<Data[]>>;
 }
 
 const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [checked, setChecked] = useState<Data[]>([]);
   useEffect(() => {
     navigation.setParams({ selected: checked.length });
+    navigation.setParams({ setChecked });
   }, [checked]);
+
   return (
     <View>
       <FlatList
@@ -32,6 +36,8 @@ const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigati
 SelectContactsScreen.navigationOptions = ({ navigation }) => {
   const slctn = navigation.getParam("slctn");
   const selected = navigation.getParam("selected");
+  const selectAll = navigation.getParam("selectAll");
+  const setChecked = navigation.getParam("setChecked");
   return {
     headerTitle: () => (
       <View>
@@ -64,7 +70,14 @@ SelectContactsScreen.navigationOptions = ({ navigation }) => {
         <View style={styles.ellipsis}>
           <TouchableNativeFeedback
             background={TouchableNativeFeedback.Ripple("#fff", true)}
-            onPress={() => {}}
+            onPress={() => {
+              navigation.setParams({ selectAll: !selectAll });
+              if (!selectAll) {
+                setChecked(users.map((u, i) => ({ ...u, id: i })));
+              } else {
+                setChecked([]);
+              }
+            }}
           >
             <View>
               <MaterialIcons name="playlist-add-check" size={25} color="#fff" />
