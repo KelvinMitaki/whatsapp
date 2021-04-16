@@ -1,8 +1,17 @@
-import React from "react";
-import { StyleSheet, Text, View, TouchableNativeFeedback, FlatList } from "react-native";
+import React, { useEffect, useRef } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableNativeFeedback,
+  FlatList,
+  Animated,
+  Easing
+} from "react-native";
 import { MaterialIcons, Ionicons, Feather } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { SetContacts } from "../screens/NewGroupScreen";
+import { NavigationEvents } from "react-navigation";
 
 interface Props {
   Contacts: {
@@ -13,9 +22,35 @@ interface Props {
 }
 
 const HorizontalScrollContacts: React.FC<Props> = ({ Contacts }) => {
+  const height = useRef(new Animated.Value(0)).current;
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (Contacts.length) {
+      Animated.timing(height, {
+        toValue: 10,
+        useNativeDriver: false,
+        duration: 200,
+        easing: Easing.linear
+      }).start();
+    } else {
+      Animated.timing(height, {
+        toValue: 0,
+        useNativeDriver: false,
+        duration: 200,
+        easing: Easing.linear
+      }).start();
+    }
+  }, [Contacts]);
   return Contacts.length !== 0 ? (
-    <View style={{ height: 85 }}>
+    <Animated.View
+      style={{
+        height: height.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 10]
+        })
+      }}
+    >
       <FlatList
         data={Contacts}
         horizontal
@@ -46,7 +81,7 @@ const HorizontalScrollContacts: React.FC<Props> = ({ Contacts }) => {
           </TouchableNativeFeedback>
         )}
       />
-    </View>
+    </Animated.View>
   ) : null;
 };
 
