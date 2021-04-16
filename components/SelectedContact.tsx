@@ -12,7 +12,7 @@ interface Props {
   setChecked: React.Dispatch<React.SetStateAction<Data[]>>;
   index: number;
   item: typeof users[0];
-  checked: Data[];
+  checked: boolean;
 }
 
 const SelectedContact: React.FC<Props> = ({ setChecked, index, item, checked }) => {
@@ -20,15 +20,15 @@ const SelectedContact: React.FC<Props> = ({ setChecked, index, item, checked }) 
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#fff", false)}
       onPress={() => {
-        // setChecked(c => {
-        //   // const items = [...c];
-        //   // const itemIndex = c.findIndex(i => i.id === index);
-        //   // if (itemIndex !== -1) {
-        //   //   items.splice(itemIndex, 1);
-        //   //   return items;
-        //   // }
-        //   return [...c, { ...item, id: index }];
-        // });
+        setChecked(c => {
+          const items = [...c];
+          const itemIndex = c.findIndex(i => i.id === index);
+          if (itemIndex !== -1) {
+            items.splice(itemIndex, 1);
+            return items;
+          }
+          return [...c, { ...item, id: index }];
+        });
       }}
     >
       <View style={styles.contact}>
@@ -40,7 +40,7 @@ const SelectedContact: React.FC<Props> = ({ setChecked, index, item, checked }) 
             {item.name}
           </Text>
           <View style={styles.info_outline}>
-            <View style={{ ...(checked.some(c => c.id === index) && styles.check) }}>
+            <View style={{ ...(checked && styles.check) }}>
               <MaterialIcons name="check" size={18} color="#191f23" />
             </View>
           </View>
@@ -50,7 +50,7 @@ const SelectedContact: React.FC<Props> = ({ setChecked, index, item, checked }) 
   );
 };
 
-export default SelectedContact;
+export default React.memo(SelectedContact);
 
 const styles = StyleSheet.create({
   contact: {

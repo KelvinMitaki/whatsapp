@@ -1,10 +1,8 @@
 import { AnyAction } from "redux";
-import { Data } from "../components/SelectedContact";
 import { messages } from "../data/messages";
 import { SetMessage } from "../screens/BroadcastScreen";
 import { ResetContacts } from "../screens/NewGroupInfoScreen";
 import { SetContacts } from "../screens/NewGroupScreen";
-import { SetChecked } from "../screens/SelectContactsScreen";
 
 export interface ChatState {
   Contacts: {
@@ -13,15 +11,13 @@ export interface ChatState {
     avatar: string;
   }[];
   messages: typeof messages;
-  checked: Data[];
 }
 
-type Action = SetContacts | ResetContacts | SetMessage | SetChecked;
+type Action = SetContacts | ResetContacts | SetMessage;
 
 const INITIAL_STATE: ChatState = {
   Contacts: [],
-  messages: messages,
-  checked: []
+  messages: messages
 };
 
 const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
@@ -40,14 +36,6 @@ const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
       return { ...state, Contacts: [] };
     case "setMessage":
       return { ...state, messages: [action.payload, ...state.messages] };
-    case "setChecked":
-      const items = [...state.checked];
-      const itemIndex = state.checked.findIndex(i => i.id === action.payload.id);
-      if (itemIndex !== -1) {
-        items.splice(itemIndex, 1);
-        return { ...state, checked: items };
-      }
-      return { ...state, checked: [...state.checked, action.payload] };
     default:
       return state;
   }
