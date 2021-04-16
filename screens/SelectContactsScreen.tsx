@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Animated, FlatList, StyleSheet, TouchableNativeFeedback, View } from "react-native";
+import {
+  Animated,
+  FlatList,
+  StyleSheet,
+  ToastAndroid,
+  TouchableNativeFeedback,
+  View
+} from "react-native";
 import { Text } from "react-native-elements";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
@@ -39,6 +46,7 @@ const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigati
       <FlatList
         data={users}
         keyExtractor={(_, i) => i.toLocaleString()}
+        initialNumToRender={15}
         renderItem={({ item, index }) => (
           <SelectedContact
             item={item}
@@ -48,11 +56,15 @@ const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigati
           />
         )}
       />
+
       <Animated.View style={position.getLayout()}>
         <View style={styles.checkmarkPrt}>
           <TouchableNativeFeedback
             background={TouchableNativeFeedback.Ripple("#fff", true)}
-            onPress={() => {}}
+            onPress={() => {
+              ToastAndroid.show("Settings updated", ToastAndroid.LONG);
+              navigation.goBack();
+            }}
           >
             <View style={styles.checkMark}>
               <Ionicons name="checkmark-sharp" size={25} color="#fff" />
