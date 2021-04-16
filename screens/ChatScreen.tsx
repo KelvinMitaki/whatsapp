@@ -1,14 +1,33 @@
-import React from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import React, { useEffect } from "react";
+import {
+  BackHandler,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  TouchableNativeFeedback
+} from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
-import { MaterialIcons, Ionicons, FontAwesome } from "@expo/vector-icons";
+import { MaterialIcons, Ionicons, AntDesign } from "@expo/vector-icons";
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import inspect from "../inspect";
-import { TouchableNativeFeedback } from "react-native";
 import Message from "../components/Message";
 import Input from "../components/Input";
 
-const ChatScreen: NavigationStackScreenComponent = () => {
+const ChatScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", handleBackBtnPressAndroid);
+    return () => {
+      BackHandler.removeEventListener("hardwareBackPress", handleBackBtnPressAndroid);
+    };
+  }, []);
+  const handleBackBtnPressAndroid = () => {
+    if (!navigation.isFocused()) {
+      return false;
+    }
+    navigation.navigate("Home");
+    return true;
+  };
   return (
     <View>
       <Message />
@@ -17,7 +36,7 @@ const ChatScreen: NavigationStackScreenComponent = () => {
   );
 };
 
-ChatScreen.navigationOptions = ({}) => {
+ChatScreen.navigationOptions = ({ navigation }) => {
   return {
     headerTitle: () => (
       <View style={styles.headerLeft}>
@@ -71,6 +90,16 @@ ChatScreen.navigationOptions = ({}) => {
             </View>
           </TouchableNativeFeedback>
         </View>
+      </View>
+    ),
+    headerBackImage: () => (
+      <View>
+        <AntDesign
+          name="arrowleft"
+          size={20}
+          color="#fff"
+          onPress={() => navigation.navigate("Home")}
+        />
       </View>
     )
   };

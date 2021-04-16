@@ -4,7 +4,6 @@ import { Badge, Text } from "react-native-elements";
 import { Card, Avatar } from "react-native-elements";
 import { TouchableNativeFeedback } from "react-native";
 import { Ionicons, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
-import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { useSelector } from "react-redux";
 import { Redux } from "../interfaces/Redux";
