@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { FlatList, StyleSheet, TouchableNativeFeedback, View, ScrollView } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  FlatList,
+  StyleSheet,
+  TouchableNativeFeedback,
+  View,
+  ScrollView,
+  Animated
+} from "react-native";
 import { Text } from "react-native-elements";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -22,28 +29,46 @@ export interface SetContacts {
 }
 
 const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
   const Contacts = useSelector((state: Redux) => state.chat.Contacts);
   const dispatch = useDispatch();
+  useEffect(() => {
+    if (Contacts.length) {
+      Animated.spring(position, {
+        toValue: { x: 0, y: -20 },
+        useNativeDriver: false,
+        friction: 4
+      }).start();
+    } else {
+      Animated.spring(position, {
+        toValue: { x: 0, y: 70 },
+        useNativeDriver: false,
+        friction: 4
+      }).start();
+    }
+  }, [Contacts]);
   return (
     <>
       <HorizontalScrollContacts Contacts={Contacts} />
       <NavigationEvents onWillFocus={() => dispatch<ResetContacts>({ type: "resetContacts" })} />
-      <View style={styles.continue}>
-        <TouchableNativeFeedback
-          background={TouchableNativeFeedback.Ripple("#fff", true)}
-          onPress={() => Contacts.length && navigation.navigate("NewGroupInfo")}
-        >
-          <View style={styles.foward}>
-            <MaterialIcons name="arrow-forward" size={25} color="#fff" />
-          </View>
-        </TouchableNativeFeedback>
-      </View>
       <ScrollView>
         <Contact
           setContacts={usr => dispatch<SetContacts>({ type: "setContacts", payload: usr })}
           Contacts={Contacts}
         />
       </ScrollView>
+      <Animated.View style={position.getLayout()}>
+        <View style={styles.continue}>
+          <TouchableNativeFeedback
+            background={TouchableNativeFeedback.Ripple("#fff", true)}
+            onPress={() => Contacts.length && navigation.navigate("NewGroupInfo")}
+          >
+            <View style={styles.foward}>
+              <MaterialIcons name="arrow-forward" size={25} color="#fff" />
+            </View>
+          </TouchableNativeFeedback>
+        </View>
+      </Animated.View>
     </>
   );
 };
