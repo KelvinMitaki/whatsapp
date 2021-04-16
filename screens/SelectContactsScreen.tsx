@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { FlatList, ScrollView, StyleSheet, TouchableNativeFeedback, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Animated, FlatList, StyleSheet, TouchableNativeFeedback, View } from "react-native";
 import { Text } from "react-native-elements";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
@@ -15,9 +15,23 @@ interface Params {
 
 const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [checked, setChecked] = useState<Data[]>([]);
+  const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
   useEffect(() => {
     navigation.setParams({ selected: checked.length });
     navigation.setParams({ setChecked });
+    if (!checked.length) {
+      Animated.spring(position, {
+        toValue: { x: 0, y: 60 },
+        useNativeDriver: false,
+        friction: 4
+      }).start();
+    } else {
+      Animated.spring(position, {
+        toValue: { x: 0, y: -20 },
+        useNativeDriver: false,
+        friction: 4
+      }).start();
+    }
   }, [checked]);
 
   return (
@@ -34,6 +48,18 @@ const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigati
           />
         )}
       />
+      <Animated.View style={position.getLayout()}>
+        <View style={styles.checkmarkPrt}>
+          <TouchableNativeFeedback
+            background={TouchableNativeFeedback.Ripple("#fff", true)}
+            onPress={() => {}}
+          >
+            <View style={styles.checkMark}>
+              <Ionicons name="checkmark-sharp" size={25} color="#fff" />
+            </View>
+          </TouchableNativeFeedback>
+        </View>
+      </Animated.View>
     </View>
   );
 };
@@ -112,5 +138,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 90,
     marginHorizontal: 10
+  },
+  checkmarkPrt: {
+    position: "absolute",
+    right: "2%",
+    bottom: "2%",
+    backgroundColor: "#00af9c",
+    borderRadius: 500,
+    height: 50,
+    width: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 10,
+    elevation: 10
+  },
+  checkMark: {
+    height: 50,
+    width: 50,
+    alignItems: "center",
+    justifyContent: "center"
   }
 });

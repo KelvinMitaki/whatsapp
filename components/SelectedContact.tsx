@@ -36,7 +36,10 @@ const SelectedContact: React.FC<Props> = ({ setChecked, index, item, checked }) 
           <Ionicons name="person" size={30} color="rgba(241, 241, 242, 0.8)" />
         </View>
         <View style={styles.info}>
-          <Text numberOfLines={1} style={{ color: "#fff", width: "88%" }}>
+          <Text
+            numberOfLines={1}
+            style={{ color: "#fff", width: "88%", fontSize: 18, fontWeight: "700" }}
+          >
             {item.name}
           </Text>
           <View style={styles.info_outline}>
