@@ -28,7 +28,7 @@ const HorizontalScrollContacts: React.FC<Props> = ({ Contacts }) => {
   useEffect(() => {
     if (Contacts.length) {
       Animated.timing(height, {
-        toValue: 10,
+        toValue: 75,
         useNativeDriver: false,
         duration: 200,
         easing: Easing.linear
@@ -42,13 +42,10 @@ const HorizontalScrollContacts: React.FC<Props> = ({ Contacts }) => {
       }).start();
     }
   }, [Contacts]);
-  return Contacts.length !== 0 ? (
+  return (
     <Animated.View
       style={{
-        height: height.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 10]
-        })
+        height: height
       }}
     >
       <FlatList
@@ -82,7 +79,7 @@ const HorizontalScrollContacts: React.FC<Props> = ({ Contacts }) => {
         )}
       />
     </Animated.View>
-  ) : null;
+  );
 };
 
 export default HorizontalScrollContacts;

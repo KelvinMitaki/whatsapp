@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Animated, StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { users } from "../data/data";
