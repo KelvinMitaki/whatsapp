@@ -31,7 +31,6 @@ export interface SetContacts {
 
 const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
-  const scale = useRef(new Animated.Value(0.5)).current;
   const Contacts = useSelector((state: Redux) => state.chat.Contacts);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -51,7 +50,7 @@ const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
   }, [Contacts]);
   return (
     <>
-      <HorizontalScrollContacts Contacts={Contacts} scale={scale} />
+      <HorizontalScrollContacts Contacts={Contacts} />
       <NavigationEvents onWillFocus={() => dispatch<ResetContacts>({ type: "resetContacts" })} />
       <ScrollView>
         <Contact

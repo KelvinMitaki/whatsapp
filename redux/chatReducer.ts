@@ -11,13 +11,15 @@ export interface ChatState {
     avatar: string;
   }[];
   messages: typeof messages;
+  indexToAnimate: number | null;
 }
 
 type Action = SetContacts | ResetContacts | SetMessage;
 
 const INITIAL_STATE: ChatState = {
   Contacts: [],
-  messages: messages
+  messages: messages,
+  indexToAnimate: null
 };
 
 const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
@@ -26,11 +28,12 @@ const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
       const contactExists = state.Contacts.find(ct => ct.id === action.payload.id);
       if (contactExists) {
         const newContacts = state.Contacts.filter(ct => ct.id !== action.payload.id);
-        return { ...state, Contacts: newContacts };
+        return { ...state, Contacts: newContacts, indexToAnimate: null };
       }
       return {
         ...state,
-        Contacts: [...state.Contacts, action.payload]
+        Contacts: [...state.Contacts, action.payload],
+        indexToAnimate: action.payload.id
       };
     case "resetContacts":
       return { ...state, Contacts: [] };

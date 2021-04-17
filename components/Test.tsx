@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Animated, Easing, StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { Dispatch } from "redux";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import { SetContacts } from "../screens/NewGroupScreen";
 import { NavigationEvents } from "react-navigation";
+import { useSelector } from "react-redux";
+import { Redux } from "../interfaces/Redux";
 
 interface Props {
   dispatch: Dispatch<SetContacts>;
-  scale: Animated.Value;
   item: {
     id: number;
     name: string;
@@ -20,26 +21,17 @@ interface Props {
   }[];
 }
 
-const Test: React.FC<Props> = ({ dispatch, scale, item, Contacts }) => {
+const Test: React.FC<Props> = ({ dispatch, item, Contacts }) => {
+  const indexToAnimate = useSelector((state: Redux) => state.chat.indexToAnimate);
+  const scale = useRef(new Animated.Value(0.5)).current;
   useEffect(() => {
-    if (Contacts[Contacts.length - 1].id === item.id) {
-      Animated.timing(scale, {
-        toValue: 1,
-        useNativeDriver: false,
-        duration: 200,
-        easing: Easing.linear
-      }).start();
-    }
-
-    return () => {
-      Animated.timing(scale, {
-        toValue: 0,
-        useNativeDriver: false,
-        duration: 200,
-        easing: Easing.linear
-      }).start();
-    };
-  }, []);
+    Animated.timing(scale, {
+      toValue: typeof indexToAnimate === "number" ? 1 : 0,
+      useNativeDriver: false,
+      duration: 100,
+      easing: Easing.linear
+    }).start();
+  }, [indexToAnimate]);
   return (
     <TouchableNativeFeedback
       onPress={() =>
@@ -51,7 +43,9 @@ const Test: React.FC<Props> = ({ dispatch, scale, item, Contacts }) => {
     >
       <Animated.View
         style={{
-          transform: [{ scale }]
+          ...(indexToAnimate === item.id && {
+            transform: [{ scale }]
+          })
         }}
       >
         <NavigationEvents onDidFocus={() => console.log("focused")} />

@@ -24,13 +24,12 @@ export interface SetMessage {
 }
 
 const BroadcastScreen: NavigationStackScreenComponent = ({ navigation }) => {
-  const scale = useRef(new Animated.Value(0)).current;
   const dispatch = useDispatch();
   const Contacts = useSelector((state: Redux) => state.chat.Contacts);
   return (
     <>
       <NavigationEvents onWillFocus={() => dispatch<ResetContacts>({ type: "resetContacts" })} />
-      <HorizontalScrollContacts Contacts={Contacts} scale={scale} />
+      <HorizontalScrollContacts Contacts={Contacts} />
       <View style={styles.continue}>
         <TouchableNativeFeedback
           background={TouchableNativeFeedback.Ripple("#fff", true)}

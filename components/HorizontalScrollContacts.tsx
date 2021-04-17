@@ -20,10 +20,9 @@ interface Props {
     name: string;
     avatar: string;
   }[];
-  scale: Animated.Value;
 }
 
-const HorizontalScrollContacts: React.FC<Props> = ({ Contacts, scale }) => {
+const HorizontalScrollContacts: React.FC<Props> = ({ Contacts }) => {
   const height = useRef(new Animated.Value(0)).current;
   const dispatch = useDispatch();
 
@@ -55,9 +54,7 @@ const HorizontalScrollContacts: React.FC<Props> = ({ Contacts, scale }) => {
         horizontal
         showsHorizontalScrollIndicator={false}
         keyExtractor={(_, i) => i.toLocaleString()}
-        renderItem={({ item }) => (
-          <Test item={item} dispatch={dispatch} scale={scale} Contacts={Contacts} />
-        )}
+        renderItem={({ item }) => <Test item={item} dispatch={dispatch} Contacts={Contacts} />}
       />
     </Animated.View>
   );
