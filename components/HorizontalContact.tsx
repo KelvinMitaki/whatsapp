@@ -14,24 +14,20 @@ interface Props {
     name: string;
     avatar: string;
   };
-  Contacts: {
-    id: number;
-    name: string;
-    avatar: string;
-  }[];
 }
 
-const Test: React.FC<Props> = ({ dispatch, item, Contacts }) => {
+const HorizontalContact: React.FC<Props> = ({ dispatch, item }) => {
   const indexToAnimate = useSelector((state: Redux) => state.chat.indexToAnimate);
+  const scaleNum = useSelector((state: Redux) => state.chat.scaleNum);
   const scale = useRef(new Animated.Value(0.5)).current;
   useEffect(() => {
     Animated.timing(scale, {
-      toValue: typeof indexToAnimate === "number" ? 1 : 0,
+      toValue: scaleNum,
       useNativeDriver: false,
       duration: 100,
       easing: Easing.linear
     }).start();
-  }, [indexToAnimate]);
+  }, [scaleNum]);
   return (
     <TouchableNativeFeedback
       onPress={() =>
@@ -67,7 +63,7 @@ const Test: React.FC<Props> = ({ dispatch, item, Contacts }) => {
   );
 };
 
-export default Test;
+export default HorizontalContact;
 
 const styles = StyleSheet.create({
   selectedContact: {

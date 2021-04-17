@@ -1,18 +1,7 @@
 import React, { useEffect, useRef } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableNativeFeedback,
-  FlatList,
-  Animated,
-  Easing
-} from "react-native";
-import { MaterialIcons, Ionicons, Feather } from "@expo/vector-icons";
+import { StyleSheet, FlatList, Animated, Easing } from "react-native";
 import { useDispatch } from "react-redux";
-import { SetContacts } from "../screens/NewGroupScreen";
-import { NavigationEvents } from "react-navigation";
-import Test from "./Test";
+import HorizontalContact from "./HorizontalContact";
 
 interface Props {
   Contacts: {
@@ -25,7 +14,6 @@ interface Props {
 const HorizontalScrollContacts: React.FC<Props> = ({ Contacts }) => {
   const height = useRef(new Animated.Value(0)).current;
   const dispatch = useDispatch();
-
   useEffect(() => {
     if (Contacts.length) {
       Animated.timing(height, {
@@ -54,7 +42,7 @@ const HorizontalScrollContacts: React.FC<Props> = ({ Contacts }) => {
         horizontal
         showsHorizontalScrollIndicator={false}
         keyExtractor={(_, i) => i.toLocaleString()}
-        renderItem={({ item }) => <Test item={item} dispatch={dispatch} Contacts={Contacts} />}
+        renderItem={({ item }) => <HorizontalContact item={item} dispatch={dispatch} />}
       />
     </Animated.View>
   );

@@ -12,6 +12,7 @@ export interface ChatState {
   }[];
   messages: typeof messages;
   indexToAnimate: number | null;
+  scaleNum: number;
 }
 
 type Action = SetContacts | ResetContacts | SetMessage;
@@ -19,7 +20,8 @@ type Action = SetContacts | ResetContacts | SetMessage;
 const INITIAL_STATE: ChatState = {
   Contacts: [],
   messages: messages,
-  indexToAnimate: null
+  indexToAnimate: null,
+  scaleNum: 1
 };
 
 const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
@@ -28,12 +30,13 @@ const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
       const contactExists = state.Contacts.find(ct => ct.id === action.payload.id);
       if (contactExists) {
         const newContacts = state.Contacts.filter(ct => ct.id !== action.payload.id);
-        return { ...state, Contacts: newContacts, indexToAnimate: null };
+        return { ...state, Contacts: newContacts, indexToAnimate: action.payload.id, scaleNum: 0 };
       }
       return {
         ...state,
         Contacts: [...state.Contacts, action.payload],
-        indexToAnimate: action.payload.id
+        indexToAnimate: action.payload.id,
+        scaleNum: 1
       };
     case "resetContacts":
       return { ...state, Contacts: [] };
