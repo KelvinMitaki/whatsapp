@@ -5,7 +5,8 @@ import {
   TouchableNativeFeedback,
   View,
   ScrollView,
-  Animated
+  Animated,
+  Easing
 } from "react-native";
 import { Text } from "react-native-elements";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
@@ -30,6 +31,7 @@ export interface SetContacts {
 
 const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
+  const scale = useRef(new Animated.Value(0.5)).current;
   const Contacts = useSelector((state: Redux) => state.chat.Contacts);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -49,11 +51,13 @@ const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
   }, [Contacts]);
   return (
     <>
-      <HorizontalScrollContacts Contacts={Contacts} />
+      <HorizontalScrollContacts Contacts={Contacts} scale={scale} />
       <NavigationEvents onWillFocus={() => dispatch<ResetContacts>({ type: "resetContacts" })} />
       <ScrollView>
         <Contact
-          setContacts={usr => dispatch<SetContacts>({ type: "setContacts", payload: usr })}
+          setContacts={usr => {
+            dispatch<SetContacts>({ type: "setContacts", payload: usr });
+          }}
           Contacts={Contacts}
         />
       </ScrollView>

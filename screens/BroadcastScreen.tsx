@@ -1,5 +1,12 @@
-import React from "react";
-import { ScrollView, StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
+import React, { useRef } from "react";
+import {
+  Animated,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableNativeFeedback,
+  View
+} from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,12 +24,13 @@ export interface SetMessage {
 }
 
 const BroadcastScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  const scale = useRef(new Animated.Value(0)).current;
   const dispatch = useDispatch();
   const Contacts = useSelector((state: Redux) => state.chat.Contacts);
   return (
     <>
       <NavigationEvents onWillFocus={() => dispatch<ResetContacts>({ type: "resetContacts" })} />
-      <HorizontalScrollContacts Contacts={Contacts} />
+      <HorizontalScrollContacts Contacts={Contacts} scale={scale} />
       <View style={styles.continue}>
         <TouchableNativeFeedback
           background={TouchableNativeFeedback.Ripple("#fff", true)}
