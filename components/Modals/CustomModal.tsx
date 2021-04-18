@@ -1,11 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import {
   Modal,
   StyleSheet,
   Text,
   View,
   TouchableNativeFeedback,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   Animated
 } from "react-native";
@@ -41,7 +40,14 @@ const CustomModal: React.FC<Props & NavigationInjectedProps> = ({
     ]).reset();
   };
   return (
-    <Modal transparent onRequestClose={() => setShowModal(false)} visible={showModal}>
+    <Modal
+      transparent
+      onRequestClose={() => {
+        setShowModal(false);
+        reset();
+      }}
+      visible={showModal}
+    >
       <TouchableWithoutFeedback
         accessible={false}
         onPress={() => {

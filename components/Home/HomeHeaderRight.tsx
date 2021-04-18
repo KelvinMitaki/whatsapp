@@ -1,18 +1,45 @@
 import React, { useRef, useState } from "react";
-import { StyleSheet, Text, TouchableNativeFeedback, View, Animated } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableNativeFeedback,
+  View,
+  Animated,
+  Dimensions
+} from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import CustomModal from "../Modals/CustomModal";
+import SearchModal from "../Modals/SearchModal";
+import { Header, useHeaderHeight } from "react-navigation-stack";
 
 const HomeHeaderRight = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
   const height = useRef(new Animated.Value(0)).current;
   const width = useRef(new Animated.Value(0)).current;
+  const searchHeight = useRef(new Animated.Value(20)).current;
+  const searchWidth = useRef(new Animated.Value(20)).current;
+  const searchScale = useRef(new Animated.Value(0)).current;
   return (
     <View style={styles.headerRight}>
       <View style={styles.ellipsis}>
         <TouchableNativeFeedback
           background={TouchableNativeFeedback.Ripple("#fff", true)}
-          onPress={() => {}}
+          onPress={() => {
+            setShowSearchModal(true);
+            Animated.parallel([
+              Animated.timing(searchHeight, {
+                toValue: 100,
+                useNativeDriver: false,
+                duration: 300
+              }),
+              Animated.timing(searchWidth, {
+                toValue: Dimensions.get("screen").width,
+                useNativeDriver: false,
+                duration: 300
+              })
+            ]).start();
+          }}
         >
           <View>
             <MaterialIcons name="search" size={25} color="#fff" />
@@ -26,7 +53,7 @@ const HomeHeaderRight = () => {
             setShowModal(true);
             Animated.parallel([
               Animated.timing(height, {
-                toValue: 200,
+                toValue: useHeaderHeight(),
                 useNativeDriver: false,
                 duration: 300
               }),
@@ -48,6 +75,13 @@ const HomeHeaderRight = () => {
         setShowModal={setShowModal}
         height={height}
         width={width}
+      />
+      <SearchModal
+        searchScale={searchScale}
+        showSearchModal={showSearchModal}
+        setShowSearchModal={setShowSearchModal}
+        height={searchHeight}
+        width={searchWidth}
       />
     </View>
   );
