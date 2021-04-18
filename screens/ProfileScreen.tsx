@@ -1,15 +1,19 @@
-import React from "react";
-import { StyleSheet, Text, View, TouchableNativeFeedback } from "react-native";
+import React, { useEffect, useRef } from "react";
+import { StyleSheet, Text, View, TouchableNativeFeedback, Animated } from "react-native";
 import { Ionicons, FontAwesome, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import inspect from "../inspect";
 
 const ProfileScreen = () => {
+  const scale = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    Animated.timing(scale, { toValue: 1, useNativeDriver: false, duration: 300 }).start();
+  }, []);
   return (
     <View>
       <View>
-        <View style={styles.person}>
+        <Animated.View style={[styles.person, { transform: [{ scale }] }]}>
           <Ionicons name="person" size={100} color="rgba(241, 241, 242, 0.8)" />
-        </View>
+        </Animated.View>
         <View style={styles.cameraPrt}>
           <TouchableNativeFeedback
             onPress={() => {}}
