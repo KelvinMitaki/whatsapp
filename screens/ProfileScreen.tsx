@@ -16,14 +16,21 @@ const ProfileScreen = () => {
   const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
 
   useEffect(() => {
-    Animated.timing(scale, { toValue: 1, useNativeDriver: false, duration: 300 }).start();
-    Animated.timing(position, {
-      toValue: { x: Dimensions.get("screen").width / 2 - 75, y: 0 },
-      useNativeDriver: false,
-      duration: 300
-    }).start(() => {
-      Animated.timing(cameraScale, { toValue: 1, useNativeDriver: false, duration: 200 }).start();
-    });
+    Animated.sequence([
+      Animated.parallel([
+        Animated.timing(scale, { toValue: 1, useNativeDriver: false, duration: 300 }),
+        Animated.timing(position, {
+          toValue: { x: Dimensions.get("screen").width / 2 - 75, y: 0 },
+          useNativeDriver: false,
+          duration: 300
+        })
+      ]),
+      Animated.timing(cameraScale, {
+        toValue: 1,
+        useNativeDriver: true,
+        duration: 300
+      })
+    ]).start();
   }, []);
   return (
     <View>
