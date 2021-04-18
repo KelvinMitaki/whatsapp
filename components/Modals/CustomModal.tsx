@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Modal,
   StyleSheet,
@@ -6,7 +6,8 @@ import {
   View,
   TouchableNativeFeedback,
   TouchableOpacity,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Animated
 } from "react-native";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import inspect from "../../inspect";
@@ -14,39 +15,59 @@ import inspect from "../../inspect";
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   showModal: boolean;
+  height: Animated.Value;
+  width: Animated.Value;
 }
 
 const CustomModal: React.FC<Props & NavigationInjectedProps> = ({
   setShowModal,
   showModal,
-  navigation
+  navigation,
+  height,
+  width
 }) => {
+  const reset = () => {
+    Animated.parallel([
+      Animated.timing(height, {
+        toValue: 200,
+        useNativeDriver: false,
+        duration: 1000
+      }),
+      Animated.timing(width, {
+        toValue: 150,
+        useNativeDriver: false,
+        duration: 1000
+      })
+    ]).reset();
+  };
   return (
-    <Modal
-      transparent
-      onRequestClose={() => setShowModal(false)}
-      visible={showModal}
-      animationType="fade"
-    >
+    <Modal transparent onRequestClose={() => setShowModal(false)} visible={showModal}>
       <TouchableWithoutFeedback
         accessible={false}
-        onPress={() => setShowModal(false)}
+        onPress={() => {
+          setShowModal(false);
+          reset();
+        }}
         touchSoundDisabled
       >
         <View style={{ height: "100%", width: "100%" }}>
-          <View
-            style={{
-              backgroundColor: "#14191d",
-              width: 150,
-              alignSelf: "flex-end",
-              marginRight: 5,
-              marginTop: 5
-            }}
+          <Animated.View
+            style={[
+              {
+                backgroundColor: "#14191d",
+                alignSelf: "flex-end",
+                marginRight: 5,
+                marginTop: 5,
+                overflow: "hidden"
+              },
+              { height, width }
+            ]}
           >
             <TouchableNativeFeedback
               onPress={() => {
                 setShowModal(false);
                 navigation.navigate("NewGroup");
+                reset();
               }}
               background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
             >
@@ -66,6 +87,7 @@ const CustomModal: React.FC<Props & NavigationInjectedProps> = ({
               onPress={() => {
                 setShowModal(false);
                 navigation.navigate("Broadcast");
+                reset();
               }}
               background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
             >
@@ -85,6 +107,7 @@ const CustomModal: React.FC<Props & NavigationInjectedProps> = ({
               onPress={() => {
                 setShowModal(false);
                 navigation.navigate("StarredMessages");
+                reset();
               }}
               background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
             >
@@ -104,6 +127,7 @@ const CustomModal: React.FC<Props & NavigationInjectedProps> = ({
               onPress={() => {
                 setShowModal(false);
                 navigation.navigate("Settings");
+                reset();
               }}
               background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
             >
@@ -119,7 +143,7 @@ const CustomModal: React.FC<Props & NavigationInjectedProps> = ({
                 </Text>
               </View>
             </TouchableNativeFeedback>
-          </View>
+          </Animated.View>
         </View>
       </TouchableWithoutFeedback>
     </Modal>
