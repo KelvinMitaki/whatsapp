@@ -9,7 +9,13 @@ import {
   TextInput,
   TouchableNativeFeedback
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import {
+  AntDesign,
+  FontAwesome,
+  Feather,
+  MaterialCommunityIcons,
+  Entypo
+} from "@expo/vector-icons";
 import inspect from "../../inspect";
 
 interface Props {
@@ -61,7 +67,7 @@ const SearchModal: React.FC<Props> = ({
             style={[
               {
                 backgroundColor: "#14191d",
-                flexDirection: "row",
+                flexDirection: "column",
                 alignSelf: "flex-end"
               },
               { height, width }
@@ -84,6 +90,38 @@ const SearchModal: React.FC<Props> = ({
                 </View>
               </View>
               <TextInput placeholder="Search..." style={styles.input} placeholderTextColor="#fff" />
+            </View>
+            <View style={styles.filterPrt}>
+              <View style={styles.filter}>
+                <FontAwesome name="photo" size={18} style={{ paddingRight: 5 }} color="#fff" />
+                <Text style={{ color: "#fff" }}>Photos</Text>
+              </View>
+              <View style={styles.filter}>
+                <FontAwesome
+                  name="video-camera"
+                  size={18}
+                  style={{ paddingRight: 5 }}
+                  color="#fff"
+                />
+                <Text style={{ color: "#fff" }}>Videos</Text>
+              </View>
+              <View style={styles.filter}>
+                <Feather name="link-2" size={18} style={{ paddingRight: 5 }} color="#fff" />
+                <Text style={{ color: "#fff" }}>Links</Text>
+              </View>
+              <View style={styles.filter}>
+                <MaterialCommunityIcons
+                  name="headphones"
+                  size={18}
+                  style={{ paddingRight: 5 }}
+                  color="#fff"
+                />
+                <Text style={{ color: "#fff" }}>Audio</Text>
+              </View>
+              <View style={styles.filter}>
+                <Entypo name="text-document" size={18} style={{ paddingRight: 5 }} color="#fff" />
+                <Text style={{ color: "#fff" }}>Documents</Text>
+              </View>
             </View>
           </Animated.View>
         </View>
@@ -118,6 +156,22 @@ const styles = StyleSheet.create({
     height: 50,
     width: "70%",
     color: "#fff",
-    marginLeft: "5%"
+    marginLeft: "2%"
+  },
+  filterPrt: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    height: "100%",
+    width: "100%",
+    backgroundColor: "#14191d"
+  },
+  filter: {
+    height: 30,
+    paddingHorizontal: 10,
+    backgroundColor: "#20272b",
+    borderRadius: 400,
+    flexDirection: "row",
+    alignItems: "center",
+    margin: 5
   }
 });
