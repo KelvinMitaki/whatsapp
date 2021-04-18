@@ -102,7 +102,14 @@ const stackNavigator = createStackNavigator(
     },
     Profile: {
       screen: ProfileScreen,
-      ...stackScreenSettings
+      navigationOptions: {
+        ...stackScreenSettings.navigationOptions,
+        cardStyleInterpolator: ({ current, closing }) => ({
+          cardStyle: {
+            opacity: current.progress
+          }
+        })
+      }
     },
     NewGroup: {
       screen: NewGroupScreen,
