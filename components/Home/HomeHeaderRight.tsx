@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import CustomModal from "./CustomModal";
+import CustomModal from "../Modals/CustomModal";
 
 const HomeHeaderRight = () => {
   const [showModal, setShowModal] = useState<boolean>(false);

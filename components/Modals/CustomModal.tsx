@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback
 } from "react-native";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
-import inspect from "../inspect";
+import inspect from "../../inspect";
 
 interface Props {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;

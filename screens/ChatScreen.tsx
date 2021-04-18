@@ -11,8 +11,8 @@ import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons, Ionicons, AntDesign } from "@expo/vector-icons";
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import inspect from "../inspect";
-import Message from "../components/Message";
-import Input from "../components/Input";
+import Message from "../components/Chat/Message";
+import Input from "../components/Chat/Input";
 
 const ChatScreen: NavigationStackScreenComponent = ({ navigation }) => {
   useEffect(() => {

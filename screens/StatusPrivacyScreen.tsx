@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
-import RadioButton from "../components/RadioButton";
+import RadioButton from "../components/CustomInputs/RadioButton";
 
 const StatusPrivacyScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [selected, setSelected] = useState<"myContacts" | "myContactsExc" | "onlyShareWith">(

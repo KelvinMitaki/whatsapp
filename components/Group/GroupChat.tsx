@@ -5,8 +5,8 @@ import { Card, Avatar } from "react-native-elements";
 import { TouchableNativeFeedback } from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
-import { users } from "../data/data";
-import inspect from "../inspect";
+import { users } from "../../data/data";
+import inspect from "../../inspect";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 
 const GroupChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {

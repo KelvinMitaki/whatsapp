@@ -11,7 +11,7 @@ import { Text } from "react-native-elements";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { users } from "../data/data";
-import SelectedContact, { Data } from "../components/SelectedContact";
+import SelectedContact, { Data } from "../components/SelectContacts/SelectedContact";
 
 interface Params {
   slctn: "myContactsExc" | "onlyShareWith";

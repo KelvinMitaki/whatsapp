@@ -1,8 +1,8 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { TouchableNativeFeedback } from "react-native";
-import inspect from "../inspect";
-import { DashedCircularIndicator } from "../components/DashedCircularIndicator";
+import inspect from "../../inspect";
+import { DashedCircularIndicator } from "./DashedCircularIndicator";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 
 const StatusList: React.FC<NavigationInjectedProps> = ({ navigation }) => {

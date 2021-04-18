@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { Overlay } from "react-native-elements";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
-import RadioButton from "../components/RadioButton";
+import RadioButton from "../components/CustomInputs/RadioButton";
 
 const PrivacyScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [modal, setModal] = useState<"lastSeen" | "profilePhoto" | "about" | null>(null);

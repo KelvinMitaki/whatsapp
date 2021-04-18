@@ -17,7 +17,7 @@ import { enableScreens } from "react-native-screens";
 import GroupChatScreen from "./screens/GroupChatScreen";
 import MyStatusScreen from "./screens/MyStatusScreen";
 import ContactScreen from "./screens/ContactScreen";
-import HomeHeaderRight from "./components/HomeHeaderRight";
+import HomeHeaderRight from "./components/Home/HomeHeaderRight";
 import { Platform } from "react-native";
 import SettingsScreen from "./screens/SettingsScreen";
 import ProfileScreen from "./screens/ProfileScreen";

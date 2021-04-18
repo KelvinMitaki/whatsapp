@@ -1,8 +1,8 @@
 import React from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
-import HomeHeaderRight from "../components/HomeHeaderRight";
-import StarredMessage from "../components/StarredMessage";
+import HomeHeaderRight from "../components/Home/HomeHeaderRight";
+import StarredMessage from "../components/Starred/StarredMessage";
 import inspect from "../inspect";
 
 const StarredMessagesScreen: NavigationStackScreenComponent = () => {

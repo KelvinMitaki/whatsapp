@@ -1,11 +1,11 @@
 import React from "react";
 import { FlatList, StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { Ionicons, MaterialIcons, Octicons } from "@expo/vector-icons";
-import { users } from "../data/data";
+import { users } from "../../data/data";
 import { Badge } from "react-native-elements";
 import { Card } from "react-native-elements";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
-import inspect from "../inspect";
+import inspect from "../../inspect";
 
 interface Props {
   setContacts?: (usr: { name: string; avatar: string; id: number }) => void;

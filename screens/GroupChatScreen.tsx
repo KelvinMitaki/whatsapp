@@ -5,8 +5,8 @@ import { MaterialIcons, Ionicons, FontAwesome, AntDesign } from "@expo/vector-ic
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import inspect from "../inspect";
 import { TouchableNativeFeedback } from "react-native";
-import Input from "../components/Input";
-import GroupMessage from "../components/GroupMessage";
+import Input from "../components/Chat/Input";
+import GroupMessage from "../components/Group/GroupMessage";
 
 const GroupChatScreen: NavigationStackScreenComponent = ({ navigation }) => {
   useEffect(() => {

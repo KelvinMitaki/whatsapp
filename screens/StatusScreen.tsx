@@ -4,8 +4,8 @@ import { ScrollView, TouchableNativeFeedback } from "react-native";
 import { Ionicons, FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import inspect from "../inspect";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
-import { DashedCircularIndicator } from "../components/DashedCircularIndicator";
-import StatusList from "../components/StatusList";
+import { DashedCircularIndicator } from "../components/Status/DashedCircularIndicator";
+import StatusList from "../components/Status/StatusList";
 import { NavigationEvents } from "react-navigation";
 
 const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {

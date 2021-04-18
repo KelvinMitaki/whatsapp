@@ -1,7 +1,7 @@
 import React from "react";
 import { Animated, StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
-import { users } from "../data/data";
+import { users } from "../../data/data";
 
 export interface Data {
   name: string;

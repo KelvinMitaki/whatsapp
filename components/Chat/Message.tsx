@@ -1,11 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import inspect from "../inspect";
+import inspect from "../../inspect";
 
-const genRandomNum = () => Math.random() * (255 - 1) + 1;
-
-const GroupMessage = () => {
+const Message = () => {
   const messages = [] as JSX.Element[];
   for (let i = 0; i < 100; i++) {
     if (i === 0) {
@@ -20,36 +18,12 @@ const GroupMessage = () => {
             quidem molestias id, illum rerum eligendi voluptate
           </Text>
           <Text style={styles.meta}>
-            1:38 PM <Ionicons name="checkmark" size={18} />
+            1:38 PM <Ionicons name="checkmark-done" size={18} />
           </Text>
         </View>
-        <View style={{ flexDirection: "row" }}>
-          <View style={styles.person}>
-            <Ionicons name="person" size={25} color="rgba(241, 241, 242, 0.8)" />
-          </View>
-          <View style={{ ...styles.sender }}>
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text
-                style={{
-                  color: `rgb(${genRandomNum()},${genRandomNum()},${genRandomNum()})`
-                }}
-              >
-                +2547 2155 9392
-              </Text>
-              <Text
-                numberOfLines={1}
-                style={{
-                  color: "rgba(255,255,255,.7)",
-                  marginLeft: 10,
-                  maxWidth: "55%"
-                }}
-              >
-                ~Kevin
-              </Text>
-            </View>
-            <Text style={{ color: "#fff" }}>Message Message</Text>
-            <Text style={styles.meta}>1:39 PM</Text>
-          </View>
+        <View style={styles.sender}>
+          <Text style={{ color: "#fff" }}>Message Message</Text>
+          <Text style={styles.meta}>1:39 PM</Text>
         </View>
       </>
     );
@@ -66,7 +40,7 @@ const GroupMessage = () => {
   );
 };
 
-export default GroupMessage;
+export default Message;
 
 const styles = StyleSheet.create({
   prt: {
@@ -95,7 +69,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingBottom: 20,
     marginBottom: 10,
-    marginLeft: 5
+    marginLeft: 10
   },
   meta: {
     color: "rgba(255,255,255,.7)",
@@ -104,14 +78,5 @@ const styles = StyleSheet.create({
     bottom: 3,
     right: 5,
     paddingLeft: 10
-  },
-  person: {
-    borderRadius: 70,
-    backgroundColor: "grey",
-    height: 40,
-    width: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    marginLeft: "1%"
   }
 });

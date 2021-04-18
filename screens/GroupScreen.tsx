@@ -7,7 +7,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 import { users } from "../data/data";
 import inspect from "../inspect";
-import GroupChat from "../components/GroupChat";
+import GroupChat from "../components/Group/GroupChat";
 
 const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   return (

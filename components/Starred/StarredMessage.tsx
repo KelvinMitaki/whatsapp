@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { Ionicons, MaterialIcons, Entypo } from "@expo/vector-icons";
-import inspect from "../inspect";
+import inspect from "../../inspect";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 
 const StarredMessage: React.FC<NavigationInjectedProps> = React.memo(({ navigation }) => {

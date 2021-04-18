@@ -6,8 +6,8 @@ import { TouchableNativeFeedback } from "react-native";
 import { Ionicons, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { useSelector } from "react-redux";
-import { Redux } from "../interfaces/Redux";
-import inspect from "../inspect";
+import { Redux } from "../../interfaces/Redux";
+import inspect from "../../inspect";
 
 const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   const messages = useSelector((state: Redux) => state.chat.messages);

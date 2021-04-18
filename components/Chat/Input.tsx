@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Fontisto, Ionicons } from "@expo/vector-icons";
-import inspect from "../inspect";
+import inspect from "../../inspect";
 
 const Input = () => {
   return (

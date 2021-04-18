@@ -5,7 +5,7 @@ import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 import { users } from "../data/data";
 import inspect from "../inspect";
-import HomeChat from "../components/HomeChat";
+import HomeChat from "../components/Home/HomeChat";
 
 const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   return (

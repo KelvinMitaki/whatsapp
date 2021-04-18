@@ -12,11 +12,11 @@ import { Text } from "react-native-elements";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons } from "@expo/vector-icons";
 import inspect from "../inspect";
-import Contact from "../components/Contact";
+import Contact from "../components/Contacts/Contact";
 import { users } from "../data/data";
 import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../interfaces/Redux";
-import HorizontalScrollContacts from "../components/HorizontalScrollContacts";
+import HorizontalScrollContacts from "../components/Contacts/HorizontalScrollContacts";
 import { NavigationEvents } from "react-navigation";
 import { ResetContacts } from "./NewGroupInfoScreen";
 

@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, TouchableNativeFeedback, View } from "rea
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import inspect from "../inspect";
-import Contact from "../components/Contact";
+import Contact from "../components/Contacts/Contact";
 
 const ContactScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (

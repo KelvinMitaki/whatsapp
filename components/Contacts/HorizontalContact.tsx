@@ -2,10 +2,10 @@ import React, { useEffect, useRef } from "react";
 import { Animated, Easing, StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { Dispatch } from "redux";
 import { Ionicons, Feather } from "@expo/vector-icons";
-import { SetContacts } from "../screens/NewGroupScreen";
+import { SetContacts } from "../../screens/NewGroupScreen";
 import { NavigationEvents } from "react-navigation";
 import { useSelector } from "react-redux";
-import { Redux } from "../interfaces/Redux";
+import { Redux } from "../../interfaces/Redux";
 
 interface Props {
   dispatch: Dispatch<SetContacts>;
