@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Animated,
   Modal,
@@ -17,22 +17,16 @@ import {
   Entypo
 } from "@expo/vector-icons";
 import inspect from "../../inspect";
+import { NavigationEvents } from "react-navigation";
 
 interface Props {
-  searchScale: Animated.Value;
   height: Animated.Value;
   width: Animated.Value;
   showSearchModal: boolean;
   setShowSearchModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SearchModal: React.FC<Props> = ({
-  searchScale,
-  showSearchModal,
-  setShowSearchModal,
-  height,
-  width
-}) => {
+const SearchModal: React.FC<Props> = ({ showSearchModal, setShowSearchModal, height, width }) => {
   const reset = () => {
     Animated.parallel([
       Animated.timing(height, {
@@ -89,7 +83,12 @@ const SearchModal: React.FC<Props> = ({
                   </TouchableNativeFeedback>
                 </View>
               </View>
-              <TextInput placeholder="Search..." style={styles.input} placeholderTextColor="#fff" />
+              <TextInput
+                placeholder="Search..."
+                style={styles.input}
+                placeholderTextColor="#fff"
+                autoFocus
+              />
             </View>
             <View style={styles.filterPrt}>
               <View style={styles.filter}>

@@ -19,7 +19,6 @@ const HomeHeaderRight = () => {
   const width = useRef(new Animated.Value(0)).current;
   const searchHeight = useRef(new Animated.Value(20)).current;
   const searchWidth = useRef(new Animated.Value(20)).current;
-  const searchScale = useRef(new Animated.Value(0)).current;
   return (
     <View style={styles.headerRight}>
       <View style={styles.ellipsis}>
@@ -77,7 +76,6 @@ const HomeHeaderRight = () => {
         width={width}
       />
       <SearchModal
-        searchScale={searchScale}
         showSearchModal={showSearchModal}
         setShowSearchModal={setShowSearchModal}
         height={searchHeight}
