@@ -1,6 +1,7 @@
 import { AnyAction } from "redux";
 import { messages } from "../data/messages";
 import { SetMessage } from "../screens/BroadcastScreen";
+import { SetHeaderHeight } from "../screens/HomeScreen";
 import { ResetContacts } from "../screens/NewGroupInfoScreen";
 import { SetContacts } from "../screens/NewGroupScreen";
 
@@ -13,15 +14,17 @@ export interface ChatState {
   messages: typeof messages;
   indexToAnimate: number | null;
   scaleNum: number;
+  headerHeight: number;
 }
 
-type Action = SetContacts | ResetContacts | SetMessage;
+type Action = SetContacts | ResetContacts | SetMessage | SetHeaderHeight;
 
 const INITIAL_STATE: ChatState = {
   Contacts: [],
   messages: messages,
   indexToAnimate: null,
-  scaleNum: 1
+  scaleNum: 1,
+  headerHeight: 0
 };
 
 const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
@@ -40,6 +43,8 @@ const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
       };
     case "resetContacts":
       return { ...state, Contacts: [] };
+    case "setHeaderHeight":
+      return { ...state, headerHeight: action.payload };
     case "setMessage":
       return { ...state, messages: [action.payload, ...state.messages] };
     default:

@@ -11,14 +11,18 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import CustomModal from "../Modals/CustomModal";
 import SearchModal from "../Modals/SearchModal";
 import { Header, useHeaderHeight } from "react-navigation-stack";
+import { useSelector } from "react-redux";
+import { Redux } from "../../interfaces/Redux";
 
 const HomeHeaderRight = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
+  const headerHeight = useSelector((state: Redux) => state.chat.headerHeight);
   const height = useRef(new Animated.Value(0)).current;
   const width = useRef(new Animated.Value(0)).current;
   const searchHeight = useRef(new Animated.Value(20)).current;
   const searchWidth = useRef(new Animated.Value(20)).current;
+
   return (
     <View style={styles.headerRight}>
       <View style={styles.ellipsis}>
@@ -28,7 +32,7 @@ const HomeHeaderRight = () => {
             setShowSearchModal(true);
             Animated.parallel([
               Animated.timing(searchHeight, {
-                toValue: 100,
+                toValue: headerHeight,
                 useNativeDriver: false,
                 duration: 300
               }),
@@ -52,7 +56,7 @@ const HomeHeaderRight = () => {
             setShowModal(true);
             Animated.parallel([
               Animated.timing(height, {
-                toValue: useHeaderHeight(),
+                toValue: 200,
                 useNativeDriver: false,
                 duration: 300
               }),

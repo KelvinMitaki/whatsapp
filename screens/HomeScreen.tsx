@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import { TouchableNativeFeedback } from "react-native";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -6,8 +6,20 @@ import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 import { users } from "../data/data";
 import inspect from "../inspect";
 import HomeChat from "../components/Home/HomeChat";
+import { useHeaderHeight } from "react-navigation-stack";
+import { useDispatch } from "react-redux";
+
+export interface SetHeaderHeight {
+  type: "setHeaderHeight";
+  payload: number;
+}
 
 const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const headerHeight = useHeaderHeight();
+  useEffect(() => {
+    dispatch<SetHeaderHeight>({ type: "setHeaderHeight", payload: headerHeight });
+  }, []);
   return (
     <View style={styles.prt}>
       <HomeChat />
