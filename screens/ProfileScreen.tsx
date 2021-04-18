@@ -1,20 +1,37 @@
 import React, { useEffect, useRef } from "react";
-import { StyleSheet, Text, View, TouchableNativeFeedback, Animated } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableNativeFeedback,
+  Animated,
+  Dimensions
+} from "react-native";
 import { Ionicons, FontAwesome, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import inspect from "../inspect";
 
 const ProfileScreen = () => {
-  const scale = useRef(new Animated.Value(0)).current;
+  const scale = useRef(new Animated.Value(0.5)).current;
+  const cameraScale = useRef(new Animated.Value(0)).current;
+  const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
+
   useEffect(() => {
     Animated.timing(scale, { toValue: 1, useNativeDriver: false, duration: 300 }).start();
+    Animated.timing(position, {
+      toValue: { x: Dimensions.get("screen").width / 2 - 75, y: 0 },
+      useNativeDriver: false,
+      duration: 300
+    }).start(() => {
+      Animated.timing(cameraScale, { toValue: 1, useNativeDriver: false, duration: 200 }).start();
+    });
   }, []);
   return (
     <View>
       <View>
-        <Animated.View style={[styles.person, { transform: [{ scale }] }]}>
+        <Animated.View style={[styles.person, { transform: [{ scale }] }, position.getLayout()]}>
           <Ionicons name="person" size={100} color="rgba(241, 241, 242, 0.8)" />
         </Animated.View>
-        <View style={styles.cameraPrt}>
+        <Animated.View style={[styles.cameraPrt, { transform: [{ scale: cameraScale }] }]}>
           <TouchableNativeFeedback
             onPress={() => {}}
             background={TouchableNativeFeedback.Ripple("#fff", true)}
@@ -23,7 +40,7 @@ const ProfileScreen = () => {
               <FontAwesome name="camera" size={20} color="#fff" />
             </View>
           </TouchableNativeFeedback>
-        </View>
+        </Animated.View>
       </View>
       <TouchableNativeFeedback
         background={TouchableNativeFeedback.Ripple("#fff", false)}
@@ -124,7 +141,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "grey",
     marginVertical: 25,
-    alignSelf: "center"
+    alignSelf: "flex-start"
   },
   cameraPrt: {
     position: "absolute",
