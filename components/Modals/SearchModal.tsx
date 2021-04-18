@@ -1,5 +1,15 @@
 import React from "react";
-import { Animated, Modal, StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
+import {
+  Animated,
+  Modal,
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  TextInput,
+  TouchableNativeFeedback
+} from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 import inspect from "../../inspect";
 
 interface Props {
@@ -50,14 +60,31 @@ const SearchModal: React.FC<Props> = ({
           <Animated.View
             style={[
               {
-                backgroundColor: "#fff",
-                alignItems: "center",
+                backgroundColor: "#14191d",
+                flexDirection: "row",
                 alignSelf: "flex-end"
               },
               { height, width }
             ]}
           >
-            <Text>SearchModal SearchModal</Text>
+            <View style={styles.search}>
+              <View style={styles.iconPrt}>
+                <View style={styles.icon}>
+                  <TouchableNativeFeedback
+                    background={TouchableNativeFeedback.Ripple("#fff", true)}
+                    onPress={() => {
+                      setShowSearchModal(false);
+                      reset();
+                    }}
+                  >
+                    <View>
+                      <AntDesign name="arrowleft" size={25} color="#fff" />
+                    </View>
+                  </TouchableNativeFeedback>
+                </View>
+              </View>
+              <TextInput placeholder="Search..." style={styles.input} placeholderTextColor="#fff" />
+            </View>
           </Animated.View>
         </View>
       </TouchableWithoutFeedback>
@@ -67,4 +94,30 @@ const SearchModal: React.FC<Props> = ({
 
 export default SearchModal;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  search: {
+    flexDirection: "row",
+    alignItems: "center",
+    height: 50,
+    width: "100%",
+    borderBottomWidth: 1,
+    borderBottomColor: "#20272b"
+  },
+  iconPrt: {
+    width: "13%",
+    alignItems: "center"
+  },
+  icon: {
+    height: 30,
+    width: 30,
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  input: {
+    height: 50,
+    width: "70%",
+    color: "#fff",
+    marginLeft: "5%"
+  }
+});
