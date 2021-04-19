@@ -10,8 +10,10 @@ import {
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { Image } from "react-native-elements/dist/image/Image";
 import StatusViewHeader from "../components/StatusView/StatusViewHeader";
+import MuteStatusModal from "../components/Modals/MuteStatusModal";
 
 const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  const [statusVisible, setStatusVisible] = useState<boolean>(false);
   const width = useRef(new Animated.Value(0)).current;
   const opacity = useRef(new Animated.Value(0)).current;
   const setWidth = () => {
@@ -28,23 +30,23 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
       <StatusBar hidden />
       <TouchableWithoutFeedback onPress={resetWidth} touchSoundDisabled>
         <View style={{ height: "100%", width: "100%" }}>
-          <View>
-            <Image
-              source={require("../assets/1.jpg")}
-              style={{
-                height: Dimensions.get("screen").height,
-                width: Dimensions.get("screen").width,
-                backgroundColor: "#000"
-              }}
-            >
-              <StatusViewHeader
-                width={width}
-                opacity={opacity}
-                setWidth={setWidth}
-                resetWidth={resetWidth}
-              />
-            </Image>
-          </View>
+          <Image
+            source={require("../assets/1.jpg")}
+            style={{
+              height: Dimensions.get("screen").height,
+              width: Dimensions.get("screen").width,
+              backgroundColor: "#000"
+            }}
+          >
+            <StatusViewHeader
+              width={width}
+              opacity={opacity}
+              setWidth={setWidth}
+              resetWidth={resetWidth}
+              setStatusVisible={setStatusVisible}
+            />
+          </Image>
+          <MuteStatusModal setStatusVisible={setStatusVisible} statusVisible={statusVisible} />
         </View>
       </TouchableWithoutFeedback>
     </>

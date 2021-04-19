@@ -15,6 +15,7 @@ interface Props {
   opacity: Animated.Value;
   setWidth: () => void;
   resetWidth: () => void;
+  setStatusVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const StatusViewHeader: React.FC<NavigationInjectedProps & Props> = ({
@@ -22,7 +23,8 @@ const StatusViewHeader: React.FC<NavigationInjectedProps & Props> = ({
   width,
   opacity,
   setWidth,
-  resetWidth
+  resetWidth,
+  setStatusVisible
 }) => {
   return (
     <View
@@ -64,7 +66,10 @@ const StatusViewHeader: React.FC<NavigationInjectedProps & Props> = ({
         </View>
       </View>
       <TouchableNativeFeedback
-        onPress={resetWidth}
+        onPress={() => {
+          resetWidth();
+          setStatusVisible(true);
+        }}
         background={TouchableNativeFeedback.Ripple("#fff", false)}
       >
         <Animated.View style={[styles.mute, { width }]}>

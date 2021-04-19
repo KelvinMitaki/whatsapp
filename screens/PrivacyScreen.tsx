@@ -48,6 +48,7 @@ const PrivacyScreen: NavigationStackScreenComponent = ({ navigation }) => {
         isVisible={!!modal}
         onBackdropPress={() => setModal(null)}
         overlayStyle={{ backgroundColor: "#1b252c", minHeight: "25%", width: "85%" }}
+        animationType="fade"
       >
         <View>
           <Text style={{ color: "#fff", paddingVertical: 10, fontSize: 17 }}>{modalText()}</Text>
