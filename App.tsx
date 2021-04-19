@@ -152,14 +152,7 @@ const stackNavigator = createStackNavigator(
       screen: StatusViewScreen,
       navigationOptions: {
         cardStyleInterpolator: CardStyleInterpolators.forRevealFromBottomAndroid,
-        cardStyle: {
-          backgroundColor: "#191f23"
-        },
-        headerStyle: {
-          backgroundColor: "transparent",
-          elevation: 0
-        },
-        headerTintColor: "#fff"
+        headerShown: false
       }
     }
   },
