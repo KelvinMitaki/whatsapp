@@ -13,8 +13,9 @@ import SearchModal from "../Modals/SearchModal";
 import { Header, useHeaderHeight } from "react-navigation-stack";
 import { useSelector } from "react-redux";
 import { Redux } from "../../interfaces/Redux";
+import { NavigationInjectedProps, withNavigation } from "react-navigation";
 
-const HomeHeaderRight = () => {
+const HomeHeaderRight: React.FC<NavigationInjectedProps> = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
   const headerHeight = useSelector((state: Redux) => state.chat.headerHeight);
@@ -89,7 +90,7 @@ const HomeHeaderRight = () => {
   );
 };
 
-export default HomeHeaderRight;
+export default withNavigation(HomeHeaderRight);
 
 const styles = StyleSheet.create({
   headerRight: {

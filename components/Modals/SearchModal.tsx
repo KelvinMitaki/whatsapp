@@ -24,9 +24,16 @@ interface Props {
   width: Animated.Value;
   showSearchModal: boolean;
   setShowSearchModal: React.Dispatch<React.SetStateAction<boolean>>;
+  hideFilter?: boolean;
 }
 
-const SearchModal: React.FC<Props> = ({ showSearchModal, setShowSearchModal, height, width }) => {
+const SearchModal: React.FC<Props> = ({
+  showSearchModal,
+  setShowSearchModal,
+  height,
+  width,
+  hideFilter
+}) => {
   const reset = () => {
     Animated.parallel([
       Animated.timing(height, {
@@ -67,7 +74,7 @@ const SearchModal: React.FC<Props> = ({ showSearchModal, setShowSearchModal, hei
               { height, width }
             ]}
           >
-            <View style={styles.search}>
+            <View style={[styles.search, hideFilter && { borderBottomWidth: 0, height: "100%" }]}>
               <View style={styles.iconPrt}>
                 <View style={styles.icon}>
                   <TouchableNativeFeedback
@@ -83,45 +90,42 @@ const SearchModal: React.FC<Props> = ({ showSearchModal, setShowSearchModal, hei
                   </TouchableNativeFeedback>
                 </View>
               </View>
-              <TextInput
-                placeholder="Search..."
-                style={styles.input}
-                placeholderTextColor="#fff"
-                autoFocus
-              />
+              <TextInput placeholder="Search..." style={styles.input} placeholderTextColor="#fff" />
             </View>
-            <View style={styles.filterPrt}>
-              <View style={styles.filter}>
-                <FontAwesome name="photo" size={18} style={{ paddingRight: 5 }} color="#fff" />
-                <Text style={{ color: "#fff" }}>Photos</Text>
+            {!hideFilter && (
+              <View style={styles.filterPrt}>
+                <View style={styles.filter}>
+                  <FontAwesome name="photo" size={18} style={{ paddingRight: 5 }} color="#fff" />
+                  <Text style={{ color: "#fff" }}>Photos</Text>
+                </View>
+                <View style={styles.filter}>
+                  <FontAwesome
+                    name="video-camera"
+                    size={18}
+                    style={{ paddingRight: 5 }}
+                    color="#fff"
+                  />
+                  <Text style={{ color: "#fff" }}>Videos</Text>
+                </View>
+                <View style={styles.filter}>
+                  <Feather name="link-2" size={18} style={{ paddingRight: 5 }} color="#fff" />
+                  <Text style={{ color: "#fff" }}>Links</Text>
+                </View>
+                <View style={styles.filter}>
+                  <MaterialCommunityIcons
+                    name="headphones"
+                    size={18}
+                    style={{ paddingRight: 5 }}
+                    color="#fff"
+                  />
+                  <Text style={{ color: "#fff" }}>Audio</Text>
+                </View>
+                <View style={styles.filter}>
+                  <Entypo name="text-document" size={18} style={{ paddingRight: 5 }} color="#fff" />
+                  <Text style={{ color: "#fff" }}>Documents</Text>
+                </View>
               </View>
-              <View style={styles.filter}>
-                <FontAwesome
-                  name="video-camera"
-                  size={18}
-                  style={{ paddingRight: 5 }}
-                  color="#fff"
-                />
-                <Text style={{ color: "#fff" }}>Videos</Text>
-              </View>
-              <View style={styles.filter}>
-                <Feather name="link-2" size={18} style={{ paddingRight: 5 }} color="#fff" />
-                <Text style={{ color: "#fff" }}>Links</Text>
-              </View>
-              <View style={styles.filter}>
-                <MaterialCommunityIcons
-                  name="headphones"
-                  size={18}
-                  style={{ paddingRight: 5 }}
-                  color="#fff"
-                />
-                <Text style={{ color: "#fff" }}>Audio</Text>
-              </View>
-              <View style={styles.filter}>
-                <Entypo name="text-document" size={18} style={{ paddingRight: 5 }} color="#fff" />
-                <Text style={{ color: "#fff" }}>Documents</Text>
-              </View>
-            </View>
+            )}
           </Animated.View>
         </View>
       </TouchableWithoutFeedback>

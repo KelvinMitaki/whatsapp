@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   Animated,
+  Dimensions,
   FlatList,
   StyleSheet,
   ToastAndroid,
@@ -9,23 +10,32 @@ import {
 } from "react-native";
 import { Text } from "react-native-elements";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
-import { NavigationStackScreenComponent } from "react-navigation-stack";
+import { NavigationStackScreenComponent, useHeaderHeight } from "react-navigation-stack";
 import { users } from "../data/data";
 import SelectedContact, { Data } from "../components/SelectContacts/SelectedContact";
+import SearchModal from "../components/Modals/SearchModal";
 
 interface Params {
   slctn: "myContactsExc" | "onlyShareWith";
   selected: number;
   selectAll: boolean;
   setChecked: React.Dispatch<React.SetStateAction<Data[]>>;
+  showSearchModal: boolean;
+  setShowSearchModal: React.Dispatch<React.SetStateAction<boolean>>;
+  searchHeight: Animated.Value;
+  searchWidth: Animated.Value;
+  headerHeight: number;
 }
 
 const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [checked, setChecked] = useState<Data[]>([]);
   const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
+  const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
+  const headerHeight = useHeaderHeight();
+  const searchHeight = useRef(new Animated.Value(20)).current;
+  const searchWidth = useRef(new Animated.Value(20)).current;
   useEffect(() => {
-    navigation.setParams({ selected: checked.length });
-    navigation.setParams({ setChecked });
+    navigation.setParams({ selected: checked.length, setChecked });
     if (!checked.length) {
       Animated.spring(position, {
         toValue: { x: 0, y: 60 },
@@ -40,6 +50,16 @@ const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigati
       }).start();
     }
   }, [checked]);
+
+  useEffect(() => {
+    navigation.setParams({
+      showSearchModal,
+      setShowSearchModal,
+      searchHeight,
+      searchWidth,
+      headerHeight
+    });
+  }, [showSearchModal, setShowSearchModal, searchHeight, searchWidth, headerHeight]);
 
   return (
     <View>
@@ -81,6 +101,12 @@ SelectContactsScreen.navigationOptions = ({ navigation }) => {
   const selected = navigation.getParam("selected");
   const selectAll = navigation.getParam("selectAll");
   const setChecked = navigation.getParam("setChecked");
+  const searchHeight = navigation.getParam("searchHeight");
+  const searchWidth = navigation.getParam("searchWidth");
+  const setShowSearchModal = navigation.getParam("setShowSearchModal");
+  const showSearchModal = navigation.getParam("showSearchModal");
+  const headerHeight = navigation.getParam("headerHeight");
+
   return {
     headerTitle: () => (
       <View>
@@ -99,35 +125,58 @@ SelectContactsScreen.navigationOptions = ({ navigation }) => {
       </View>
     ),
     headerRight: () => (
-      <View style={styles.headerIconsPrt}>
-        <View style={styles.ellipsis}>
-          <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple("#fff", true)}
-            onPress={() => {}}
-          >
-            <View>
-              <MaterialIcons name="search" size={25} color="#fff" />
-            </View>
-          </TouchableNativeFeedback>
+      <>
+        <SearchModal
+          width={searchWidth}
+          height={searchHeight}
+          setShowSearchModal={setShowSearchModal}
+          showSearchModal={showSearchModal}
+          hideFilter
+        />
+        <View style={styles.headerIconsPrt}>
+          <View style={styles.ellipsis}>
+            <TouchableNativeFeedback
+              background={TouchableNativeFeedback.Ripple("#fff", true)}
+              onPress={() => {
+                setShowSearchModal(true);
+                Animated.parallel([
+                  Animated.timing(searchHeight, {
+                    toValue: headerHeight,
+                    useNativeDriver: false,
+                    duration: 300
+                  }),
+                  Animated.timing(searchWidth, {
+                    toValue: Dimensions.get("screen").width,
+                    useNativeDriver: false,
+                    duration: 300
+                  })
+                ]).start();
+              }}
+            >
+              <View>
+                <MaterialIcons name="search" size={25} color="#fff" />
+              </View>
+            </TouchableNativeFeedback>
+          </View>
+          <View style={styles.ellipsis}>
+            <TouchableNativeFeedback
+              background={TouchableNativeFeedback.Ripple("#fff", true)}
+              onPress={() => {
+                navigation.setParams({ selectAll: !selectAll });
+                if (!selectAll) {
+                  setChecked(users.map((u, i) => ({ ...u, id: i })));
+                } else {
+                  setChecked([]);
+                }
+              }}
+            >
+              <View>
+                <MaterialIcons name="playlist-add-check" size={25} color="#fff" />
+              </View>
+            </TouchableNativeFeedback>
+          </View>
         </View>
-        <View style={styles.ellipsis}>
-          <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple("#fff", true)}
-            onPress={() => {
-              navigation.setParams({ selectAll: !selectAll });
-              if (!selectAll) {
-                setChecked(users.map((u, i) => ({ ...u, id: i })));
-              } else {
-                setChecked([]);
-              }
-            }}
-          >
-            <View>
-              <MaterialIcons name="playlist-add-check" size={25} color="#fff" />
-            </View>
-          </TouchableNativeFeedback>
-        </View>
-      </View>
+      </>
     )
   };
 };
