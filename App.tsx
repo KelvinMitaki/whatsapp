@@ -29,6 +29,7 @@ import PrivacyScreen from "./screens/PrivacyScreen";
 import StatusPrivacyScreen from "./screens/StatusPrivacyScreen";
 import SelectContactsScreen from "./screens/SelectContactsScreen";
 import inspect from "./inspect";
+import StatusViewScreen from "./screens/StatusViewScreen";
 
 enableScreens();
 
@@ -146,6 +147,20 @@ const stackNavigator = createStackNavigator(
       // @ts-ignore
       screen: SelectContactsScreen,
       ...stackScreenSettings
+    },
+    StatusView: {
+      screen: StatusViewScreen,
+      navigationOptions: {
+        cardStyleInterpolator: CardStyleInterpolators.forRevealFromBottomAndroid,
+        cardStyle: {
+          backgroundColor: "#191f23"
+        },
+        headerStyle: {
+          backgroundColor: "transparent",
+          elevation: 0
+        },
+        headerTintColor: "#fff"
+      }
     }
   },
   {

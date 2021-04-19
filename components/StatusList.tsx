@@ -17,7 +17,7 @@ const StatusList: React.FC<NavigationInjectedProps> = ({ navigation }) => {
       {status.map((_, i) => (
         <TouchableNativeFeedback
           key={i}
-          onPress={() => {}}
+          onPress={() => navigation.navigate("StatusView")}
           background={TouchableNativeFeedback.Ripple("#fff", false)}
         >
           <View style={styles.statusPrt}>
