@@ -17,6 +17,7 @@ import Reply from "../components/StatusView/Reply";
 const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [statusVisible, setStatusVisible] = useState<boolean>(false);
   const translateY = useRef(new Animated.Value(0)).current;
+  const replyOpacity = useRef(new Animated.Value(1)).current;
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: () => true,
@@ -25,9 +26,20 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
           translateY.setValue(30);
         } else {
           translateY.setValue(guesture.dy);
+          if (guesture.dy < -1 && guesture.dy > -100) {
+            replyOpacity.setValue(1 - guesture.dy / -100);
+          }
         }
       },
-      onPanResponderRelease: () => {}
+      onPanResponderRelease: (e, g) => {
+        if (g.dy < -100) {
+          Animated.timing(translateY, {
+            toValue: -(Dimensions.get("screen").height + 200),
+            useNativeDriver: false
+          }).start();
+          replyOpacity.setValue(0);
+        }
+      }
     })
   ).current;
   const width = useRef(new Animated.Value(0)).current;
@@ -67,7 +79,10 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
           <Animated.View
             style={[
               { position: "absolute", bottom: 30, right: Dimensions.get("screen").width / 2 },
-              { transform: [{ translateY }] }
+              {
+                transform: [{ translateY }],
+                opacity: replyOpacity
+              }
             ]}
           >
             <Reply />
