@@ -18,6 +18,7 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [statusVisible, setStatusVisible] = useState<boolean>(false);
   const translateY = useRef(new Animated.Value(0)).current;
   const replyOpacity = useRef(new Animated.Value(1)).current;
+  const imageOpacity = useRef(new Animated.Value(1)).current;
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: () => true,
@@ -28,6 +29,7 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
           translateY.setValue(guesture.dy);
           if (guesture.dy < -1 && guesture.dy > -100) {
             replyOpacity.setValue(1 - guesture.dy / -100);
+            imageOpacity.setValue(guesture.dy / -100);
           }
         }
       },
@@ -57,8 +59,16 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
     <>
       <StatusBar hidden />
       {/* <TouchableWithoutFeedback onPress={resetWidth} touchSoundDisabled> */}
-      <View
-        style={{ height: "100%", width: "100%", backgroundColor: "#000" }}
+      <Animated.View
+        style={[
+          { height: "100%", width: "100%" },
+          {
+            backgroundColor: imageOpacity.interpolate({
+              inputRange: [0, 1],
+              outputRange: ["rgba(0,0,0,.1)", "rgba(0,0,0,1)"]
+            })
+          }
+        ]}
         {...panResponder.panHandlers}
       >
         <Image
@@ -89,7 +99,7 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
           </Animated.View>
         </Image>
         <MuteStatusModal setStatusVisible={setStatusVisible} statusVisible={statusVisible} />
-      </View>
+      </Animated.View>
       {/* </TouchableWithoutFeedback> */}
     </>
   );
