@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
 
-const genRandomNum = () => Math.random() * (255 - 1) + 1;
+export const genRandomNum = () => Math.random() * (255 - 1) + 1;
 
 const GroupMessage = () => {
   const messages = [] as JSX.Element[];

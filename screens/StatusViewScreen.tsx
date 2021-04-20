@@ -14,7 +14,8 @@ import StatusViewHeader from "../components/StatusView/StatusViewHeader";
 import MuteStatusModal from "../components/Modals/MuteStatusModal";
 import Reply from "../components/StatusView/Reply";
 import inspect from "../inspect";
-import { Image } from "react-native-elements";
+import { Image, Input } from "react-native-elements";
+import StatusViewInput from "../components/StatusView/StatusViewInput";
 
 const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [statusVisible, setStatusVisible] = useState<boolean>(false);
@@ -101,6 +102,7 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
             }}
           ></Animated.View>
         </Image>
+        <StatusViewInput />
         <Animated.View
           style={[
             { position: "absolute", bottom: 30, right: Dimensions.get("screen").width / 2 },
