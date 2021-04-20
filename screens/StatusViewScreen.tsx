@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   Animated,
   Dimensions,
+  PanResponder,
   StatusBar,
   StyleSheet,
   TouchableWithoutFeedback,
@@ -15,6 +16,15 @@ import Reply from "../components/StatusView/Reply";
 
 const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [statusVisible, setStatusVisible] = useState<boolean>(false);
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderMove: (event, guesture) => {
+        console.log(guesture);
+      },
+      onPanResponderRelease: () => {}
+    })
+  ).current;
   const width = useRef(new Animated.Value(0)).current;
   const opacity = useRef(new Animated.Value(0)).current;
   const setWidth = () => {
@@ -29,28 +39,31 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
     <>
       <StatusBar hidden />
-      <TouchableWithoutFeedback onPress={resetWidth} touchSoundDisabled>
-        <View style={{ height: "100%", width: "100%", backgroundColor: "#000" }}>
-          <Image
-            source={require("../assets/1.jpg")}
-            style={{
-              height: Dimensions.get("screen").height,
-              width: Dimensions.get("screen").width
-            }}
-            resizeMode="contain"
-          >
-            <StatusViewHeader
-              width={width}
-              opacity={opacity}
-              setWidth={setWidth}
-              resetWidth={resetWidth}
-              setStatusVisible={setStatusVisible}
-            />
-            <Reply />
-          </Image>
-          <MuteStatusModal setStatusVisible={setStatusVisible} statusVisible={statusVisible} />
-        </View>
-      </TouchableWithoutFeedback>
+      {/* <TouchableWithoutFeedback onPress={resetWidth} touchSoundDisabled> */}
+      <View
+        style={{ height: "100%", width: "100%", backgroundColor: "#000" }}
+        {...panResponder.panHandlers}
+      >
+        <Image
+          source={require("../assets/1.jpg")}
+          style={{
+            height: Dimensions.get("screen").height,
+            width: Dimensions.get("screen").width
+          }}
+          resizeMode="contain"
+        >
+          <StatusViewHeader
+            width={width}
+            opacity={opacity}
+            setWidth={setWidth}
+            resetWidth={resetWidth}
+            setStatusVisible={setStatusVisible}
+          />
+          <Reply />
+        </Image>
+        <MuteStatusModal setStatusVisible={setStatusVisible} statusVisible={statusVisible} />
+      </View>
+      {/* </TouchableWithoutFeedback> */}
     </>
   );
 };
