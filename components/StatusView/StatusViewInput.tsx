@@ -1,13 +1,28 @@
-import React from "react";
-import { Image, StyleSheet, Text, TextInput, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Image, Keyboard, KeyboardEvent, StyleSheet, Text, TextInput, View } from "react-native";
 import { Entypo, FontAwesome, Fontisto, Ionicons } from "@expo/vector-icons";
-import { Input } from "react-native-elements";
 import { genRandomNum } from "../Group/GroupMessage";
 import inspect from "../../inspect";
 const StatusViewInput = () => {
+  const [keyboard, setKeyboardHeight] = useState<number>(0);
+  useEffect(() => {
+    Keyboard.addListener("keyboardDidShow", keyboardDidShow);
+    Keyboard.addListener("keyboardDidHide", keyboardDidHide);
+
+    return () => {
+      Keyboard.removeListener("keyboardDidShow", () => {});
+      Keyboard.addListener("keyboardDidHide", () => {});
+    };
+  }, []);
+  const keyboardDidShow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+  const keyboardDidHide = (e: KeyboardEvent) => {
+    setKeyboardHeight(0);
+  };
   const color = `rgb(${genRandomNum()},${genRandomNum()},${genRandomNum()})`;
   return (
-    <View style={styles.prt}>
+    <View style={[styles.prt, { bottom: keyboard + 5 }]}>
       <View style={styles.statusView}>
         <View style={[styles.meta, { borderLeftColor: color, borderLeftWidth: 2 }]}>
           <View>
@@ -28,15 +43,7 @@ const StatusViewInput = () => {
           <View style={{ width: "12%", alignItems: "center" }}>
             <Fontisto name="smiley" size={25} color="#fff" />
           </View>
-          <TextInput
-            style={{
-              width: "85%",
-              height: 35,
-              fontSize: 18,
-              padding: 0,
-              paddingHorizontal: 5
-            }}
-          />
+          <TextInput style={styles.textInp} />
         </View>
       </View>
       <View style={{ alignItems: "center", alignSelf: "flex-end" }}>
@@ -53,7 +60,6 @@ export default StatusViewInput;
 const styles = StyleSheet.create({
   prt: {
     position: "absolute",
-    bottom: 70,
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-evenly"
@@ -80,6 +86,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingTop: 15
+  },
+  textInp: {
+    width: "85%",
+    height: 35,
+    fontSize: 18,
+    padding: 0,
+    paddingHorizontal: 5,
+    color: "#fff"
   },
   send: {
     height: 45,

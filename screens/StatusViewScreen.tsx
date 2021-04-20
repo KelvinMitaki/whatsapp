@@ -100,9 +100,10 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
               height: "100%",
               width: "100%"
             }}
-          ></Animated.View>
+          >
+            <StatusViewInput />
+          </Animated.View>
         </Image>
-        <StatusViewInput />
         <Animated.View
           style={[
             { position: "absolute", bottom: 30, right: Dimensions.get("screen").width / 2 },
