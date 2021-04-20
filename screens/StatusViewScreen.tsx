@@ -7,7 +7,8 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   View,
-  Text
+  Text,
+  Keyboard
 } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import StatusViewHeader from "../components/StatusView/StatusViewHeader";
@@ -70,7 +71,6 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
     <>
       <StatusBar hidden />
-      {/* <TouchableWithoutFeedback onPress={resetWidth} touchSoundDisabled> */}
       <View
         style={{ height: "100%", width: "100%", backgroundColor: "#000" }}
         {...panResponder.panHandlers}
@@ -94,18 +94,26 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
           ]}
           resizeMode="contain"
         >
-          <Animated.View
-            style={{
-              backgroundColor: imageOpacity.interpolate({
-                inputRange: [0, 1],
-                outputRange: ["rgba(0,0,0,.5)", "rgba(0,0,0,0)"]
-              }),
-              height: "100%",
-              width: "100%"
+          <TouchableWithoutFeedback
+            onPress={() => {
+              resetWidth();
+              setShowKeyboard(false);
             }}
+            touchSoundDisabled
           >
-            {showKeyboard && <StatusViewInput />}
-          </Animated.View>
+            <Animated.View
+              style={{
+                backgroundColor: imageOpacity.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: ["rgba(0,0,0,.5)", "rgba(0,0,0,0)"]
+                }),
+                height: "100%",
+                width: "100%"
+              }}
+            >
+              {showKeyboard && <StatusViewInput />}
+            </Animated.View>
+          </TouchableWithoutFeedback>
         </Image>
         <Animated.View
           style={[
@@ -120,7 +128,6 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
         </Animated.View>
         <MuteStatusModal setStatusVisible={setStatusVisible} statusVisible={statusVisible} />
       </View>
-      {/* </TouchableWithoutFeedback> */}
     </>
   );
 };
