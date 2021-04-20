@@ -16,16 +16,16 @@ import Reply from "../components/StatusView/Reply";
 
 const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [statusVisible, setStatusVisible] = useState<boolean>(false);
-  const translateXY = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
+  const translateY = useRef(new Animated.Value(0)).current;
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: () => true,
       onPanResponderMove: (event, guesture) => {
-        console.log(guesture);
-        Animated.timing(translateXY, {
-          toValue: { x: guesture.moveX, y: guesture.moveY },
-          useNativeDriver: false
-        }).start();
+        if (guesture.dy > 30) {
+          translateY.setValue(30);
+        } else {
+          translateY.setValue(guesture.dy);
+        }
       },
       onPanResponderRelease: () => {}
     })
@@ -45,7 +45,10 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
     <>
       <StatusBar hidden />
       {/* <TouchableWithoutFeedback onPress={resetWidth} touchSoundDisabled> */}
-      <View style={{ height: "100%", width: "100%", backgroundColor: "#000" }}>
+      <View
+        style={{ height: "100%", width: "100%", backgroundColor: "#000" }}
+        {...panResponder.panHandlers}
+      >
         <Image
           source={require("../assets/1.jpg")}
           style={{
@@ -61,7 +64,12 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
             resetWidth={resetWidth}
             setStatusVisible={setStatusVisible}
           />
-          <Animated.View {...panResponder.panHandlers} style={translateXY.getLayout()}>
+          <Animated.View
+            style={[
+              { position: "absolute", bottom: 30, right: Dimensions.get("screen").width / 2 },
+              { transform: [{ translateY }] }
+            ]}
+          >
             <Reply />
           </Animated.View>
         </Image>
