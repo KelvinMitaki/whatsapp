@@ -6,17 +6,19 @@ import {
   StatusBar,
   StyleSheet,
   TouchableWithoutFeedback,
-  View
+  View,
+  Text
 } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
-import { Image } from "react-native-elements/dist/image/Image";
 import StatusViewHeader from "../components/StatusView/StatusViewHeader";
 import MuteStatusModal from "../components/Modals/MuteStatusModal";
 import Reply from "../components/StatusView/Reply";
+import inspect from "../inspect";
+import { Image } from "react-native-elements";
 
 const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [statusVisible, setStatusVisible] = useState<boolean>(false);
-  const translateY = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(30)).current;
   const replyOpacity = useRef(new Animated.Value(1)).current;
   const imageOpacity = useRef(new Animated.Value(1)).current;
   const panResponder = useRef(
@@ -29,7 +31,9 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
           translateY.setValue(guesture.dy);
           if (guesture.dy < -1 && guesture.dy > -100) {
             replyOpacity.setValue(1 - guesture.dy / -100);
-            imageOpacity.setValue(guesture.dy / -100);
+            imageOpacity.setValue(1 - guesture.dy / -100);
+          } else {
+            imageOpacity.setValue(0);
           }
         }
       },
@@ -40,6 +44,10 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
             useNativeDriver: false
           }).start();
           replyOpacity.setValue(0);
+        } else {
+          translateY.setValue(30);
+          replyOpacity.setValue(1);
+          imageOpacity.setValue(1);
         }
       }
     })
@@ -59,47 +67,53 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
     <>
       <StatusBar hidden />
       {/* <TouchableWithoutFeedback onPress={resetWidth} touchSoundDisabled> */}
-      <Animated.View
-        style={[
-          { height: "100%", width: "100%" },
-          {
-            backgroundColor: imageOpacity.interpolate({
-              inputRange: [0, 1],
-              outputRange: ["rgba(0,0,0,.1)", "rgba(0,0,0,1)"]
-            })
-          }
-        ]}
+      <View
+        style={{ height: "100%", width: "100%", backgroundColor: "#000" }}
         {...panResponder.panHandlers}
       >
+        <StatusViewHeader
+          width={width}
+          opacity={opacity}
+          setWidth={setWidth}
+          resetWidth={resetWidth}
+          setStatusVisible={setStatusVisible}
+        />
+
         <Image
           source={require("../assets/1.jpg")}
-          style={{
-            height: Dimensions.get("screen").height,
-            width: Dimensions.get("screen").width
-          }}
+          style={[
+            {
+              width: "100%",
+              height: "100%",
+              transform: [{ translateY: -70 }]
+            }
+          ]}
           resizeMode="contain"
         >
-          <StatusViewHeader
-            width={width}
-            opacity={opacity}
-            setWidth={setWidth}
-            resetWidth={resetWidth}
-            setStatusVisible={setStatusVisible}
-          />
           <Animated.View
-            style={[
-              { position: "absolute", bottom: 30, right: Dimensions.get("screen").width / 2 },
-              {
-                transform: [{ translateY }],
-                opacity: replyOpacity
-              }
-            ]}
-          >
-            <Reply />
-          </Animated.View>
+            style={{
+              backgroundColor: imageOpacity.interpolate({
+                inputRange: [0, 1],
+                outputRange: ["rgba(0,0,0,.5)", "rgba(0,0,0,0)"]
+              }),
+              height: "100%",
+              width: "100%"
+            }}
+          ></Animated.View>
         </Image>
+        <Animated.View
+          style={[
+            { position: "absolute", bottom: 30, right: Dimensions.get("screen").width / 2 },
+            {
+              transform: [{ translateY }],
+              opacity: replyOpacity
+            }
+          ]}
+        >
+          <Reply />
+        </Animated.View>
         <MuteStatusModal setStatusVisible={setStatusVisible} statusVisible={statusVisible} />
-      </Animated.View>
+      </View>
       {/* </TouchableWithoutFeedback> */}
     </>
   );
