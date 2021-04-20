@@ -43,7 +43,7 @@ const StatusViewInput = () => {
           <View style={{ width: "12%", alignItems: "center" }}>
             <Fontisto name="smiley" size={25} color="#fff" />
           </View>
-          <TextInput style={styles.textInp} />
+          <TextInput style={styles.textInp} autoFocus />
         </View>
       </View>
       <View style={{ alignItems: "center", alignSelf: "flex-end" }}>

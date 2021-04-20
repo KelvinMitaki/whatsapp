@@ -19,6 +19,7 @@ import StatusViewInput from "../components/StatusView/StatusViewInput";
 
 const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [statusVisible, setStatusVisible] = useState<boolean>(false);
+  const [showKeyboard, setShowKeyboard] = useState<boolean>(false);
   const translateY = useRef(new Animated.Value(30)).current;
   const replyOpacity = useRef(new Animated.Value(1)).current;
   const imageOpacity = useRef(new Animated.Value(1)).current;
@@ -43,7 +44,9 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
           Animated.timing(translateY, {
             toValue: -(Dimensions.get("screen").height + 200),
             useNativeDriver: false
-          }).start();
+          }).start(() => {
+            setShowKeyboard(true);
+          });
           replyOpacity.setValue(0);
         } else {
           translateY.setValue(30);
@@ -101,7 +104,7 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
               width: "100%"
             }}
           >
-            <StatusViewInput />
+            {showKeyboard && <StatusViewInput />}
           </Animated.View>
         </Image>
         <Animated.View
