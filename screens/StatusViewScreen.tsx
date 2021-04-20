@@ -11,6 +11,7 @@ import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { Image } from "react-native-elements/dist/image/Image";
 import StatusViewHeader from "../components/StatusView/StatusViewHeader";
 import MuteStatusModal from "../components/Modals/MuteStatusModal";
+import Reply from "../components/StatusView/Reply";
 
 const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [statusVisible, setStatusVisible] = useState<boolean>(false);
@@ -29,14 +30,14 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
     <>
       <StatusBar hidden />
       <TouchableWithoutFeedback onPress={resetWidth} touchSoundDisabled>
-        <View style={{ height: "100%", width: "100%" }}>
+        <View style={{ height: "100%", width: "100%", backgroundColor: "#000" }}>
           <Image
             source={require("../assets/1.jpg")}
             style={{
               height: Dimensions.get("screen").height,
-              width: Dimensions.get("screen").width,
-              backgroundColor: "#000"
+              width: Dimensions.get("screen").width
             }}
+            resizeMode="contain"
           >
             <StatusViewHeader
               width={width}
@@ -45,6 +46,7 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
               resetWidth={resetWidth}
               setStatusVisible={setStatusVisible}
             />
+            <Reply />
           </Image>
           <MuteStatusModal setStatusVisible={setStatusVisible} statusVisible={statusVisible} />
         </View>
