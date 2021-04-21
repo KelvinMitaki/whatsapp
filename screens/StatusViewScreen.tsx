@@ -4,11 +4,9 @@ import {
   Dimensions,
   PanResponder,
   StatusBar,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
   Text,
-  Keyboard
+  TouchableWithoutFeedback,
+  View
 } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import StatusViewHeader from "../components/StatusView/StatusViewHeader";
@@ -17,6 +15,8 @@ import Reply from "../components/StatusView/Reply";
 import inspect from "../inspect";
 import { Image, Input } from "react-native-elements";
 import StatusViewInput from "../components/StatusView/StatusViewInput";
+import * as Progress from "react-native-progress";
+import StatusBarTopLoader from "../components/StatusView/StatusBarTopLoader";
 
 const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [statusVisible, setStatusVisible] = useState<boolean>(false);
@@ -24,6 +24,7 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const translateY = useRef(new Animated.Value(30)).current;
   const replyOpacity = useRef(new Animated.Value(1)).current;
   const imageOpacity = useRef(new Animated.Value(1)).current;
+
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: () => true,
@@ -75,6 +76,7 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
         style={{ height: "100%", width: "100%", backgroundColor: "#000" }}
         {...panResponder.panHandlers}
       >
+        <StatusBarTopLoader />
         <StatusViewHeader
           width={width}
           opacity={opacity}
@@ -98,6 +100,9 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
             onPress={() => {
               resetWidth();
               setShowKeyboard(false);
+              imageOpacity.setValue(1);
+              translateY.setValue(30);
+              replyOpacity.setValue(1);
             }}
             touchSoundDisabled
           >
@@ -133,5 +138,3 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
 };
 
 export default StatusViewScreen;
-
-const styles = StyleSheet.create({});
