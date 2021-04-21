@@ -107,17 +107,8 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
           statusBarWidth={statusBarWidth}
           showKeyboard={showKeyboard}
         />
-        <Animated.View
-          style={[
-            { position: "absolute", bottom: 30, right: Dimensions.get("screen").width / 2 },
-            {
-              transform: [{ translateY }],
-              opacity: replyOpacity
-            }
-          ]}
-        >
-          <Reply />
-        </Animated.View>
+
+        <Reply translateY={translateY} replyOpacity={replyOpacity} />
         <MuteStatusModal setStatusVisible={setStatusVisible} statusVisible={statusVisible} />
       </View>
     </>
