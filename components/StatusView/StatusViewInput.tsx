@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Image, Keyboard, KeyboardEvent, StyleSheet, Text, TextInput, View } from "react-native";
 import { Entypo, FontAwesome, Fontisto, Ionicons } from "@expo/vector-icons";
 import { genRandomNum } from "../Group/GroupMessage";
 import inspect from "../../inspect";
 const StatusViewInput = () => {
   const [keyboard, setKeyboardHeight] = useState<number>(0);
+  const mounted = useRef<boolean>(true);
   useEffect(() => {
-    Keyboard.addListener("keyboardDidShow", keyboardDidShow);
-    Keyboard.addListener("keyboardDidHide", keyboardDidHide);
+    if (mounted.current) {
+      Keyboard.addListener("keyboardDidShow", keyboardDidShow);
+      Keyboard.addListener("keyboardDidHide", keyboardDidHide);
+    }
 
     return () => {
-      Keyboard.removeListener("keyboardDidShow", () => {});
-      Keyboard.addListener("keyboardDidHide", () => {});
+      mounted.current = false;
+      Keyboard.removeListener("keyboardDidShow", keyboardDidShow);
+      Keyboard.addListener("keyboardDidHide", keyboardDidHide);
     };
   }, []);
   const keyboardDidShow = (e: KeyboardEvent) => {
