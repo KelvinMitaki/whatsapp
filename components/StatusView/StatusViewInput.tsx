@@ -3,7 +3,12 @@ import { Image, Keyboard, KeyboardEvent, StyleSheet, Text, TextInput, View } fro
 import { Entypo, FontAwesome, Fontisto, Ionicons } from "@expo/vector-icons";
 import { genRandomNum } from "../Group/GroupMessage";
 import inspect from "../../inspect";
-const StatusViewInput = () => {
+
+interface Props {
+  showKeyboard: boolean;
+}
+
+const StatusViewInput: React.FC<Props> = ({ showKeyboard }) => {
   const [keyboard, setKeyboardHeight] = useState<number>(0);
   const mounted = useRef<boolean>(true);
   useEffect(() => {
@@ -25,6 +30,7 @@ const StatusViewInput = () => {
     setKeyboardHeight(0);
   };
   const color = `rgb(${genRandomNum()},${genRandomNum()},${genRandomNum()})`;
+  if (!showKeyboard) return null;
   return (
     <View style={[styles.prt, { bottom: keyboard + 15 }]}>
       <View style={styles.statusView}>

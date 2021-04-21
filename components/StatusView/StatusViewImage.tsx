@@ -66,7 +66,7 @@ const StatusViewImage: React.FC<Props> = ({
             width: "100%"
           }}
         >
-          {showKeyboard && <StatusViewInput />}
+          <StatusViewInput showKeyboard={showKeyboard} />
         </Animated.View>
       </TouchableWithoutFeedback>
     </Image>
