@@ -35,13 +35,22 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const imageOpacity = useRef(new Animated.Value(1)).current;
   const [currentImg, setCurrentImg] = useState<number>(0);
   const statusBarWidth = useRef(new Animated.Value(0)).current;
+  const width = useRef(new Animated.Value(0)).current;
+  const opacity = useRef(new Animated.Value(0)).current;
   const prevImg = usePrevious(currentImg);
   useEffect(() => {
     Animated.timing(statusBarWidth, {
       toValue: Dimensions.get("screen").width / images.length - 10,
       useNativeDriver: false,
       duration: 5000
-    }).start();
+    }).start(() => {
+      // setCurrentImg(i => {
+      //   if (i < images.length - 1) {
+      //     return i + 1;
+      //   }
+      //   return 0;
+      // });
+    });
   }, [currentImg]);
 
   const panResponder = useRef(
@@ -82,8 +91,6 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
       }
     })
   ).current;
-  const width = useRef(new Animated.Value(0)).current;
-  const opacity = useRef(new Animated.Value(0)).current;
   const setWidth = () => {
     Animated.timing(width, { toValue: 150, useNativeDriver: false, duration: 300 }).start(() => {
       Animated.timing(opacity, { toValue: 1, useNativeDriver: false, duration: 50 }).start();
