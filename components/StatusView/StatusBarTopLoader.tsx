@@ -1,16 +1,19 @@
 import React, { useEffect, useRef } from "react";
 import { Animated, Dimensions, StyleSheet, Text, View } from "react-native";
+import { images } from "../../data/images";
 import inspect from "../../inspect";
 
 interface Props {
   statusBarWidth: Animated.Value;
+  index: number;
+  currentImg: number;
 }
 
-const StatusBarTopLoader: React.FC<Props> = ({ statusBarWidth }) => {
+const StatusBarTopLoader: React.FC<Props> = ({ statusBarWidth, index, currentImg }) => {
   return (
     <View
       style={{
-        width: Dimensions.get("screen").width - 15,
+        width: Dimensions.get("screen").width / images.length - 10,
         alignSelf: "center",
         height: 10,
         justifyContent: "flex-end"
@@ -27,7 +30,7 @@ const StatusBarTopLoader: React.FC<Props> = ({ statusBarWidth }) => {
         <Animated.View
           style={[
             { backgroundColor: "#fff", height: 2, borderRadius: 100 },
-            { width: statusBarWidth }
+            { width: index === currentImg ? statusBarWidth : 0 }
           ]}
         ></Animated.View>
       </View>

@@ -17,6 +17,7 @@ import { Image, Input } from "react-native-elements";
 import StatusViewInput from "../components/StatusView/StatusViewInput";
 import StatusBarTopLoader from "../components/StatusView/StatusBarTopLoader";
 import StatusViewImage from "../components/StatusView/StatusViewImage";
+import { images } from "../data/images";
 
 const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [statusVisible, setStatusVisible] = useState<boolean>(false);
@@ -25,9 +26,10 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const replyOpacity = useRef(new Animated.Value(1)).current;
   const imageOpacity = useRef(new Animated.Value(1)).current;
   const statusBarWidth = useRef(new Animated.Value(0)).current;
+  const [currentImg, setCurrentImg] = useState<number>(0);
   useEffect(() => {
     Animated.timing(statusBarWidth, {
-      toValue: Dimensions.get("screen").width - 15,
+      toValue: Dimensions.get("screen").width / images.length - 10,
       useNativeDriver: false,
       duration: 5000
     }).start();
@@ -59,7 +61,7 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
           });
           replyOpacity.setValue(0);
           Animated.timing(statusBarWidth, {
-            toValue: Dimensions.get("screen").width - 15,
+            toValue: Dimensions.get("screen").width / images.length - 10,
             useNativeDriver: false,
             duration: 5000
           }).stop();
@@ -89,7 +91,16 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
         style={{ height: "100%", width: "100%", backgroundColor: "#000" }}
         {...panResponder.panHandlers}
       >
-        <StatusBarTopLoader statusBarWidth={statusBarWidth} />
+        <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
+          {images.map((image, i) => (
+            <StatusBarTopLoader
+              statusBarWidth={statusBarWidth}
+              key={image}
+              index={i}
+              currentImg={currentImg}
+            />
+          ))}
+        </View>
         <StatusViewHeader
           width={width}
           opacity={opacity}
@@ -106,6 +117,8 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
           replyOpacity={replyOpacity}
           statusBarWidth={statusBarWidth}
           showKeyboard={showKeyboard}
+          currentImg={currentImg}
+          setCurrentImg={setCurrentImg}
         />
 
         <Reply translateY={translateY} replyOpacity={replyOpacity} />

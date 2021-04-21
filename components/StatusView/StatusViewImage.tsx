@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Animated,
   Dimensions,
@@ -8,6 +8,7 @@ import {
   View
 } from "react-native";
 import { Image } from "react-native-elements";
+import { images } from "../../data/images";
 import StatusViewInput from "./StatusViewInput";
 
 interface Props {
@@ -18,6 +19,8 @@ interface Props {
   replyOpacity: Animated.Value;
   statusBarWidth: Animated.Value;
   showKeyboard: boolean;
+  setCurrentImg: React.Dispatch<React.SetStateAction<number>>;
+  currentImg: number;
 }
 
 const StatusViewImage: React.FC<Props> = ({
@@ -27,11 +30,15 @@ const StatusViewImage: React.FC<Props> = ({
   setShowKeyboard,
   showKeyboard,
   statusBarWidth,
-  translateY
+  translateY,
+  setCurrentImg,
+  currentImg
 }) => {
   return (
     <Image
-      source={require("../../assets/1.jpg")}
+      source={{
+        uri: images[currentImg]
+      }}
       style={[
         {
           width: "100%",
@@ -48,11 +55,21 @@ const StatusViewImage: React.FC<Props> = ({
           imageOpacity.setValue(1);
           translateY.setValue(30);
           replyOpacity.setValue(1);
-          Animated.timing(statusBarWidth, {
-            toValue: Dimensions.get("screen").width - 15,
-            useNativeDriver: false,
-            duration: 5000
-          }).start();
+          if (showKeyboard) {
+            Animated.timing(statusBarWidth, {
+              toValue: Dimensions.get("screen").width / images.length - 10,
+              useNativeDriver: false,
+              duration: 5000
+            }).start();
+          }
+          if (!showKeyboard) {
+            setCurrentImg(i => {
+              if (i < images.length - 1) {
+                return i + 1;
+              }
+              return 0;
+            });
+          }
         }}
         touchSoundDisabled
       >
