@@ -16,6 +16,7 @@ import inspect from "../inspect";
 import { Image, Input } from "react-native-elements";
 import StatusViewInput from "../components/StatusView/StatusViewInput";
 import StatusBarTopLoader from "../components/StatusView/StatusBarTopLoader";
+import StatusViewImage from "../components/StatusView/StatusViewImage";
 
 const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [statusVisible, setStatusVisible] = useState<boolean>(false);
@@ -97,46 +98,15 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
           setStatusVisible={setStatusVisible}
         />
 
-        <Image
-          source={require("../assets/1.jpg")}
-          style={[
-            {
-              width: "100%",
-              height: "100%",
-              transform: [{ translateY: -70 }]
-            }
-          ]}
-          resizeMode="contain"
-        >
-          <TouchableWithoutFeedback
-            onPress={() => {
-              resetWidth();
-              setShowKeyboard(false);
-              imageOpacity.setValue(1);
-              translateY.setValue(30);
-              replyOpacity.setValue(1);
-              Animated.timing(statusBarWidth, {
-                toValue: Dimensions.get("screen").width - 15,
-                useNativeDriver: false,
-                duration: 5000
-              }).start();
-            }}
-            touchSoundDisabled
-          >
-            <Animated.View
-              style={{
-                backgroundColor: imageOpacity.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: ["rgba(0,0,0,.5)", "rgba(0,0,0,0)"]
-                }),
-                height: "100%",
-                width: "100%"
-              }}
-            >
-              {showKeyboard && <StatusViewInput />}
-            </Animated.View>
-          </TouchableWithoutFeedback>
-        </Image>
+        <StatusViewImage
+          resetWidth={resetWidth}
+          setShowKeyboard={setShowKeyboard}
+          imageOpacity={imageOpacity}
+          translateY={translateY}
+          replyOpacity={replyOpacity}
+          statusBarWidth={statusBarWidth}
+          showKeyboard={showKeyboard}
+        />
         <Animated.View
           style={[
             { position: "absolute", bottom: 30, right: Dimensions.get("screen").width / 2 },
