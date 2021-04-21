@@ -2,15 +2,11 @@ import React, { useEffect, useRef } from "react";
 import { Animated, Dimensions, StyleSheet, Text, View } from "react-native";
 import inspect from "../../inspect";
 
-const StatusBarTopLoader = () => {
-  const test = useRef(new Animated.Value(0)).current;
-  useEffect(() => {
-    Animated.timing(test, {
-      toValue: Dimensions.get("screen").width - 15,
-      useNativeDriver: false,
-      duration: 5000
-    }).start();
-  }, []);
+interface Props {
+  statusBarWidth: Animated.Value;
+}
+
+const StatusBarTopLoader: React.FC<Props> = ({ statusBarWidth }) => {
   return (
     <View
       style={{
@@ -23,13 +19,16 @@ const StatusBarTopLoader = () => {
       <View
         style={{
           backgroundColor: "rgba(255,255,255,.3)",
-          height: 3,
+          height: 2,
           width: "100%",
           borderRadius: 100
         }}
       >
         <Animated.View
-          style={[{ backgroundColor: "#fff", height: 3, borderRadius: 100 }, { width: test }]}
+          style={[
+            { backgroundColor: "#fff", height: 2, borderRadius: 100 },
+            { width: statusBarWidth }
+          ]}
         ></Animated.View>
       </View>
     </View>

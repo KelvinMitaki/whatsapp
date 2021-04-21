@@ -26,7 +26,7 @@ const StatusViewInput = () => {
   };
   const color = `rgb(${genRandomNum()},${genRandomNum()},${genRandomNum()})`;
   return (
-    <View style={[styles.prt, { bottom: keyboard + 5 }]}>
+    <View style={[styles.prt, { bottom: keyboard + 15 }]}>
       <View style={styles.statusView}>
         <View style={[styles.meta, { borderLeftColor: color, borderLeftWidth: 2 }]}>
           <View>

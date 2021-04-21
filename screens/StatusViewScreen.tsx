@@ -15,7 +15,6 @@ import Reply from "../components/StatusView/Reply";
 import inspect from "../inspect";
 import { Image, Input } from "react-native-elements";
 import StatusViewInput from "../components/StatusView/StatusViewInput";
-import * as Progress from "react-native-progress";
 import StatusBarTopLoader from "../components/StatusView/StatusBarTopLoader";
 
 const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
@@ -24,6 +23,14 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const translateY = useRef(new Animated.Value(30)).current;
   const replyOpacity = useRef(new Animated.Value(1)).current;
   const imageOpacity = useRef(new Animated.Value(1)).current;
+  const statusBarWidth = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    Animated.timing(statusBarWidth, {
+      toValue: Dimensions.get("screen").width - 15,
+      useNativeDriver: false,
+      duration: 5000
+    }).start();
+  }, []);
 
   const panResponder = useRef(
     PanResponder.create({
@@ -50,6 +57,11 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
             setShowKeyboard(true);
           });
           replyOpacity.setValue(0);
+          Animated.timing(statusBarWidth, {
+            toValue: Dimensions.get("screen").width - 15,
+            useNativeDriver: false,
+            duration: 5000
+          }).stop();
         } else {
           translateY.setValue(30);
           replyOpacity.setValue(1);
@@ -76,7 +88,7 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
         style={{ height: "100%", width: "100%", backgroundColor: "#000" }}
         {...panResponder.panHandlers}
       >
-        <StatusBarTopLoader />
+        <StatusBarTopLoader statusBarWidth={statusBarWidth} />
         <StatusViewHeader
           width={width}
           opacity={opacity}
@@ -103,6 +115,11 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
               imageOpacity.setValue(1);
               translateY.setValue(30);
               replyOpacity.setValue(1);
+              Animated.timing(statusBarWidth, {
+                toValue: Dimensions.get("screen").width - 15,
+                useNativeDriver: false,
+                duration: 5000
+              }).start();
             }}
             touchSoundDisabled
           >
