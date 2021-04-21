@@ -62,6 +62,9 @@ const StatusViewImage: React.FC<Props> = ({
               duration: 5000
             }).start();
           }
+          if (currentImg === images.length - 1) {
+            statusBarWidth.setValue(0);
+          }
           if (!showKeyboard) {
             setCurrentImg(i => {
               if (i < images.length - 1) {

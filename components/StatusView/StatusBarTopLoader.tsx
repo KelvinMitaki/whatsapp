@@ -9,7 +9,21 @@ interface Props {
   currentImg: number;
 }
 
-const StatusBarTopLoader: React.FC<Props> = ({ statusBarWidth, index, currentImg }) => {
+const StatusBarTopLoader: React.FC<Props> = ({ index, currentImg, statusBarWidth }) => {
+  const renderImageWidth = (): number | Animated.Value => {
+    if (index !== currentImg && index < currentImg) {
+      return Dimensions.get("screen").width / images.length - 10;
+    }
+    if (index === currentImg) {
+      Animated.timing(statusBarWidth, {
+        toValue: Dimensions.get("screen").width / images.length - 10,
+        useNativeDriver: false,
+        duration: 5000
+      }).reset();
+      return statusBarWidth;
+    }
+    return 0;
+  };
   return (
     <View
       style={{
@@ -30,7 +44,7 @@ const StatusBarTopLoader: React.FC<Props> = ({ statusBarWidth, index, currentImg
         <Animated.View
           style={[
             { backgroundColor: "#fff", height: 2, borderRadius: 100 },
-            { width: index === currentImg ? statusBarWidth : 0 }
+            { width: renderImageWidth() }
           ]}
         ></Animated.View>
       </View>

@@ -19,21 +19,30 @@ import StatusBarTopLoader from "../components/StatusView/StatusBarTopLoader";
 import StatusViewImage from "../components/StatusView/StatusViewImage";
 import { images } from "../data/images";
 
+const usePrevious = (value: number) => {
+  const ref = useRef<number>();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+};
+
 const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [statusVisible, setStatusVisible] = useState<boolean>(false);
   const [showKeyboard, setShowKeyboard] = useState<boolean>(false);
   const translateY = useRef(new Animated.Value(30)).current;
   const replyOpacity = useRef(new Animated.Value(1)).current;
   const imageOpacity = useRef(new Animated.Value(1)).current;
-  const statusBarWidth = useRef(new Animated.Value(0)).current;
   const [currentImg, setCurrentImg] = useState<number>(0);
+  const statusBarWidth = useRef(new Animated.Value(0)).current;
+  const prevImg = usePrevious(currentImg);
   useEffect(() => {
     Animated.timing(statusBarWidth, {
       toValue: Dimensions.get("screen").width / images.length - 10,
       useNativeDriver: false,
       duration: 5000
     }).start();
-  }, []);
+  }, [currentImg]);
 
   const panResponder = useRef(
     PanResponder.create({
