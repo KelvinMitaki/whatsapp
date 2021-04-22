@@ -1,12 +1,20 @@
 import React from "react";
-import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
+import { FlatList, Image, StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons } from "@expo/vector-icons";
+import { countries } from "../data/countries";
+import { SvgUri } from "react-native-svg";
+import Country from "../components/Country/Country";
+// http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg
 
 const CountryScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
     <View>
-      <Text style={{ color: "#fff" }}>CountryScreen CountryScreen</Text>
+      <FlatList
+        data={countries}
+        keyExtractor={c => c.code}
+        renderItem={({ item }) => <Country item={item} />}
+      />
     </View>
   );
 };
