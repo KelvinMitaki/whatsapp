@@ -1631,13 +1631,6 @@ export const countries = [
     code: "TZ"
   },
   {
-    name: "U.S. Outlying Islands",
-    dial_code: "",
-    currency_name: "US Dollar",
-    currency_code: "USD",
-    code: "UM"
-  },
-  {
     name: "U.S. Virgin Islands",
     dial_code: "1-340",
     currency_name: "US Dollar",

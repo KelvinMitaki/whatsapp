@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import inspect from "../inspect";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../interfaces/Redux";
 import { Button } from "react-native-elements";
 import { isValidPhoneNumber, CountryCode } from "libphonenumber-js";
@@ -29,6 +29,8 @@ const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const userCountry = useSelector((state: Redux) => state.user.userCountry);
+  const [code, setCode] = useState<string>(userCountry ? userCountry.dial_code : "");
+  const dispatch = useDispatch();
   const screenHeight = Dimensions.get("screen").height;
 
   useEffect(() => {
@@ -48,7 +50,11 @@ const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
     };
   }, []);
   const validatePhoneNumber = (phoneNumber: string) => {
-    if (isValidPhoneNumber(phoneNumber, userCountry.code as CountryCode)) {
+    if (
+      userCountry &&
+      userCountry.code &&
+      isValidPhoneNumber(phoneNumber, userCountry.code as CountryCode)
+    ) {
       navigation.navigate("Home");
     } else {
       setShowModal(true);
@@ -71,7 +77,7 @@ const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
         <TouchableWithoutFeedback>
           <View style={styles.country}>
             <Text style={{ color: "#fff", textAlign: "center", width: "95%" }}>
-              {userCountry.name}
+              {userCountry ? userCountry.name : !code ? "Choose a country" : "invalid country code"}
             </Text>
             <MaterialIcons
               name="arrow-drop-down"
@@ -87,7 +93,13 @@ const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
             <TextInput
               style={{ borderWidth: 0, borderColor: "transparent", color: "#fff" }}
               keyboardType="number-pad"
-              defaultValue={userCountry.dial_code}
+              defaultValue={userCountry ? userCountry.dial_code : ""}
+              onChangeText={t => {
+                setCode(t);
+                dispatch<SetCountry>({ type: "setCountry", payload: t });
+              }}
+              value={code}
+              maxLength={3}
             />
           </View>
           <View style={styles.phone}>
