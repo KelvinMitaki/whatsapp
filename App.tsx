@@ -32,6 +32,7 @@ import inspect from "./inspect";
 import StatusViewScreen from "./screens/StatusViewScreen";
 import StartScreen from "./screens/StartScreen";
 import PhoneNumberScreen from "./screens/PhoneNumberScreen";
+import CountryScreen from "./screens/CountryScreen";
 
 enableScreens();
 
@@ -88,6 +89,10 @@ const stackNavigator = createStackNavigator(
         ...stackScreenSettings.navigationOptions,
         headerShown: false
       }
+    },
+    Country: {
+      screen: CountryScreen,
+      ...stackScreenSettings
     },
     Tab: {
       screen: TabNavigator,

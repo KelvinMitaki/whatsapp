@@ -75,7 +75,7 @@ const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
         <Text style={{ color: "#fff", alignSelf: "center", textAlign: "center", marginBottom: 10 }}>
           ChatApp will send an SMS message to verify your phone number.
         </Text>
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate("Country")}>
           <View style={styles.country}>
             <Text style={{ color: "#fff", textAlign: "center", width: "95%" }}>
               {userCountry ? userCountry.name : !code ? "Choose a country" : "invalid country code"}
