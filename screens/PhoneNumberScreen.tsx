@@ -4,7 +4,12 @@ import { StyleSheet, Text, View } from "react-native";
 const PhoneNumberScreen = () => {
   return (
     <View>
-      <Text style={{ color: "#fff" }}>PhoneNumberScreen PhoneNumberScreen</Text>
+      <View style={{ marginTop: "20%" }}>
+        <Text style={{ color: "#fff" }}>Enter your phone number</Text>
+        <Text style={{ color: "#fff" }}>
+          ChatApp will send an SMS message to verify your phone number.
+        </Text>
+      </View>
     </View>
   );
 };
