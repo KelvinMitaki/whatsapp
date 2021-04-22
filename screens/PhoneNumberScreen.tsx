@@ -30,26 +30,10 @@ const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [activeInp, setActiveInp] = useState<"code" | "phoneNumber" | null>(null);
   const userCountry = useSelector((state: Redux) => state.user.userCountry);
-  const [code, setCode] = useState<string>(userCountry ? userCountry.dial_code : "");
+  const [code, setCode] = useState<string>("");
   const dispatch = useDispatch();
   const screenHeight = Dimensions.get("screen").height;
 
-  useEffect(() => {
-    Keyboard.addListener("keyboardDidShow", e => {
-      setKeyboardHeight(e.endCoordinates.height);
-    });
-    Keyboard.addListener("keyboardDidHide", e => {
-      setKeyboardHeight(0);
-    });
-    return () => {
-      Keyboard.removeListener("keyboardDidHide", e => {
-        setKeyboardHeight(0);
-      });
-      Keyboard.removeListener("keyboardDidShow", e => {
-        setKeyboardHeight(e.endCoordinates.height);
-      });
-    };
-  }, []);
   const validatePhoneNumber = (phoneNumber: string) => {
     if (
       userCountry &&
@@ -69,7 +53,26 @@ const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
         justifyContent: "space-between"
       }}
     >
-      <NavigationEvents onDidBlur={() => setPhoneNumber("")} />
+      <NavigationEvents
+        onDidBlur={() => setPhoneNumber("")}
+        onWillFocus={() => {
+          setCode(userCountry ? userCountry.dial_code : "");
+          Keyboard.addListener("keyboardDidShow", e => {
+            setKeyboardHeight(e.endCoordinates.height);
+          });
+          Keyboard.addListener("keyboardDidHide", e => {
+            setKeyboardHeight(0);
+          });
+        }}
+        onWillBlur={() => {
+          Keyboard.removeListener("keyboardDidHide", e => {
+            setKeyboardHeight(0);
+          });
+          Keyboard.removeListener("keyboardDidShow", e => {
+            setKeyboardHeight(e.endCoordinates.height);
+          });
+        }}
+      />
       <View>
         <Text style={styles.meta}>Enter your phone number</Text>
         <Text style={{ color: "#fff", alignSelf: "center", textAlign: "center", marginBottom: 10 }}>
