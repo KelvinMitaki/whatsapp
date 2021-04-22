@@ -1,6 +1,18 @@
 import React from "react";
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
+import {
+  Dimensions,
+  KeyboardAvoidingView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View
+} from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import inspect from "../inspect";
+import { useSelector } from "react-redux";
+import { Redux } from "../interfaces/Redux";
+import { Button } from "react-native-elements";
 
 export interface SetCountry {
   type: "setCountry";
@@ -8,31 +20,112 @@ export interface SetCountry {
 }
 
 const PhoneNumberScreen = () => {
+  const userCountry = useSelector((state: Redux) => state.user.userCountry);
+  const screenHeight = Dimensions.get("screen").height;
   return (
-    <View>
-      <View style={{ marginTop: "20%" }}>
-        <Text
-          style={{
-            color: "#fff",
-            alignSelf: "center",
-            fontSize: 25,
-            fontWeight: "bold",
-            marginBottom: 30
-          }}
-        >
-          Enter your phone number
-        </Text>
+    <View
+      style={{
+        marginTop: "20%",
+        height: screenHeight - (screenHeight * 20) / 100,
+        justifyContent: "space-between"
+      }}
+    >
+      <View>
+        <Text style={styles.meta}>Enter your phone number</Text>
         <Text style={{ color: "#fff", alignSelf: "center", textAlign: "center", marginBottom: 10 }}>
           ChatApp will send an SMS message to verify your phone number.
         </Text>
         <TouchableWithoutFeedback>
-          <View></View>
+          <View style={styles.country}>
+            <Text style={{ color: "#fff", textAlign: "center", width: "95%" }}>
+              {userCountry.name}
+            </Text>
+            <MaterialIcons
+              name="arrow-drop-down"
+              size={20}
+              color="#00af9c"
+              style={{ alignSelf: "flex-end" }}
+            />
+          </View>
         </TouchableWithoutFeedback>
+        <View style={styles.inputPrt}>
+          <View style={styles.dialCode}>
+            <Text style={{ color: "rgba(255,255,255,.4)" }}>+</Text>
+            <TextInput
+              style={{ borderWidth: 0, borderColor: "transparent", color: "#fff" }}
+              keyboardType="number-pad"
+              defaultValue={userCountry.dial_code}
+            />
+          </View>
+          <View style={styles.phone}>
+            <TextInput
+              style={{ borderWidth: 0, borderColor: "transparent", color: "#fff" }}
+              keyboardType="number-pad"
+              placeholder="phone number"
+              placeholderTextColor="rgba(255,255,255,.4)"
+              autoFocus
+            />
+          </View>
+        </View>
+        <View style={{ height: 50, justifyContent: "center" }}>
+          <Text
+            style={{
+              color: "rgba(255,255,255,.5)",
+              textAlign: "center"
+            }}
+          >
+            Carrier SMS charges may apply
+          </Text>
+        </View>
       </View>
+      <Button
+        title="NEXT"
+        containerStyle={{ alignSelf: "center" }}
+        buttonStyle={{ backgroundColor: "#00af9c", paddingVertical: 10, paddingHorizontal: 20 }}
+        titleStyle={{ color: "#191f23" }}
+      />
     </View>
   );
 };
 
 export default PhoneNumberScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  country: {
+    borderBottomColor: "#00af9c",
+    borderBottomWidth: 1,
+    width: 300,
+    alignSelf: "center",
+    flexDirection: "row"
+  },
+  meta: {
+    color: "#fff",
+    alignSelf: "center",
+    fontSize: 25,
+    fontWeight: "bold",
+    marginBottom: 30
+  },
+  inputPrt: {
+    width: 300,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    alignSelf: "center",
+    height: 50
+  },
+  phone: {
+    width: "70%",
+    borderBottomWidth: 2,
+    borderBottomColor: "#00af9c",
+    padding: 5
+  },
+  dialCode: {
+    width: "20%",
+    borderBottomWidth: 1,
+    borderBottomColor: "#00af9c",
+    padding: 5,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around"
+  }
+});
