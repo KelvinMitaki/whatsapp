@@ -91,6 +91,7 @@ const stackNavigator = createStackNavigator(
       }
     },
     Country: {
+      // @ts-ignore
       screen: CountryScreen,
       ...stackScreenSettings
     },
