@@ -28,6 +28,7 @@ const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [activeInp, setActiveInp] = useState<"code" | "phoneNumber" | null>(null);
   const userCountry = useSelector((state: Redux) => state.user.userCountry);
   const [code, setCode] = useState<string>(userCountry ? userCountry.dial_code : "");
   const dispatch = useDispatch();
@@ -88,7 +89,7 @@ const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
           </View>
         </TouchableWithoutFeedback>
         <View style={styles.inputPrt}>
-          <View style={styles.dialCode}>
+          <View style={[styles.dialCode, activeInp === "code" && { borderBottomWidth: 2 }]}>
             <Text style={{ color: "rgba(255,255,255,.4)" }}>+</Text>
             <TextInput
               style={{ borderWidth: 0, borderColor: "transparent", color: "#fff" }}
@@ -100,9 +101,11 @@ const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
               }}
               value={code}
               maxLength={3}
+              onFocus={() => setActiveInp("code")}
+              onBlur={() => setActiveInp(null)}
             />
           </View>
-          <View style={styles.phone}>
+          <View style={[styles.phone, activeInp === "phoneNumber" && { borderBottomWidth: 2 }]}>
             <TextInput
               style={{ borderWidth: 0, borderColor: "transparent", color: "#fff" }}
               keyboardType="number-pad"
@@ -111,6 +114,8 @@ const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
               autoFocus
               onChangeText={setPhoneNumber}
               value={phoneNumber}
+              onFocus={() => setActiveInp("phoneNumber")}
+              onBlur={() => setActiveInp(null)}
             />
           </View>
         </View>
@@ -174,7 +179,7 @@ const styles = StyleSheet.create({
   },
   phone: {
     width: "70%",
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     borderBottomColor: "#00af9c",
     padding: 5
   },
