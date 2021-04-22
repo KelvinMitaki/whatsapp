@@ -14,6 +14,8 @@ import inspect from "../inspect";
 import { useSelector } from "react-redux";
 import { Redux } from "../interfaces/Redux";
 import { Button } from "react-native-elements";
+import parsePhoneNumber from "libphonenumber-js";
+import { Overlay } from "react-native-elements/dist/overlay/Overlay";
 
 export interface SetCountry {
   type: "setCountry";
@@ -103,7 +105,12 @@ const PhoneNumberScreen = () => {
         containerStyle={{ alignSelf: "center", marginBottom: keyboardHeight }}
         buttonStyle={{ backgroundColor: "#00af9c", paddingVertical: 10, paddingHorizontal: 20 }}
         titleStyle={{ color: "#191f23" }}
+        // onPress={}
       />
+      <Overlay isVisible overlayStyle={styles.modal}>
+        <Text style={{ color: "#fff" }}>Please enter your phone number.</Text>
+        <Text style={{ color: "#00af9c", textAlign: "right" }}>OK</Text>
+      </Overlay>
     </View>
   );
 };
@@ -147,5 +154,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around"
+  },
+  modal: {
+    backgroundColor: "#20272b",
+    height: 110,
+    width: "70%",
+    justifyContent: "space-between",
+    paddingTop: 30,
+    paddingHorizontal: 20
   }
 });
