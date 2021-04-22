@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
+  Animated,
   Dimensions,
   FlatList,
   Image,
@@ -19,13 +20,41 @@ import inspect from "../inspect";
 
 interface Params {
   headerHeight: number;
+  animatedHeight: Animated.CompositeAnimation;
+  animatedWidth: Animated.CompositeAnimation;
+  animatedBorderRadius: Animated.CompositeAnimation;
+  height: Animated.Value;
+  width: Animated.Value;
+  borderRadius: Animated.Value;
 }
 
 const CountryScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
+  const height = useRef(new Animated.Value(20)).current;
+  const width = useRef(new Animated.Value(20)).current;
+  const borderRadius = useRef(new Animated.Value(20)).current;
   const headerHeight = useHeaderHeight();
   useEffect(() => {
-    navigation.setParams({ headerHeight });
-  }, []);
+    const animatedHeight = Animated.timing(height, {
+      toValue: headerHeight,
+      useNativeDriver: false
+    });
+    const animatedWidth = Animated.timing(width, {
+      toValue: Dimensions.get("screen").width,
+      useNativeDriver: false
+    });
+    const animatedBorderRadius = Animated.timing(borderRadius, {
+      toValue: 0,
+      useNativeDriver: false
+    });
+    navigation.setParams({
+      animatedBorderRadius,
+      animatedHeight,
+      animatedWidth,
+      height,
+      width,
+      borderRadius
+    });
+  }, [height, width, borderRadius]);
   return (
     <View>
       <FlatList
@@ -38,17 +67,23 @@ const CountryScreen: NavigationStackScreenComponent<Params> = ({ navigation }) =
 };
 
 CountryScreen.navigationOptions = ({ navigation }) => {
-  const headerHeight = navigation.getParam("headerHeight");
-
+  const animatedHeight = navigation.getParam("animatedHeight");
+  const animatedWidth = navigation.getParam("animatedWidth");
+  const animatedBorderRadius = navigation.getParam("animatedBorderRadius");
+  const height = navigation.getParam("height");
+  const width = navigation.getParam("width");
+  const borderRadius = navigation.getParam("borderRadius");
   return {
     headerTitle: "Choose a country",
     headerRight: () => (
       <View style={{ width: "125%", alignItems: "center" }}>
-        <View
+        <Animated.View
           style={[
             styles.search,
             {
-              height: headerHeight
+              height,
+              width,
+              borderRadius
             }
           ]}
         >
@@ -62,7 +97,12 @@ CountryScreen.navigationOptions = ({ navigation }) => {
                 justifyContent: "center"
               }}
             >
-              <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("#fff", true)}>
+              <TouchableNativeFeedback
+                background={TouchableNativeFeedback.Ripple("#fff", true)}
+                onPress={() =>
+                  Animated.parallel([animatedHeight, animatedWidth, animatedBorderRadius]).start()
+                }
+              >
                 <View>
                   <AntDesign name="arrowleft" size={25} color="#fff" />
                 </View>
@@ -74,7 +114,7 @@ CountryScreen.navigationOptions = ({ navigation }) => {
             placeholder="Search country"
             placeholderTextColor="rgba(255,255,255,.4)"
           />
-        </View>
+        </Animated.View>
         <View style={styles.searchBorder}>
           <TouchableNativeFeedback
             onPress={() => {}}
@@ -108,7 +148,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     right: 0,
-    width: Dimensions.get("screen").width,
     backgroundColor: "#20272b",
     elevation: 1
   }
