@@ -14,16 +14,20 @@ import inspect from "../inspect";
 import { useSelector } from "react-redux";
 import { Redux } from "../interfaces/Redux";
 import { Button } from "react-native-elements";
-import parsePhoneNumber from "libphonenumber-js";
+import { isValidPhoneNumber, CountryCode } from "libphonenumber-js";
 import { Overlay } from "react-native-elements/dist/overlay/Overlay";
+import { NavigationStackScreenComponent } from "react-navigation-stack";
+import { NavigationEvents } from "react-navigation";
 
 export interface SetCountry {
   type: "setCountry";
   payload: string;
 }
 
-const PhoneNumberScreen = () => {
+const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
   const userCountry = useSelector((state: Redux) => state.user.userCountry);
   const screenHeight = Dimensions.get("screen").height;
 
@@ -43,7 +47,13 @@ const PhoneNumberScreen = () => {
       });
     };
   }, []);
-
+  const validatePhoneNumber = (phoneNumber: string) => {
+    if (isValidPhoneNumber(phoneNumber, userCountry.code as CountryCode)) {
+      navigation.navigate("Home");
+    } else {
+      setShowModal(true);
+    }
+  };
   return (
     <View
       style={{
@@ -52,6 +62,7 @@ const PhoneNumberScreen = () => {
         justifyContent: "space-between"
       }}
     >
+      <NavigationEvents onDidBlur={() => setPhoneNumber("")} />
       <View>
         <Text style={styles.meta}>Enter your phone number</Text>
         <Text style={{ color: "#fff", alignSelf: "center", textAlign: "center", marginBottom: 10 }}>
@@ -86,6 +97,8 @@ const PhoneNumberScreen = () => {
               placeholder="phone number"
               placeholderTextColor="rgba(255,255,255,.4)"
               autoFocus
+              onChangeText={setPhoneNumber}
+              value={phoneNumber}
             />
           </View>
         </View>
@@ -105,11 +118,18 @@ const PhoneNumberScreen = () => {
         containerStyle={{ alignSelf: "center", marginBottom: keyboardHeight }}
         buttonStyle={{ backgroundColor: "#00af9c", paddingVertical: 10, paddingHorizontal: 20 }}
         titleStyle={{ color: "#191f23" }}
-        // onPress={}
+        onPress={() => validatePhoneNumber(phoneNumber)}
       />
-      <Overlay isVisible overlayStyle={styles.modal}>
+      <Overlay
+        isVisible={showModal}
+        onBackdropPress={() => setShowModal(false)}
+        overlayStyle={styles.modal}
+        animationType="fade"
+      >
         <Text style={{ color: "#fff" }}>Please enter your phone number.</Text>
-        <Text style={{ color: "#00af9c", textAlign: "right" }}>OK</Text>
+        <Text style={{ color: "#00af9c", textAlign: "right" }} onPress={() => setShowModal(false)}>
+          OK
+        </Text>
       </Overlay>
     </View>
   );

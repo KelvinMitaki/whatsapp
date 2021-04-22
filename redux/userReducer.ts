@@ -9,7 +9,7 @@ export interface UserState {
 type Action = SetCountry;
 
 const INITIAL_STATE: UserState = {
-  userCountry: countries[0]
+  userCountry: countries.find(c => c.name === "Kenya") || countries[0]
 };
 
 const userReducer = (state = INITIAL_STATE, action: Action): UserState => {
