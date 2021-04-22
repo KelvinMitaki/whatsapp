@@ -30,8 +30,21 @@ import StatusPrivacyScreen from "./screens/StatusPrivacyScreen";
 import SelectContactsScreen from "./screens/SelectContactsScreen";
 import inspect from "./inspect";
 import StatusViewScreen from "./screens/StatusViewScreen";
+import StartScreen from "./screens/StartScreen";
 
 enableScreens();
+
+const stackScreenSettings = {
+  navigationOptions: {
+    headerStyle: {
+      backgroundColor: "#20272b"
+    },
+    headerTintColor: "white",
+    cardStyle: {
+      backgroundColor: "#191f23"
+    }
+  }
+};
 
 const TabNavigator = createMaterialTopTabNavigator(
   {
@@ -59,20 +72,15 @@ const TabNavigator = createMaterialTopTabNavigator(
   }
 );
 
-const stackScreenSettings = {
-  navigationOptions: {
-    headerStyle: {
-      backgroundColor: "#20272b"
-    },
-    headerTintColor: "white",
-    cardStyle: {
-      backgroundColor: "#191f23"
-    }
-  }
-};
-
 const stackNavigator = createStackNavigator(
   {
+    Start: {
+      screen: StartScreen,
+      navigationOptions: {
+        ...stackScreenSettings.navigationOptions,
+        headerShown: false
+      }
+    },
     Tab: {
       screen: TabNavigator,
       ...stackScreenSettings,
