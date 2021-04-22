@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dimensions,
+  Keyboard,
   KeyboardAvoidingView,
   StyleSheet,
   Text,
@@ -20,8 +21,27 @@ export interface SetCountry {
 }
 
 const PhoneNumberScreen = () => {
+  const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
   const userCountry = useSelector((state: Redux) => state.user.userCountry);
   const screenHeight = Dimensions.get("screen").height;
+
+  useEffect(() => {
+    Keyboard.addListener("keyboardDidShow", e => {
+      setKeyboardHeight(e.endCoordinates.height);
+    });
+    Keyboard.addListener("keyboardDidHide", e => {
+      setKeyboardHeight(0);
+    });
+    return () => {
+      Keyboard.removeListener("keyboardDidHide", e => {
+        setKeyboardHeight(0);
+      });
+      Keyboard.removeListener("keyboardDidShow", e => {
+        setKeyboardHeight(e.endCoordinates.height);
+      });
+    };
+  }, []);
+
   return (
     <View
       style={{
@@ -80,7 +100,7 @@ const PhoneNumberScreen = () => {
       </View>
       <Button
         title="NEXT"
-        containerStyle={{ alignSelf: "center" }}
+        containerStyle={{ alignSelf: "center", marginBottom: keyboardHeight }}
         buttonStyle={{ backgroundColor: "#00af9c", paddingVertical: 10, paddingHorizontal: 20 }}
         titleStyle={{ color: "#191f23" }}
       />
