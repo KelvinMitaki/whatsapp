@@ -1,8 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { Button } from "react-native-elements";
+import { NavigationStackScreenComponent } from "react-navigation-stack";
 
-const StartScreen = () => {
+const StartScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
     <View>
       <Text style={{ color: "#fff", marginTop: "20%", fontSize: 30, alignSelf: "center" }}>
@@ -18,6 +19,7 @@ const StartScreen = () => {
         containerStyle={{ alignSelf: "center", width: "70%" }}
         buttonStyle={{ backgroundColor: "#00af9c" }}
         titleStyle={{ color: "#191f23" }}
+        onPress={() => navigation.replace("PhoneNumber")}
       />
     </View>
   );

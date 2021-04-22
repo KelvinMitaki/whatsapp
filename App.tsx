@@ -31,6 +31,7 @@ import SelectContactsScreen from "./screens/SelectContactsScreen";
 import inspect from "./inspect";
 import StatusViewScreen from "./screens/StatusViewScreen";
 import StartScreen from "./screens/StartScreen";
+import PhoneNumberScreen from "./screens/PhoneNumberScreen";
 
 enableScreens();
 
@@ -76,6 +77,13 @@ const stackNavigator = createStackNavigator(
   {
     Start: {
       screen: StartScreen,
+      navigationOptions: {
+        ...stackScreenSettings.navigationOptions,
+        headerShown: false
+      }
+    },
+    PhoneNumber: {
+      screen: PhoneNumberScreen,
       navigationOptions: {
         ...stackScreenSettings.navigationOptions,
         headerShown: false
