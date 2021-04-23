@@ -161,7 +161,7 @@ const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
         </Text>
       </Overlay>
       <Overlay
-        isVisible
+        isVisible={showVerification}
         onBackdropPress={() => setShowVerification(false)}
         overlayStyle={styles.modal}
         animationType="fade"

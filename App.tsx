@@ -34,6 +34,7 @@ import StartScreen from "./screens/StartScreen";
 import PhoneNumberScreen from "./screens/PhoneNumberScreen";
 import CountryScreen from "./screens/CountryScreen";
 import VerificationScreen from "./screens/VerificationScreen";
+import NameScreen from "./screens/NameScreen";
 
 enableScreens();
 
@@ -102,6 +103,13 @@ const stackNavigator = createStackNavigator(
     Verification: {
       // @ts-ignore
       screen: VerificationScreen,
+      navigationOptions: {
+        ...stackScreenSettings.navigationOptions,
+        headerShown: false
+      }
+    },
+    Name: {
+      screen: NameScreen,
       navigationOptions: {
         ...stackScreenSettings.navigationOptions,
         headerShown: false

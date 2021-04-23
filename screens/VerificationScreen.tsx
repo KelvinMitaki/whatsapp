@@ -52,7 +52,7 @@ const VerificationScreen: NavigationStackScreenComponent<Params> = ({ navigation
         containerStyle={{ alignSelf: "center", marginBottom: 20 }}
         buttonStyle={{ backgroundColor: "#00af9c", paddingVertical: 10, paddingHorizontal: 20 }}
         titleStyle={{ color: "#191f23" }}
-        onPress={() => navigation.replace("Tab")}
+        onPress={() => navigation.replace("Name")}
       />
     </View>
   );
