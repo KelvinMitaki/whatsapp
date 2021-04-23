@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Animated,
   Dimensions,
@@ -9,11 +9,13 @@ import {
   TouchableNativeFeedback,
   View
 } from "react-native";
-import { useHeaderHeight } from "react-navigation-stack";
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import inspect from "../../inspect";
+import { NavigationInjectedProps, withNavigation } from "react-navigation";
 
-const CountryHeader = () => {
+const CountryHeader: React.FC<NavigationInjectedProps> = ({ navigation }) => {
+  const [showSearch, setShowSearch] = useState<boolean>(false);
+  const keyboardRef = useRef<TextInput>(null);
   const scale = useRef(new Animated.Value(0)).current;
   const borderRadius = useRef(new Animated.Value(2000)).current;
   const height = Dimensions.get("screen").height;
@@ -24,8 +26,11 @@ const CountryHeader = () => {
         style={[
           styles.search,
           {
-            height: "50%",
+            height: "100%",
             width
+          },
+          showSearch && {
+            zIndex: 1
           },
           {
             borderRadius,
@@ -33,7 +38,9 @@ const CountryHeader = () => {
           }
         ]}
       >
-        <View style={{ justifyContent: "center", alignItems: "center", width: "15%" }}>
+        <View
+          style={{ justifyContent: "center", alignItems: "center", width: "15%", height: "100%" }}
+        >
           <View
             style={{
               height: 50,
@@ -57,6 +64,7 @@ const CountryHeader = () => {
                   duration: 200
                 });
                 Keyboard.dismiss();
+                setShowSearch(false);
                 Animated.parallel([animatedScale, animatedBorderRadius]).start();
               }}
             >
@@ -67,12 +75,23 @@ const CountryHeader = () => {
           </View>
         </View>
         <TextInput
+          ref={keyboardRef}
           style={{ width: "80%", fontSize: 20, paddingHorizontal: 10, color: "#fff" }}
           placeholder="Search country"
           placeholderTextColor="rgba(255,255,255,.4)"
         />
       </Animated.View>
-      <View style={{ position: "absolute", top: "40%", left: 70 }}>
+      <View style={styles.back}>
+        <TouchableNativeFeedback
+          onPress={() => navigation.goBack()}
+          background={TouchableNativeFeedback.Ripple("#fff", true)}
+        >
+          <View>
+            <AntDesign name="arrowleft" size={25} color="#fff" />
+          </View>
+        </TouchableNativeFeedback>
+      </View>
+      <View style={{ position: "absolute", top: "45%", left: 70 }}>
         <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>Choose a country</Text>
       </View>
       <View style={styles.searchBorder}>
@@ -88,6 +107,8 @@ const CountryHeader = () => {
               useNativeDriver: true,
               duration: 200
             });
+            setShowSearch(true);
+            keyboardRef.current?.focus();
             Animated.parallel([animatedScale, animatedBorderRadius]).start();
           }}
           background={TouchableNativeFeedback.Ripple("#fff", true)}
@@ -101,7 +122,7 @@ const CountryHeader = () => {
   );
 };
 
-export default CountryHeader;
+export default withNavigation(CountryHeader);
 
 const styles = StyleSheet.create({
   searchBorder: {
@@ -120,9 +141,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     position: "absolute",
-    top: "35%",
     right: 0,
-    backgroundColor: "#20272b",
-    elevation: 1
+    backgroundColor: "#14191d",
+    paddingTop: "5%"
+  },
+  back: {
+    position: "absolute",
+    top: "40%",
+    width: 50,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center"
   }
 });
