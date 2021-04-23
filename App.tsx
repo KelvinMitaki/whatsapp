@@ -93,7 +93,10 @@ const stackNavigator = createStackNavigator(
     Country: {
       // @ts-ignore
       screen: CountryScreen,
-      ...stackScreenSettings
+      navigationOptions: {
+        ...stackScreenSettings.navigationOptions,
+        headerShown: false
+      }
     },
     Tab: {
       screen: TabNavigator,
