@@ -27,6 +27,7 @@ export interface SetCountry {
 const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showVerification, setShowVerification] = useState<boolean>(false);
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [activeInp, setActiveInp] = useState<"code" | "phoneNumber" | null>(null);
   const userCountry = useSelector((state: Redux) => state.user.userCountry);
@@ -40,7 +41,7 @@ const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
       userCountry.code &&
       isValidPhoneNumber(phoneNumber, userCountry.code as CountryCode)
     ) {
-      navigation.navigate("Home");
+      setShowVerification(true);
     } else {
       setShowModal(true);
     }
@@ -151,6 +152,39 @@ const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
           OK
         </Text>
       </Overlay>
+      <Overlay
+        isVisible={showVerification}
+        onBackdropPress={() => setShowVerification(false)}
+        overlayStyle={styles.modal}
+        animationType="fade"
+      >
+        <Text style={{ color: "#fff" }}>We will be verifying the phone number:</Text>
+        <Text style={{ color: "#fff", fontWeight: "bold", marginVertical: 20 }}>
+          {userCountry?.dial_code} {phoneNumber}
+        </Text>
+        <Text style={{ color: "#fff" }}>Is this OK, or would you like to edit the number?</Text>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginVertical: 15
+          }}
+        >
+          <Text style={{ color: "#00af9c" }} onPress={() => setShowVerification(false)}>
+            EDIT
+          </Text>
+          <Text
+            style={{ color: "#00af9c" }}
+            onPress={() => {
+              setShowVerification(false);
+              navigation.navigate("Home");
+            }}
+          >
+            OK
+          </Text>
+        </View>
+      </Overlay>
     </View>
   );
 };
@@ -197,8 +231,8 @@ const styles = StyleSheet.create({
   },
   modal: {
     backgroundColor: "#20272b",
-    height: 110,
-    width: "70%",
+    minHeight: 110,
+    width: "75%",
     justifyContent: "space-between",
     paddingTop: 30,
     paddingHorizontal: 20
