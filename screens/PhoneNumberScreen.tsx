@@ -148,19 +148,27 @@ const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
         animationType="fade"
       >
         <Text style={{ color: "#fff" }}>Please enter your phone number.</Text>
-        <Text style={{ color: "#00af9c", textAlign: "right" }} onPress={() => setShowModal(false)}>
+        <Text
+          style={{
+            color: "#00af9c",
+            textAlign: "right",
+            paddingVertical: 5,
+            paddingHorizontal: 20
+          }}
+          onPress={() => setShowModal(false)}
+        >
           OK
         </Text>
       </Overlay>
       <Overlay
-        isVisible={showVerification}
+        isVisible
         onBackdropPress={() => setShowVerification(false)}
         overlayStyle={styles.modal}
         animationType="fade"
       >
         <Text style={{ color: "#fff" }}>We will be verifying the phone number:</Text>
         <Text style={{ color: "#fff", fontWeight: "bold", marginVertical: 20 }}>
-          {userCountry?.dial_code} {phoneNumber}
+          +{userCountry?.dial_code} {phoneNumber}
         </Text>
         <Text style={{ color: "#fff" }}>Is this OK, or would you like to edit the number?</Text>
         <View
@@ -171,14 +179,17 @@ const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
             marginVertical: 15
           }}
         >
-          <Text style={{ color: "#00af9c" }} onPress={() => setShowVerification(false)}>
+          <Text
+            style={{ color: "#00af9c", paddingVertical: 5, paddingHorizontal: 20 }}
+            onPress={() => setShowVerification(false)}
+          >
             EDIT
           </Text>
           <Text
-            style={{ color: "#00af9c" }}
+            style={{ color: "#00af9c", paddingVertical: 5, paddingHorizontal: 20 }}
             onPress={() => {
               setShowVerification(false);
-              navigation.navigate("Home");
+              navigation.replace("Verification", { code, phoneNumber });
             }}
           >
             OK
