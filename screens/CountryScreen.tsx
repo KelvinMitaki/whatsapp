@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Animated,
   Dimensions,
@@ -28,11 +28,12 @@ interface Params {
 }
 
 const CountryScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
+  const [filteredCountries, setFilteredCountries] = useState<typeof countries>(countries);
   return (
     <View>
-      <CountryHeader />
+      <CountryHeader setFilteredCountries={setFilteredCountries} />
       <FlatList
-        data={countries}
+        data={filteredCountries}
         keyExtractor={c => c.code}
         renderItem={({ item }) => <Country item={item} />}
       />

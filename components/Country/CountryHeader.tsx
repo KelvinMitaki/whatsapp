@@ -12,8 +12,16 @@ import {
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
+import { countries } from "../../data/countries";
 
-const CountryHeader: React.FC<NavigationInjectedProps> = ({ navigation }) => {
+interface Props {
+  setFilteredCountries: React.Dispatch<React.SetStateAction<typeof countries>>;
+}
+
+const CountryHeader: React.FC<NavigationInjectedProps & Props> = ({
+  navigation,
+  setFilteredCountries
+}) => {
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const keyboardRef = useRef<TextInput>(null);
   const scale = useRef(new Animated.Value(0)).current;
@@ -79,6 +87,11 @@ const CountryHeader: React.FC<NavigationInjectedProps> = ({ navigation }) => {
           style={{ width: "80%", fontSize: 20, paddingHorizontal: 10, color: "#fff" }}
           placeholder="Search country"
           placeholderTextColor="rgba(255,255,255,.4)"
+          onChangeText={t =>
+            setFilteredCountries(
+              t.trim().length ? countries.filter(c => c.name.includes(t)) : countries
+            )
+          }
         />
       </Animated.View>
       <View style={styles.back}>
