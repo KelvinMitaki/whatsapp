@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -33,21 +33,26 @@ const VerificationScreen: NavigationStackScreenComponent<Params> = ({ navigation
         <Text style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}>
           +{code} {phoneNumber}
         </Text>
-        <TextInput style={styles.input} keyboardType="number-pad" maxLength={6} />
+        <TextInput style={styles.input} keyboardType="number-pad" maxLength={6} autoFocus />
         <Text style={{ color: "rgba(255,255,255,.4)", marginVertical: 10, textAlign: "center" }}>
           Enter 6-digit code
         </Text>
-        <View style={styles.resend}>
-          <MaterialCommunityIcons name="message-processing" size={24} color="#00af9c" />
-          <Text style={{ color: "#00af9c", marginLeft: 15 }}>Resend SMS</Text>
-        </View>
+        <TouchableNativeFeedback
+          background={TouchableNativeFeedback.Ripple("#fff", false)}
+          onPress={() => {}}
+        >
+          <View style={styles.resend}>
+            <MaterialCommunityIcons name="message-processing" size={24} color="#00af9c" />
+            <Text style={{ color: "#00af9c", marginLeft: 15 }}>Resend SMS</Text>
+          </View>
+        </TouchableNativeFeedback>
       </View>
       <Button
         title="NEXT"
         containerStyle={{ alignSelf: "center", marginBottom: 20 }}
         buttonStyle={{ backgroundColor: "#00af9c", paddingVertical: 10, paddingHorizontal: 20 }}
         titleStyle={{ color: "#191f23" }}
-        onPress={() => {}}
+        onPress={() => navigation.replace("Tab")}
       />
     </View>
   );
