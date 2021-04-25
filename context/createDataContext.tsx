@@ -1,8 +1,7 @@
 import React, { useReducer } from "react";
 import { AnyAction } from "redux";
-type Action = AnyAction;
 // @ts-ignore
-const createDataContext: <Ctx, State>(
+const createDataContext: <Ctx, State, Action>(
   reducer: React.Reducer<State, Action>,
   initialState: State
 ) => {

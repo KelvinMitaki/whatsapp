@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -15,11 +15,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../../interfaces/Redux";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { SetSearchModal } from "../../screens/HomeScreen";
+import { Context } from "../../context/HeaderContext";
 
 const HomeHeaderRight: React.FC<NavigationInjectedProps> = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const headerHeight = useSelector((state: Redux) => state.chat.headerHeight);
-  const dispatch = useDispatch();
+  const { dispatch } = useContext(Context);
   const height = useRef(new Animated.Value(0)).current;
   const width = useRef(new Animated.Value(0)).current;
   const searchHeight = useRef(new Animated.Value(20)).current;
@@ -43,7 +44,7 @@ const HomeHeaderRight: React.FC<NavigationInjectedProps> = () => {
                 duration: 300
               })
             ]).start();
-            dispatch<SetSearchModal>({ type: "setSearchModal", payload: true });
+            dispatch({ type: "setSearchModal", payload: true });
           }}
         >
           <View>

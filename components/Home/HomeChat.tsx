@@ -23,8 +23,8 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
       onPress={() => {
-        if (searchModal) {
-          dispatch<SetSearchModal>({ type: "setSearchModal", payload: false });
+        if (data.state.showModal) {
+          data.dispatch({ type: "setSearchModal", payload: false });
         }
         navigation.navigate("Chat");
       }}
