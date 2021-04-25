@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import { Alert, FlatList, ListRenderItemInfo, StyleSheet, View } from "react-native";
 import { Badge, Text } from "react-native-elements";
 import { Card, Avatar } from "react-native-elements";
@@ -9,10 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../../interfaces/Redux";
 import inspect from "../../inspect";
 import { SetSearchModal } from "../../screens/HomeScreen";
+import { Context as HeaderContext, HeaderState } from "../../context/HeaderContext";
 
 const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   const messages = useSelector((state: Redux) => state.chat.messages);
   const searchModal = useSelector((state: Redux) => state.chat.searchModal);
+  const data = useContext(HeaderContext);
+  console.log({ data });
   const dispatch = useDispatch();
   const renderItem = ({
     item: { message, messageNumber, type, time, name }

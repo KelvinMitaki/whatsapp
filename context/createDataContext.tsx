@@ -1,9 +1,14 @@
 import React, { useReducer } from "react";
 import { AnyAction } from "redux";
-type InitialState = { [key: string]: any };
 type Action = AnyAction;
-type Reducer = React.Reducer<InitialState, Action>;
-const createDataContext = (reducer: Reducer, initialState: InitialState) => {
+// @ts-ignore
+const createDataContext: <Ctx, State>(
+  reducer: React.Reducer<State, Action>,
+  initialState: State
+) => {
+  Provider: React.FC<{}>;
+  Context: React.Context<Ctx>;
+} = (reducer, initialState) => {
   const Context = React.createContext({});
   const Provider: React.FC = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);

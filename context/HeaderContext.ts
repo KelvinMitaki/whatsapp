@@ -1,7 +1,14 @@
 import { AnyAction } from "redux";
 import createDataContext from "./createDataContext";
 
-interface HeaderState {}
+export interface HeaderState {
+  setShowModal: boolean;
+}
+
+interface Ctx {
+  state: HeaderState;
+  dispatch: React.Dispatch<any>;
+}
 
 const headerReducer = (state: HeaderState, action: AnyAction) => {
   switch (action.type) {
@@ -10,4 +17,6 @@ const headerReducer = (state: HeaderState, action: AnyAction) => {
   }
 };
 
-export const { Context, Provider } = createDataContext(headerReducer, { number: 0 });
+export const { Context, Provider } = createDataContext<Ctx, HeaderState>(headerReducer, {
+  setShowModal: false
+});
