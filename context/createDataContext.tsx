@@ -1,12 +1,13 @@
 import React, { useReducer } from "react";
-type Actions = { [key: string]: () => void };
+import { AnyAction } from "redux";
 type InitialState = { [key: string]: any };
-type Reducer = React.Reducer<InitialState, Actions>;
-const createDataContext = (reducer: Reducer, actions: Actions, initialState: InitialState) => {
+type Action = AnyAction;
+type Reducer = React.Reducer<InitialState, Action>;
+const createDataContext = (reducer: Reducer, initialState: InitialState) => {
   const Context = React.createContext({});
   const Provider: React.FC = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
-    return <Context.Provider value={{ state }}>{children}</Context.Provider>;
+    return <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>;
   };
   return { Provider, Context };
 };
