@@ -5,18 +5,23 @@ import { Card, Avatar } from "react-native-elements";
 import { TouchableNativeFeedback } from "react-native";
 import { Ionicons, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../../interfaces/Redux";
 import inspect from "../../inspect";
+import { SetSearchModal } from "../../screens/HomeScreen";
 
 const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   const messages = useSelector((state: Redux) => state.chat.messages);
+  const dispatch = useDispatch();
   const renderItem = ({
     item: { message, messageNumber, type, time, name }
   }: ListRenderItemInfo<typeof messages[0]>) => (
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
-      onPress={() => navigation.navigate("Chat")}
+      onPress={() => {
+        dispatch<SetSearchModal>({ type: "setSearchModal", payload: false });
+        navigation.navigate("Chat");
+      }}
     >
       <View style={styles.contact}>
         {/* <Avatar

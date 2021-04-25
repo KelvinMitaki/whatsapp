@@ -14,6 +14,11 @@ export interface SetHeaderHeight {
   payload: number;
 }
 
+export interface SetSearchModal {
+  type: "setSearchModal";
+  payload: boolean;
+}
+
 const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   const dispatch = useDispatch();
   const headerHeight = useHeaderHeight();

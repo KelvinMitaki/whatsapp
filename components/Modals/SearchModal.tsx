@@ -49,87 +49,66 @@ const SearchModal: React.FC<Props> = ({
     ]).reset();
   };
   return (
-    <Modal
-      transparent
-      onRequestClose={() => {
-        setShowSearchModal(false);
-        reset();
-      }}
-      visible={showSearchModal}
-    >
-      <TouchableWithoutFeedback
-        onPress={() => {
-          setShowSearchModal(false);
-          reset();
-        }}
+    <View style={{ position: "absolute", top: 0, right: 0 }}>
+      <Animated.View
+        style={[
+          {
+            backgroundColor: "#14191d",
+            flexDirection: "column",
+            alignSelf: "flex-end"
+          },
+          { height, width }
+        ]}
       >
-        <View style={{ height: "100%", width: "100%" }}>
-          <Animated.View
-            style={[
-              {
-                backgroundColor: "#14191d",
-                flexDirection: "column",
-                alignSelf: "flex-end"
-              },
-              { height, width }
-            ]}
-          >
-            <View style={[styles.search, hideFilter && { borderBottomWidth: 0, height: "100%" }]}>
-              <View style={styles.iconPrt}>
-                <View style={styles.icon}>
-                  <TouchableNativeFeedback
-                    background={TouchableNativeFeedback.Ripple("#fff", true)}
-                    onPress={() => {
-                      setShowSearchModal(false);
-                      reset();
-                    }}
-                  >
-                    <View>
-                      <AntDesign name="arrowleft" size={25} color="#fff" />
-                    </View>
-                  </TouchableNativeFeedback>
+        <View style={[styles.search, hideFilter && { borderBottomWidth: 0, height: "100%" }]}>
+          <View style={styles.iconPrt}>
+            <View style={styles.icon}>
+              <TouchableNativeFeedback
+                background={TouchableNativeFeedback.Ripple("#fff", true)}
+                onPress={() => {
+                  setShowSearchModal(false);
+                  reset();
+                }}
+              >
+                <View>
+                  <AntDesign name="arrowleft" size={25} color="#fff" />
                 </View>
-              </View>
-              <TextInput placeholder="Search..." style={styles.input} placeholderTextColor="#fff" />
+              </TouchableNativeFeedback>
             </View>
-            {!hideFilter && (
-              <View style={styles.filterPrt}>
-                <View style={styles.filter}>
-                  <FontAwesome name="photo" size={18} style={{ paddingRight: 5 }} color="#fff" />
-                  <Text style={{ color: "#fff" }}>Photos</Text>
-                </View>
-                <View style={styles.filter}>
-                  <FontAwesome
-                    name="video-camera"
-                    size={18}
-                    style={{ paddingRight: 5 }}
-                    color="#fff"
-                  />
-                  <Text style={{ color: "#fff" }}>Videos</Text>
-                </View>
-                <View style={styles.filter}>
-                  <Feather name="link-2" size={18} style={{ paddingRight: 5 }} color="#fff" />
-                  <Text style={{ color: "#fff" }}>Links</Text>
-                </View>
-                <View style={styles.filter}>
-                  <MaterialCommunityIcons
-                    name="headphones"
-                    size={18}
-                    style={{ paddingRight: 5 }}
-                    color="#fff"
-                  />
-                  <Text style={{ color: "#fff" }}>Audio</Text>
-                </View>
-                <View style={styles.filter}>
-                  <Entypo name="text-document" size={18} style={{ paddingRight: 5 }} color="#fff" />
-                  <Text style={{ color: "#fff" }}>Documents</Text>
-                </View>
-              </View>
-            )}
-          </Animated.View>
+          </View>
+          <TextInput placeholder="Search..." style={styles.input} placeholderTextColor="#fff" />
         </View>
-      </TouchableWithoutFeedback>
-    </Modal>
+        {!hideFilter && (
+          <View style={styles.filterPrt}>
+            <View style={styles.filter}>
+              <FontAwesome name="photo" size={18} style={{ paddingRight: 5 }} color="#fff" />
+              <Text style={{ color: "#fff" }}>Photos</Text>
+            </View>
+            <View style={styles.filter}>
+              <FontAwesome name="video-camera" size={18} style={{ paddingRight: 5 }} color="#fff" />
+              <Text style={{ color: "#fff" }}>Videos</Text>
+            </View>
+            <View style={styles.filter}>
+              <Feather name="link-2" size={18} style={{ paddingRight: 5 }} color="#fff" />
+              <Text style={{ color: "#fff" }}>Links</Text>
+            </View>
+            <View style={styles.filter}>
+              <MaterialCommunityIcons
+                name="headphones"
+                size={18}
+                style={{ paddingRight: 5 }}
+                color="#fff"
+              />
+              <Text style={{ color: "#fff" }}>Audio</Text>
+            </View>
+            <View style={styles.filter}>
+              <Entypo name="text-document" size={18} style={{ paddingRight: 5 }} color="#fff" />
+              <Text style={{ color: "#fff" }}>Documents</Text>
+            </View>
+          </View>
+        )}
+      </Animated.View>
+    </View>
   );
 };
 

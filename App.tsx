@@ -78,6 +78,14 @@ const TabNavigator = createMaterialTopTabNavigator(
 
 const stackNavigator = createStackNavigator(
   {
+    Tab: {
+      screen: TabNavigator,
+      ...stackScreenSettings,
+      navigationOptions: {
+        headerTitle: "ChatApp",
+        ...stackScreenSettings.navigationOptions
+      }
+    },
     Start: {
       screen: StartScreen,
       navigationOptions: {
@@ -113,14 +121,6 @@ const stackNavigator = createStackNavigator(
       navigationOptions: {
         ...stackScreenSettings.navigationOptions,
         headerShown: false
-      }
-    },
-    Tab: {
-      screen: TabNavigator,
-      ...stackScreenSettings,
-      navigationOptions: {
-        headerTitle: "ChatApp",
-        ...stackScreenSettings.navigationOptions
       }
     },
     Chat: {

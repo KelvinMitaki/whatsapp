@@ -1,7 +1,7 @@
 import { AnyAction } from "redux";
 import { messages } from "../data/messages";
 import { SetMessage } from "../screens/BroadcastScreen";
-import { SetHeaderHeight } from "../screens/HomeScreen";
+import { SetHeaderHeight, SetSearchModal } from "../screens/HomeScreen";
 import { ResetContacts } from "../screens/NewGroupInfoScreen";
 import { SetContacts } from "../screens/NewGroupScreen";
 
@@ -15,16 +15,18 @@ export interface ChatState {
   indexToAnimate: number | null;
   scaleNum: number;
   headerHeight: number;
+  searchModal: boolean;
 }
 
-type Action = SetContacts | ResetContacts | SetMessage | SetHeaderHeight;
+type Action = SetContacts | ResetContacts | SetMessage | SetHeaderHeight | SetSearchModal;
 
 const INITIAL_STATE: ChatState = {
   Contacts: [],
   messages: messages,
   indexToAnimate: null,
   scaleNum: 1,
-  headerHeight: 0
+  headerHeight: 0,
+  searchModal: false
 };
 
 const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
@@ -47,6 +49,8 @@ const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
       return { ...state, headerHeight: action.payload };
     case "setMessage":
       return { ...state, messages: [action.payload, ...state.messages] };
+    case "setSearchModal":
+      return { ...state, searchModal: action.payload };
     default:
       return state;
   }

@@ -11,14 +11,16 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import CustomModal from "../Modals/CustomModal";
 import SearchModal from "../Modals/SearchModal";
 import { Header, useHeaderHeight } from "react-navigation-stack";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../../interfaces/Redux";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
+import { SetSearchModal } from "../../screens/HomeScreen";
 
 const HomeHeaderRight: React.FC<NavigationInjectedProps> = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
   const headerHeight = useSelector((state: Redux) => state.chat.headerHeight);
+  const dispatch = useDispatch();
   const height = useRef(new Animated.Value(0)).current;
   const width = useRef(new Animated.Value(0)).current;
   const searchHeight = useRef(new Animated.Value(20)).current;
@@ -30,6 +32,7 @@ const HomeHeaderRight: React.FC<NavigationInjectedProps> = () => {
         <TouchableNativeFeedback
           background={TouchableNativeFeedback.Ripple("#fff", true)}
           onPress={() => {
+            dispatch<SetSearchModal>({ type: "setSearchModal", payload: true });
             setShowSearchModal(true);
             Animated.parallel([
               Animated.timing(searchHeight, {
