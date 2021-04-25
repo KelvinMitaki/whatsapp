@@ -16,7 +16,6 @@ const headerReducer = (state: HeaderState, action: AnyAction) => {
       return state;
   }
 };
-
 export const { Context, Provider } = createDataContext<Ctx, HeaderState>(headerReducer, {
   setShowModal: false
 });
