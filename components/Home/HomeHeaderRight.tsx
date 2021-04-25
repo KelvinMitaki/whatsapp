@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -20,12 +20,18 @@ const HomeHeaderRight: React.FC<NavigationInjectedProps> = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
   const headerHeight = useSelector((state: Redux) => state.chat.headerHeight);
+  const searchModal = useSelector((state: Redux) => state.chat.searchModal);
   const dispatch = useDispatch();
   const height = useRef(new Animated.Value(0)).current;
   const width = useRef(new Animated.Value(0)).current;
   const searchHeight = useRef(new Animated.Value(20)).current;
   const searchWidth = useRef(new Animated.Value(20)).current;
-
+  useEffect(() => {
+    if (!searchModal) {
+      searchHeight.setValue(0);
+      searchWidth.setValue(0);
+    }
+  }, [searchModal]);
   return (
     <View style={styles.headerRight}>
       <View style={styles.ellipsis}>

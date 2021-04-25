@@ -19,7 +19,6 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
       onPress={() => {
-        dispatch<SetSearchModal>({ type: "setSearchModal", payload: false });
         navigation.navigate("Chat");
       }}
     >
@@ -107,6 +106,7 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
         keyExtractor={(_, i) => i.toLocaleString()}
         renderItem={renderItem}
         getItemLayout={getItemLayout}
+        onTouchStart={() => dispatch<SetSearchModal>({ type: "setSearchModal", payload: false })}
       />
     </View>
   );

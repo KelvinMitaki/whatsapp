@@ -35,18 +35,8 @@ const SearchModal: React.FC<Props> = ({
   hideFilter
 }) => {
   const reset = () => {
-    Animated.parallel([
-      Animated.timing(height, {
-        toValue: 0,
-        useNativeDriver: false,
-        duration: 3000
-      }),
-      Animated.timing(width, {
-        toValue: 0,
-        useNativeDriver: false,
-        duration: 3000
-      })
-    ]).reset();
+    height.setValue(0);
+    width.setValue(0);
   };
   return (
     <View style={{ position: "absolute", top: 0, right: 0 }}>
