@@ -31,11 +31,11 @@ interface Params {
 
 const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [checked, setChecked] = useState<Data[]>([]);
-  const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
   const dispatch = useDispatch();
-  const headerHeight = useHeaderHeight();
+  const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
   const searchHeight = useRef(new Animated.Value(20)).current;
   const searchWidth = useRef(new Animated.Value(20)).current;
+  const headerHeight = useHeaderHeight();
   useEffect(() => {
     navigation.setParams({ selected: checked.length, setChecked });
     if (!checked.length) {

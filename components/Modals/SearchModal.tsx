@@ -35,8 +35,9 @@ const SearchModal: React.FC<Props> = ({ height, width, hideFilter }) => {
     height.setValue(0);
     width.setValue(0);
   };
+  if (!searchModal) return null;
   return (
-    <View style={{ position: "absolute", top: 0, right: 0 }}>
+    <View style={{ position: "absolute", top: 0, right: 0, zIndex: 10 }}>
       <Animated.View
         style={[
           {
@@ -44,8 +45,7 @@ const SearchModal: React.FC<Props> = ({ height, width, hideFilter }) => {
             flexDirection: "column",
             alignSelf: "flex-end"
           },
-          { height, width },
-          !searchModal && { transform: [{ scale: 0 }] }
+          { height, width }
         ]}
       >
         <View style={[styles.search, hideFilter && { borderBottomWidth: 0, height: "100%" }]}>
