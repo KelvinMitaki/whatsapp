@@ -18,7 +18,6 @@ import { SetSearchModal } from "../../screens/HomeScreen";
 
 const HomeHeaderRight: React.FC<NavigationInjectedProps> = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
   const headerHeight = useSelector((state: Redux) => state.chat.headerHeight);
   const dispatch = useDispatch();
   const height = useRef(new Animated.Value(0)).current;
@@ -32,8 +31,6 @@ const HomeHeaderRight: React.FC<NavigationInjectedProps> = () => {
         <TouchableNativeFeedback
           background={TouchableNativeFeedback.Ripple("#fff", true)}
           onPress={() => {
-            dispatch<SetSearchModal>({ type: "setSearchModal", payload: true });
-            setShowSearchModal(true);
             Animated.parallel([
               Animated.timing(searchHeight, {
                 toValue: headerHeight,
@@ -46,6 +43,7 @@ const HomeHeaderRight: React.FC<NavigationInjectedProps> = () => {
                 duration: 300
               })
             ]).start();
+            dispatch<SetSearchModal>({ type: "setSearchModal", payload: true });
           }}
         >
           <View>
@@ -83,12 +81,7 @@ const HomeHeaderRight: React.FC<NavigationInjectedProps> = () => {
         height={height}
         width={width}
       />
-      <SearchModal
-        showSearchModal={showSearchModal}
-        setShowSearchModal={setShowSearchModal}
-        height={searchHeight}
-        width={searchWidth}
-      />
+      <SearchModal height={searchHeight} width={searchWidth} />
     </View>
   );
 };

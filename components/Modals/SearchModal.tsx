@@ -18,35 +18,20 @@ import {
 } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { NavigationEvents } from "react-navigation";
+import { SetSearchModal } from "../../screens/HomeScreen";
+import { useDispatch } from "react-redux";
 
 interface Props {
   height: Animated.Value;
   width: Animated.Value;
-  showSearchModal: boolean;
-  setShowSearchModal: React.Dispatch<React.SetStateAction<boolean>>;
   hideFilter?: boolean;
 }
 
-const SearchModal: React.FC<Props> = ({
-  showSearchModal,
-  setShowSearchModal,
-  height,
-  width,
-  hideFilter
-}) => {
+const SearchModal: React.FC<Props> = ({ height, width, hideFilter }) => {
+  const dispatch = useDispatch();
   const reset = () => {
-    Animated.parallel([
-      Animated.timing(height, {
-        toValue: 0,
-        useNativeDriver: false,
-        duration: 3000
-      }),
-      Animated.timing(width, {
-        toValue: 0,
-        useNativeDriver: false,
-        duration: 3000
-      })
-    ]).reset();
+    height.setValue(0);
+    width.setValue(0);
   };
   return (
     <View style={{ position: "absolute", top: 0, right: 0 }}>
@@ -66,7 +51,7 @@ const SearchModal: React.FC<Props> = ({
               <TouchableNativeFeedback
                 background={TouchableNativeFeedback.Ripple("#fff", true)}
                 onPress={() => {
-                  setShowSearchModal(false);
+                  dispatch<SetSearchModal>({ type: "setSearchModal", payload: false });
                   reset();
                 }}
               >

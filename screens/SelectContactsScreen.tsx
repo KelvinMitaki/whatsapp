@@ -14,6 +14,9 @@ import { NavigationStackScreenComponent, useHeaderHeight } from "react-navigatio
 import { users } from "../data/data";
 import SelectedContact, { Data } from "../components/SelectContacts/SelectedContact";
 import SearchModal from "../components/Modals/SearchModal";
+import { useDispatch } from "react-redux";
+import { AnyAction, Dispatch } from "redux";
+import { SetSearchModal } from "./HomeScreen";
 
 interface Params {
   slctn: "myContactsExc" | "onlyShareWith";
@@ -25,12 +28,13 @@ interface Params {
   searchHeight: Animated.Value;
   searchWidth: Animated.Value;
   headerHeight: number;
+  dispatch: Dispatch<AnyAction>;
 }
 
 const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [checked, setChecked] = useState<Data[]>([]);
   const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
-  const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
+  const dispatch = useDispatch();
   const headerHeight = useHeaderHeight();
   const searchHeight = useRef(new Animated.Value(20)).current;
   const searchWidth = useRef(new Animated.Value(20)).current;
@@ -53,13 +57,12 @@ const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigati
 
   useEffect(() => {
     navigation.setParams({
-      showSearchModal,
-      setShowSearchModal,
+      dispatch,
       searchHeight,
       searchWidth,
       headerHeight
     });
-  }, [showSearchModal, setShowSearchModal, searchHeight, searchWidth, headerHeight]);
+  }, [dispatch, searchHeight, searchWidth, headerHeight]);
 
   return (
     <View>
@@ -103,8 +106,7 @@ SelectContactsScreen.navigationOptions = ({ navigation }) => {
   const setChecked = navigation.getParam("setChecked");
   const searchHeight = navigation.getParam("searchHeight");
   const searchWidth = navigation.getParam("searchWidth");
-  const setShowSearchModal = navigation.getParam("setShowSearchModal");
-  const showSearchModal = navigation.getParam("showSearchModal");
+  const dispatch = navigation.getParam("dispatch");
   const headerHeight = navigation.getParam("headerHeight");
 
   return {
@@ -126,19 +128,13 @@ SelectContactsScreen.navigationOptions = ({ navigation }) => {
     ),
     headerRight: () => (
       <>
-        <SearchModal
-          width={searchWidth}
-          height={searchHeight}
-          setShowSearchModal={setShowSearchModal}
-          showSearchModal={showSearchModal}
-          hideFilter
-        />
+        <SearchModal width={searchWidth} height={searchHeight} hideFilter />
         <View style={styles.headerIconsPrt}>
           <View style={styles.ellipsis}>
             <TouchableNativeFeedback
               background={TouchableNativeFeedback.Ripple("#fff", true)}
               onPress={() => {
-                setShowSearchModal(true);
+                dispatch<SetSearchModal>({ type: "setSearchModal", payload: true });
                 Animated.parallel([
                   Animated.timing(searchHeight, {
                     toValue: headerHeight,

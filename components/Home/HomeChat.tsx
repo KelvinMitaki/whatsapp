@@ -12,6 +12,7 @@ import { SetSearchModal } from "../../screens/HomeScreen";
 
 const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   const messages = useSelector((state: Redux) => state.chat.messages);
+  const searchModal = useSelector((state: Redux) => state.chat.searchModal);
   const dispatch = useDispatch();
   const renderItem = ({
     item: { message, messageNumber, type, time, name }
@@ -19,7 +20,9 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
       onPress={() => {
-        dispatch<SetSearchModal>({ type: "setSearchModal", payload: false });
+        if (searchModal) {
+          dispatch<SetSearchModal>({ type: "setSearchModal", payload: false });
+        }
         navigation.navigate("Chat");
       }}
     >

@@ -8,6 +8,7 @@ import inspect from "../inspect";
 import HomeChat from "../components/Home/HomeChat";
 import { useHeaderHeight } from "react-navigation-stack";
 import { useDispatch } from "react-redux";
+import { NavigationEvents } from "react-navigation";
 
 export interface SetHeaderHeight {
   type: "setHeaderHeight";
@@ -27,6 +28,9 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   }, []);
   return (
     <View style={styles.prt}>
+      <NavigationEvents
+        onDidBlur={() => dispatch<SetSearchModal>({ type: "setSearchModal", payload: false })}
+      />
       <HomeChat />
       <TouchableNativeFeedback onPress={() => navigation.navigate("Contact")}>
         <View style={styles.message}>
