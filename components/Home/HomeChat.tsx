@@ -9,13 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../../interfaces/Redux";
 import inspect from "../../inspect";
 import { SetSearchModal } from "../../screens/HomeScreen";
-import { Context as HeaderContext, HeaderState } from "../../context/HeaderContext";
 
 const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   const messages = useSelector((state: Redux) => state.chat.messages);
-  const searchModal = useSelector((state: Redux) => state.chat.searchModal);
-  const data = useContext(HeaderContext);
-  console.log({ data });
   const dispatch = useDispatch();
   const renderItem = ({
     item: { message, messageNumber, type, time, name }
@@ -23,9 +19,6 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
       onPress={() => {
-        if (data.state.showModal) {
-          data.dispatch({ type: "setSearchModal", payload: false });
-        }
         navigation.navigate("Chat");
       }}
     >
@@ -113,6 +106,7 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
         keyExtractor={(_, i) => i.toLocaleString()}
         renderItem={renderItem}
         getItemLayout={getItemLayout}
+        onTouchStart={() => dispatch<SetSearchModal>({ type: "setSearchModal", payload: false })}
       />
     </View>
   );

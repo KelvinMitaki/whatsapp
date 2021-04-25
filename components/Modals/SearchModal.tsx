@@ -18,8 +18,9 @@ import {
 } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { NavigationEvents } from "react-navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { Redux } from "../../interfaces/Redux";
 import { SetSearchModal } from "../../screens/HomeScreen";
-import { useDispatch } from "react-redux";
 
 interface Props {
   height: Animated.Value;
@@ -28,6 +29,7 @@ interface Props {
 }
 
 const SearchModal: React.FC<Props> = ({ height, width, hideFilter }) => {
+  const searchModal = useSelector((state: Redux) => state.chat.searchModal);
   const dispatch = useDispatch();
   const reset = () => {
     height.setValue(0);
@@ -42,7 +44,8 @@ const SearchModal: React.FC<Props> = ({ height, width, hideFilter }) => {
             flexDirection: "column",
             alignSelf: "flex-end"
           },
-          { height, width }
+          { height, width },
+          !searchModal && { transform: [{ scale: 0 }] }
         ]}
       >
         <View style={[styles.search, hideFilter && { borderBottomWidth: 0, height: "100%" }]}>

@@ -15,7 +15,7 @@ import { users } from "../data/data";
 import SelectedContact, { Data } from "../components/SelectContacts/SelectedContact";
 import SearchModal from "../components/Modals/SearchModal";
 import { useDispatch } from "react-redux";
-import { AnyAction, Dispatch } from "redux";
+import { Dispatch } from "redux";
 import { SetSearchModal } from "./HomeScreen";
 
 interface Params {
@@ -23,12 +23,10 @@ interface Params {
   selected: number;
   selectAll: boolean;
   setChecked: React.Dispatch<React.SetStateAction<Data[]>>;
-  showSearchModal: boolean;
-  setShowSearchModal: React.Dispatch<React.SetStateAction<boolean>>;
+  dispatch: Dispatch<any>;
   searchHeight: Animated.Value;
   searchWidth: Animated.Value;
   headerHeight: number;
-  dispatch: Dispatch<AnyAction>;
 }
 
 const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
@@ -56,12 +54,7 @@ const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigati
   }, [checked]);
 
   useEffect(() => {
-    navigation.setParams({
-      dispatch,
-      searchHeight,
-      searchWidth,
-      headerHeight
-    });
+    navigation.setParams({ dispatch, searchHeight, searchWidth, headerHeight });
   }, [dispatch, searchHeight, searchWidth, headerHeight]);
 
   return (
@@ -106,8 +99,8 @@ SelectContactsScreen.navigationOptions = ({ navigation }) => {
   const setChecked = navigation.getParam("setChecked");
   const searchHeight = navigation.getParam("searchHeight");
   const searchWidth = navigation.getParam("searchWidth");
-  const dispatch = navigation.getParam("dispatch");
   const headerHeight = navigation.getParam("headerHeight");
+  const dispatch = navigation.getParam("dispatch");
 
   return {
     headerTitle: () => (

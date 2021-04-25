@@ -35,7 +35,6 @@ import PhoneNumberScreen from "./screens/PhoneNumberScreen";
 import CountryScreen from "./screens/CountryScreen";
 import VerificationScreen from "./screens/VerificationScreen";
 import NameScreen from "./screens/NameScreen";
-import { Provider as HeaderProvider } from "./context/HeaderContext";
 
 enableScreens();
 
@@ -210,8 +209,6 @@ const App = createAppContainer(stackNavigator);
 const store = createStore(reducer);
 export default () => (
   <Provider store={store}>
-    <HeaderProvider>
-      <App />
-    </HeaderProvider>
+    <App />
   </Provider>
 );
