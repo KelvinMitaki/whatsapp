@@ -8,7 +8,8 @@ import {
   createStackNavigator,
   TransitionSpecs
 } from "react-navigation-stack";
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import reducer from "./redux/reducer";
@@ -37,6 +38,7 @@ import CountryScreen from "./screens/CountryScreen";
 import VerificationScreen from "./screens/VerificationScreen";
 import NameScreen from "./screens/NameScreen";
 import BlankScreen from "./screens/BlankScreen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 enableScreens();
 
@@ -216,8 +218,19 @@ const stackNavigator = createStackNavigator(
 );
 const App = createAppContainer(stackNavigator);
 const store = createStore(reducer);
+const httpLink = createHttpLink({
+  uri: "http://d69ea1fe5739.ngrok.io"
+});
+const authLink = setContext((_, { headers }) => {
+  return {
+    headers: {
+      ...headers,
+      authorization: `Bearer ${AsyncStorage.getItem("token")}` || ""
+    }
+  };
+});
 const client = new ApolloClient({
-  uri: "http://d69ea1fe5739.ngrok.io",
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache()
 });
 export default () => (
