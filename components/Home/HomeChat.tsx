@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../../interfaces/Redux";
 import inspect from "../../inspect";
 import { SetSearchModal } from "../../screens/HomeScreen";
+import { MessageMeta } from "../../data/messages";
 
 const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   const messages = useSelector((state: Redux) => state.chat.messages);
@@ -99,11 +100,12 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
     (data: any, i: number) => ({ length: 70, offset: 70 * i, index: i }),
     []
   );
+  const keyExtractor = (_: MessageMeta, i: number) => i.toLocaleString();
   return (
     <View style={styles.prt}>
       <FlatList
         data={messages}
-        keyExtractor={(_, i) => i.toLocaleString()}
+        keyExtractor={keyExtractor}
         renderItem={renderItem}
         getItemLayout={getItemLayout}
         onTouchStart={() => dispatch<SetSearchModal>({ type: "setSearchModal", payload: false })}

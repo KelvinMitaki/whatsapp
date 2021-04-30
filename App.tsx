@@ -35,6 +35,7 @@ import PhoneNumberScreen from "./screens/PhoneNumberScreen";
 import CountryScreen from "./screens/CountryScreen";
 import VerificationScreen from "./screens/VerificationScreen";
 import NameScreen from "./screens/NameScreen";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
 enableScreens();
 
@@ -207,8 +208,14 @@ const stackNavigator = createStackNavigator(
 );
 const App = createAppContainer(stackNavigator);
 const store = createStore(reducer);
+const client = new ApolloClient({
+  uri: "localhost:4000",
+  cache: new InMemoryCache()
+});
 export default () => (
-  <Provider store={store}>
-    <App />
-  </Provider>
+  <ApolloProvider client={client}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </ApolloProvider>
 );
