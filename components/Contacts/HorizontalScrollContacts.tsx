@@ -1,14 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import { StyleSheet, FlatList, Animated, Easing } from "react-native";
 import { useDispatch } from "react-redux";
+import { User } from "../../interfaces/Chat";
 import HorizontalContact from "./HorizontalContact";
 
 interface Props {
-  Contacts: {
-    id: number;
-    name: string;
-    avatar: string;
-  }[];
+  Contacts: User[];
 }
 
 const HorizontalScrollContacts: React.FC<Props> = ({ Contacts }) => {

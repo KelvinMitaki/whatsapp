@@ -27,6 +27,19 @@ export interface CurrentUser {
     name: string;
     groupProfilePhoto: string | null;
     message: string;
-  };
+  }[];
+  createdAt: string;
+}
+
+export interface User {
+  _id: string;
+  name: string;
+  phoneNumber: number;
+  about: string;
+  countryCode: string;
+  profilePhoto: string | null;
+  groups: {
+    _id: string;
+  }[];
   createdAt: string;
 }

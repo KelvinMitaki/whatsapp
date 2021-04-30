@@ -6,14 +6,13 @@ import { Badge } from "react-native-elements";
 import { Card } from "react-native-elements";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import inspect from "../../inspect";
+import { useQuery } from "@apollo/client";
+import { FETCH_USERS } from "../../graphql/queries";
+import { User } from "../../interfaces/Chat";
 
 interface Props {
-  setContacts?: (usr: { name: string; avatar: string; id: number }) => void;
-  Contacts?: {
-    name: string;
-    avatar: string;
-    id: number;
-  }[];
+  setContacts?: (usr: User) => void;
+  Contacts?: User[];
 }
 
 const Contact: React.FC<NavigationInjectedProps & Props> = ({
@@ -21,26 +20,27 @@ const Contact: React.FC<NavigationInjectedProps & Props> = ({
   setContacts,
   Contacts
 }) => {
+  const { data } = useQuery(FETCH_USERS, { fetchPolicy: "cache-only" });
   return (
     <>
-      {users.map((usr, i) => (
+      {(data.fetchUsers as User[]).map(usr => (
         <TouchableNativeFeedback
           background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
           onPress={() => {
             if (!setContacts) {
               navigation.navigate("Chat");
             } else {
-              setContacts({ ...usr, id: i });
+              setContacts(usr);
             }
           }}
-          key={i}
+          key={usr._id}
         >
           <View style={styles.contact}>
             <View>
               <View style={styles.person}>
                 <Ionicons name="person" size={35} color="rgba(241, 241, 242, 0.8)" />
               </View>
-              {Contacts && Contacts.find(ct => ct.id === i) && (
+              {Contacts && Contacts.find(ct => ct._id === usr._id) && (
                 <View style={styles.selectedContact}>
                   <Octicons name="check" size={15} />
                 </View>

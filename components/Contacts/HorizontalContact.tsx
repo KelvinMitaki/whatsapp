@@ -6,14 +6,11 @@ import { SetContacts } from "../../screens/NewGroupScreen";
 import { NavigationEvents } from "react-navigation";
 import { useSelector } from "react-redux";
 import { Redux } from "../../interfaces/Redux";
+import { User } from "../../interfaces/Chat";
 
 interface Props {
   dispatch: Dispatch<SetContacts>;
-  item: {
-    id: number;
-    name: string;
-    avatar: string;
-  };
+  item: User;
 }
 
 const HorizontalContact: React.FC<Props> = ({ dispatch, item }) => {
@@ -39,7 +36,7 @@ const HorizontalContact: React.FC<Props> = ({ dispatch, item }) => {
     >
       <Animated.View
         style={{
-          ...(indexToAnimate === item.id && {
+          ...(indexToAnimate === item._id && {
             transform: [{ scale }]
           })
         }}

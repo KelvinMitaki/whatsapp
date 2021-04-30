@@ -19,14 +19,11 @@ import { Redux } from "../interfaces/Redux";
 import HorizontalScrollContacts from "../components/Contacts/HorizontalScrollContacts";
 import { NavigationEvents } from "react-navigation";
 import { ResetContacts } from "./NewGroupInfoScreen";
+import { User } from "../interfaces/Chat";
 
 export interface SetContacts {
   type: "setContacts";
-  payload: {
-    name: string;
-    avatar: string;
-    id: number;
-  };
+  payload: User;
 }
 
 const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {

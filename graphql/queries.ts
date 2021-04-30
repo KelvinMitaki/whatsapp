@@ -2,18 +2,15 @@ import gql from "graphql-tag";
 
 export const FETCH_USERS = gql`
   query {
-    fetchCurrentUser {
+    fetchUsers {
       _id
       name
-      about
       phoneNumber
+      about
       countryCode
       profilePhoto
       groups {
         _id
-        name
-        groupProfilePhoto
-        message
       }
       createdAt
     }
@@ -29,7 +26,12 @@ export const FETCH_CURRENT_USER = gql`
       phoneNumber
       countryCode
       profilePhoto
-      groups
+      groups {
+        _id
+        name
+        groupProfilePhoto
+        message
+      }
       createdAt
     }
   }

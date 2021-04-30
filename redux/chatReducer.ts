@@ -1,18 +1,15 @@
 import { AnyAction } from "redux";
 import { messages } from "../data/messages";
+import { User } from "../interfaces/Chat";
 import { SetMessage } from "../screens/BroadcastScreen";
 import { SetHeaderHeight, SetSearchModal } from "../screens/HomeScreen";
 import { ResetContacts } from "../screens/NewGroupInfoScreen";
 import { SetContacts } from "../screens/NewGroupScreen";
 
 export interface ChatState {
-  Contacts: {
-    id: number;
-    name: string;
-    avatar: string;
-  }[];
+  Contacts: User[];
   messages: typeof messages;
-  indexToAnimate: number | null;
+  indexToAnimate: string | null;
   scaleNum: number;
   headerHeight: number;
   searchModal: boolean;
@@ -32,15 +29,15 @@ const INITIAL_STATE: ChatState = {
 const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
   switch (action.type) {
     case "setContacts":
-      const contactExists = state.Contacts.find(ct => ct.id === action.payload.id);
+      const contactExists = state.Contacts.find(ct => ct._id === action.payload._id);
       if (contactExists) {
-        const newContacts = state.Contacts.filter(ct => ct.id !== action.payload.id);
-        return { ...state, Contacts: newContacts, indexToAnimate: action.payload.id, scaleNum: 0 };
+        const newContacts = state.Contacts.filter(ct => ct._id !== action.payload._id);
+        return { ...state, Contacts: newContacts, indexToAnimate: action.payload._id, scaleNum: 0 };
       }
       return {
         ...state,
         Contacts: [...state.Contacts, action.payload],
-        indexToAnimate: action.payload.id,
+        indexToAnimate: action.payload._id,
         scaleNum: 1
       };
     case "resetContacts":
