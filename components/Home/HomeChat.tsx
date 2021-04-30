@@ -13,6 +13,22 @@ import { MessageMeta } from "../../data/messages";
 import { FETCH_CHATS } from "../../graphql/queries";
 import { useQuery } from "@apollo/client";
 
+export interface Chat {
+  _id: string;
+  sender: {
+    _id: string;
+    name: string;
+  };
+  recipient: {
+    _id: string;
+    name: string;
+  };
+  message: string;
+  createdAt: string;
+  updatedAt: string;
+  unread: number;
+}
+
 const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   const messages = useSelector((state: Redux) => state.chat.messages);
   const { data } = useQuery(FETCH_CHATS, { fetchPolicy: "cache-only" });
