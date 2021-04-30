@@ -1,7 +1,7 @@
 import { useLazyQuery } from "@apollo/client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import { StyleSheet, View, ActivityIndicator } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { FETCH_CURRENT_USER } from "../graphql/queries";
 
