@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   ActivityIndicator,
   StyleSheet,
@@ -10,6 +10,8 @@ import {
 import { Ionicons, FontAwesome, Octicons, AntDesign } from "@expo/vector-icons";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import inspect from "../inspect";
+import { useMutation } from "@apollo/client";
+import { REGISTER_USER } from "../graphql/mutations";
 
 interface Params {
   code: string;
@@ -17,6 +19,12 @@ interface Params {
 }
 
 const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
+  const [name, setName] = useState<string>("");
+  const [registerUser, { loading }] = useMutation(REGISTER_USER, {
+    onCompleted() {
+      navigation.replace("Home");
+    }
+  });
   const phoneNumber = navigation.getParam("phoneNumber");
   const code = navigation.getParam("code");
   return (
@@ -42,26 +50,32 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
           </View>
         </View>
         <View style={{ flexDirection: "row", alignItems: "center", alignSelf: "center" }}>
-          <TextInput
-            style={{
-              borderBottomColor: "#00af9c",
-              borderBottomWidth: 2,
-              width: "80%",
-              marginRight: 10,
-              color: "#fff",
-              paddingHorizontal: 5
-            }}
-            autoFocus
-          />
+          <TextInput style={styles.inp} autoFocus onChangeText={setName} />
           <Octicons name="smiley" color="rgba(241, 241, 242, 0.8)" size={25} />
         </View>
       </View>
 
-      <TouchableNativeFeedback onPress={() => {}}>
+      <TouchableNativeFeedback
+        onPress={() =>
+          name.trim().length &&
+          registerUser({
+            variables: {
+              name,
+              about: "Hey there I am using ChatApp",
+              phoneNumber: parseInt(phoneNumber),
+              countryCode: code,
+              groups: []
+            }
+          })
+        }
+      >
         <View style={styles.btn}>
           <Text>NEXT</Text>
-          <AntDesign name="arrowright" size={20} />
-          {/* <ActivityIndicator color="#191f23" size="small" /> */}
+          {!loading ? (
+            <AntDesign name="arrowright" size={20} />
+          ) : (
+            <ActivityIndicator color="#191f23" size="small" />
+          )}
         </View>
       </TouchableNativeFeedback>
     </View>
@@ -92,6 +106,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: 55,
     width: 55
+  },
+  inp: {
+    borderBottomColor: "#00af9c",
+    borderBottomWidth: 2,
+    width: "80%",
+    marginRight: 10,
+    color: "#fff",
+    paddingHorizontal: 5
   },
   btn: {
     backgroundColor: "#00af9c",

@@ -128,6 +128,7 @@ const stackNavigator = createStackNavigator(
       }
     },
     Name: {
+      // @ts-ignore
       screen: NameScreen,
       navigationOptions: {
         ...stackScreenSettings.navigationOptions,
