@@ -18,6 +18,7 @@ import { isValidPhoneNumber, CountryCode } from "libphonenumber-js";
 import { Overlay } from "react-native-elements/dist/overlay/Overlay";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { NavigationEvents } from "react-navigation";
+import PhoneNumberModals from "../components/PhoneNumber/PhoneNumberModals";
 
 export interface SetCountry {
   type: "setCountry";
@@ -141,61 +142,15 @@ const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
         titleStyle={{ color: "#191f23" }}
         onPress={() => validatePhoneNumber(phoneNumber)}
       />
-      <Overlay
-        isVisible={showModal}
-        onBackdropPress={() => setShowModal(false)}
-        overlayStyle={styles.modal}
-        animationType="fade"
-      >
-        <Text style={{ color: "#fff" }}>Please enter your phone number.</Text>
-        <Text
-          style={{
-            color: "#00af9c",
-            textAlign: "right",
-            paddingVertical: 5,
-            paddingHorizontal: 20
-          }}
-          onPress={() => setShowModal(false)}
-        >
-          OK
-        </Text>
-      </Overlay>
-      <Overlay
-        isVisible={showVerification}
-        onBackdropPress={() => setShowVerification(false)}
-        overlayStyle={styles.modal}
-        animationType="fade"
-      >
-        <Text style={{ color: "#fff" }}>We will be verifying the phone number:</Text>
-        <Text style={{ color: "#fff", fontWeight: "bold", marginVertical: 20 }}>
-          +{userCountry?.dial_code} {phoneNumber}
-        </Text>
-        <Text style={{ color: "#fff" }}>Is this OK, or would you like to edit the number?</Text>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginVertical: 15
-          }}
-        >
-          <Text
-            style={{ color: "#00af9c", paddingVertical: 5, paddingHorizontal: 20 }}
-            onPress={() => setShowVerification(false)}
-          >
-            EDIT
-          </Text>
-          <Text
-            style={{ color: "#00af9c", paddingVertical: 5, paddingHorizontal: 20 }}
-            onPress={() => {
-              setShowVerification(false);
-              navigation.replace("Verification", { code, phoneNumber });
-            }}
-          >
-            OK
-          </Text>
-        </View>
-      </Overlay>
+      <PhoneNumberModals
+        phoneNumber={phoneNumber}
+        code={code}
+        navigation={navigation}
+        setShowModal={setShowModal}
+        setShowVerification={setShowVerification}
+        showModal={showModal}
+        showVerification={showVerification}
+      />
     </View>
   );
 };
@@ -239,13 +194,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around"
-  },
-  modal: {
-    backgroundColor: "#20272b",
-    minHeight: 110,
-    width: "75%",
-    justifyContent: "space-between",
-    paddingTop: 30,
-    paddingHorizontal: 20
   }
 });
