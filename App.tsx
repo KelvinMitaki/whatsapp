@@ -209,7 +209,7 @@ const stackNavigator = createStackNavigator(
 const App = createAppContainer(stackNavigator);
 const store = createStore(reducer);
 const client = new ApolloClient({
-  uri: "localhost:4000",
+  uri: "http://4b0acd844184.ngrok.io",
   cache: new InMemoryCache()
 });
 export default () => (
