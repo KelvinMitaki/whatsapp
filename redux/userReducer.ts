@@ -1,6 +1,6 @@
 import { AnyAction } from "redux";
+import { SetCountry } from "../components/PhoneNumber/PhoneNumberComponent";
 import { countries } from "../data/countries";
-import { SetCountry } from "../screens/PhoneNumberScreen";
 
 export interface UserState {
   userCountry: typeof countries[0] | null;

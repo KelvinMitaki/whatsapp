@@ -4,7 +4,7 @@ import { SvgUri } from "react-native-svg";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { useDispatch } from "react-redux";
 import { countries } from "../../data/countries";
-import { SetCountry } from "../../screens/PhoneNumberScreen";
+import { SetCountry } from "../PhoneNumber/PhoneNumberComponent";
 
 interface Props {
   item: typeof countries[0];
