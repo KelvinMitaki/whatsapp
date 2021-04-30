@@ -13,7 +13,7 @@ import inspect from "../inspect";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { REGISTER_USER } from "../graphql/mutations";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { FETCH_CHATS } from "../graphql/queries";
+import { FETCH_CHATS, FETCH_USERS } from "../graphql/queries";
 
 interface Params {
   code: string;
@@ -29,12 +29,21 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       navigation.replace("Tab");
     }
   });
+  const [fetchUsers] = useLazyQuery(FETCH_USERS, {
+    onError(err) {
+      console.log(err);
+    },
+    onCompleted(data) {
+      console.log(data);
+    }
+  });
   const [registerUser, { loading }] = useMutation(REGISTER_USER, {
     async onCompleted(data) {
       setTokenLoading(true);
       await AsyncStorage.setItem("token", data.registerUser.token);
       setTokenLoading(false);
       fetchChats();
+      fetchUsers();
     },
     onError(err) {
       console.log(err);
