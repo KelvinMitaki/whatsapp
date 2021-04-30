@@ -22,7 +22,10 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [name, setName] = useState<string>("");
   const [registerUser, { loading }] = useMutation(REGISTER_USER, {
     onCompleted() {
-      navigation.replace("Home");
+      navigation.replace("Tab");
+    },
+    onError(err) {
+      console.log(err);
     }
   });
   const phoneNumber = navigation.getParam("phoneNumber");

@@ -3,7 +3,7 @@ import { Alert, FlatList, ListRenderItemInfo, StyleSheet, View } from "react-nat
 import { Badge, Text } from "react-native-elements";
 import { Card, Avatar } from "react-native-elements";
 import { TouchableNativeFeedback } from "react-native";
-import { Ionicons, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons, FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../../interfaces/Redux";
@@ -104,12 +104,33 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   return (
     <View style={styles.prt}>
       <FlatList
-        data={messages}
+        data={[]}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         getItemLayout={getItemLayout}
         onTouchStart={() => dispatch<SetSearchModal>({ type: "setSearchModal", payload: false })}
       />
+      <View style={styles.noMsgs}>
+        <Text
+          style={{ color: "rgba(255,255,255,.7)", textAlign: "center", justifyContent: "center" }}
+        >
+          To start messaging contacts who have ChatApp, tap{" "}
+        </Text>
+        <View style={{ flexDirection: "row" }}>
+          <MaterialCommunityIcons
+            name="android-messages"
+            size={20}
+            color="rgba(255,255,255,.7)"
+            style={styles.msgIcon}
+          />
+          <Text
+            style={{ color: "rgba(255,255,255,.7)", textAlign: "center", justifyContent: "center" }}
+          >
+            {" "}
+            at the bottom right of your screen.
+          </Text>
+        </View>
+      </View>
     </View>
   );
 };
@@ -142,5 +163,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "grey"
+  },
+  msgIcon: {
+    transform: [{ scaleX: -1 }, { scaleY: 1 }]
+  },
+  noMsgs: {
+    height: "100%",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 30
   }
 });
