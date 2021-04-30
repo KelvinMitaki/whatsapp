@@ -10,32 +10,19 @@ import { Redux } from "../../interfaces/Redux";
 import inspect from "../../inspect";
 import { SetSearchModal } from "../../screens/HomeScreen";
 import { MessageMeta } from "../../data/messages";
-import { FETCH_CHATS } from "../../graphql/queries";
+import { FETCH_CHATS, FETCH_CURRENT_USER } from "../../graphql/queries";
 import { useQuery } from "@apollo/client";
-
-export interface Chat {
-  _id: string;
-  sender: {
-    _id: string;
-    name: string;
-  };
-  recipient: {
-    _id: string;
-    name: string;
-  };
-  message: string;
-  createdAt: string;
-  updatedAt: string;
-  unread: number;
-}
+import { Chat, CurrentUser } from "../../interfaces/Chat";
 
 const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   const messages = useSelector((state: Redux) => state.chat.messages);
   const { data } = useQuery(FETCH_CHATS, { fetchPolicy: "cache-only" });
+  const user = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
   const dispatch = useDispatch();
+  const currentUser: CurrentUser = user.data.fetchCurrentUser;
   const renderItem = ({
-    item: { message, messageNumber, type, time, name }
-  }: ListRenderItemInfo<typeof messages[0]>) => (
+    item: { message, sender, type, updatedAt, recipient, unread }
+  }: ListRenderItemInfo<Chat>) => (
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
       onPress={() => {
@@ -73,7 +60,7 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
                 }}
                 numberOfLines={1}
               >
-                {name.split(",").join(", ")}
+                {sender.name.split(",").join(", ")}
               </Text>
             ) : (
               <Text
@@ -85,10 +72,10 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
                 }}
                 numberOfLines={1}
               >
-                {name}
+                {currentUser._id === sender._id ? recipient.name : sender.name}
               </Text>
             )}
-            <Text style={{ right: 1, color: "rgba(255,255,255,.6)" }}>{time}</Text>
+            <Text style={{ right: 1, color: "rgba(255,255,255,.6)" }}>{updatedAt}</Text>
           </View>
           <View style={styles.msg}>
             <Text
@@ -96,14 +83,12 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
               style={{
                 marginTop: 5,
                 color: "rgba(255,255,255,.6)",
-                width: messageNumber ? "90%" : "100%"
+                width: unread ? "90%" : "100%"
               }}
             >
               {message}
             </Text>
-            {messageNumber ? (
-              <Badge value={messageNumber} badgeStyle={{ backgroundColor: "#00af9c" }} />
-            ) : null}
+            {unread ? <Badge value={unread} badgeStyle={{ backgroundColor: "#00af9c" }} /> : null}
           </View>
           <Card.Divider
             style={{
@@ -119,7 +104,7 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
     (data: any, i: number) => ({ length: 70, offset: 70 * i, index: i }),
     []
   );
-  const keyExtractor = (_: MessageMeta, i: number) => i.toLocaleString();
+  const keyExtractor = ({ _id }: Chat) => _id;
   return (
     <View style={styles.prt}>
       {data && data.fetchChats && data.fetchChats.length ? (

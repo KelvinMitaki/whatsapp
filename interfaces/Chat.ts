@@ -25,7 +25,7 @@ export interface CurrentUser {
   groups: {
     _id: string;
     name: string;
-    groupProfilePhoto: string;
+    groupProfilePhoto: string | null;
     message: string;
   };
   createdAt: string;
