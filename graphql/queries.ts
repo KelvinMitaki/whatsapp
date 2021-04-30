@@ -24,3 +24,16 @@ export const FETCH_CURRENT_USER = gql`
     }
   }
 `;
+
+export const FETCH_CHATS = gql`
+  query {
+    fetchChats {
+      _id
+      sender
+      recipient
+      message
+      createdAt
+      updatedAt
+    }
+  }
+`;

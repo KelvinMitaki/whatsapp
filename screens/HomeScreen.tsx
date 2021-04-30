@@ -9,6 +9,8 @@ import HomeChat from "../components/Home/HomeChat";
 import { useHeaderHeight } from "react-navigation-stack";
 import { useDispatch } from "react-redux";
 import { NavigationEvents } from "react-navigation";
+import { useQuery } from "@apollo/client";
+import { FETCH_CHATS } from "../graphql/queries";
 
 export interface SetHeaderHeight {
   type: "setHeaderHeight";
@@ -21,11 +23,13 @@ export interface SetSearchModal {
 }
 
 const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
+  const { data } = useQuery(FETCH_CHATS, { fetchPolicy: "cache-only" });
   const dispatch = useDispatch();
   const headerHeight = useHeaderHeight();
   useEffect(() => {
     dispatch<SetHeaderHeight>({ type: "setHeaderHeight", payload: headerHeight });
   }, []);
+  console.log(data);
   return (
     <View style={styles.prt}>
       <NavigationEvents

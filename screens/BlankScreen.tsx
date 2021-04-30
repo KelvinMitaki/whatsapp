@@ -3,12 +3,17 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect } from "react";
 import { StyleSheet, View, ActivityIndicator } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
-import { FETCH_CURRENT_USER } from "../graphql/queries";
+import { FETCH_CHATS, FETCH_CURRENT_USER } from "../graphql/queries";
 
 const BlankScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  const [fetchChats] = useLazyQuery(FETCH_CHATS, {
+    onCompleted() {
+      navigation.replace("Tab");
+    }
+  });
   const [fetchCurrentUser] = useLazyQuery(FETCH_CURRENT_USER, {
     onCompleted() {
-      navigation.replace("Home");
+      fetchChats();
     },
     onError() {
       navigation.replace("Start");

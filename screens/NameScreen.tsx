@@ -10,8 +10,10 @@ import {
 import { Ionicons, FontAwesome, Octicons, AntDesign } from "@expo/vector-icons";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import inspect from "../inspect";
-import { useMutation } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { REGISTER_USER } from "../graphql/mutations";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FETCH_CHATS } from "../graphql/queries";
 
 interface Params {
   code: string;
@@ -20,9 +22,19 @@ interface Params {
 
 const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [name, setName] = useState<string>("");
-  const [registerUser, { loading }] = useMutation(REGISTER_USER, {
+  const [tokenLoading, setTokenLoading] = useState<boolean>(false);
+
+  const [fetchChats] = useLazyQuery(FETCH_CHATS, {
     onCompleted() {
       navigation.replace("Tab");
+    }
+  });
+  const [registerUser, { loading }] = useMutation(REGISTER_USER, {
+    async onCompleted(data) {
+      setTokenLoading(true);
+      await AsyncStorage.setItem("token", data.registerUser.token);
+      setTokenLoading(false);
+      fetchChats();
     },
     onError(err) {
       console.log(err);
@@ -74,7 +86,7 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       >
         <View style={styles.btn}>
           <Text>NEXT</Text>
-          {!loading ? (
+          {!loading && !tokenLoading ? (
             <AntDesign name="arrowright" size={20} />
           ) : (
             <ActivityIndicator color="#191f23" size="small" />

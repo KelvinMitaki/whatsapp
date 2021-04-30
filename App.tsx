@@ -222,11 +222,11 @@ const store = createStore(reducer);
 const httpLink = createHttpLink({
   uri: "http://d69ea1fe5739.ngrok.io"
 });
-const authLink = setContext((_, { headers }) => {
+const authLink = setContext(async (_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: `Bearer ${AsyncStorage.getItem("token")}` || ""
+      authorization: `Bearer ${await AsyncStorage.getItem("token")}` || ""
     }
   };
 });
