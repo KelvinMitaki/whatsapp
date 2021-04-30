@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ScrollView, StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import inspect from "../inspect";
 import Contact from "../components/Contacts/Contact";
+import { FETCH_USERS } from "../graphql/queries";
+import { useQuery } from "@apollo/client";
 
-const ContactScreen: NavigationStackScreenComponent = ({ navigation }) => {
+interface Params {
+  contacts: number;
+}
+
+const ContactScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
+  const { data } = useQuery(FETCH_USERS, { fetchPolicy: "cache-only" });
+  useEffect(() => {
+    navigation.setParams({ contacts: data.fetchUsers.length });
+  }, []);
   return (
     <ScrollView>
       <View>
@@ -45,37 +55,42 @@ const ContactScreen: NavigationStackScreenComponent = ({ navigation }) => {
   );
 };
 
-ContactScreen.navigationOptions = {
-  headerTitle: () => (
-    <View>
-      <Text style={{ fontSize: 20, color: "#fff" }}>Select Contact</Text>
-      <Text style={{ color: "#fff" }}>200 contacts</Text>
-    </View>
-  ),
-  headerRight: () => (
-    <View style={styles.headerRight}>
-      <View style={styles.ellipsis}>
-        <TouchableNativeFeedback
-          background={TouchableNativeFeedback.Ripple("#fff", false)}
-          onPress={() => {}}
-        >
-          <View>
-            <MaterialIcons name="search" size={25} color="#fff" />
-          </View>
-        </TouchableNativeFeedback>
+ContactScreen.navigationOptions = ({ navigation }) => {
+  const contacts = navigation.getParam("contacts");
+  return {
+    headerTitle: () => (
+      <View>
+        <Text style={{ fontSize: 20, color: "#fff" }}>Select Contact</Text>
+        <Text style={{ color: "#fff" }}>
+          {contacts === 1 ? <>{contacts} contact</> : <> {contacts} contacts </>}
+        </Text>
       </View>
-      <View style={styles.ellipsis}>
-        <TouchableNativeFeedback
-          background={TouchableNativeFeedback.Ripple("#fff", false)}
-          onPress={() => {}}
-        >
-          <View>
-            <Ionicons name="ellipsis-vertical-sharp" size={20} color="#fff" />
-          </View>
-        </TouchableNativeFeedback>
+    ),
+    headerRight: () => (
+      <View style={styles.headerRight}>
+        <View style={styles.ellipsis}>
+          <TouchableNativeFeedback
+            background={TouchableNativeFeedback.Ripple("#fff", false)}
+            onPress={() => {}}
+          >
+            <View>
+              <MaterialIcons name="search" size={25} color="#fff" />
+            </View>
+          </TouchableNativeFeedback>
+        </View>
+        <View style={styles.ellipsis}>
+          <TouchableNativeFeedback
+            background={TouchableNativeFeedback.Ripple("#fff", false)}
+            onPress={() => {}}
+          >
+            <View>
+              <Ionicons name="ellipsis-vertical-sharp" size={20} color="#fff" />
+            </View>
+          </TouchableNativeFeedback>
+        </View>
       </View>
-    </View>
-  )
+    )
+  };
 };
 
 export default ContactScreen;

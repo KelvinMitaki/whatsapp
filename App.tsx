@@ -148,6 +148,7 @@ const stackNavigator = createStackNavigator(
       ...stackScreenSettings
     },
     Contact: {
+      // @ts-ignore
       screen: ContactScreen,
       ...stackScreenSettings
     },
