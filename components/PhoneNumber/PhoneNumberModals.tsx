@@ -1,12 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Overlay } from "react-native-elements";
-import {
-  NavigationInjectedProps,
-  NavigationParams,
-  NavigationRoute,
-  withNavigation
-} from "react-navigation";
+import { NavigationParams, NavigationRoute } from "react-navigation";
 import { StackNavigationProp } from "react-navigation-stack/lib/typescript/src/vendor/types";
 import { useSelector } from "react-redux";
 import { Redux } from "../../interfaces/Redux";

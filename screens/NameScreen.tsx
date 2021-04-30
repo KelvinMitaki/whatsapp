@@ -1,10 +1,24 @@
 import React from "react";
-import { StyleSheet, Text, TextInput, TouchableNativeFeedback, View } from "react-native";
-import { Ionicons, FontAwesome, Octicons } from "@expo/vector-icons";
-import { Button } from "react-native-elements";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableNativeFeedback,
+  View
+} from "react-native";
+import { Ionicons, FontAwesome, Octicons, AntDesign } from "@expo/vector-icons";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
+import inspect from "../inspect";
 
-const NameScreen: NavigationStackScreenComponent = ({ navigation }) => {
+interface Params {
+  code: string;
+  phoneNumber: string;
+}
+
+const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
+  const phoneNumber = navigation.getParam("phoneNumber");
+  const code = navigation.getParam("code");
   return (
     <View style={{ flex: 1, justifyContent: "space-between" }}>
       <View style={{ marginTop: "20%" }}>
@@ -33,20 +47,23 @@ const NameScreen: NavigationStackScreenComponent = ({ navigation }) => {
               borderBottomColor: "#00af9c",
               borderBottomWidth: 2,
               width: "80%",
-              marginRight: 10
+              marginRight: 10,
+              color: "#fff",
+              paddingHorizontal: 5
             }}
             autoFocus
           />
           <Octicons name="smiley" color="rgba(241, 241, 242, 0.8)" size={25} />
         </View>
       </View>
-      <Button
-        title="NEXT"
-        containerStyle={{ alignSelf: "center", marginBottom: 20 }}
-        buttonStyle={{ backgroundColor: "#00af9c", paddingVertical: 10, paddingHorizontal: 20 }}
-        titleStyle={{ color: "#191f23" }}
-        onPress={() => navigation.replace("Tab")}
-      />
+
+      <TouchableNativeFeedback onPress={() => {}}>
+        <View style={styles.btn}>
+          <Text>NEXT</Text>
+          <AntDesign name="arrowright" size={20} />
+          {/* <ActivityIndicator color="#191f23" size="small" /> */}
+        </View>
+      </TouchableNativeFeedback>
     </View>
   );
 };
@@ -75,5 +92,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: 55,
     width: 55
+  },
+  btn: {
+    backgroundColor: "#00af9c",
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    width: 100,
+    alignSelf: "center",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    borderRadius: 5,
+    margin: 10
   }
 });
