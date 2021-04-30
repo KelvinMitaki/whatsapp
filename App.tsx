@@ -1,4 +1,6 @@
 import React from "react";
+import { Platform } from "react-native";
+import { enableScreens } from "react-native-screens";
 import { createAppContainer } from "react-navigation";
 import { createMaterialTopTabNavigator } from "react-navigation-tabs";
 import {
@@ -6,6 +8,7 @@ import {
   createStackNavigator,
   TransitionSpecs
 } from "react-navigation-stack";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import reducer from "./redux/reducer";
@@ -13,12 +16,10 @@ import HomeScreen from "./screens/HomeScreen";
 import GroupScreen from "./screens/GroupScreen";
 import StatusScreen from "./screens/StatusScreen";
 import ChatScreen from "./screens/ChatScreen";
-import { enableScreens } from "react-native-screens";
 import GroupChatScreen from "./screens/GroupChatScreen";
 import MyStatusScreen from "./screens/MyStatusScreen";
 import ContactScreen from "./screens/ContactScreen";
 import HomeHeaderRight from "./components/Home/HomeHeaderRight";
-import { Platform } from "react-native";
 import SettingsScreen from "./screens/SettingsScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import NewGroupScreen from "./screens/NewGroupScreen";
@@ -35,7 +36,7 @@ import PhoneNumberScreen from "./screens/PhoneNumberScreen";
 import CountryScreen from "./screens/CountryScreen";
 import VerificationScreen from "./screens/VerificationScreen";
 import NameScreen from "./screens/NameScreen";
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import BlankScreen from "./screens/BlankScreen";
 
 enableScreens();
 
@@ -79,6 +80,13 @@ const TabNavigator = createMaterialTopTabNavigator(
 
 const stackNavigator = createStackNavigator(
   {
+    Blank: {
+      screen: BlankScreen,
+      navigationOptions: {
+        ...stackScreenSettings.navigationOptions,
+        headerShown: false
+      }
+    },
     Start: {
       screen: StartScreen,
       navigationOptions: {
@@ -209,7 +217,7 @@ const stackNavigator = createStackNavigator(
 const App = createAppContainer(stackNavigator);
 const store = createStore(reducer);
 const client = new ApolloClient({
-  uri: "http://4b0acd844184.ngrok.io",
+  uri: "http://d69ea1fe5739.ngrok.io",
   cache: new InMemoryCache()
 });
 export default () => (
