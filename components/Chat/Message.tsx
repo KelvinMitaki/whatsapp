@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingBottom: 20,
     marginBottom: 10,
-    marginRight: 10
+    marginRight: 10,
+    marginTop: 10
   },
   sender: {
     alignSelf: "flex-start",
@@ -67,7 +68,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingBottom: 20,
     marginBottom: 10,
-    marginLeft: 10
+    marginLeft: 10,
+    marginTop: 10
   },
   meta: {
     color: "rgba(255,255,255,.7)",

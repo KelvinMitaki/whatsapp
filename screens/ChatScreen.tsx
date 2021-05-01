@@ -52,10 +52,10 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
           <Text style={{ color: "rgba(255,255,255,.8)" }}>Fetching Messages...</Text>
         </View>
       ) : (
-        <>
+        <View style={{ height: "100%" }}>
           <Message messages={data.fetchMessages} />
           <Input />
-        </>
+        </View>
       )}
     </View>
   );
