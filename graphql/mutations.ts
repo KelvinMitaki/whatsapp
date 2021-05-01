@@ -21,3 +21,17 @@ export const REGISTER_USER = gql`
     }
   }
 `;
+
+export const ADD_NEW_MESSAGE = gql`
+  mutation AddNewMessage($recipient: String!, $message: String!) {
+    addNewMessage(recipient: $recipient, message: $message) {
+      _id
+      sender
+      recipient
+      message
+      read
+      createdAt
+      deleted
+    }
+  }
+`;

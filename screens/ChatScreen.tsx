@@ -54,7 +54,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       ) : (
         <View style={{ height: "100%" }}>
           <Message messages={data.fetchMessages} />
-          <Input />
+          <Input screen="chat" recipient={navigation.getParam("recipient")._id} />
         </View>
       )}
     </View>

@@ -5,6 +5,7 @@ import inspect from "../../inspect";
 import { CurrentUser, MessageInterface } from "../../interfaces/Chat";
 import { useQuery } from "@apollo/client";
 import { FETCH_CURRENT_USER } from "../../graphql/queries";
+import format from "date-fns/format";
 
 interface Props {
   messages: MessageInterface[];
@@ -23,13 +24,14 @@ const Message: React.FC<Props> = ({ messages }) => {
             <View style={styles.me}>
               <Text style={{ color: "#fff" }}>{item.message}</Text>
               <Text style={styles.meta}>
-                1:38 PM <Ionicons name="checkmark-done" size={18} />
+                {format(new Date(parseInt(item.createdAt)), "p")}{" "}
+                <Ionicons name="checkmark-done" size={18} />
               </Text>
             </View>
           ) : (
             <View style={styles.sender}>
               <Text style={{ color: "#fff" }}>{item.message}</Text>
-              <Text style={styles.meta}>1:39 PM</Text>
+              <Text style={styles.meta}>{format(new Date(parseInt(item.createdAt)), "p")}</Text>
             </View>
           )}
         </>

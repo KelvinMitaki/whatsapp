@@ -1,19 +1,38 @@
-import React from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, TextInput, TouchableNativeFeedback, View } from "react-native";
 import { Fontisto, Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
+import { useMutation } from "@apollo/client";
+import { ADD_NEW_MESSAGE } from "../../graphql/mutations";
 
-const Input = () => {
+interface Props {
+  screen: "chat" | "group";
+  recipient?: string;
+}
+
+const Input: React.FC<Props> = ({ screen, recipient }) => {
+  const [inp, setInp] = useState<string>("");
+  const [addNewMessage] = useMutation(ADD_NEW_MESSAGE);
   return (
     <View style={styles.prt}>
       <View style={styles.smiley}>
         <Fontisto name="smiley" color="#fff" size={25} />
       </View>
-      <TextInput style={styles.inp} />
+      <TextInput style={styles.inp} onChangeText={setInp} value={inp} />
       <View style={{ flex: 1, alignItems: "center" }}>
-        <View style={styles.send}>
-          <Ionicons name="send-sharp" size={25} color="#fff" style={{ marginLeft: "10%" }} />
-        </View>
+        <TouchableNativeFeedback
+          onPress={() =>
+            inp.trim().length &&
+            screen === "chat" &&
+            recipient &&
+            addNewMessage({ variables: { recipient, message: inp } }) &&
+            setInp("")
+          }
+        >
+          <View style={styles.send}>
+            <Ionicons name="send-sharp" size={25} color="#fff" style={{ marginLeft: "10%" }} />
+          </View>
+        </TouchableNativeFeedback>
       </View>
     </View>
   );
