@@ -8,18 +8,9 @@ import {
   createStackNavigator,
   TransitionSpecs
 } from "react-navigation-stack";
-import {
-  ApolloClient,
-  ApolloLink,
-  ApolloProvider,
-  createHttpLink,
-  InMemoryCache,
-  split
-} from "@apollo/client";
+import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache, split } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { WebSocketLink } from "@apollo/client/link/ws";
-import { getMainDefinition } from "@apollo/client/utilities";
-import { onError } from "@apollo/client/link/error";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import reducer from "./redux/reducer";
@@ -49,6 +40,7 @@ import VerificationScreen from "./screens/VerificationScreen";
 import NameScreen from "./screens/NameScreen";
 import BlankScreen from "./screens/BlankScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getMainDefinition } from "@apollo/client/utilities";
 
 enableScreens();
 
@@ -232,7 +224,7 @@ const stackNavigator = createStackNavigator(
 const App = createAppContainer(stackNavigator);
 const store = createStore(reducer);
 const httpLink = createHttpLink({
-  uri: "https://kevin-whatsapp-api.herokuapp.com/"
+  uri: "https://kevin-whatsapp-api.herokuapp.com/graphql"
 });
 const authLink = setContext(async (_, { headers }) => {
   return {
@@ -243,15 +235,9 @@ const authLink = setContext(async (_, { headers }) => {
   };
 });
 const webSocketLink = new WebSocketLink({
-  uri: "wss://kevin-whatsapp-api.herokuapp.com/",
+  uri: "wss://kevin-whatsapp-api.herokuapp.com/graphql",
   options: {
-    connectionCallback(e, res) {
-      if (e) {
-        console.log(e);
-      } else {
-        console.log(res);
-      }
-    }
+    reconnect: true
   }
 });
 const httpAuthLink = authLink.concat(httpLink);
@@ -263,18 +249,8 @@ const splitLink = split(
   webSocketLink,
   httpAuthLink
 );
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors) {
-    graphQLErrors.map(({ message, locations, path }) =>
-      // eslint-disable-next-line no-console
-      console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
-    );
-  }
-  // eslint-disable-next-line no-console
-  if (networkError) console.log(`[Network error]: ${networkError}`);
-});
 const client = new ApolloClient({
-  link: ApolloLink.from([errorLink, splitLink]),
+  link: splitLink,
   cache: new InMemoryCache()
 });
 export default () => (
