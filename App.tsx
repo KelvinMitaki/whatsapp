@@ -221,7 +221,7 @@ const stackNavigator = createStackNavigator(
 const App = createAppContainer(stackNavigator);
 const store = createStore(reducer);
 const httpLink = createHttpLink({
-  uri: "http://d69ea1fe5739.ngrok.io"
+  uri: "http://df8c33e2818f.ngrok.io"
 });
 const authLink = setContext(async (_, { headers }) => {
   return {

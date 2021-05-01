@@ -12,10 +12,10 @@ interface Params {
 }
 
 const ContactScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
-  const { data } = useQuery(FETCH_USERS, { fetchPolicy: "cache-only" });
+  const { data } = useQuery(FETCH_USERS, { fetchPolicy: "cache-and-network" });
   useEffect(() => {
     navigation.setParams({ contacts: data.fetchUsers.length });
-  }, []);
+  }, [data.fetchUsers]);
   return (
     <ScrollView>
       <View>
