@@ -8,8 +8,9 @@ import {
   createStackNavigator,
   TransitionSpecs
 } from "react-navigation-stack";
-import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from "@apollo/client";
+import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache, split } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { WebSocketLink } from "@apollo/client/link/ws";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import reducer from "./redux/reducer";
@@ -39,6 +40,7 @@ import VerificationScreen from "./screens/VerificationScreen";
 import NameScreen from "./screens/NameScreen";
 import BlankScreen from "./screens/BlankScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getMainDefinition } from "@apollo/client/utilities";
 
 enableScreens();
 
@@ -232,8 +234,22 @@ const authLink = setContext(async (_, { headers }) => {
     }
   };
 });
+const webSocketLink = new WebSocketLink({
+  uri: "ws://df8c33e2818f.ngrok.io",
+  options: {
+    reconnect: true
+  }
+});
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return definition.kind === "OperationDefinition" && definition.operation === "subscription";
+  },
+  webSocketLink,
+  httpLink
+);
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: authLink.concat(splitLink),
   cache: new InMemoryCache()
 });
 export default () => (

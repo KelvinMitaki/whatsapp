@@ -18,7 +18,13 @@ const Input: React.FC<Props> = ({ screen, recipient }) => {
       <View style={styles.smiley}>
         <Fontisto name="smiley" color="#fff" size={25} />
       </View>
-      <TextInput style={styles.inp} onChangeText={setInp} value={inp} />
+      <TextInput
+        style={styles.inp}
+        onChangeText={setInp}
+        value={inp}
+        placeholder="Type a message"
+        placeholderTextColor="rgba(255,255,255,.5)"
+      />
       <View style={{ flex: 1, alignItems: "center" }}>
         <TouchableNativeFeedback
           onPress={() =>
