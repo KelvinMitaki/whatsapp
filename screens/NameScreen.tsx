@@ -85,7 +85,7 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
           registerUser({
             variables: {
               name,
-              about: "Hey there I am using ChatApp",
+              about: "Hey there! I am using ChatApp",
               phoneNumber: parseInt(phoneNumber),
               countryCode: code,
               groups: []

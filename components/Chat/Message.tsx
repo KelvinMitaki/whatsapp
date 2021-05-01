@@ -15,28 +15,30 @@ const Message: React.FC<Props> = ({ messages }) => {
   const { data } = useQuery(FETCH_CURRENT_USER);
   const currentUser: CurrentUser = data.fetchCurrentUser;
   return (
-    <FlatList
-      data={messages}
-      keyExtractor={msg => msg._id}
-      renderItem={({ item }) => (
-        <>
-          {currentUser._id === item.sender ? (
-            <View style={styles.me}>
-              <Text style={{ color: "#fff" }}>{item.message}</Text>
-              <Text style={styles.meta}>
-                {format(new Date(parseInt(item.createdAt)), "p")}{" "}
-                <Ionicons name="checkmark-done" size={18} />
-              </Text>
-            </View>
-          ) : (
-            <View style={styles.sender}>
-              <Text style={{ color: "#fff" }}>{item.message}</Text>
-              <Text style={styles.meta}>{format(new Date(parseInt(item.createdAt)), "p")}</Text>
-            </View>
-          )}
-        </>
-      )}
-    />
+    <View style={{ height: "90%" }}>
+      <FlatList
+        data={messages}
+        keyExtractor={msg => msg._id}
+        renderItem={({ item, index }) => (
+          <>
+            {currentUser._id === item.sender ? (
+              <View style={styles.me}>
+                <Text style={{ color: "#fff" }}>{item.message}</Text>
+                <Text style={styles.meta}>
+                  {format(new Date(parseInt(item.createdAt)), "p")}{" "}
+                  <Ionicons name="checkmark-done" size={18} />
+                </Text>
+              </View>
+            ) : (
+              <View style={styles.sender}>
+                <Text style={{ color: "#fff" }}>{item.message}</Text>
+                <Text style={styles.meta}>{format(new Date(parseInt(item.createdAt)), "p")}</Text>
+              </View>
+            )}
+          </>
+        )}
+      />
+    </View>
   );
 };
 

@@ -92,7 +92,9 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
             >
               {message}
             </Text>
-            {unread ? <Badge value={unread} badgeStyle={{ backgroundColor: "#00af9c" }} /> : null}
+            {unread && currentUser._id !== sender._id ? (
+              <Badge value={unread} badgeStyle={{ backgroundColor: "#00af9c" }} />
+            ) : null}
           </View>
           <Card.Divider
             style={{

@@ -36,6 +36,7 @@
     "react-navigation-tabs": "^2.11.0",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
+    "subscriptions-transport-ws": "^0.9.18",
     "validator": "^13.6.0"
   },
   "devDependencies": {

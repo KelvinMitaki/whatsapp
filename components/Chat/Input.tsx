@@ -43,9 +43,8 @@ export default Input;
 const styles = StyleSheet.create({
   prt: {
     flexDirection: "row",
-    position: "absolute",
-    bottom: 5,
-    alignItems: "center"
+    alignItems: "center",
+    height: "10%"
   },
   inp: {
     width: "75%",
