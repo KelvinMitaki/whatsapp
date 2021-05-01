@@ -4,6 +4,7 @@ import { Badge, Text } from "react-native-elements";
 import { Card, Avatar } from "react-native-elements";
 import { TouchableNativeFeedback } from "react-native";
 import { Ionicons, MaterialIcons, FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
+import { isToday, isYesterday } from "date-fns";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../../interfaces/Redux";
@@ -13,6 +14,7 @@ import { MessageMeta } from "../../data/messages";
 import { FETCH_CHATS, FETCH_CURRENT_USER } from "../../graphql/queries";
 import { useQuery } from "@apollo/client";
 import { Chat, CurrentUser } from "../../interfaces/Chat";
+import { format } from "date-fns/esm";
 
 const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   const messages = useSelector((state: Redux) => state.chat.messages);
@@ -75,7 +77,9 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
                 {currentUser._id === sender._id ? recipient.name : sender.name}
               </Text>
             )}
-            <Text style={{ right: 1, color: "rgba(255,255,255,.6)" }}>{updatedAt}</Text>
+            <Text style={{ right: 1, color: "rgba(255,255,255,.6)" }}>
+              {formatDate(new Date(parseInt(updatedAt)))}
+            </Text>
           </View>
           <View style={styles.msg}>
             <Text
@@ -105,6 +109,15 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
     []
   );
   const keyExtractor = ({ _id }: Chat) => _id;
+  const formatDate = (date: Date) => {
+    if (isToday(date)) {
+      return format(date, "p");
+    }
+    if (isYesterday(date)) {
+      return "Yesterday";
+    }
+    return format(date, "P");
+  };
   return (
     <View style={styles.prt}>
       {data && data.fetchChats && data.fetchChats.length ? (

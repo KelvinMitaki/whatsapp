@@ -49,7 +49,9 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-  prt: {},
+  prt: {
+    height: "100%"
+  },
   message: {
     position: "absolute",
     right: "5%",
