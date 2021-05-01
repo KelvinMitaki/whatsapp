@@ -43,3 +43,13 @@ export interface User {
   }[];
   createdAt: string;
 }
+
+export interface MessageInterface {
+  _id: string;
+  sender: string;
+  recipient: string;
+  message: string;
+  read: boolean;
+  createdAt: string;
+  deleted: boolean;
+}

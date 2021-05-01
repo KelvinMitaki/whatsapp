@@ -5,7 +5,8 @@ import {
   Text,
   TextInput,
   View,
-  TouchableNativeFeedback
+  TouchableNativeFeedback,
+  ActivityIndicator
 } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons, Ionicons, AntDesign } from "@expo/vector-icons";
@@ -13,8 +14,21 @@ import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import inspect from "../inspect";
 import Message from "../components/Chat/Message";
 import Input from "../components/Chat/Input";
+import { useQuery } from "@apollo/client";
+import { FETCH_MESSAGES } from "../graphql/queries";
 
-const ChatScreen: NavigationStackScreenComponent = ({ navigation }) => {
+interface Params {
+  recipient: {
+    _id: string;
+    name: string;
+  };
+}
+
+const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
+  const { data, loading } = useQuery(FETCH_MESSAGES, {
+    variables: { recipient: navigation.getParam("recipient")._id },
+    fetchPolicy: "cache-and-network"
+  });
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackBtnPressAndroid);
     return () => {
@@ -30,8 +44,19 @@ const ChatScreen: NavigationStackScreenComponent = ({ navigation }) => {
   };
   return (
     <View>
-      <Message />
-      <Input />
+      {loading ? (
+        <View
+          style={{ height: "100%", width: "100%", alignItems: "center", justifyContent: "center" }}
+        >
+          <ActivityIndicator size="large" color="#00af9c" />
+          <Text style={{ color: "rgba(255,255,255,.8)" }}>Fetching Messages...</Text>
+        </View>
+      ) : (
+        <>
+          <Message messages={data.fetchMessages} />
+          <Input />
+        </>
+      )}
     </View>
   );
 };
@@ -59,7 +84,7 @@ ChatScreen.navigationOptions = ({ navigation }) => {
             width: "75%"
           }}
         >
-          Kevin
+          {navigation.getParam("recipient").name}
         </Text>
       </View>
     ),

@@ -28,7 +28,7 @@ const Contact: React.FC<NavigationInjectedProps & Props> = ({
           background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
           onPress={() => {
             if (!setContacts) {
-              navigation.navigate("Chat");
+              navigation.navigate("Chat", { recipient: usr });
             } else {
               setContacts(usr);
             }

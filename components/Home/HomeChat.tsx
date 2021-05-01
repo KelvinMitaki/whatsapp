@@ -26,7 +26,7 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
       onPress={() => {
-        navigation.navigate("Chat");
+        navigation.navigate("Chat", { recipient });
       }}
     >
       <View style={styles.contact}>

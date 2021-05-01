@@ -57,3 +57,17 @@ export const FETCH_CHATS = gql`
     }
   }
 `;
+
+export const FETCH_MESSAGES = gql`
+  query FetchMessages($recipient: String!) {
+    fetchMessages(recipient: $recipient) {
+      _id
+      sender
+      recipient
+      message
+      read
+      createdAt
+      deleted
+    }
+  }
+`;

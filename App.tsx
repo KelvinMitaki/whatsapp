@@ -136,6 +136,7 @@ const stackNavigator = createStackNavigator(
       }
     },
     Chat: {
+      // @ts-ignore
       screen: ChatScreen,
       ...stackScreenSettings
     },
