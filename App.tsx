@@ -8,9 +8,18 @@ import {
   createStackNavigator,
   TransitionSpecs
 } from "react-navigation-stack";
-import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache, split } from "@apollo/client";
+import {
+  ApolloClient,
+  ApolloLink,
+  ApolloProvider,
+  createHttpLink,
+  InMemoryCache,
+  split
+} from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { WebSocketLink } from "@apollo/client/link/ws";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { onError } from "@apollo/client/link/error";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import reducer from "./redux/reducer";
@@ -40,7 +49,6 @@ import VerificationScreen from "./screens/VerificationScreen";
 import NameScreen from "./screens/NameScreen";
 import BlankScreen from "./screens/BlankScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getMainDefinition } from "@apollo/client/utilities";
 
 enableScreens();
 
@@ -224,7 +232,7 @@ const stackNavigator = createStackNavigator(
 const App = createAppContainer(stackNavigator);
 const store = createStore(reducer);
 const httpLink = createHttpLink({
-  uri: "http://df8c33e2818f.ngrok.io"
+  uri: "https://kevin-whatsapp-api.herokuapp.com/"
 });
 const authLink = setContext(async (_, { headers }) => {
   return {
@@ -235,21 +243,38 @@ const authLink = setContext(async (_, { headers }) => {
   };
 });
 const webSocketLink = new WebSocketLink({
-  uri: "ws://df8c33e2818f.ngrok.io",
+  uri: "wss://kevin-whatsapp-api.herokuapp.com/",
   options: {
-    reconnect: true
+    connectionCallback(e, res) {
+      if (e) {
+        console.log(e);
+      } else {
+        console.log(res);
+      }
+    }
   }
 });
+const httpAuthLink = authLink.concat(httpLink);
 const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
     return definition.kind === "OperationDefinition" && definition.operation === "subscription";
   },
   webSocketLink,
-  httpLink
+  httpAuthLink
 );
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    graphQLErrors.map(({ message, locations, path }) =>
+      // eslint-disable-next-line no-console
+      console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
+    );
+  }
+  // eslint-disable-next-line no-console
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
 const client = new ApolloClient({
-  link: authLink.concat(splitLink),
+  link: ApolloLink.from([errorLink, splitLink]),
   cache: new InMemoryCache()
 });
 export default () => (

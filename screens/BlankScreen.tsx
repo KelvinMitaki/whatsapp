@@ -14,9 +14,6 @@ const BlankScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [fetchUsers] = useLazyQuery(FETCH_USERS, {
     onError(err) {
       console.log(err);
-    },
-    onCompleted(data) {
-      console.log(data);
     }
   });
   const [fetchCurrentUser] = useLazyQuery(FETCH_CURRENT_USER, {

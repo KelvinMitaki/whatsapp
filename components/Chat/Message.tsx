@@ -3,9 +3,10 @@ import { StyleSheet, Text, View, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { CurrentUser, MessageInterface } from "../../interfaces/Chat";
-import { useQuery } from "@apollo/client";
+import { useQuery, useSubscription } from "@apollo/client";
 import { FETCH_CURRENT_USER } from "../../graphql/queries";
 import format from "date-fns/format";
+import { ADD_NEW_MESSAGE_SUB } from "../../graphql/subscriptions";
 
 interface Props {
   messages: MessageInterface[];
@@ -13,7 +14,9 @@ interface Props {
 
 const Message: React.FC<Props> = ({ messages }) => {
   const { data } = useQuery(FETCH_CURRENT_USER);
+  const sub = useSubscription(ADD_NEW_MESSAGE_SUB);
   const currentUser: CurrentUser = data.fetchCurrentUser;
+  console.log(sub.data);
   return (
     <View style={{ height: "90%" }}>
       <FlatList
