@@ -9,6 +9,9 @@ import HomeChat from "../components/Home/HomeChat";
 import { useHeaderHeight } from "react-navigation-stack";
 import { useDispatch } from "react-redux";
 import { NavigationEvents } from "react-navigation";
+import { useQuery } from "@apollo/client";
+import { FETCH_CHATS } from "../graphql/queries";
+import StartChat from "../components/Home/StartChat";
 
 export interface SetHeaderHeight {
   type: "setHeaderHeight";
@@ -21,8 +24,10 @@ export interface SetSearchModal {
 }
 
 const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
+  const { data } = useQuery(FETCH_CHATS, { fetchPolicy: "cache-only" });
   const dispatch = useDispatch();
   const headerHeight = useHeaderHeight();
+  console.log(data.fetchChats);
   useEffect(() => {
     dispatch<SetHeaderHeight>({ type: "setHeaderHeight", payload: headerHeight });
   }, []);
@@ -32,16 +37,7 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
         onDidBlur={() => dispatch<SetSearchModal>({ type: "setSearchModal", payload: false })}
       />
       <HomeChat />
-      <TouchableNativeFeedback onPress={() => navigation.navigate("Contact")}>
-        <View style={styles.message}>
-          <MaterialCommunityIcons
-            name="android-messages"
-            size={30}
-            color="#fff"
-            style={styles.msgIcon}
-          />
-        </View>
-      </TouchableNativeFeedback>
+      <StartChat />
     </View>
   );
 };
@@ -50,20 +46,7 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
   prt: {
-    height: "100%"
-  },
-  message: {
-    position: "absolute",
-    right: "5%",
-    bottom: "3%",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#00af9c",
-    height: 55,
-    width: 55,
-    borderRadius: 55
-  },
-  msgIcon: {
-    transform: [{ scaleX: -1 }, { scaleY: 1 }]
+    height: "100%",
+    justifyContent: "space-between"
   }
 });
