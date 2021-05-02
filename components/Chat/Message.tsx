@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
@@ -14,13 +14,18 @@ interface Props {
 
 const Message: React.FC<Props> = ({ messages }) => {
   const { data } = useQuery(FETCH_CURRENT_USER);
-  const sub = useSubscription(ADD_NEW_MESSAGE_SUB);
+  const [subScriptionMsgs, setSubScriptionMsgs] = useState<MessageInterface[]>([]);
+  useSubscription(ADD_NEW_MESSAGE_SUB, {
+    onSubscriptionData(data) {
+      setSubScriptionMsgs(m => [...m, data.subscriptionData.data.addNewMessage]);
+    }
+  });
   const currentUser: CurrentUser = data.fetchCurrentUser;
-  console.log(sub.data);
+
   return (
     <View style={{ height: "90%" }}>
       <FlatList
-        data={messages}
+        data={[...messages, ...subScriptionMsgs]}
         keyExtractor={msg => msg._id}
         renderItem={({ item, index }) => (
           <>
