@@ -37,7 +37,7 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
         onDidBlur={() => dispatch<SetSearchModal>({ type: "setSearchModal", payload: false })}
       />
       <HomeChat />
-      <StartChat />
+      {data && data.fetchChats && <StartChat chats={data.fetchChats} />}
     </View>
   );
 };

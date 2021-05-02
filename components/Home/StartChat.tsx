@@ -3,8 +3,13 @@ import { Animated, StyleSheet, Text, TouchableNativeFeedback, View } from "react
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import AppColors from "../../Colors/color";
+import { Chat } from "../../interfaces/Chat";
 
-const StartChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
+interface Props {
+  chats: Chat[];
+}
+
+const StartChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, chats }) => {
   const translateX = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     runAnimationBack();
@@ -19,21 +24,37 @@ const StartChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
       runAnimationBack();
     });
   };
-  return (
-    <View style={styles.prt}>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: "50%"
-        }}
-      >
-        <Text style={{ color: AppColors.secodary, fontSize: 23 }}>Start a chat</Text>
-        <Animated.View style={{ transform: [{ translateX }] }}>
-          <AntDesign name="arrowright" size={25} color={AppColors.secodary} />
-        </Animated.View>
+  if (!chats.length) {
+    return (
+      <View style={styles.prt}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "50%"
+          }}
+        >
+          <Text style={{ color: AppColors.secodary, fontSize: 23 }}>Start a chat</Text>
+          <Animated.View style={{ transform: [{ translateX }] }}>
+            <AntDesign name="arrowright" size={25} color={AppColors.secodary} />
+          </Animated.View>
+        </View>
+        <TouchableNativeFeedback onPress={() => navigation.navigate("Contact")}>
+          <View style={styles.message}>
+            <MaterialCommunityIcons
+              name="android-messages"
+              size={30}
+              color="#fff"
+              style={styles.msgIcon}
+            />
+          </View>
+        </TouchableNativeFeedback>
       </View>
+    );
+  }
+  return (
+    <View style={{ width: "100%", alignItems: "flex-end", position: "absolute", bottom: 20 }}>
       <TouchableNativeFeedback onPress={() => navigation.navigate("Contact")}>
         <View style={styles.message}>
           <MaterialCommunityIcons
