@@ -4,6 +4,7 @@ import { Fontisto, Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { useMutation } from "@apollo/client";
 import { ADD_NEW_MESSAGE } from "../../graphql/mutations";
+import AppColors from "../../Colors/color";
 
 interface Props {
   screen: "chat" | "group";
@@ -53,8 +54,8 @@ const styles = StyleSheet.create({
     height: 60,
     position: "absolute",
     bottom: 5,
-    width: "100%"
-    // backgroundColor: "red"
+    width: "100%",
+    backgroundColor: AppColors.primary
   },
   inp: {
     width: "75%",
