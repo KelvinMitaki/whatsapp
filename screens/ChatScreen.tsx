@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BackHandler,
   StyleSheet,
@@ -6,7 +6,8 @@ import {
   TextInput,
   View,
   TouchableNativeFeedback,
-  ActivityIndicator
+  ActivityIndicator,
+  Dimensions
 } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons, Ionicons, AntDesign } from "@expo/vector-icons";
@@ -14,8 +15,10 @@ import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import inspect from "../inspect";
 import Message from "../components/Chat/Message";
 import Input from "../components/Chat/Input";
-import { useQuery } from "@apollo/client";
-import { FETCH_MESSAGES } from "../graphql/queries";
+import { useMutation, useQuery } from "@apollo/client";
+import { FETCH_CURRENT_USER, FETCH_MESSAGES } from "../graphql/queries";
+import { UPDATE_READ_MESSAGES } from "../graphql/mutations";
+import { CurrentUser, MessageInterface } from "../interfaces/Chat";
 
 interface Params {
   recipient: {
@@ -25,9 +28,17 @@ interface Params {
 }
 
 const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
+  const [showLoading, setShowLoading] = useState<boolean>(false);
   const { data, loading } = useQuery(FETCH_MESSAGES, {
     variables: { recipient: navigation.getParam("recipient")._id },
     fetchPolicy: "cache-and-network"
+  });
+  const user = useQuery(FETCH_CURRENT_USER);
+  const currentUser: CurrentUser = user.data.fetchCurrentUser;
+  const [updateReadMessages] = useMutation(UPDATE_READ_MESSAGES, {
+    onCompleted() {
+      setShowLoading(false);
+    }
   });
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackBtnPressAndroid);
@@ -35,6 +46,20 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       BackHandler.removeEventListener("hardwareBackPress", handleBackBtnPressAndroid);
     };
   }, []);
+  useEffect(() => {
+    setShowLoading(true);
+    if (data && data.fetchMessages && data.fetchMessages.length) {
+      const messageIDs = (data.fetchMessages as MessageInterface[])
+        .filter(m => !m.read && m.sender !== currentUser._id)
+        .map(m => m._id);
+      setShowLoading(false);
+      updateReadMessages({
+        variables: {
+          messageIDs
+        }
+      });
+    }
+  }, [data]);
   const handleBackBtnPressAndroid = () => {
     if (!navigation.isFocused()) {
       return false;
@@ -42,16 +67,24 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
     navigation.navigate("Home");
     return true;
   };
+  console.log({ showLoading });
+  const screen = Dimensions.get("screen");
   return (
     <View>
-      {loading ? (
+      {loading && showLoading && (
         <View
-          style={{ height: "100%", width: "100%", alignItems: "center", justifyContent: "center" }}
+          style={{
+            height: screen.height,
+            width: screen.width,
+            alignItems: "center",
+            justifyContent: "center"
+          }}
         >
           <ActivityIndicator size="large" color="#00af9c" />
           <Text style={{ color: "rgba(255,255,255,.8)" }}>Fetching Messages...</Text>
         </View>
-      ) : (
+      )}
+      {data && (
         <View style={{ height: "100%" }}>
           <Message messages={data.fetchMessages} recipient={navigation.getParam("recipient")._id} />
           <Input screen="chat" recipient={navigation.getParam("recipient")._id} />

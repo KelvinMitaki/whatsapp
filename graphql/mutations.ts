@@ -35,3 +35,17 @@ export const ADD_NEW_MESSAGE = gql`
     }
   }
 `;
+
+export const UPDATE_READ_MESSAGES = gql`
+  mutation UpdateReadMessages($messageIDs: [String!]!) {
+    updateReadMessages(messageIDs: $messageIDs) {
+      _id
+      sender
+      recipient
+      message
+      read
+      createdAt
+      deleted
+    }
+  }
+`;
