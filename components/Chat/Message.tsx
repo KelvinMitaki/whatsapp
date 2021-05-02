@@ -10,17 +10,19 @@ import { ADD_NEW_MESSAGE_SUB } from "../../graphql/subscriptions";
 
 interface Props {
   messages: MessageInterface[];
+  recipient: string;
 }
 
-const Message: React.FC<Props> = ({ messages }) => {
+const Message: React.FC<Props> = ({ messages, recipient }) => {
   const { data } = useQuery(FETCH_CURRENT_USER);
+  const currentUser: CurrentUser = data.fetchCurrentUser;
   const [subScriptionMsgs, setSubScriptionMsgs] = useState<MessageInterface[]>([]);
   useSubscription(ADD_NEW_MESSAGE_SUB, {
     onSubscriptionData(data) {
       setSubScriptionMsgs(m => [...m, data.subscriptionData.data.addNewMessage]);
-    }
+    },
+    variables: { sender: currentUser._id, recipient }
   });
-  const currentUser: CurrentUser = data.fetchCurrentUser;
 
   return (
     <View style={{ height: "90%" }}>
