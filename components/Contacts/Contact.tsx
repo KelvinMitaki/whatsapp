@@ -7,8 +7,8 @@ import { Card } from "react-native-elements";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import inspect from "../../inspect";
 import { useQuery } from "@apollo/client";
-import { FETCH_USERS } from "../../graphql/queries";
-import { User } from "../../interfaces/Chat";
+import { FETCH_CHATS, FETCH_USERS } from "../../graphql/queries";
+import { Chat, User } from "../../interfaces/Chat";
 
 interface Props {
   setContacts?: (usr: User) => void;
@@ -21,6 +21,7 @@ const Contact: React.FC<NavigationInjectedProps & Props> = ({
   Contacts
 }) => {
   const { data } = useQuery(FETCH_USERS, { fetchPolicy: "cache-only" });
+  const chat = useQuery(FETCH_CHATS, { fetchPolicy: "cache-only" });
   return (
     <>
       {(data.fetchUsers as User[]).map(usr => (
@@ -28,7 +29,12 @@ const Contact: React.FC<NavigationInjectedProps & Props> = ({
           background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
           onPress={() => {
             if (!setContacts) {
-              navigation.navigate("Chat", { recipient: usr });
+              navigation.navigate("Chat", {
+                recipient: usr,
+                chatID: (chat.data.fetchChats as Chat[]).find(
+                  c => c.sender._id === usr._id || c.recipient._id === usr._id
+                )
+              });
             } else {
               setContacts(usr);
             }

@@ -37,8 +37,8 @@ export const ADD_NEW_MESSAGE = gql`
 `;
 
 export const UPDATE_READ_MESSAGES = gql`
-  mutation UpdateReadMessages($messageIDs: [String!]!) {
-    updateReadMessages(messageIDs: $messageIDs) {
+  mutation UpdateReadMessages($messageIDs: [String!]!, $chatID: String!) {
+    updateReadMessages(messageIDs: $messageIDs, chatID: $chatID) {
       _id
       sender
       recipient

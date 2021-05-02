@@ -25,6 +25,7 @@ interface Params {
     _id: string;
     name: string;
   };
+  chatID: string;
 }
 
 const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
@@ -35,6 +36,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   });
   const user = useQuery(FETCH_CURRENT_USER);
   const currentUser: CurrentUser = user.data.fetchCurrentUser;
+  const chatID = navigation.getParam("chatID");
   const [updateReadMessages] = useMutation(UPDATE_READ_MESSAGES, {
     onCompleted() {
       setShowLoading(false);
@@ -52,12 +54,14 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       const messageIDs = (data.fetchMessages as MessageInterface[])
         .filter(m => !m.read && m.sender !== currentUser._id)
         .map(m => m._id);
-      setShowLoading(false);
-      updateReadMessages({
-        variables: {
-          messageIDs
-        }
-      });
+      messageIDs.length &&
+        chatID &&
+        updateReadMessages({
+          variables: {
+            messageIDs,
+            chatID
+          }
+        });
     }
   }, [data]);
   const handleBackBtnPressAndroid = () => {
@@ -67,7 +71,6 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
     navigation.navigate("Home");
     return true;
   };
-  console.log({ showLoading });
   const screen = Dimensions.get("screen");
   return (
     <View>

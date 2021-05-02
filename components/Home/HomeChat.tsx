@@ -23,13 +23,14 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   const dispatch = useDispatch();
   const currentUser: CurrentUser = user.data.fetchCurrentUser;
   const renderItem = ({
-    item: { message, sender, type, updatedAt, recipient, unread }
+    item: { message, sender, type, updatedAt, recipient, unread, _id }
   }: ListRenderItemInfo<Chat>) => (
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
       onPress={() => {
         navigation.navigate("Chat", {
-          recipient: recipient._id !== currentUser._id ? recipient : sender
+          recipient: recipient._id !== currentUser._id ? recipient : sender,
+          chatID: _id
         });
       }}
     >
