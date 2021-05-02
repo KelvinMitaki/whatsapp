@@ -50,7 +50,11 @@ const styles = StyleSheet.create({
   prt: {
     flexDirection: "row",
     alignItems: "center",
-    height: "10%"
+    height: 60,
+    position: "absolute",
+    bottom: 5,
+    width: "100%"
+    // backgroundColor: "red"
   },
   inp: {
     width: "75%",
