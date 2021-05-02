@@ -1,10 +1,24 @@
-import React from "react";
-import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
+import React, { useEffect, useRef } from "react";
+import { Animated, StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import AppColors from "../../Colors/color";
 
 const StartChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
+  const translateX = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    runAnimationBack();
+  }, []);
+  const runAnimationBack = () => {
+    Animated.timing(translateX, { toValue: -20, useNativeDriver: false }).start(() => {
+      runAnimation();
+    });
+  };
+  const runAnimation = () => {
+    Animated.timing(translateX, { toValue: 0, useNativeDriver: false }).start(() => {
+      runAnimationBack();
+    });
+  };
   return (
     <View style={styles.prt}>
       <View
@@ -16,7 +30,9 @@ const StartChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
         }}
       >
         <Text style={{ color: AppColors.secodary, fontSize: 23 }}>Start a chat</Text>
-        <AntDesign name="arrowright" size={25} color={AppColors.secodary} />
+        <Animated.View style={{ transform: [{ translateX }] }}>
+          <AntDesign name="arrowright" size={25} color={AppColors.secodary} />
+        </Animated.View>
       </View>
       <TouchableNativeFeedback onPress={() => navigation.navigate("Contact")}>
         <View style={styles.message}>
