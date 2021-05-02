@@ -16,7 +16,12 @@ import { useQuery } from "@apollo/client";
 import { Chat, CurrentUser } from "../../interfaces/Chat";
 import { format } from "date-fns/esm";
 
-const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
+interface Props {
+  chatSub: Chat[];
+  chat: Chat | null;
+}
+
+const HomeChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, chatSub, chat }) => {
   const messages = useSelector((state: Redux) => state.chat.messages);
   const { data } = useQuery(FETCH_CHATS, { fetchPolicy: "cache-only" });
   const user = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
@@ -123,11 +128,30 @@ const HomeChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
     }
     return format(date, "P");
   };
+  const renderChats = (): Chat[] => {
+    if (!chat) {
+      let existingChats: Chat[] = data.fetchChats;
+      chatSub.forEach(c => {
+        const chatIndex = existingChats.findIndex(ch => ch._id === c._id);
+        if (chatIndex !== -1) {
+          existingChats.splice(chatIndex, 1);
+          existingChats = [c, ...existingChats];
+        } else {
+          existingChats = [c, ...existingChats];
+        }
+      });
+      return existingChats;
+    }
+    if (chat) {
+      return [...chatSub, ...(data.fetchChats as Chat[]).filter(c => c._id !== chat._id)];
+    }
+    return data.fetchChats;
+  };
   return (
     <View style={styles.prt}>
       {data && data.fetchChats && data.fetchChats.length ? (
         <FlatList
-          data={data.fetchChats}
+          data={renderChats()}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
           getItemLayout={getItemLayout}

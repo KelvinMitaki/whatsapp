@@ -13,3 +13,24 @@ export const ADD_NEW_MESSAGE_SUB = gql`
     }
   }
 `;
+
+export const ADD_NEW_CHAT_SUB = gql`
+  subscription AddNewChat($userID: String!) {
+    addNewChat(userID: $userID) {
+      _id
+      sender {
+        _id
+        name
+      }
+      recipient {
+        _id
+        name
+      }
+      message
+      createdAt
+      updatedAt
+      unread
+      type
+    }
+  }
+`;

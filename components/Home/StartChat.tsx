@@ -15,12 +15,14 @@ const StartChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, chat
     runAnimationBack();
   }, []);
   const runAnimationBack = () => {
-    Animated.timing(translateX, { toValue: -20, useNativeDriver: false }).start(() => {
-      runAnimation();
-    });
+    Animated.timing(translateX, { toValue: -20, useNativeDriver: true, duration: 1000 }).start(
+      () => {
+        runAnimation();
+      }
+    );
   };
   const runAnimation = () => {
-    Animated.timing(translateX, { toValue: 0, useNativeDriver: false }).start(() => {
+    Animated.timing(translateX, { toValue: 0, useNativeDriver: true, duration: 1000 }).start(() => {
       runAnimationBack();
     });
   };
