@@ -15,8 +15,8 @@ import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import inspect from "../inspect";
 import Message from "../components/Chat/Message";
 import Input from "../components/Chat/Input";
-import { useMutation, useQuery } from "@apollo/client";
-import { FETCH_CURRENT_USER, FETCH_MESSAGES } from "../graphql/queries";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { FETCH_CHATS, FETCH_CURRENT_USER, FETCH_MESSAGES } from "../graphql/queries";
 import { UPDATE_READ_MESSAGES } from "../graphql/mutations";
 import { CurrentUser, MessageInterface } from "../interfaces/Chat";
 
@@ -34,12 +34,14 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
     variables: { recipient: navigation.getParam("recipient")._id },
     fetchPolicy: "cache-and-network"
   });
+  const [fetchChats] = useLazyQuery(FETCH_CHATS, { fetchPolicy: "network-only" });
   const user = useQuery(FETCH_CURRENT_USER);
   const currentUser: CurrentUser = user.data.fetchCurrentUser;
   const chatID = navigation.getParam("chatID");
   const [updateReadMessages] = useMutation(UPDATE_READ_MESSAGES, {
     onCompleted() {
       setShowLoading(false);
+      fetchChats();
     }
   });
   useEffect(() => {
