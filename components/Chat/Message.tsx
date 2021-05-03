@@ -19,6 +19,7 @@ import format from "date-fns/format";
 import { ADD_NEW_MESSAGE_SUB } from "../../graphql/subscriptions";
 import AppColors from "../../Colors/color";
 import { MESSAGE_LIMIT } from "./Input";
+import { NavigationEvents } from "react-navigation";
 
 interface Props {
   messages: MessageInterface[];
@@ -37,12 +38,17 @@ const Message: React.FC<Props> = ({ messages, recipient, fetchMore }) => {
     },
     variables: { sender: currentUser._id, recipient }
   });
+  const [currentRender, setCurrentRender] = useState<number>(0);
   const scrollViewRef = useRef<ScrollView>(null);
-  const viewRef = useRef<View>(null);
   const [view, setView] = useState<number | null>(null);
   useEffect(() => {
+    setCurrentRender(c => c + 1);
     if (scrollViewRef.current && view) {
-      scrollViewRef.current.scrollTo({ x: 0, y: view, animated: false });
+      if (currentRender < 2) {
+        scrollViewRef.current.scrollToEnd();
+      } else {
+        scrollViewRef.current.scrollTo({ x: 0, y: view, animated: false });
+      }
     }
   }, [messages, view]);
   const isCloseToTop = ({ contentOffset }: NativeScrollEvent) => {
@@ -58,6 +64,7 @@ const Message: React.FC<Props> = ({ messages, recipient, fetchMore }) => {
     .sort((a, b) => parseInt(a.createdAt) - parseInt(b.createdAt));
   return (
     <View style={{ height: "90%" }}>
+      <NavigationEvents onDidBlur={() => setCurrentRender(0)} />
       <ScrollView
         ref={scrollViewRef}
         onScroll={({ nativeEvent }) => {
