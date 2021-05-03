@@ -57,16 +57,12 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       console.log(err);
     }
   });
-  const [fetchChats] = useLazyQuery(FETCH_CHATS, {
-    fetchPolicy: "network-only"
-  });
   const user = useQuery(FETCH_CURRENT_USER);
   const currentUser: CurrentUser = user.data.fetchCurrentUser;
   const chatID = navigation.getParam("chatID");
   const [updateReadMessages] = useMutation(UPDATE_READ_MESSAGES, {
     onCompleted() {
       setShowLoading(false);
-      fetchChats();
     }
   });
   useEffect(() => {
