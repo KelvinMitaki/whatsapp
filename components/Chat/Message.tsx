@@ -82,7 +82,11 @@ const Message: React.FC<Props> = ({ messages, recipient, fetchMore }) => {
                 <Text style={{ color: "#fff" }}>{item.message}</Text>
                 <Text style={styles.meta}>
                   {format(new Date(parseInt(item.createdAt)), "p")}{" "}
-                  <Ionicons name="checkmark-done" size={18} />
+                  {item.read ? (
+                    <Ionicons name="checkmark-done" size={18} color={AppColors.blue_tick} />
+                  ) : (
+                    <Ionicons name="checkmark" size={18} />
+                  )}
                 </Text>
               </View>
             ) : (
