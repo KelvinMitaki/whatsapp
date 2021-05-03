@@ -6,6 +6,8 @@ import { useMutation } from "@apollo/client";
 import { ADD_NEW_MESSAGE } from "../../graphql/mutations";
 import AppColors from "../../Colors/color";
 
+export const MESSAGE_LIMIT = 20;
+
 interface Props {
   screen: "chat" | "group";
   recipient?: string;

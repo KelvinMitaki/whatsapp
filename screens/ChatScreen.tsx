@@ -14,7 +14,7 @@ import { MaterialIcons, Ionicons, AntDesign } from "@expo/vector-icons";
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import inspect from "../inspect";
 import Message from "../components/Chat/Message";
-import Input from "../components/Chat/Input";
+import Input, { MESSAGE_LIMIT } from "../components/Chat/Input";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import {
   FETCH_CHATS,
@@ -32,7 +32,6 @@ interface Params {
   };
   chatID: string;
 }
-
 const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [showLoading, setShowLoading] = useState<boolean>(false);
   const count = useQuery(FETCH_MESSAGE_COUNT, {
@@ -42,7 +41,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
         variables: {
           recipient: navigation.getParam("recipient")._id,
           offset: 0,
-          limit: 20,
+          limit: MESSAGE_LIMIT,
           messageCount: count.data.fetchMessageCount.count
         }
       });

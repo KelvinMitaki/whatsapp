@@ -6,7 +6,9 @@ import {
   FlatList,
   ScrollView,
   NativeScrollEvent,
-  ActivityIndicator
+  ActivityIndicator,
+  Dimensions,
+  LayoutChangeEvent
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
@@ -16,6 +18,7 @@ import { FETCH_CURRENT_USER, FETCH_MESSAGE_COUNT } from "../../graphql/queries";
 import format from "date-fns/format";
 import { ADD_NEW_MESSAGE_SUB } from "../../graphql/subscriptions";
 import AppColors from "../../Colors/color";
+import { MESSAGE_LIMIT } from "./Input";
 
 interface Props {
   messages: MessageInterface[];
@@ -35,11 +38,13 @@ const Message: React.FC<Props> = ({ messages, recipient, fetchMore }) => {
     variables: { sender: currentUser._id, recipient }
   });
   const scrollViewRef = useRef<ScrollView>(null);
+  const viewRef = useRef<View>(null);
+  const [view, setView] = useState<number | null>(null);
   useEffect(() => {
-    if (scrollViewRef.current && messages.length === 20) {
-      scrollViewRef.current.scrollToEnd();
+    if (scrollViewRef.current && view) {
+      scrollViewRef.current.scrollTo({ x: 0, y: view, animated: false });
     }
-  }, [messages]);
+  }, [messages, view]);
   const isCloseToTop = ({ contentOffset }: NativeScrollEvent) => {
     return contentOffset.y === 0;
   };
@@ -62,12 +67,27 @@ const Message: React.FC<Props> = ({ messages, recipient, fetchMore }) => {
             count.data &&
             count.data.fetchMessageCount.count > filteredMsgs.length
           ) {
-            fetchMore({ variables: { offset: filteredMsgs.length, limit: 20 } });
+            fetchMore({ variables: { offset: filteredMsgs.length, limit: MESSAGE_LIMIT } });
           }
         }}
       >
         {filteredMsgs.map((item, index) => (
-          <View key={item._id}>
+          <View
+            key={item._id}
+            onLayout={e => {
+              if (filteredMsgs.length === MESSAGE_LIMIT && index === filteredMsgs.length - 1) {
+                setView(e.nativeEvent.layout.y);
+              }
+              if (
+                index ===
+                  filteredMsgs.length -
+                    MESSAGE_LIMIT * Math.floor(filteredMsgs.length / MESSAGE_LIMIT) &&
+                filteredMsgs.length > MESSAGE_LIMIT
+              ) {
+                setView(e.nativeEvent.layout.y);
+              }
+            }}
+          >
             {index === 0 &&
               count.data &&
               count.data.fetchMessageCount.count > filteredMsgs.length && (
