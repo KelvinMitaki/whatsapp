@@ -11,7 +11,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { CurrentUser, MessageInterface } from "../../interfaces/Chat";
-import { useQuery, useSubscription } from "@apollo/client";
+import { LazyQueryResult, OperationVariables, useQuery, useSubscription } from "@apollo/client";
 import { FETCH_CURRENT_USER, FETCH_MESSAGE_COUNT } from "../../graphql/queries";
 import format from "date-fns/format";
 import { ADD_NEW_MESSAGE_SUB } from "../../graphql/subscriptions";
@@ -20,9 +20,10 @@ import AppColors from "../../Colors/color";
 interface Props {
   messages: MessageInterface[];
   recipient: string;
+  fetchMore: LazyQueryResult<any, OperationVariables>["fetchMore"] | undefined;
 }
 
-const Message: React.FC<Props> = ({ messages, recipient }) => {
+const Message: React.FC<Props> = ({ messages, recipient, fetchMore }) => {
   const { data } = useQuery(FETCH_CURRENT_USER);
   const count = useQuery(FETCH_MESSAGE_COUNT, { variables: { recipient } });
   const currentUser: CurrentUser = data.fetchCurrentUser;
@@ -35,7 +36,7 @@ const Message: React.FC<Props> = ({ messages, recipient }) => {
   });
   const scrollViewRef = useRef<ScrollView>(null);
   useEffect(() => {
-    if (scrollViewRef.current) {
+    if (scrollViewRef.current && messages.length === 20) {
       scrollViewRef.current.scrollToEnd();
     }
   }, [messages]);
@@ -54,8 +55,14 @@ const Message: React.FC<Props> = ({ messages, recipient }) => {
       <ScrollView
         ref={scrollViewRef}
         onScroll={({ nativeEvent }) => {
-          if (isCloseToTop(nativeEvent)) {
-            console.log("isclose to top");
+          if (
+            isCloseToTop(nativeEvent) &&
+            fetchMore &&
+            count.data &&
+            count.data.fetchMessageCount.count > filteredMsgs.length
+          ) {
+            fetchMore({ variables: { offset: filteredMsgs.length, limit: 20 } });
+            console.log("reached");
           }
         }}
       >

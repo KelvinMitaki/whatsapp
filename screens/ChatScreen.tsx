@@ -52,7 +52,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
     },
     fetchPolicy: "network-only"
   });
-  const [fetchMessages, { loading, data }] = useLazyQuery(FETCH_MESSAGES, {
+  const [fetchMessages, { loading, data, fetchMore }] = useLazyQuery(FETCH_MESSAGES, {
     fetchPolicy: "network-only",
     onError(err) {
       console.log(err);
@@ -117,7 +117,11 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       )}
       {data && (
         <View style={{ height: "100%" }}>
-          <Message messages={data.fetchMessages} recipient={navigation.getParam("recipient")._id} />
+          <Message
+            messages={data.fetchMessages}
+            recipient={navigation.getParam("recipient")._id}
+            fetchMore={fetchMore}
+          />
           <Input screen="chat" recipient={navigation.getParam("recipient")._id} />
         </View>
       )}
