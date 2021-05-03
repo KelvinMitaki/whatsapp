@@ -38,19 +38,12 @@ const Message: React.FC<Props> = ({ messages, recipient, fetchMore }) => {
     },
     variables: { sender: currentUser._id, recipient }
   });
-  const [currentRender, setCurrentRender] = useState<number>(0);
   const scrollViewRef = useRef<ScrollView>(null);
-  const [view, setView] = useState<number | null>(null);
   useEffect(() => {
-    setCurrentRender(c => c + 1);
-    if (scrollViewRef.current && view) {
-      if (currentRender < 2) {
-        scrollViewRef.current.scrollToEnd();
-      } else {
-        scrollViewRef.current.scrollTo({ x: 0, y: view, animated: false });
-      }
+    if (scrollViewRef.current && messages.length <= MESSAGE_LIMIT) {
+      scrollViewRef.current.scrollToEnd();
     }
-  }, [messages, view]);
+  }, [messages]);
   const isCloseToTop = ({ contentOffset }: NativeScrollEvent) => {
     return contentOffset.y === 0;
   };
@@ -64,7 +57,6 @@ const Message: React.FC<Props> = ({ messages, recipient, fetchMore }) => {
     .sort((a, b) => parseInt(a.createdAt) - parseInt(b.createdAt));
   return (
     <View style={{ height: "90%" }}>
-      <NavigationEvents onDidBlur={() => setCurrentRender(0)} />
       <ScrollView
         ref={scrollViewRef}
         onScroll={({ nativeEvent }) => {
@@ -79,22 +71,7 @@ const Message: React.FC<Props> = ({ messages, recipient, fetchMore }) => {
         }}
       >
         {filteredMsgs.map((item, index) => (
-          <View
-            key={item._id}
-            onLayout={e => {
-              if (filteredMsgs.length === MESSAGE_LIMIT && index === filteredMsgs.length - 1) {
-                setView(e.nativeEvent.layout.y);
-              }
-              if (
-                index ===
-                  filteredMsgs.length -
-                    MESSAGE_LIMIT * Math.floor(filteredMsgs.length / MESSAGE_LIMIT) &&
-                filteredMsgs.length > MESSAGE_LIMIT
-              ) {
-                setView(e.nativeEvent.layout.y);
-              }
-            }}
-          >
+          <View key={item._id}>
             {index === 0 &&
               count.data &&
               count.data.fetchMessageCount.count > filteredMsgs.length && (
