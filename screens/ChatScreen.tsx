@@ -31,8 +31,8 @@ interface Params {
 const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [showLoading, setShowLoading] = useState<boolean>(false);
   const { data, loading } = useQuery(FETCH_MESSAGES, {
-    variables: { recipient: navigation.getParam("recipient")._id },
-    fetchPolicy: "cache-and-network"
+    variables: { recipient: navigation.getParam("recipient")._id, offset: 0, limit: 20 },
+    fetchPolicy: "network-only"
   });
   const [fetchChats] = useLazyQuery(FETCH_CHATS, {
     fetchPolicy: "network-only"

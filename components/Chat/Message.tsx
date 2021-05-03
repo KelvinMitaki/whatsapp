@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, Text, View, FlatList, ScrollView } from "react-native";
+import { StyleSheet, Text, View, FlatList, ScrollView, NativeScrollEvent } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { CurrentUser, MessageInterface } from "../../interfaces/Chat";
@@ -29,27 +29,44 @@ const Message: React.FC<Props> = ({ messages, recipient }) => {
       scrollViewRef.current.scrollToEnd();
     }
   }, [messages]);
+  const isCloseToTop = ({ contentOffset }: NativeScrollEvent) => {
+    return contentOffset.y === 0;
+  };
   return (
     <View style={{ height: "90%" }}>
-      <ScrollView ref={scrollViewRef}>
-        {[...messages, ...subScriptionMsgs].map((item, index) => (
-          <>
-            {currentUser._id === item.sender ? (
-              <View style={styles.me} key={item._id}>
-                <Text style={{ color: "#fff" }}>{item.message}</Text>
-                <Text style={styles.meta}>
-                  {format(new Date(parseInt(item.createdAt)), "p")}{" "}
-                  <Ionicons name="checkmark-done" size={18} />
-                </Text>
-              </View>
-            ) : (
-              <View style={styles.sender} key={item._id}>
-                <Text style={{ color: "#fff" }}>{item.message}</Text>
-                <Text style={styles.meta}>{format(new Date(parseInt(item.createdAt)), "p")}</Text>
-              </View>
-            )}
-          </>
-        ))}
+      <ScrollView
+        ref={scrollViewRef}
+        onScroll={({ nativeEvent }) => {
+          if (isCloseToTop(nativeEvent)) {
+            console.log("isclose to top");
+          }
+        }}
+      >
+        {[...messages, ...subScriptionMsgs]
+          .filter((m, i, s) => i === s.findIndex(ms => ms._id === m._id))
+          .filter(
+            msg =>
+              (msg.sender === currentUser._id && msg.recipient === recipient) ||
+              (msg.sender === recipient && msg.recipient === currentUser._id)
+          )
+          .map((item, index) => (
+            <View key={item._id}>
+              {currentUser._id === item.sender ? (
+                <View style={styles.me}>
+                  <Text style={{ color: "#fff" }}>{item.message}</Text>
+                  <Text style={styles.meta}>
+                    {format(new Date(parseInt(item.createdAt)), "p")}{" "}
+                    <Ionicons name="checkmark-done" size={18} />
+                  </Text>
+                </View>
+              ) : (
+                <View style={styles.sender}>
+                  <Text style={{ color: "#fff" }}>{item.message}</Text>
+                  <Text style={styles.meta}>{format(new Date(parseInt(item.createdAt)), "p")}</Text>
+                </View>
+              )}
+            </View>
+          ))}
       </ScrollView>
     </View>
   );
