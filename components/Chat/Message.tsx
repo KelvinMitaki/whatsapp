@@ -1,5 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, Text, View, FlatList, ScrollView, NativeScrollEvent } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  ScrollView,
+  NativeScrollEvent,
+  ActivityIndicator
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { CurrentUser, MessageInterface } from "../../interfaces/Chat";
@@ -7,6 +15,7 @@ import { useQuery, useSubscription } from "@apollo/client";
 import { FETCH_CURRENT_USER } from "../../graphql/queries";
 import format from "date-fns/format";
 import { ADD_NEW_MESSAGE_SUB } from "../../graphql/subscriptions";
+import AppColors from "../../Colors/color";
 
 interface Props {
   messages: MessageInterface[];
@@ -51,6 +60,7 @@ const Message: React.FC<Props> = ({ messages, recipient }) => {
           )
           .map((item, index) => (
             <View key={item._id}>
+              {index === 0 && <ActivityIndicator size="large" color={AppColors.secodary} />}
               {currentUser._id === item.sender ? (
                 <View style={styles.me}>
                   <Text style={{ color: "#fff" }}>{item.message}</Text>

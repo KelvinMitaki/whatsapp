@@ -59,8 +59,13 @@ export const FETCH_CHATS = gql`
 `;
 
 export const FETCH_MESSAGES = gql`
-  query FetchMessages($recipient: String!, $offset: Int!, $limit: Int!) {
-    fetchMessages(recipient: $recipient, offset: $offset, limit: $limit) {
+  query FetchMessages($recipient: String!, $offset: Int!, $limit: Int!, $messageCount: Int!) {
+    fetchMessages(
+      recipient: $recipient
+      offset: $offset
+      limit: $limit
+      messageCount: $messageCount
+    ) {
       _id
       sender
       recipient
@@ -68,6 +73,14 @@ export const FETCH_MESSAGES = gql`
       read
       createdAt
       deleted
+    }
+  }
+`;
+
+export const FETCH_MESSAGE_COUNT = gql`
+  query FetchMessageCount($recipient: String!) {
+    fetchMessageCount(recipient: $recipient) {
+      count
     }
   }
 `;

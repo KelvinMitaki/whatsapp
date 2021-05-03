@@ -16,7 +16,12 @@ import inspect from "../inspect";
 import Message from "../components/Chat/Message";
 import Input from "../components/Chat/Input";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
-import { FETCH_CHATS, FETCH_CURRENT_USER, FETCH_MESSAGES } from "../graphql/queries";
+import {
+  FETCH_CHATS,
+  FETCH_CURRENT_USER,
+  FETCH_MESSAGES,
+  FETCH_MESSAGE_COUNT
+} from "../graphql/queries";
 import { UPDATE_READ_MESSAGES } from "../graphql/mutations";
 import { CurrentUser, MessageInterface } from "../interfaces/Chat";
 
@@ -30,9 +35,28 @@ interface Params {
 
 const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [showLoading, setShowLoading] = useState<boolean>(false);
-  const { data, loading } = useQuery(FETCH_MESSAGES, {
-    variables: { recipient: navigation.getParam("recipient")._id, offset: 0, limit: 20 },
+  const count = useQuery(FETCH_MESSAGE_COUNT, {
+    variables: { recipient: navigation.getParam("recipient")._id },
+    onCompleted() {
+      fetchMessages({
+        variables: {
+          recipient: navigation.getParam("recipient")._id,
+          offset: 0,
+          limit: 20,
+          messageCount: count.data.fetchMessageCount.count
+        }
+      });
+    },
+    onError(err) {
+      console.log(err);
+    },
     fetchPolicy: "network-only"
+  });
+  const [fetchMessages, { loading, data }] = useLazyQuery(FETCH_MESSAGES, {
+    fetchPolicy: "network-only",
+    onError(err) {
+      console.log(err);
+    }
   });
   const [fetchChats] = useLazyQuery(FETCH_CHATS, {
     fetchPolicy: "network-only"
@@ -78,7 +102,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const screen = Dimensions.get("screen");
   return (
     <View>
-      {loading && showLoading && (
+      {((loading && showLoading) || count.loading) && (
         <View
           style={{
             height: screen.height,
