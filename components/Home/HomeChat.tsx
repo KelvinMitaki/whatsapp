@@ -143,7 +143,10 @@ const HomeChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, chatS
       return existingChats;
     }
     if (chat) {
-      return [...chatSub, ...(data.fetchChats as Chat[]).filter(c => c._id !== chat._id)];
+      return [
+        ...chatSub.filter((c, i, s) => i === s.findIndex(ch => ch._id === c._id)),
+        ...(data.fetchChats as Chat[]).filter(c => c._id !== chat._id)
+      ];
     }
     return data.fetchChats;
   };
