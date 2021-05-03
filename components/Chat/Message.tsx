@@ -12,7 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { CurrentUser, MessageInterface } from "../../interfaces/Chat";
 import { useQuery, useSubscription } from "@apollo/client";
-import { FETCH_CURRENT_USER } from "../../graphql/queries";
+import { FETCH_CURRENT_USER, FETCH_MESSAGE_COUNT } from "../../graphql/queries";
 import format from "date-fns/format";
 import { ADD_NEW_MESSAGE_SUB } from "../../graphql/subscriptions";
 import AppColors from "../../Colors/color";
@@ -24,6 +24,7 @@ interface Props {
 
 const Message: React.FC<Props> = ({ messages, recipient }) => {
   const { data } = useQuery(FETCH_CURRENT_USER);
+  const count = useQuery(FETCH_MESSAGE_COUNT, { variables: { recipient } });
   const currentUser: CurrentUser = data.fetchCurrentUser;
   const [subScriptionMsgs, setSubScriptionMsgs] = useState<MessageInterface[]>([]);
   useSubscription(ADD_NEW_MESSAGE_SUB, {
@@ -41,6 +42,13 @@ const Message: React.FC<Props> = ({ messages, recipient }) => {
   const isCloseToTop = ({ contentOffset }: NativeScrollEvent) => {
     return contentOffset.y === 0;
   };
+  const filteredMsgs = [...messages, ...subScriptionMsgs]
+    .filter((m, i, s) => i === s.findIndex(ms => ms._id === m._id))
+    .filter(
+      msg =>
+        (msg.sender === currentUser._id && msg.recipient === recipient) ||
+        (msg.sender === recipient && msg.recipient === currentUser._id)
+    );
   return (
     <View style={{ height: "90%" }}>
       <ScrollView
@@ -51,32 +59,29 @@ const Message: React.FC<Props> = ({ messages, recipient }) => {
           }
         }}
       >
-        {[...messages, ...subScriptionMsgs]
-          .filter((m, i, s) => i === s.findIndex(ms => ms._id === m._id))
-          .filter(
-            msg =>
-              (msg.sender === currentUser._id && msg.recipient === recipient) ||
-              (msg.sender === recipient && msg.recipient === currentUser._id)
-          )
-          .map((item, index) => (
-            <View key={item._id}>
-              {index === 0 && <ActivityIndicator size="large" color={AppColors.secodary} />}
-              {currentUser._id === item.sender ? (
-                <View style={styles.me}>
-                  <Text style={{ color: "#fff" }}>{item.message}</Text>
-                  <Text style={styles.meta}>
-                    {format(new Date(parseInt(item.createdAt)), "p")}{" "}
-                    <Ionicons name="checkmark-done" size={18} />
-                  </Text>
-                </View>
-              ) : (
-                <View style={styles.sender}>
-                  <Text style={{ color: "#fff" }}>{item.message}</Text>
-                  <Text style={styles.meta}>{format(new Date(parseInt(item.createdAt)), "p")}</Text>
-                </View>
+        {filteredMsgs.map((item, index) => (
+          <View key={item._id}>
+            {index === 0 &&
+              count.data &&
+              count.data.fetchMessageCount.count > filteredMsgs.length && (
+                <ActivityIndicator size="large" color={AppColors.secodary} />
               )}
-            </View>
-          ))}
+            {currentUser._id === item.sender ? (
+              <View style={styles.me}>
+                <Text style={{ color: "#fff" }}>{item.message}</Text>
+                <Text style={styles.meta}>
+                  {format(new Date(parseInt(item.createdAt)), "p")}{" "}
+                  <Ionicons name="checkmark-done" size={18} />
+                </Text>
+              </View>
+            ) : (
+              <View style={styles.sender}>
+                <Text style={{ color: "#fff" }}>{item.message}</Text>
+                <Text style={styles.meta}>{format(new Date(parseInt(item.createdAt)), "p")}</Text>
+              </View>
+            )}
+          </View>
+        ))}
       </ScrollView>
     </View>
   );
