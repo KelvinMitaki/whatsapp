@@ -49,7 +49,8 @@ const Message: React.FC<Props> = ({ messages, recipient, fetchMore }) => {
       msg =>
         (msg.sender === currentUser._id && msg.recipient === recipient) ||
         (msg.sender === recipient && msg.recipient === currentUser._id)
-    );
+    )
+    .sort((a, b) => parseInt(a.createdAt) - parseInt(b.createdAt));
   return (
     <View style={{ height: "90%" }}>
       <ScrollView
@@ -62,7 +63,6 @@ const Message: React.FC<Props> = ({ messages, recipient, fetchMore }) => {
             count.data.fetchMessageCount.count > filteredMsgs.length
           ) {
             fetchMore({ variables: { offset: filteredMsgs.length, limit: 20 } });
-            console.log("reached");
           }
         }}
       >
