@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { StyleSheet, Text, View, FlatList, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { CurrentUser, MessageInterface } from "../../interfaces/Chat";
@@ -23,16 +23,19 @@ const Message: React.FC<Props> = ({ messages, recipient }) => {
     },
     variables: { sender: currentUser._id, recipient }
   });
-
+  const scrollViewRef = useRef<ScrollView>(null);
+  useEffect(() => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollToEnd();
+    }
+  }, [messages]);
   return (
     <View style={{ height: "90%" }}>
-      <FlatList
-        data={[...messages, ...subScriptionMsgs]}
-        keyExtractor={msg => msg._id}
-        renderItem={({ item, index }) => (
+      <ScrollView ref={scrollViewRef}>
+        {[...messages, ...subScriptionMsgs].map((item, index) => (
           <>
             {currentUser._id === item.sender ? (
-              <View style={styles.me}>
+              <View style={styles.me} key={item._id}>
                 <Text style={{ color: "#fff" }}>{item.message}</Text>
                 <Text style={styles.meta}>
                   {format(new Date(parseInt(item.createdAt)), "p")}{" "}
@@ -40,14 +43,14 @@ const Message: React.FC<Props> = ({ messages, recipient }) => {
                 </Text>
               </View>
             ) : (
-              <View style={styles.sender}>
+              <View style={styles.sender} key={item._id}>
                 <Text style={{ color: "#fff" }}>{item.message}</Text>
                 <Text style={styles.meta}>{format(new Date(parseInt(item.createdAt)), "p")}</Text>
               </View>
             )}
           </>
-        )}
-      />
+        ))}
+      </ScrollView>
     </View>
   );
 };

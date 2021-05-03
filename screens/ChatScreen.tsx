@@ -34,7 +34,9 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
     variables: { recipient: navigation.getParam("recipient")._id },
     fetchPolicy: "cache-and-network"
   });
-  const [fetchChats] = useLazyQuery(FETCH_CHATS, { fetchPolicy: "network-only" });
+  const [fetchChats] = useLazyQuery(FETCH_CHATS, {
+    fetchPolicy: "network-only"
+  });
   const user = useQuery(FETCH_CURRENT_USER);
   const currentUser: CurrentUser = user.data.fetchCurrentUser;
   const chatID = navigation.getParam("chatID");
