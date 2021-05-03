@@ -251,7 +251,20 @@ const splitLink = split(
 );
 const client = new ApolloClient({
   link: splitLink,
-  cache: new InMemoryCache()
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          fetchMessages: {
+            keyArgs: false,
+            merge(existing = [], incoming) {
+              return [...incoming, ...existing];
+            }
+          }
+        }
+      }
+    }
+  })
 });
 export default () => (
   <ApolloProvider client={client}>

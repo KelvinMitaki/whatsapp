@@ -59,8 +59,8 @@ export const FETCH_CHATS = gql`
 `;
 
 export const FETCH_MESSAGES = gql`
-  query FetchMessages($recipient: String!) {
-    fetchMessages(recipient: $recipient) {
+  query FetchMessages($recipient: String!, $offset: Int!, $limit: Int!) {
+    fetchMessages(recipient: $recipient, offset: $offset, limit: $limit) {
       _id
       sender
       recipient
