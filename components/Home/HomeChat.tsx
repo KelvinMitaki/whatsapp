@@ -15,7 +15,7 @@ interface Props {
   chat: Chat | null;
 }
 
-const HomeChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, chatSub, chat }) => {
+const HomeChat: React.FC<NavigationInjectedProps & Props> = ({ chatSub, chat }) => {
   const { data } = useQuery(FETCH_CHATS, { fetchPolicy: "cache-only" });
   const user = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
   const dispatch = useDispatch();
