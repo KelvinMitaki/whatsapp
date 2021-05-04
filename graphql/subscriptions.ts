@@ -34,3 +34,18 @@ export const ADD_NEW_CHAT_SUB = gql`
     }
   }
 `;
+
+export const ADD_NEW_GROUP_SUB = gql`
+  subscription AddNewGroup($userID: String!) {
+    addNewGroup(userID: $userID) {
+      _id
+      name
+      description
+      groupProfilePhoto
+      admin
+      message
+      participants
+      createdAt
+    }
+  }
+`;

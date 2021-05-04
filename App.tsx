@@ -41,6 +41,7 @@ import NameScreen from "./screens/NameScreen";
 import BlankScreen from "./screens/BlankScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getMainDefinition } from "@apollo/client/utilities";
+import { NavigationCommonTabOptions } from "react-navigation-tabs/lib/typescript/src/types";
 
 enableScreens();
 
@@ -78,7 +79,7 @@ const TabNavigator = createMaterialTopTabNavigator(
     },
     navigationOptions: {
       headerRight: () => <HomeHeaderRight />
-    }
+    } as NavigationCommonTabOptions
   }
 );
 

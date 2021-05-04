@@ -49,3 +49,18 @@ export const UPDATE_READ_MESSAGES = gql`
     }
   }
 `;
+
+export const ADD_NEW_GROUP = gql`
+  mutation AddNewGroup($name: String!, $participants: [String!]!) {
+    addNewGroup(name: $name, participants: $participants) {
+      _id
+      name
+      description
+      groupProfilePhoto
+      admin
+      message
+      participants
+      createdAt
+    }
+  }
+`;

@@ -133,7 +133,8 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     height: "100%",
     width: "100%",
-    backgroundColor: "#14191d"
+    backgroundColor: "#14191d",
+    overflow: "hidden"
   },
   filter: {
     height: 30,
