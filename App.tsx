@@ -144,6 +144,7 @@ const stackNavigator = createStackNavigator(
       ...stackScreenSettings
     },
     GroupChat: {
+      // @ts-ignore
       screen: GroupChatScreen,
       ...stackScreenSettings
     },

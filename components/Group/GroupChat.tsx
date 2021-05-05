@@ -59,7 +59,7 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
     ({ item }: ListRenderItemInfo<Group>) => (
       <TouchableNativeFeedback
         background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
-        onPress={() => navigation.navigate("GroupChat")}
+        onPress={() => navigation.navigate("GroupChat", { groupID: item._id })}
       >
         <View style={styles.contact}>
           {/* <Avatar

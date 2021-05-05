@@ -112,3 +112,23 @@ export const FETCH_GROUPS = gql`
     }
   }
 `;
+
+export const FETCH_GROUP_MSGS = gql`
+  query FetchGroupMsgs($groupID: String!) {
+    fetchGroupMsgs(groupID: $groupID) {
+      _id
+      sender {
+        _id
+        phoneNumber
+        profilePhoto
+        countryCode
+        name
+      }
+      message
+      createdAt
+      read
+      received
+      deleted
+    }
+  }
+`;

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Text, TextInput, View, BackHandler } from "react-native";
+import { StyleSheet, Text, TextInput, View, BackHandler, ActivityIndicator } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons, Ionicons, FontAwesome, AntDesign } from "@expo/vector-icons";
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
@@ -7,8 +7,17 @@ import inspect from "../inspect";
 import { TouchableNativeFeedback } from "react-native";
 import Input from "../components/Chat/Input";
 import GroupMessage from "../components/Group/GroupMessage";
+import AppColors from "../Colors/color";
+import { useQuery } from "@apollo/client";
+import { FETCH_GROUP_MSGS } from "../graphql/queries";
 
-const GroupChatScreen: NavigationStackScreenComponent = ({ navigation }) => {
+interface Params {
+  groupID: string;
+}
+
+const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
+  const groupID = navigation.getParam("groupID");
+  const { data } = useQuery(FETCH_GROUP_MSGS, { variables: { groupID } });
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackBtnPressAndroid);
     return () => {
@@ -24,8 +33,16 @@ const GroupChatScreen: NavigationStackScreenComponent = ({ navigation }) => {
   };
   return (
     <View style={{ height: "100%" }}>
-      <GroupMessage />
-      <Input screen="group" />
+      {data && data.fetchGroupMsgs ? (
+        <>
+          <GroupMessage />
+          <Input screen="group" />
+        </>
+      ) : (
+        <View style={{ height: "100%", alignItems: "center", justifyContent: "center" }}>
+          <ActivityIndicator size="large" color={AppColors.secodary} />
+        </View>
+      )}
     </View>
   );
 };
