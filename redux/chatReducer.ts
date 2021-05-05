@@ -1,6 +1,6 @@
 import { AnyAction } from "redux";
 import { messages } from "../data/messages";
-import { User } from "../interfaces/Chat";
+import { User } from "../interfaces/ChatInterface";
 import { SetMessage } from "../screens/BroadcastScreen";
 import { SetHeaderHeight, SetSearchModal } from "../screens/HomeScreen";
 import { ResetContacts } from "../screens/NewGroupInfoScreen";

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { StyleSheet, FlatList, Animated, Easing } from "react-native";
 import { useDispatch } from "react-redux";
-import { User } from "../../interfaces/Chat";
+import { User } from "../../interfaces/ChatInterface";
 import HorizontalContact from "./HorizontalContact";
 
 interface Props {

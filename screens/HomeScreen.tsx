@@ -13,7 +13,7 @@ import { useQuery, useSubscription } from "@apollo/client";
 import { FETCH_CHATS, FETCH_CURRENT_USER } from "../graphql/queries";
 import StartChat from "../components/Home/StartChat";
 import { ADD_NEW_CHAT_SUB } from "../graphql/subscriptions";
-import { Chat, CurrentUser } from "../interfaces/Chat";
+import { Chat, CurrentUser } from "../interfaces/ChatInterface";
 
 export interface SetHeaderHeight {
   type: "setHeaderHeight";

@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { SetSearchModal } from "../../screens/HomeScreen";
 import { FETCH_CHATS, FETCH_CURRENT_USER } from "../../graphql/queries";
 import { useQuery } from "@apollo/client";
-import { Chat, CurrentUser } from "../../interfaces/Chat";
+import { Chat, CurrentUser } from "../../interfaces/ChatInterface";
 import ChatComponent from "./ChatComponent";
 
 interface Props {

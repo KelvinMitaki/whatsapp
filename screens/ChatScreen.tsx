@@ -6,7 +6,7 @@ import Input, { MESSAGE_LIMIT } from "../components/Chat/Input";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { FETCH_CURRENT_USER, FETCH_MESSAGES, FETCH_MESSAGE_COUNT } from "../graphql/queries";
 import { UPDATE_READ_MESSAGES } from "../graphql/mutations";
-import { CurrentUser, MessageInterface } from "../interfaces/Chat";
+import { CurrentUser, MessageInterface } from "../interfaces/ChatInterface";
 import ChatScreenHeader from "../components/Chat/ChatScreenHeader";
 
 interface Params {

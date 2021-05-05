@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
-import { CurrentUser, MessageInterface } from "../../interfaces/Chat";
+import { CurrentUser, MessageInterface } from "../../interfaces/ChatInterface";
 import { LazyQueryResult, OperationVariables, useQuery, useSubscription } from "@apollo/client";
 import { FETCH_CURRENT_USER, FETCH_MESSAGE_COUNT } from "../../graphql/queries";
 import format from "date-fns/format";

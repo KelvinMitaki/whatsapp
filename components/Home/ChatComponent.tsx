@@ -6,7 +6,7 @@ import { TouchableNativeFeedback } from "react-native";
 import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 import { isToday, isYesterday } from "date-fns";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
-import { Chat, CurrentUser } from "../../interfaces/Chat";
+import { Chat, CurrentUser } from "../../interfaces/ChatInterface";
 import { format } from "date-fns/esm";
 import AppColors from "../../Colors/color";
 

@@ -3,7 +3,7 @@ import { Animated, StyleSheet, Text, TouchableNativeFeedback, View } from "react
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import AppColors from "../../Colors/color";
-import { Chat } from "../../interfaces/Chat";
+import { Chat } from "../../interfaces/ChatInterface";
 
 interface Props {
   chats: Chat[];

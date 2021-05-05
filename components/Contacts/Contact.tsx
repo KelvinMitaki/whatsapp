@@ -8,7 +8,7 @@ import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import inspect from "../../inspect";
 import { useQuery } from "@apollo/client";
 import { FETCH_CHATS, FETCH_USERS } from "../../graphql/queries";
-import { Chat, User } from "../../interfaces/Chat";
+import { Chat, User } from "../../interfaces/ChatInterface";
 
 interface Props {
   setContacts?: (usr: User) => void;

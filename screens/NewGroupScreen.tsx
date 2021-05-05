@@ -19,7 +19,7 @@ import { Redux } from "../interfaces/Redux";
 import HorizontalScrollContacts from "../components/Contacts/HorizontalScrollContacts";
 import { NavigationEvents } from "react-navigation";
 import { ResetContacts } from "./NewGroupInfoScreen";
-import { User } from "../interfaces/Chat";
+import { User } from "../interfaces/ChatInterface";
 
 export interface SetContacts {
   type: "setContacts";

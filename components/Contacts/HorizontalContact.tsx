@@ -6,7 +6,7 @@ import { SetContacts } from "../../screens/NewGroupScreen";
 import { NavigationEvents } from "react-navigation";
 import { useSelector } from "react-redux";
 import { Redux } from "../../interfaces/Redux";
-import { User } from "../../interfaces/Chat";
+import { User } from "../../interfaces/ChatInterface";
 
 interface Props {
   dispatch: Dispatch<SetContacts>;

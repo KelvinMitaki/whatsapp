@@ -84,3 +84,27 @@ export const FETCH_MESSAGE_COUNT = gql`
     }
   }
 `;
+
+export const FETCH_GROUPS = gql`
+  query {
+    fetchGroups {
+      _id
+      name
+      description
+      groupProfilePhoto
+      admin
+      message {
+        _id
+        sender
+        message
+        group
+        read
+        deleted
+        received
+        createdAt
+      }
+      participants
+      createdAt
+    }
+  }
+`;
