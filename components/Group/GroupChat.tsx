@@ -2,22 +2,42 @@ import React, { useCallback } from "react";
 import { FlatList, ListRenderItemInfo, StyleSheet, View } from "react-native";
 import { Badge, Text, Card } from "react-native-elements";
 import { TouchableNativeFeedback } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { Group } from "../../interfaces/GroupInterface";
 import { formatDate } from "../Home/ChatComponent";
+import { useQuery } from "@apollo/client";
+import { FETCH_CURRENT_USER } from "../../graphql/queries";
+import { CurrentUser } from "../../interfaces/ChatInterface";
 
 interface Props {
   groups: Group[];
 }
 
 const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, groups }) => {
-  // const renderGroupMessage=({message}:Group):string=>{
-  //   if(message){
-  //     return
-  //   }
-  // }
+  const { data } = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
+  const currentUser: CurrentUser = data.fetchCurrentUser;
+  const renderGroupMessage = ({ message, admin }: Group): string | JSX.Element => {
+    if (message) {
+      const {
+        sender: { phoneNumber, countryCode, _id }
+      } = message;
+      if (currentUser._id === _id) {
+        return (
+          <>
+            <Ionicons name="checkmark" size={18} />
+            <Text>{message.message}</Text>
+          </>
+        );
+      }
+      return `${countryCode} ${phoneNumber}: ${message.message}`;
+    }
+    if (currentUser._id === admin) {
+      return "You created this group";
+    }
+    return "You were added";
+  };
   const renderItem = useCallback(
     ({ item }: ListRenderItemInfo<Group>) => (
       <TouchableNativeFeedback
@@ -64,9 +84,7 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
                   width: "90%"
                 }}
               >
-                +2547 2155 9392: hello Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Commodi sed et vel fuga quibusdam nihil dolorum temporibus, veniam enim error? Saepe
-                in vel enim, repellat dicta distinctio porro molestias alias?
+                {renderGroupMessage(item)}
               </Text>
               <Badge value="99" badgeStyle={{ backgroundColor: "#00af9c" }} />
             </View>
