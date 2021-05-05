@@ -1,28 +1,31 @@
 import React from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, Text, View, FlatList, ListRenderItem } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
+import { GroupMsg } from "../../interfaces/GroupInterface";
+import { useQuery } from "@apollo/client";
+import { FETCH_CURRENT_USER } from "../../graphql/queries";
+import { CurrentUser } from "../../interfaces/ChatInterface";
 
 export const genRandomNum = () => Math.random() * (255 - 1) + 1;
 
-const GroupMessage = () => {
-  const messages = [] as JSX.Element[];
-  for (let i = 0; i < 100; i++) {
-    if (i === 0) {
-      messages.push(<View style={{ marginTop: 25 }} />);
-    }
-    messages.push(
-      <>
+interface Props {
+  messages: GroupMsg[];
+}
+
+const GroupMessage: React.FC<Props> = ({ messages }) => {
+  const { data } = useQuery(FETCH_CURRENT_USER);
+  const currentUser: CurrentUser = data.fetchCurrentUser;
+  const renderItem: ListRenderItem<GroupMsg> = ({ item }) => (
+    <>
+      {currentUser._id === item.sender._id ? (
         <View style={styles.me}>
-          <Text style={{ color: "#fff" }}>
-            M Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat velit eum doloremque
-            quo, animi blanditiis alias, amet voluptatem asperiores repellendus iusto quam eveniet
-            quidem molestias id, illum rerum eligendi voluptate
-          </Text>
+          <Text style={{ color: "#fff" }}>{item.message}</Text>
           <Text style={styles.meta}>
             1:38 PM <Ionicons name="checkmark" size={18} />
           </Text>
         </View>
+      ) : (
         <View style={{ flexDirection: "row" }}>
           <View style={styles.person}>
             <Ionicons name="person" size={25} color="rgba(241, 241, 242, 0.8)" />
@@ -34,7 +37,7 @@ const GroupMessage = () => {
                   color: `rgb(${genRandomNum()},${genRandomNum()},${genRandomNum()})`
                 }}
               >
-                +2547 2155 9392
+                {item.sender.countryCode} {item.sender.phoneNumber}
               </Text>
               <Text
                 numberOfLines={1}
@@ -44,23 +47,20 @@ const GroupMessage = () => {
                   maxWidth: "55%"
                 }}
               >
-                ~Kevin
+                ~{item.sender.name}
               </Text>
             </View>
-            <Text style={{ color: "#fff" }}>Message Message</Text>
+            <Text style={{ color: "#fff" }}>{item.message}</Text>
             <Text style={styles.meta}>1:39 PM</Text>
           </View>
         </View>
-      </>
-    );
-  }
+      )}
+    </>
+  );
+
   return (
     <View style={{ height: "90%" }}>
-      <FlatList
-        data={messages}
-        keyExtractor={(_, i) => i.toLocaleString()}
-        renderItem={({ item }) => item}
-      />
+      <FlatList data={messages} keyExtractor={m => m._id} renderItem={renderItem} />
     </View>
   );
 };
