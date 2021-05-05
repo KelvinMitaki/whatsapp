@@ -44,7 +44,7 @@ const GroupMessage: React.FC<Props> = ({ messages }) => {
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
               <Text
                 style={{
-                  color: `hsl(${genHue(item.sender.phoneNumber)},50%,100%)`
+                  color: `hsl(${genHue(item.sender.phoneNumber)},80%,60%)`
                 }}
               >
                 {item.sender.countryCode} {item.sender.phoneNumber}
