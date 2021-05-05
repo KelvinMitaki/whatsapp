@@ -9,11 +9,11 @@ import { useQuery } from "@apollo/client";
 import { FETCH_GROUPS } from "../graphql/queries";
 
 const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
-  const { data } = useQuery(FETCH_GROUPS, { fetchPolicy: "cache-only" });
+  const { data } = useQuery(FETCH_GROUPS);
 
   return (
     <View style={styles.prt}>
-      <GroupChat groups={data.fetchGroups} />
+      <GroupChat groups={data ? data.fetchGroups : []} />
       <TouchableNativeFeedback onPress={() => navigation.navigate("Contact")}>
         <View style={styles.plus}>
           <MaterialCommunityIcons

@@ -7,9 +7,10 @@ import inspect from "../../inspect";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { Group } from "../../interfaces/GroupInterface";
 import { formatDate } from "../Home/ChatComponent";
-import { useQuery } from "@apollo/client";
+import { useQuery, useSubscription } from "@apollo/client";
 import { FETCH_CURRENT_USER } from "../../graphql/queries";
 import { CurrentUser } from "../../interfaces/ChatInterface";
+import { ADD_NEW_GROUP_SUB } from "../../graphql/subscriptions";
 
 interface Props {
   groups: Group[];
@@ -18,6 +19,23 @@ interface Props {
 const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, groups }) => {
   const { data } = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
   const currentUser: CurrentUser = data.fetchCurrentUser;
+  const grpSub = useSubscription(ADD_NEW_GROUP_SUB, { variables: { userID: currentUser._id } });
+
+  const syncGroups = (): Group[] => {
+    if (grpSub.data && grpSub.data.addNewGroup) {
+      const newGroup: Group = grpSub.data.addNewGroup;
+      let groupsToBeModified = [...groups];
+      const grpIndex = groupsToBeModified.findIndex(g => g._id === newGroup._id);
+      if (grpIndex !== -1) {
+        groupsToBeModified[grpIndex] = newGroup;
+      } else {
+        groupsToBeModified = [newGroup, ...groupsToBeModified];
+      }
+      return groupsToBeModified;
+    }
+
+    return groups;
+  };
   const renderGroupMessage = ({ message, admin }: Group): string | JSX.Element => {
     if (message) {
       const {
@@ -108,7 +126,7 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
   return (
     <View style={styles.prt}>
       <FlatList
-        data={groups}
+        data={syncGroups()}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         getItemLayout={getItemLayout}
