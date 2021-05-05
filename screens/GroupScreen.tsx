@@ -10,11 +10,10 @@ import { FETCH_GROUPS } from "../graphql/queries";
 
 const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   const { data } = useQuery(FETCH_GROUPS, { fetchPolicy: "cache-only" });
-  data && console.log(data.fetchGroups);
-  console.log(data);
+
   return (
     <View style={styles.prt}>
-      <GroupChat />
+      <GroupChat groups={data.fetchGroups} />
       <TouchableNativeFeedback onPress={() => navigation.navigate("Contact")}>
         <View style={styles.plus}>
           <MaterialCommunityIcons

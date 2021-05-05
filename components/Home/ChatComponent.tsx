@@ -14,6 +14,15 @@ interface Props {
   item: Chat;
   currentUser: CurrentUser;
 }
+export const formatDate = (date: Date) => {
+  if (isToday(date)) {
+    return format(date, "p");
+  }
+  if (isYesterday(date)) {
+    return "Yesterday";
+  }
+  return format(date, "P");
+};
 
 const ChatComponent: React.FC<Props & NavigationInjectedProps> = props => {
   const {
@@ -21,15 +30,6 @@ const ChatComponent: React.FC<Props & NavigationInjectedProps> = props => {
     currentUser,
     navigation
   } = props;
-  const formatDate = (date: Date) => {
-    if (isToday(date)) {
-      return format(date, "p");
-    }
-    if (isYesterday(date)) {
-      return "Yesterday";
-    }
-    return format(date, "P");
-  };
   return (
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}

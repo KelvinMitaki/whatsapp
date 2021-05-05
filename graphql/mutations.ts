@@ -58,7 +58,16 @@ export const ADD_NEW_GROUP = gql`
       description
       groupProfilePhoto
       admin
-      message
+      message {
+        _id
+        sender
+        message
+        group
+        read
+        deleted
+        received
+        createdAt
+      }
       participants
       createdAt
     }

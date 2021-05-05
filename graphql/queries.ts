@@ -30,7 +30,6 @@ export const FETCH_CURRENT_USER = gql`
         _id
         name
         groupProfilePhoto
-        message
       }
       createdAt
     }

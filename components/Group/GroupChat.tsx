@@ -1,22 +1,25 @@
 import React, { useCallback } from "react";
 import { FlatList, ListRenderItemInfo, StyleSheet, View } from "react-native";
-import { Badge, Text } from "react-native-elements";
-import { Card, Avatar } from "react-native-elements";
+import { Badge, Text, Card } from "react-native-elements";
 import { TouchableNativeFeedback } from "react-native";
-import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
-import { users } from "../../data/data";
+import { FontAwesome } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
+import { Group } from "../../interfaces/GroupInterface";
+import { formatDate } from "../Home/ChatComponent";
 
-const GroupChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
+interface Props {
+  groups: Group[];
+}
+
+const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, groups }) => {
+  // const renderGroupMessage=({message}:Group):string=>{
+  //   if(message){
+  //     return
+  //   }
+  // }
   const renderItem = useCallback(
-    (
-      i: ListRenderItemInfo<{
-        name: string;
-        avatar: string;
-      }>
-    ) => (
+    ({ item }: ListRenderItemInfo<Group>) => (
       <TouchableNativeFeedback
         background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
         onPress={() => navigation.navigate("GroupChat")}
@@ -46,9 +49,11 @@ const GroupChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
                 }}
                 numberOfLines={1}
               >
-                Group {i.index + 1}
+                {item.name}
               </Text>
-              <Text style={{ right: 1, color: "rgba(255,255,255,.6)" }}>Yesterday</Text>
+              <Text style={{ right: 1, color: "rgba(255,255,255,.6)" }}>
+                {formatDate(new Date(parseInt(item.message?.createdAt || item.createdAt)))}
+              </Text>
             </View>
             <View style={styles.msg}>
               <Text
@@ -77,7 +82,7 @@ const GroupChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
     ),
     []
   );
-  const keyExtractor = useCallback((_: any, i: number) => i.toLocaleString(), []);
+  const keyExtractor = useCallback((g: Group) => g._id, []);
   const getItemLayout = useCallback(
     (data: any, i: number) => ({ length: 70, offset: 70 * i, index: i }),
     []
@@ -85,7 +90,7 @@ const GroupChat: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   return (
     <View style={styles.prt}>
       <FlatList
-        data={users}
+        data={groups}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         getItemLayout={getItemLayout}
