@@ -6,6 +6,8 @@ import { GroupMsg } from "../../interfaces/GroupInterface";
 import { useQuery } from "@apollo/client";
 import { FETCH_CURRENT_USER } from "../../graphql/queries";
 import { CurrentUser } from "../../interfaces/ChatInterface";
+import { format } from "date-fns";
+import AppColors from "../../Colors/color";
 
 export const genRandomNum = () => Math.random() * (255 - 1) + 1;
 
@@ -20,9 +22,10 @@ const GroupMessage: React.FC<Props> = ({ messages }) => {
     <>
       {currentUser._id === item.sender._id ? (
         <View style={styles.me}>
-          <Text style={{ color: "#fff" }}>{item.message}</Text>
+          <Text style={{ color: AppColors.white }}>{item.message}</Text>
           <Text style={styles.meta}>
-            1:38 PM <Ionicons name="checkmark" size={18} />
+            {format(new Date(parseInt(item.createdAt)), "p")}{" "}
+            <Ionicons name="checkmark" size={18} />
           </Text>
         </View>
       ) : (
@@ -50,8 +53,8 @@ const GroupMessage: React.FC<Props> = ({ messages }) => {
                 ~{item.sender.name}
               </Text>
             </View>
-            <Text style={{ color: "#fff" }}>{item.message}</Text>
-            <Text style={styles.meta}>1:39 PM</Text>
+            <Text style={{ color: AppColors.white }}>{item.message}</Text>
+            <Text style={styles.meta}>{format(new Date(parseInt(item.createdAt)), "p")}</Text>
           </View>
         </View>
       )}
