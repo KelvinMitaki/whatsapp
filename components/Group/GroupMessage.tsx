@@ -18,6 +18,13 @@ interface Props {
 const GroupMessage: React.FC<Props> = ({ messages }) => {
   const { data } = useQuery(FETCH_CURRENT_USER);
   const currentUser: CurrentUser = data.fetchCurrentUser;
+  const genHue = (phoneNumber: number) => {
+    const numString = phoneNumber.toString().slice(phoneNumber.toString().length - 3);
+    if (parseInt(numString) > 360) {
+      return -parseInt(numString);
+    }
+    return parseInt(numString);
+  };
   const renderItem: ListRenderItem<GroupMsg> = ({ item }) => (
     <>
       {currentUser._id === item.sender._id ? (
@@ -37,7 +44,7 @@ const GroupMessage: React.FC<Props> = ({ messages }) => {
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
               <Text
                 style={{
-                  color: `rgb(${genRandomNum()},${genRandomNum()},${genRandomNum()})`
+                  color: `hsl(${genHue(item.sender.phoneNumber)},50%,100%)`
                 }}
               >
                 {item.sender.countryCode} {item.sender.phoneNumber}
