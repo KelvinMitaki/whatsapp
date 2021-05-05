@@ -94,7 +94,12 @@ export const FETCH_GROUPS = gql`
       admin
       message {
         _id
-        sender
+        sender {
+          _id
+          name
+          countryCode
+          phoneNumber
+        }
         message
         group
         read

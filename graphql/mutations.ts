@@ -60,7 +60,12 @@ export const ADD_NEW_GROUP = gql`
       admin
       message {
         _id
-        sender
+        sender {
+          _id
+          name
+          countryCode
+          phoneNumber
+        }
         message
         group
         read

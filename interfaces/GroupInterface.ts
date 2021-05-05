@@ -10,7 +10,12 @@ export interface Group {
 
 export interface GroupMsg {
   _id: string;
-  sender: string;
+  sender: {
+    _id: string;
+    name: string;
+    countryCode: string;
+    phoneNumber: number;
+  };
   message: string;
   group: string;
   read: string;

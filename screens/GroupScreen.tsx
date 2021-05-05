@@ -35,7 +35,9 @@ GroupScreen.navigationOptions = {
 export default GroupScreen;
 
 const styles = StyleSheet.create({
-  prt: {},
+  prt: {
+    height: "100%"
+  },
   plus: {
     position: "absolute",
     right: "5%",
