@@ -23,7 +23,7 @@ const GroupChatScreen: NavigationStackScreenComponent = ({ navigation }) => {
     return true;
   };
   return (
-    <View>
+    <View style={{ height: "100%" }}>
       <GroupMessage />
       <Input screen="group" />
     </View>

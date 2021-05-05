@@ -53,16 +53,15 @@ const GroupMessage = () => {
         </View>
       </>
     );
-    if (i === 99) {
-      messages.push(<View style={{ marginBottom: 50 }} />);
-    }
   }
   return (
-    <FlatList
-      data={messages}
-      keyExtractor={(_, i) => i.toLocaleString()}
-      renderItem={({ item }) => item}
-    />
+    <View style={{ height: "90%" }}>
+      <FlatList
+        data={messages}
+        keyExtractor={(_, i) => i.toLocaleString()}
+        renderItem={({ item }) => item}
+      />
+    </View>
   );
 };
 
@@ -71,7 +70,7 @@ export default GroupMessage;
 const styles = StyleSheet.create({
   prt: {
     marginTop: 10,
-    marginBottom: 50
+    marginBottom: 10
   },
   me: {
     alignSelf: "flex-end",
