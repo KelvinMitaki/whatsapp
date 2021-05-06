@@ -63,3 +63,23 @@ export const ADD_NEW_GROUP_SUB = gql`
     }
   }
 `;
+
+export const ADD_NEW_GROUP_MSG_SUB = gql`
+  subscription AddNewGroupMsg($groupID: String!) {
+    addNewGroupMsg(groupID: $groupID) {
+      _id
+      sender {
+        _id
+        phoneNumber
+        profilePhoto
+        countryCode
+        name
+      }
+      message
+      createdAt
+      read
+      received
+      deleted
+    }
+  }
+`;

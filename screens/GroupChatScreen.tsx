@@ -43,7 +43,7 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
     <View style={{ height: "100%" }}>
       {data && data.fetchGroupMsgs && group.data && group.data.fetchGroup ? (
         <>
-          <GroupMessage messages={data.fetchGroupMsgs} />
+          <GroupMessage messages={data.fetchGroupMsgs} groupID={groupID} />
           <Input screen="group" />
         </>
       ) : (

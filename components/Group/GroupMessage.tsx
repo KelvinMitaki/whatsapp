@@ -3,21 +3,30 @@ import { StyleSheet, Text, View, FlatList, ListRenderItem } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { GroupMsg } from "../../interfaces/GroupInterface";
-import { useQuery } from "@apollo/client";
+import { useQuery, useSubscription } from "@apollo/client";
 import { FETCH_CURRENT_USER } from "../../graphql/queries";
 import { CurrentUser } from "../../interfaces/ChatInterface";
 import { format } from "date-fns";
 import AppColors from "../../Colors/color";
+import { ADD_NEW_GROUP_MSG_SUB } from "../../graphql/subscriptions";
 
 export const genRandomNum = () => Math.random() * (255 - 1) + 1;
 
 interface Props {
   messages: GroupMsg[];
+  groupID: string;
 }
 
-const GroupMessage: React.FC<Props> = ({ messages }) => {
+const GroupMessage: React.FC<Props> = ({ messages, groupID }) => {
   const { data } = useQuery(FETCH_CURRENT_USER);
   const currentUser: CurrentUser = data.fetchCurrentUser;
+  const msgSub = useSubscription(ADD_NEW_GROUP_MSG_SUB, { variables: { groupID } });
+  const syncMessages = (): GroupMsg[] => {
+    if (msgSub.data && msgSub.data.addNewGroupMsg) {
+      return [...messages, msgSub.data.addNewGroupMsg];
+    }
+    return messages;
+  };
   const genHue = (phoneNumber: number) => {
     const numString = phoneNumber.toString().slice(phoneNumber.toString().length - 3);
     if (parseInt(numString) > 360) {
@@ -25,7 +34,7 @@ const GroupMessage: React.FC<Props> = ({ messages }) => {
     }
     return parseInt(numString);
   };
-  const renderItem: ListRenderItem<GroupMsg> = ({ item }) => (
+  const renderItem: ListRenderItem<GroupMsg> = ({ item, index }) => (
     <>
       {currentUser._id === item.sender._id ? (
         <View style={styles.me}>
@@ -36,7 +45,7 @@ const GroupMessage: React.FC<Props> = ({ messages }) => {
           </Text>
         </View>
       ) : (
-        <View style={{ flexDirection: "row" }}>
+        <View style={[{ flexDirection: "row" }, index === 0 && { marginTop: 10 }]}>
           <View style={styles.person}>
             <Ionicons name="person" size={25} color="rgba(241, 241, 242, 0.8)" />
           </View>
@@ -70,7 +79,7 @@ const GroupMessage: React.FC<Props> = ({ messages }) => {
 
   return (
     <View style={{ height: "90%" }}>
-      <FlatList data={messages} keyExtractor={m => m._id} renderItem={renderItem} />
+      <FlatList data={syncMessages()} keyExtractor={m => m._id} renderItem={renderItem} />
     </View>
   );
 };
