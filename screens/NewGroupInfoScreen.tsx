@@ -15,6 +15,8 @@ import inspect from "../inspect";
 import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../interfaces/Redux";
 import { NavigationEvents } from "react-navigation";
+import AppColors from "../Colors/color";
+import LoadingModal from "../components/Modals/LoadingModal";
 
 export interface ResetContacts {
   type: "resetContacts";
@@ -27,11 +29,12 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <NavigationEvents onDidBlur={() => dispatch<ResetContacts>({ type: "resetContacts" })} />
+      <LoadingModal isVisible text="Creating group..." />
       <View
         style={{
           height: 125,
           justifyContent: "center",
-          backgroundColor: "#191f23"
+          backgroundColor: AppColors.primary
         }}
       >
         <View
@@ -42,7 +45,7 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
         >
           <TouchableNativeFeedback onPress={() => {}}>
             <View style={styles.camera}>
-              <FontAwesome name="camera" size={25} color="#fff" />
+              <FontAwesome name="camera" size={25} color={AppColors.white} />
             </View>
           </TouchableNativeFeedback>
           <View
@@ -58,11 +61,11 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
           </View>
           <View style={styles.smileyPrt}>
             <TouchableNativeFeedback
-              background={TouchableNativeFeedback.Ripple("#fff", true)}
+              background={TouchableNativeFeedback.Ripple(AppColors.white, true)}
               onPress={() => {}}
             >
               <View style={styles.smiley}>
-                <Fontisto name="smiley" color="#fff" size={25} />
+                <Fontisto name="smiley" color={AppColors.white} size={25} />
               </View>
             </TouchableNativeFeedback>
           </View>
@@ -73,7 +76,7 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
       </View>
       <View style={styles.selectedContact}>
         <TouchableNativeFeedback
-          background={TouchableNativeFeedback.Ripple("#fff", true)}
+          background={TouchableNativeFeedback.Ripple(AppColors.white, true)}
           onPress={() => {
             if (!subject.trim().length) {
               ToastAndroid.show("Group subject is required", ToastAndroid.LONG);
@@ -83,7 +86,7 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
           }}
         >
           <View style={styles.checkMark}>
-            <Ionicons name="checkmark-sharp" size={25} color="#fff" />
+            <Ionicons name="checkmark-sharp" size={25} color={AppColors.white} />
           </View>
         </TouchableNativeFeedback>
       </View>
@@ -122,10 +125,10 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
 NewGroupInfoScreen.navigationOptions = {
   headerTitle: () => (
     <View>
-      <Text style={{ color: "#fff" }} h4>
+      <Text style={{ color: AppColors.white }} h4>
         New Group
       </Text>
-      <Text style={{ color: "#fff" }}>Add subject</Text>
+      <Text style={{ color: AppColors.white }}>Add subject</Text>
     </View>
   )
 };
