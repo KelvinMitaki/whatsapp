@@ -72,7 +72,15 @@ const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigati
   return (
     <View style={{ height: "100%" }}>
       <FlatList
-        data={data ? (data.fetchUsers as User[]) : ([] as User[])}
+        data={
+          data
+            ? (((data.fetchUsers as User[]).map(({ profilePhoto, _id, name }) => ({
+                profilePhoto,
+                _id,
+                name
+              })) as unknown) as User[])
+            : ([] as User[])
+        }
         keyExtractor={u => u._id}
         initialNumToRender={15}
         renderItem={({ item }) => (
