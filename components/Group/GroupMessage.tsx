@@ -23,7 +23,15 @@ const GroupMessage: React.FC<Props> = ({ messages, groupID }) => {
   const msgSub = useSubscription(ADD_NEW_GROUP_MSG_SUB, { variables: { groupID } });
   const syncMessages = (): GroupMsg[] => {
     if (msgSub.data && msgSub.data.addNewGroupMsg) {
-      return [...messages, msgSub.data.addNewGroupMsg];
+      const incommingMessage: GroupMsg = msgSub.data.addNewGroupMsg;
+      let messagesToBeModified = [...messages];
+      const msgIndex = messagesToBeModified.findIndex(m => m._id === incommingMessage._id);
+      if (msgIndex !== -1) {
+        messagesToBeModified[msgIndex] = incommingMessage;
+      } else {
+        messagesToBeModified = [...messagesToBeModified, incommingMessage];
+      }
+      return messagesToBeModified;
     }
     return messages;
   };
