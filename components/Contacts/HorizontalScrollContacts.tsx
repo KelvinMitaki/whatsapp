@@ -38,7 +38,7 @@ const HorizontalScrollContacts: React.FC<Props> = ({ Contacts }) => {
         data={Contacts}
         horizontal
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(_, i) => i.toLocaleString()}
+        keyExtractor={u => u._id}
         renderItem={({ item }) => <HorizontalContact item={item} dispatch={dispatch} />}
       />
     </Animated.View>

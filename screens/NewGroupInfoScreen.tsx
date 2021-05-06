@@ -82,13 +82,14 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
         <View style={{ flex: 1, alignItems: "center" }}>
           <FlatList
             data={Contacts}
-            keyExtractor={(_, i) => i.toLocaleString()}
+            keyExtractor={u => u._id}
             numColumns={Math.floor(Dimensions.get("screen").width / 60)}
             renderItem={({ item }) => (
               <View
                 style={{
                   width: 60,
-                  height: 70
+                  height: 70,
+                  alignItems: "center"
                 }}
               >
                 <View style={styles.person}>
