@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextInput, TouchableNativeFeedback, View } from "reac
 import { Fontisto, Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { useMutation } from "@apollo/client";
-import { ADD_NEW_MESSAGE } from "../../graphql/mutations";
+import { ADD_NEW_GROUP_MSG, ADD_NEW_MESSAGE } from "../../graphql/mutations";
 import AppColors from "../../Colors/color";
 
 export const MESSAGE_LIMIT = 20;
@@ -11,11 +11,13 @@ export const MESSAGE_LIMIT = 20;
 interface Props {
   screen: "chat" | "group";
   recipient?: string;
+  group?: string;
 }
 
-const Input: React.FC<Props> = ({ screen, recipient }) => {
+const Input: React.FC<Props> = ({ screen, recipient, group }) => {
   const [inp, setInp] = useState<string>("");
   const [addNewMessage] = useMutation(ADD_NEW_MESSAGE);
+  const [addNewGroupMsg] = useMutation(ADD_NEW_GROUP_MSG);
   return (
     <View style={styles.prt}>
       <View style={styles.smiley}>
@@ -30,13 +32,17 @@ const Input: React.FC<Props> = ({ screen, recipient }) => {
       />
       <View style={{ flex: 1, alignItems: "center" }}>
         <TouchableNativeFeedback
-          onPress={() =>
-            inp.trim().length &&
-            screen === "chat" &&
-            recipient &&
-            addNewMessage({ variables: { recipient, message: inp } }) &&
-            setInp("")
-          }
+          onPress={() => {
+            if (inp.trim().length) {
+              if (screen === "chat" && recipient) {
+                addNewMessage({ variables: { recipient, message: inp } });
+              }
+              if (screen === "group" && group) {
+                addNewGroupMsg({ variables: { group, message: inp } });
+              }
+              setInp("");
+            }
+          }}
         >
           <View style={styles.send}>
             <Ionicons name="send-sharp" size={25} color="#fff" style={{ marginLeft: "10%" }} />

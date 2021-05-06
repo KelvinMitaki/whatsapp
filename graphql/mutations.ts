@@ -78,3 +78,23 @@ export const ADD_NEW_GROUP = gql`
     }
   }
 `;
+
+export const ADD_NEW_GROUP_MSG = gql`
+  mutation AddNewGroupMsg($group: String!, $message: String!) {
+    addNewGroupMsg(group: $group, message: $message) {
+      _id
+      sender {
+        _id
+        phoneNumber
+        profilePhoto
+        countryCode
+        name
+      }
+      message
+      createdAt
+      read
+      received
+      deleted
+    }
+  }
+`;
