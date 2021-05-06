@@ -17,6 +17,8 @@ import { Redux } from "../interfaces/Redux";
 import { NavigationEvents } from "react-navigation";
 import AppColors from "../Colors/color";
 import LoadingModal from "../components/Modals/LoadingModal";
+import { useMutation } from "@apollo/client";
+import { ADD_NEW_GROUP } from "../graphql/mutations";
 
 export interface ResetContacts {
   type: "resetContacts";
@@ -24,12 +26,25 @@ export interface ResetContacts {
 
 const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [subject, setSubject] = useState<string>("");
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const Contacts = useSelector((state: Redux) => state.chat.Contacts);
+  const [addNewGroup] = useMutation(ADD_NEW_GROUP, {
+    variables: { participants: Contacts.map(c => c._id), name: subject },
+    onCompleted(data) {
+      const groupID = data.addNewGroup._id;
+      setSubject("");
+      setModalVisible(false);
+      navigation.navigate("GroupChat", { groupID });
+    },
+    onError() {
+      setModalVisible(false);
+    }
+  });
   const dispatch = useDispatch();
   return (
     <View style={{ flex: 1 }}>
       <NavigationEvents onDidBlur={() => dispatch<ResetContacts>({ type: "resetContacts" })} />
-      <LoadingModal isVisible text="Creating group..." />
+      <LoadingModal isVisible={modalVisible} text="Creating group..." />
       <View
         style={{
           height: 125,
@@ -57,6 +72,7 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
               placeholder="Type group subject here..."
               onChangeText={setSubject}
               value={subject}
+              style={{ color: AppColors.white }}
             />
           </View>
           <View style={styles.smileyPrt}>
@@ -81,7 +97,8 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
             if (!subject.trim().length) {
               ToastAndroid.show("Group subject is required", ToastAndroid.LONG);
             } else {
-              navigation.navigate("GroupChat");
+              setModalVisible(true);
+              addNewGroup();
             }
           }}
         >
