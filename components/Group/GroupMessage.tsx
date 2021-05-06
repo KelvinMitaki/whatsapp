@@ -56,7 +56,7 @@ const GroupMessage: React.FC<Props> = ({ messages, groupID }) => {
                   color: `hsl(${genHue(item.sender.phoneNumber)},80%,60%)`
                 }}
               >
-                {item.sender.countryCode} {item.sender.phoneNumber}
+                +{item.sender.countryCode} {item.sender.phoneNumber}
               </Text>
               <Text
                 numberOfLines={1}

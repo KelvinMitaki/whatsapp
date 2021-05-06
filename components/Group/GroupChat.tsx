@@ -11,6 +11,7 @@ import { useQuery, useSubscription } from "@apollo/client";
 import { FETCH_CURRENT_USER } from "../../graphql/queries";
 import { CurrentUser } from "../../interfaces/ChatInterface";
 import { ADD_NEW_GROUP_SUB } from "../../graphql/subscriptions";
+import AppColors from "../../Colors/color";
 
 interface Props {
   groups: Group[];
@@ -43,8 +44,8 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
       if (currentUser._id === _id) {
         return (
           <>
-            <Ionicons name="checkmark" size={18} />
-            <Text>{message.message}</Text>
+            <Ionicons name="checkmark" size={18} color={AppColors.dull_white} />
+            <Text style={{ color: AppColors.dull_white }}>{message.message}</Text>
           </>
         );
       }
