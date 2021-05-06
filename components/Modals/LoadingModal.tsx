@@ -12,7 +12,7 @@ const LoadingModal: React.FC<Props> = ({ isVisible, text }) => {
       isVisible={isVisible}
       animationType="fade"
       onBackdropPress={() => {}}
-      overlayStyle={{ backgroundColor: AppColors.primary, width: "70%" }}
+      overlayStyle={{ backgroundColor: AppColors.primary_light, width: "70%" }}
     >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <ActivityIndicator size="large" color={AppColors.secodary} />

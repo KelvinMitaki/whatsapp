@@ -45,7 +45,7 @@ const GroupMessage: React.FC<Props> = ({ messages, groupID }) => {
   const renderItem: ListRenderItem<GroupMsg> = ({ item, index }) => (
     <>
       {currentUser._id === item.sender._id ? (
-        <View style={styles.me}>
+        <View style={[styles.me, index === 0 && { marginTop: 10 }]}>
           <Text style={{ color: AppColors.white }}>{item.message}</Text>
           <Text style={styles.meta}>
             {format(new Date(parseInt(item.createdAt)), "p")}{" "}

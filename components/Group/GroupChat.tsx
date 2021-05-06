@@ -20,7 +20,12 @@ interface Props {
 const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, groups }) => {
   const { data } = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
   const currentUser: CurrentUser = data.fetchCurrentUser;
-  const grpSub = useSubscription(ADD_NEW_GROUP_SUB, { variables: { userID: currentUser._id } });
+  const grpSub = useSubscription(ADD_NEW_GROUP_SUB, {
+    variables: { userID: currentUser._id },
+    onSubscriptionData(subdata) {
+      console.log(subdata.subscriptionData.data);
+    }
+  });
   const syncGroups = (): Group[] => {
     if (grpSub.data && grpSub.data.addNewGroup) {
       const newGroup: Group = grpSub.data.addNewGroup;
