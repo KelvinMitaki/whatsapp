@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dimensions,
   FlatList,
   ScrollView,
   StyleSheet,
+  ToastAndroid,
   TouchableNativeFeedback,
   View
 } from "react-native";
@@ -20,6 +21,7 @@ export interface ResetContacts {
 }
 
 const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  const [subject, setSubject] = useState<string>("");
   const Contacts = useSelector((state: Redux) => state.chat.Contacts);
   const dispatch = useDispatch();
   return (
@@ -48,7 +50,11 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
               width: "70%"
             }}
           >
-            <Input placeholder="Type group subject here..." />
+            <Input
+              placeholder="Type group subject here..."
+              onChangeText={setSubject}
+              value={subject}
+            />
           </View>
           <View style={styles.smileyPrt}>
             <TouchableNativeFeedback
@@ -68,7 +74,13 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
       <View style={styles.selectedContact}>
         <TouchableNativeFeedback
           background={TouchableNativeFeedback.Ripple("#fff", true)}
-          onPress={() => navigation.navigate("GroupChat")}
+          onPress={() => {
+            if (!subject.trim().length) {
+              ToastAndroid.show("Group subject is required", ToastAndroid.LONG);
+            } else {
+              navigation.navigate("GroupChat");
+            }
+          }}
         >
           <View style={styles.checkMark}>
             <Ionicons name="checkmark-sharp" size={25} color="#fff" />
