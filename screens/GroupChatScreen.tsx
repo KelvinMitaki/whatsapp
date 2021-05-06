@@ -9,21 +9,29 @@ import Input from "../components/Chat/Input";
 import GroupMessage from "../components/Group/GroupMessage";
 import AppColors from "../Colors/color";
 import { useQuery } from "@apollo/client";
-import { FETCH_GROUP_MSGS } from "../graphql/queries";
+import { FETCH_GROUP, FETCH_GROUP_MSGS } from "../graphql/queries";
+import { GroupWithParticipants } from "../interfaces/GroupInterface";
 
 interface Params {
   groupID: string;
+  group: GroupWithParticipants;
 }
 
 const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const groupID = navigation.getParam("groupID");
   const { data } = useQuery(FETCH_GROUP_MSGS, { variables: { groupID } });
+  const group = useQuery(FETCH_GROUP, { variables: { groupID } });
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackBtnPressAndroid);
     return () => {
       BackHandler.removeEventListener("hardwareBackPress", handleBackBtnPressAndroid);
     };
   }, []);
+  useEffect(() => {
+    if (group.data && group.data.fetchGroup) {
+      navigation.setParams({ group: group.data.fetchGroup });
+    }
+  }, [group.data]);
   const handleBackBtnPressAndroid = () => {
     if (!navigation.isFocused()) {
       return false;
@@ -33,7 +41,7 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
   };
   return (
     <View style={{ height: "100%" }}>
-      {data && data.fetchGroupMsgs ? (
+      {data && data.fetchGroupMsgs && group.data && group.data.fetchGroup ? (
         <>
           <GroupMessage messages={data.fetchGroupMsgs} />
           <Input screen="group" />
@@ -48,22 +56,29 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
 };
 
 GroupChatScreen.navigationOptions = ({ navigation }) => {
+  const group = navigation.getParam("group");
   return {
-    headerTitle: () => (
-      <View style={styles.headerLeft}>
-        <View style={styles.group}>
-          <FontAwesome name="group" size={25} color="rgba(241, 241, 242, 0.8)" />
+    headerShown: !!group,
+    ...(group && {
+      headerTitle: () => (
+        <View style={styles.headerLeft}>
+          <View style={styles.group}>
+            <FontAwesome name="group" size={25} color="rgba(241, 241, 242, 0.8)" />
+          </View>
+          <View style={{ width: "75%" }}>
+            <Text numberOfLines={1} style={styles.grpName}>
+              {group.name}
+            </Text>
+            <Text numberOfLines={1} style={{ color: "white", marginLeft: 10 }}>
+              {group.participants
+                .map(p => p.name)
+                .toString()
+                .replace(/,/g, ", ")}
+            </Text>
+          </View>
         </View>
-        <View style={{ width: "75%" }}>
-          <Text numberOfLines={1} style={styles.grpName}>
-            Group 1
-          </Text>
-          <Text numberOfLines={1} style={{ color: "white", marginLeft: 10 }}>
-            Kevin, Brian, Jemo, Arnold, Blake, Amos
-          </Text>
-        </View>
-      </View>
-    ),
+      )
+    }),
     headerRight: () => (
       <View style={styles.headerRight}>
         <View

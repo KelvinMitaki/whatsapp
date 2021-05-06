@@ -1,3 +1,5 @@
+import { User } from "./ChatInterface";
+
 export interface Group {
   _id: string;
   admin: string;
@@ -6,6 +8,14 @@ export interface Group {
   message: GroupMsg | null;
   name: string;
   participants: string[];
+}
+export interface GroupWithParticipants {
+  _id: string;
+  admin: string;
+  createdAt: string;
+  description: string | null;
+  name: string;
+  participants: User[];
 }
 
 export interface GroupMsg {

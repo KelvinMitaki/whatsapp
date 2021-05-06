@@ -132,3 +132,24 @@ export const FETCH_GROUP_MSGS = gql`
     }
   }
 `;
+
+export const FETCH_GROUP = gql`
+  query FetchGroup($groupID: String!) {
+    fetchGroup(groupID: $groupID) {
+      _id
+      name
+      description
+      groupProfilePhoto
+      admin
+      createdAt
+      participants {
+        _id
+        profilePhoto
+        name
+        countryCode
+        phoneNumber
+        about
+      }
+    }
+  }
+`;
