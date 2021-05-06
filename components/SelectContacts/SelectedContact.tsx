@@ -1,33 +1,27 @@
 import React from "react";
-import { Animated, StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
+import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
-import { users } from "../../data/data";
+import { User } from "../../interfaces/ChatInterface";
 
-export interface Data {
-  name: string;
-  avatar: string;
-  id: number;
-}
 interface Props {
-  setChecked: React.Dispatch<React.SetStateAction<Data[]>>;
-  index: number;
-  item: typeof users[0];
+  setChecked: React.Dispatch<React.SetStateAction<User[]>>;
+  item: User;
   checked: boolean;
 }
 
-const SelectedContact: React.FC<Props> = ({ setChecked, index, item, checked }) => {
+const SelectedContact: React.FC<Props> = ({ setChecked, item, checked }) => {
   return (
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#fff", false)}
       onPress={() => {
         setChecked(c => {
           const items = [...c];
-          const itemIndex = c.findIndex(i => i.id === index);
+          const itemIndex = c.findIndex(i => i._id === item._id);
           if (itemIndex !== -1) {
             items.splice(itemIndex, 1);
             return items;
           }
-          return [...c, { ...item, id: index }];
+          return [...c, item];
         });
       }}
     >
