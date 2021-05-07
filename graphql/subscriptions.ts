@@ -80,6 +80,7 @@ export const ADD_NEW_GROUP_MSG_SUB = gql`
       read
       received
       deleted
+      group
     }
   }
 `;
