@@ -38,7 +38,7 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
       dispatch<SetIncommingUnread>({ type: "setIncommingUnread", payload: [] });
     }
   });
-  const { loading } = useQuery(FETCH_GROUP_MSG_COUNT, {
+  const { loading, data: countData } = useQuery(FETCH_GROUP_MSG_COUNT, {
     fetchPolicy: "network-only",
     variables: { groupID },
     onCompleted(data) {
@@ -52,7 +52,7 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
       });
     }
   });
-  const [fetchGroupMsgs, { data }] = useLazyQuery(FETCH_GROUP_MSGS, {
+  const [fetchGroupMsgs, { data, fetchMore }] = useLazyQuery(FETCH_GROUP_MSGS, {
     fetchPolicy: "cache-and-network",
     onCompleted(data) {
       const groupMsgs: GroupMsg[] = data.fetchGroupMsgs;
@@ -92,7 +92,12 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
     <View style={{ height: "100%" }}>
       {data && data.fetchGroupMsgs && group.data && group.data.fetchGroup && !loading ? (
         <>
-          <GroupMessage messages={data.fetchGroupMsgs} groupID={groupID} />
+          <GroupMessage
+            messages={data.fetchGroupMsgs}
+            groupID={groupID}
+            count={countData.fetchGroupMessageCount.count}
+            fetchMore={fetchMore}
+          />
           <Input screen="group" group={groupID} />
         </>
       ) : (

@@ -10,7 +10,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { GroupMsg } from "../../interfaces/GroupInterface";
-import { useQuery, useSubscription } from "@apollo/client";
+import { LazyQueryResult, OperationVariables, useQuery, useSubscription } from "@apollo/client";
 import { FETCH_CURRENT_USER } from "../../graphql/queries";
 import { CurrentUser } from "../../interfaces/ChatInterface";
 import { format } from "date-fns";
@@ -23,9 +23,11 @@ export const genRandomNum = () => Math.random() * (255 - 1) + 1;
 interface Props {
   messages: GroupMsg[];
   groupID: string;
+  fetchMore: LazyQueryResult<any, OperationVariables>["fetchMore"] | undefined;
+  count: number;
 }
 
-const GroupMessage: React.FC<Props> = ({ messages, groupID }) => {
+const GroupMessage: React.FC<Props> = ({ messages, groupID, fetchMore, count }) => {
   const { data } = useQuery(FETCH_CURRENT_USER);
   const scrollViewRef = useRef<ScrollView>(null);
   const [incommingMessages, setIncommingMessages] = useState<GroupMsg[]>([]);
@@ -51,7 +53,7 @@ const GroupMessage: React.FC<Props> = ({ messages, groupID }) => {
     }
     return parseInt(numString);
   };
-  const syncMessages: GroupMsg[] = [...messages, ...incommingMessages]
+  const syncedMessages: GroupMsg[] = [...messages, ...incommingMessages]
     .filter((m, i, s) => i === s.findIndex(ms => ms._id === m._id))
     .filter(msg => msg.group === groupID)
     .sort((a, b) => parseInt(a.createdAt) - parseInt(b.createdAt));
@@ -60,14 +62,16 @@ const GroupMessage: React.FC<Props> = ({ messages, groupID }) => {
       <ScrollView
         ref={scrollViewRef}
         onScroll={({ nativeEvent }) => {
-          if (isCloseToTop(nativeEvent)) {
-            console.log("close to top");
+          if (isCloseToTop(nativeEvent) && fetchMore && count > syncedMessages.length) {
+            fetchMore({ variables: { offset: syncedMessages.length, limit: MESSAGE_LIMIT } });
           }
         }}
       >
-        {syncMessages.map((item, index) => (
+        {syncedMessages.map((item, index) => (
           <View key={item._id}>
-            {index === 0 && <ActivityIndicator size="large" color={AppColors.secodary} />}
+            {index === 0 && count > syncedMessages.length && (
+              <ActivityIndicator size="large" color={AppColors.secodary} />
+            )}
             {currentUser._id === item.sender._id ? (
               <View style={[styles.me, index === 0 && { marginTop: 10 }]}>
                 <Text style={{ color: AppColors.white }}>{item.message}</Text>
