@@ -11,7 +11,6 @@ import { FETCH_GROUPS, FETCH_UNREAD_GROUP_MSGS } from "../graphql/queries";
 const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   const { data } = useQuery(FETCH_GROUPS);
   const { data: data2 } = useQuery(FETCH_UNREAD_GROUP_MSGS);
-  console.log(data2);
   return (
     <View style={styles.prt}>
       <GroupChat

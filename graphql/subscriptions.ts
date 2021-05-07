@@ -84,14 +84,3 @@ export const ADD_NEW_GROUP_MSG_SUB = gql`
     }
   }
 `;
-
-export const UPDATE_GROUP_READ_SUB = gql`
-  subscription UpdatedGroupRead($userID: String!) {
-    updatedGroupRead(userID: $userID) {
-      groupCount {
-        messageCount
-        group
-      }
-    }
-  }
-`;
