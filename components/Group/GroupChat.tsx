@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { FlatList, ListRenderItemInfo, StyleSheet, View } from "react-native";
 import { Badge, Text, Card } from "react-native-elements";
 import { TouchableNativeFeedback } from "react-native";
@@ -20,26 +20,17 @@ interface Props {
 const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, groups }) => {
   const { data } = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
   const currentUser: CurrentUser = data.fetchCurrentUser;
-  const grpSub = useSubscription(ADD_NEW_GROUP_SUB, {
+  const [subscriptionGroups, setSubscriptionGroups] = useState<Group[]>([]);
+  useSubscription(ADD_NEW_GROUP_SUB, {
     onSubscriptionData(subdata) {
-      console.log(subdata.subscriptionData.data);
+      setSubscriptionGroups(g => [subdata.subscriptionData.data.addNewGroup, ...g]);
     },
     variables: { userID: currentUser._id }
   });
   const syncGroups = (): Group[] => {
-    if (grpSub.data && grpSub.data.addNewGroup) {
-      const newGroup: Group = grpSub.data.addNewGroup;
-      let groupsToBeModified = [...groups];
-      const grpIndex = groupsToBeModified.findIndex(g => g._id === newGroup._id);
-      if (grpIndex !== -1) {
-        groupsToBeModified[grpIndex] = newGroup;
-      } else {
-        groupsToBeModified = [newGroup, ...groupsToBeModified];
-      }
-      return groupsToBeModified;
-    }
-
-    return groups;
+    return [...subscriptionGroups, ...groups].filter(
+      (g, i, s) => i === s.findIndex(gr => gr._id === g._id)
+    );
   };
   const renderGroupMessage = ({ message, admin }: Group): string | JSX.Element => {
     if (message) {

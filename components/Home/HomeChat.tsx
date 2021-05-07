@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     transform: [{ scaleX: -1 }, { scaleY: 1 }]
   },
   noMsgs: {
-    height: "100%",
+    height: "80%",
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
