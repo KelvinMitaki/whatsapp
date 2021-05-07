@@ -108,7 +108,7 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
               >
                 {renderGroupMessage(item)}
               </Text>
-              {renderUnreadCount(item._id) && (
+              {!!renderUnreadCount(item._id) && (
                 <Badge
                   value={renderUnreadCount(item._id)}
                   badgeStyle={{ backgroundColor: "#00af9c" }}
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   msg: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around"
+    justifyContent: "space-between"
   },
   group: {
     borderRadius: 70,
