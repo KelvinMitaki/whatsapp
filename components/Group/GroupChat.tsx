@@ -12,6 +12,8 @@ import { FETCH_CURRENT_USER } from "../../graphql/queries";
 import { CurrentUser } from "../../interfaces/ChatInterface";
 import { ADD_NEW_GROUP_SUB } from "../../graphql/subscriptions";
 import AppColors from "../../Colors/color";
+import { useDispatch, useSelector } from "react-redux";
+import { Redux } from "../../interfaces/Redux";
 
 interface Props {
   groups: Group[];
@@ -24,9 +26,10 @@ export interface SetIncommingUnread {
 }
 
 const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, groups, unread }) => {
+  const dispatch = useDispatch();
   const { data } = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
   const currentUser: CurrentUser = data.fetchCurrentUser;
-  const [incommingUnread, setIncommingUnread] = useState<UnreadGroupMsg[]>([]);
+  const incommingUnread = useSelector((state: Redux) => state.group.incommingUnread);
   const [subscriptionGroups, setSubscriptionGroups] = useState<Group[]>([]);
   useSubscription(ADD_NEW_GROUP_SUB, {
     onSubscriptionData(subdata) {
@@ -45,7 +48,10 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
             ...incommingUnreadGroups
           ];
         }
-        setIncommingUnread(incommingUnreadGroups);
+        dispatch<SetIncommingUnread>({
+          type: "setIncommingUnread",
+          payload: incommingUnreadGroups
+        });
       }
     },
     variables: { userID: currentUser._id }
