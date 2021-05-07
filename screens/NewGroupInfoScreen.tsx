@@ -36,7 +36,7 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
       setModalVisible(false);
       navigation.navigate("GroupChat", { groupID });
     },
-    onError() {
+    onError(err) {
       setModalVisible(false);
     }
   });
