@@ -21,10 +21,27 @@ interface Props {
 const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, groups, unread }) => {
   const { data } = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
   const currentUser: CurrentUser = data.fetchCurrentUser;
+  const [incommingUnread, setIncommingUnread] = useState<UnreadGroupMsg[]>([]);
   const [subscriptionGroups, setSubscriptionGroups] = useState<Group[]>([]);
   useSubscription(ADD_NEW_GROUP_SUB, {
     onSubscriptionData(subdata) {
-      setSubscriptionGroups(g => [subdata.subscriptionData.data.addNewGroup, ...g]);
+      const group: Group = subdata.subscriptionData.data.addNewGroup;
+      setSubscriptionGroups(g => [group, ...g]);
+      if (group.message?.sender._id !== currentUser._id) {
+        let incommingUnreadGroups = [...incommingUnread];
+        const groupExistIndex = incommingUnreadGroups.findIndex(g => g.group === group._id);
+        if (groupExistIndex !== -1) {
+          const grp = incommingUnreadGroups[groupExistIndex];
+          incommingUnreadGroups[groupExistIndex] = { ...grp, messageCount: grp.messageCount + 1 };
+        } else {
+          const count = unread.find(u => u.group === group._id)?.messageCount;
+          incommingUnreadGroups = [
+            { group: group._id, messageCount: count ? count + 1 : 1 },
+            ...incommingUnreadGroups
+          ];
+        }
+        setIncommingUnread(incommingUnreadGroups);
+      }
     },
     variables: { userID: currentUser._id }
   });
@@ -34,7 +51,7 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
     );
   };
   const renderUnreadCount = (groupID: string): number => {
-    const group = unread.find(u => u.group === groupID);
+    const group = [...incommingUnread, ...unread].find(u => u.group === groupID);
     if (group) {
       return group.messageCount;
     }
