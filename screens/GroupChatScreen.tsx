@@ -19,7 +19,12 @@ interface Params {
 
 const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const groupID = navigation.getParam("groupID");
-  const { data } = useQuery(FETCH_GROUP_MSGS, { variables: { groupID } });
+  const { data } = useQuery(FETCH_GROUP_MSGS, {
+    variables: { groupID },
+    onCompleted(incommingData) {
+      console.log(incommingData);
+    }
+  });
   const group = useQuery(FETCH_GROUP, { variables: { groupID } });
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackBtnPressAndroid);

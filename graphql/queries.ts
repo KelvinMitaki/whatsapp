@@ -129,6 +129,7 @@ export const FETCH_GROUP_MSGS = gql`
       read
       received
       deleted
+      group
     }
   }
 `;
