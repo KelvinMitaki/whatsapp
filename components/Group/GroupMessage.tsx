@@ -28,9 +28,10 @@ const GroupMessage: React.FC<Props> = ({ messages, groupID }) => {
     }
   });
   const syncMessages = (): GroupMsg[] => {
-    return [...messages, ...incommingMessages].filter(
-      (m, i, s) => i === s.findIndex(ms => ms._id === m._id)
-    );
+    return [...messages, ...incommingMessages]
+      .filter((m, i, s) => i === s.findIndex(ms => ms._id === m._id))
+      .filter(msg => msg.group === groupID)
+      .sort((a, b) => parseInt(a.createdAt) - parseInt(b.createdAt));
   };
   const genHue = (phoneNumber: number) => {
     const numString = phoneNumber.toString().slice(phoneNumber.toString().length - 3);
