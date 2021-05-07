@@ -5,14 +5,15 @@ import { MaterialIcons, Ionicons, FontAwesome, AntDesign } from "@expo/vector-ic
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import inspect from "../inspect";
 import { TouchableNativeFeedback } from "react-native";
-import Input from "../components/Chat/Input";
+import Input, { MESSAGE_LIMIT } from "../components/Chat/Input";
 import GroupMessage from "../components/Group/GroupMessage";
 import AppColors from "../Colors/color";
-import { useMutation, useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import {
   FETCH_CURRENT_USER,
   FETCH_GROUP,
   FETCH_GROUP_MSGS,
+  FETCH_GROUP_MSG_COUNT,
   FETCH_UNREAD_GROUP_MSGS
 } from "../graphql/queries";
 import { GroupMsg, GroupWithParticipants } from "../interfaces/GroupInterface";
@@ -37,8 +38,21 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
       dispatch<SetIncommingUnread>({ type: "setIncommingUnread", payload: [] });
     }
   });
-  const { data, loading } = useQuery(FETCH_GROUP_MSGS, {
+  const { loading } = useQuery(FETCH_GROUP_MSG_COUNT, {
+    fetchPolicy: "network-only",
     variables: { groupID },
+    onCompleted(data) {
+      fetchGroupMsgs({
+        variables: {
+          groupID,
+          offset: 0,
+          limit: MESSAGE_LIMIT,
+          messageCount: data.fetchGroupMessageCount.count
+        }
+      });
+    }
+  });
+  const [fetchGroupMsgs, { data }] = useLazyQuery(FETCH_GROUP_MSGS, {
     fetchPolicy: "cache-and-network",
     onCompleted(data) {
       const groupMsgs: GroupMsg[] = data.fetchGroupMsgs;
@@ -76,7 +90,7 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
   };
   return (
     <View style={{ height: "100%" }}>
-      {data && data.fetchGroupMsgs && group.data && group.data.fetchGroup ? (
+      {data && data.fetchGroupMsgs && group.data && group.data.fetchGroup && !loading ? (
         <>
           <GroupMessage messages={data.fetchGroupMsgs} groupID={groupID} />
           <Input screen="group" group={groupID} />

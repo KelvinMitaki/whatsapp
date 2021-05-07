@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, Text, View, FlatList, ListRenderItem, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  NativeScrollEvent,
+  ScrollView,
+  ActivityIndicator
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { GroupMsg } from "../../interfaces/GroupInterface";
@@ -34,11 +41,9 @@ const GroupMessage: React.FC<Props> = ({ messages, groupID }) => {
       scrollViewRef.current.scrollToEnd();
     }
   }, [messages]);
-  const syncMessages: GroupMsg[] = [...messages, ...incommingMessages]
-    .filter((m, i, s) => i === s.findIndex(ms => ms._id === m._id))
-    .filter(msg => msg.group === groupID)
-    .sort((a, b) => parseInt(a.createdAt) - parseInt(b.createdAt));
-
+  const isCloseToTop = ({ contentOffset }: NativeScrollEvent) => {
+    return contentOffset.y === 0;
+  };
   const genHue = (phoneNumber: number) => {
     const numString = phoneNumber.toString().slice(phoneNumber.toString().length - 3);
     if (parseInt(numString) > 360) {
@@ -46,11 +51,23 @@ const GroupMessage: React.FC<Props> = ({ messages, groupID }) => {
     }
     return parseInt(numString);
   };
+  const syncMessages: GroupMsg[] = [...messages, ...incommingMessages]
+    .filter((m, i, s) => i === s.findIndex(ms => ms._id === m._id))
+    .filter(msg => msg.group === groupID)
+    .sort((a, b) => parseInt(a.createdAt) - parseInt(b.createdAt));
   return (
     <View style={{ height: "90%" }}>
-      <ScrollView ref={scrollViewRef}>
+      <ScrollView
+        ref={scrollViewRef}
+        onScroll={({ nativeEvent }) => {
+          if (isCloseToTop(nativeEvent)) {
+            console.log("close to top");
+          }
+        }}
+      >
         {syncMessages.map((item, index) => (
           <View key={item._id}>
+            {index === 0 && <ActivityIndicator size="large" color={AppColors.secodary} />}
             {currentUser._id === item.sender._id ? (
               <View style={[styles.me, index === 0 && { marginTop: 10 }]}>
                 <Text style={{ color: AppColors.white }}>{item.message}</Text>

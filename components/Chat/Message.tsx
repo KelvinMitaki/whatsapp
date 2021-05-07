@@ -3,12 +3,9 @@ import {
   StyleSheet,
   Text,
   View,
-  FlatList,
   ScrollView,
   NativeScrollEvent,
-  ActivityIndicator,
-  Dimensions,
-  LayoutChangeEvent
+  ActivityIndicator
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";

@@ -114,8 +114,8 @@ export const FETCH_GROUPS = gql`
 `;
 
 export const FETCH_GROUP_MSGS = gql`
-  query FetchGroupMsgs($groupID: String!) {
-    fetchGroupMsgs(groupID: $groupID) {
+  query FetchGroupMsgs($groupID: String!, $offset: Int!, $limit: Int!, $messageCount: Int!) {
+    fetchGroupMsgs(groupID: $groupID, offset: $offset, limit: $limit, messageCount: $messageCount) {
       _id
       sender {
         _id
@@ -160,6 +160,14 @@ export const FETCH_UNREAD_GROUP_MSGS = gql`
     fetchUnreadGroupMsgs {
       messageCount
       group
+    }
+  }
+`;
+
+export const FETCH_GROUP_MSG_COUNT = gql`
+  query FetchGroupMessageCount($groupID: String!) {
+    fetchGroupMessageCount(groupID: $groupID) {
+      count
     }
   }
 `;
