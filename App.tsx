@@ -268,6 +268,12 @@ const client = new ApolloClient({
             merge(existing = [], incoming) {
               return [...incoming, ...existing];
             }
+          },
+          fetchUnreadGroupMsgs: {
+            keyArgs: false,
+            merge(existing = [], incoming) {
+              return incoming;
+            }
           }
         }
       }

@@ -88,28 +88,10 @@ export const ADD_NEW_GROUP_MSG_SUB = gql`
 export const UPDATE_GROUP_READ_SUB = gql`
   subscription UpdatedGroupRead($userID: String!) {
     updatedGroupRead(userID: $userID) {
-      _id
-      name
-      description
-      groupProfilePhoto
-      admin
-      message {
-        _id
-        sender {
-          _id
-          name
-          countryCode
-          phoneNumber
-        }
-        message
+      groupCount {
+        messageCount
         group
-        read
-        deleted
-        received
-        createdAt
       }
-      participants
-      createdAt
     }
   }
 `;

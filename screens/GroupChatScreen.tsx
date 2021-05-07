@@ -9,7 +9,12 @@ import Input from "../components/Chat/Input";
 import GroupMessage from "../components/Group/GroupMessage";
 import AppColors from "../Colors/color";
 import { useMutation, useQuery } from "@apollo/client";
-import { FETCH_CURRENT_USER, FETCH_GROUP, FETCH_GROUP_MSGS } from "../graphql/queries";
+import {
+  FETCH_CURRENT_USER,
+  FETCH_GROUP,
+  FETCH_GROUP_MSGS,
+  FETCH_UNREAD_GROUP_MSGS
+} from "../graphql/queries";
 import { GroupMsg, GroupWithParticipants } from "../interfaces/GroupInterface";
 import { UPDATE_GROUP_MESSAGES_READ } from "../graphql/mutations";
 import { CurrentUser } from "../interfaces/ChatInterface";
@@ -23,7 +28,9 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
   const groupID = navigation.getParam("groupID");
   const { data: userData } = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
   const currentUser: CurrentUser = userData.fetchCurrentUser;
-  const [updateGroupMessagesRead] = useMutation(UPDATE_GROUP_MESSAGES_READ);
+  const [updateGroupMessagesRead] = useMutation(UPDATE_GROUP_MESSAGES_READ, {
+    refetchQueries: [{ query: FETCH_UNREAD_GROUP_MSGS }]
+  });
   const { data, loading } = useQuery(FETCH_GROUP_MSGS, {
     variables: { groupID },
     fetchPolicy: "cache-and-network",
