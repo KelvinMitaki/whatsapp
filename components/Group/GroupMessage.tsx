@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, FlatList, ListRenderItem } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
@@ -19,21 +19,18 @@ interface Props {
 
 const GroupMessage: React.FC<Props> = ({ messages, groupID }) => {
   const { data } = useQuery(FETCH_CURRENT_USER);
+  const [incommingMessages, setIncommingMessages] = useState<GroupMsg[]>([]);
   const currentUser: CurrentUser = data.fetchCurrentUser;
-  const msgSub = useSubscription(ADD_NEW_GROUP_MSG_SUB, { variables: { groupID } });
-  const syncMessages = (): GroupMsg[] => {
-    if (msgSub.data && msgSub.data.addNewGroupMsg) {
-      const incommingMessage: GroupMsg = msgSub.data.addNewGroupMsg;
-      let messagesToBeModified = [...messages];
-      const msgIndex = messagesToBeModified.findIndex(m => m._id === incommingMessage._id);
-      if (msgIndex !== -1) {
-        messagesToBeModified[msgIndex] = incommingMessage;
-      } else {
-        messagesToBeModified = [...messagesToBeModified, incommingMessage];
-      }
-      return messagesToBeModified;
+  useSubscription(ADD_NEW_GROUP_MSG_SUB, {
+    variables: { groupID },
+    onSubscriptionData(data) {
+      setIncommingMessages(m => [...m, data.subscriptionData.data.addNewGroupMsg]);
     }
-    return messages;
+  });
+  const syncMessages = (): GroupMsg[] => {
+    return [...messages, ...incommingMessages].filter(
+      (m, i, s) => i === s.findIndex(ms => ms._id === m._id)
+    );
   };
   const genHue = (phoneNumber: number) => {
     const numString = phoneNumber.toString().slice(phoneNumber.toString().length - 3);
