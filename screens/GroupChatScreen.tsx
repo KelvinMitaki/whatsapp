@@ -19,11 +19,9 @@ interface Params {
 
 const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const groupID = navigation.getParam("groupID");
-  const { data } = useQuery(FETCH_GROUP_MSGS, {
+  const { data, loading } = useQuery(FETCH_GROUP_MSGS, {
     variables: { groupID },
-    onCompleted(incommingData) {
-      console.log(incommingData);
-    }
+    fetchPolicy: "cache-and-network"
   });
   const group = useQuery(FETCH_GROUP, { variables: { groupID } });
   useEffect(() => {
@@ -46,7 +44,7 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
   };
   return (
     <View style={{ height: "100%" }}>
-      {data && data.fetchGroupMsgs && group.data && group.data.fetchGroup ? (
+      {data && data.fetchGroupMsgs && group.data && group.data.fetchGroup && !loading ? (
         <>
           <GroupMessage messages={data.fetchGroupMsgs} groupID={groupID} />
           <Input screen="group" group={groupID} />
