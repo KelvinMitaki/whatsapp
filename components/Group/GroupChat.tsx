@@ -9,6 +9,7 @@ import { Group, UnreadGroupMsg } from "../../interfaces/GroupInterface";
 import { formatDate } from "../Home/ChatComponent";
 import { useQuery, useSubscription } from "@apollo/client";
 import { FETCH_CURRENT_USER } from "../../graphql/queries";
+import { UPDATE_GROUP_READ_SUB } from "../../graphql/subscriptions";
 import { CurrentUser } from "../../interfaces/ChatInterface";
 import { ADD_NEW_GROUP_SUB } from "../../graphql/subscriptions";
 import AppColors from "../../Colors/color";
@@ -23,6 +24,12 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
   const currentUser: CurrentUser = data.fetchCurrentUser;
   const [incommingUnread, setIncommingUnread] = useState<UnreadGroupMsg[]>([]);
   const [subscriptionGroups, setSubscriptionGroups] = useState<Group[]>([]);
+  useSubscription(UPDATE_GROUP_READ_SUB, {
+    variables: { userID: currentUser._id },
+    onSubscriptionData(data) {
+      console.log({ subscriptionData: data.subscriptionData.data });
+    }
+  });
   useSubscription(ADD_NEW_GROUP_SUB, {
     onSubscriptionData(subdata) {
       const group: Group = subdata.subscriptionData.data.addNewGroup;
