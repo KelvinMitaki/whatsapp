@@ -142,7 +142,7 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
         </View>
       </TouchableNativeFeedback>
     ),
-    []
+    [unread, incommingUnread]
   );
   const keyExtractor = useCallback((g: Group) => g._id, []);
   const getItemLayout = useCallback(
