@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, FlatList, ListRenderItem } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { StyleSheet, Text, View, FlatList, ListRenderItem, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { GroupMsg } from "../../interfaces/GroupInterface";
@@ -9,6 +9,7 @@ import { CurrentUser } from "../../interfaces/ChatInterface";
 import { format } from "date-fns";
 import AppColors from "../../Colors/color";
 import { ADD_NEW_GROUP_MSG_SUB } from "../../graphql/subscriptions";
+import { MESSAGE_LIMIT } from "../Chat/Input";
 
 export const genRandomNum = () => Math.random() * (255 - 1) + 1;
 
@@ -19,6 +20,7 @@ interface Props {
 
 const GroupMessage: React.FC<Props> = ({ messages, groupID }) => {
   const { data } = useQuery(FETCH_CURRENT_USER);
+  const scrollViewRef = useRef<ScrollView>(null);
   const [incommingMessages, setIncommingMessages] = useState<GroupMsg[]>([]);
   const currentUser: CurrentUser = data.fetchCurrentUser;
   useSubscription(ADD_NEW_GROUP_MSG_SUB, {
@@ -27,12 +29,16 @@ const GroupMessage: React.FC<Props> = ({ messages, groupID }) => {
       setIncommingMessages(m => [...m, data.subscriptionData.data.addNewGroupMsg]);
     }
   });
-  const syncMessages = (): GroupMsg[] => {
-    return [...messages, ...incommingMessages]
-      .filter((m, i, s) => i === s.findIndex(ms => ms._id === m._id))
-      .filter(msg => msg.group === groupID)
-      .sort((a, b) => parseInt(a.createdAt) - parseInt(b.createdAt));
-  };
+  useEffect(() => {
+    if (messages && scrollViewRef.current && messages.length <= MESSAGE_LIMIT) {
+      scrollViewRef.current.scrollToEnd();
+    }
+  }, [messages]);
+  const syncMessages: GroupMsg[] = [...messages, ...incommingMessages]
+    .filter((m, i, s) => i === s.findIndex(ms => ms._id === m._id))
+    .filter(msg => msg.group === groupID)
+    .sort((a, b) => parseInt(a.createdAt) - parseInt(b.createdAt));
+
   const genHue = (phoneNumber: number) => {
     const numString = phoneNumber.toString().slice(phoneNumber.toString().length - 3);
     if (parseInt(numString) > 360) {
@@ -40,52 +46,52 @@ const GroupMessage: React.FC<Props> = ({ messages, groupID }) => {
     }
     return parseInt(numString);
   };
-  const renderItem: ListRenderItem<GroupMsg> = ({ item, index }) => (
-    <>
-      {currentUser._id === item.sender._id ? (
-        <View style={[styles.me, index === 0 && { marginTop: 10 }]}>
-          <Text style={{ color: AppColors.white }}>{item.message}</Text>
-          <Text style={styles.meta}>
-            {format(new Date(parseInt(item.createdAt)), "p")}{" "}
-            <Ionicons name="checkmark" size={18} />
-          </Text>
-        </View>
-      ) : (
-        <View style={[{ flexDirection: "row" }, index === 0 && { marginTop: 10 }]}>
-          <View style={styles.person}>
-            <Ionicons name="person" size={25} color="rgba(241, 241, 242, 0.8)" />
-          </View>
-          <View style={{ ...styles.sender }}>
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text
-                style={{
-                  color: `hsl(${genHue(item.sender.phoneNumber)},80%,60%)`
-                }}
-              >
-                +{item.sender.countryCode} {item.sender.phoneNumber}
-              </Text>
-              <Text
-                numberOfLines={1}
-                style={{
-                  color: "rgba(255,255,255,.7)",
-                  marginLeft: 10,
-                  maxWidth: "55%"
-                }}
-              >
-                ~{item.sender.name}
-              </Text>
-            </View>
-            <Text style={{ color: AppColors.white }}>{item.message}</Text>
-            <Text style={styles.meta}>{format(new Date(parseInt(item.createdAt)), "p")}</Text>
-          </View>
-        </View>
-      )}
-    </>
-  );
-
   return (
     <View style={{ height: "90%" }}>
-      <FlatList data={syncMessages()} keyExtractor={m => m._id} renderItem={renderItem} />
+      <ScrollView ref={scrollViewRef}>
+        {syncMessages.map((item, index) => (
+          <View key={item._id}>
+            {currentUser._id === item.sender._id ? (
+              <View style={[styles.me, index === 0 && { marginTop: 10 }]}>
+                <Text style={{ color: AppColors.white }}>{item.message}</Text>
+                <Text style={styles.meta}>
+                  {format(new Date(parseInt(item.createdAt)), "p")}{" "}
+                  <Ionicons name="checkmark" size={18} />
+                </Text>
+              </View>
+            ) : (
+              <View style={[{ flexDirection: "row" }, index === 0 && { marginTop: 10 }]}>
+                <View style={styles.person}>
+                  <Ionicons name="person" size={25} color="rgba(241, 241, 242, 0.8)" />
+                </View>
+                <View style={{ ...styles.sender }}>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <Text
+                      style={{
+                        color: `hsl(${genHue(item.sender.phoneNumber)},80%,60%)`
+                      }}
+                    >
+                      +{item.sender.countryCode} {item.sender.phoneNumber}
+                    </Text>
+                    <Text
+                      numberOfLines={1}
+                      style={{
+                        color: "rgba(255,255,255,.7)",
+                        marginLeft: 10,
+                        maxWidth: "55%"
+                      }}
+                    >
+                      ~{item.sender.name}
+                    </Text>
+                  </View>
+                  <Text style={{ color: AppColors.white }}>{item.message}</Text>
+                  <Text style={styles.meta}>{format(new Date(parseInt(item.createdAt)), "p")}</Text>
+                </View>
+              </View>
+            )}
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 };
