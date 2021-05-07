@@ -8,9 +8,11 @@ import { TouchableNativeFeedback } from "react-native";
 import Input from "../components/Chat/Input";
 import GroupMessage from "../components/Group/GroupMessage";
 import AppColors from "../Colors/color";
-import { useQuery } from "@apollo/client";
-import { FETCH_GROUP, FETCH_GROUP_MSGS } from "../graphql/queries";
-import { GroupWithParticipants } from "../interfaces/GroupInterface";
+import { useMutation, useQuery } from "@apollo/client";
+import { FETCH_CURRENT_USER, FETCH_GROUP, FETCH_GROUP_MSGS } from "../graphql/queries";
+import { GroupMsg, GroupWithParticipants } from "../interfaces/GroupInterface";
+import { UPDATE_GROUP_MESSAGES_READ } from "../graphql/mutations";
+import { CurrentUser } from "../interfaces/ChatInterface";
 
 interface Params {
   groupID: string;
@@ -19,9 +21,26 @@ interface Params {
 
 const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const groupID = navigation.getParam("groupID");
+  const { data: userData } = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
+  const currentUser: CurrentUser = userData.fetchCurrentUser;
+  const [updateGroupMessagesRead] = useMutation(UPDATE_GROUP_MESSAGES_READ);
   const { data, loading } = useQuery(FETCH_GROUP_MSGS, {
     variables: { groupID },
-    fetchPolicy: "cache-and-network"
+    fetchPolicy: "cache-and-network",
+    onCompleted(data) {
+      const groupMsgs: GroupMsg[] = data.fetchGroupMsgs;
+      const messageIDs = groupMsgs
+        .filter(
+          msg => msg.sender._id !== currentUser._id && !msg.read.some(id => id === currentUser._id)
+        )
+        .map(msg => msg._id);
+      updateGroupMessagesRead({
+        variables: {
+          messageIDs,
+          groupID
+        }
+      });
+    }
   });
   const group = useQuery(FETCH_GROUP, { variables: { groupID } });
   useEffect(() => {

@@ -98,3 +98,24 @@ export const ADD_NEW_GROUP_MSG = gql`
     }
   }
 `;
+
+export const UPDATE_GROUP_MESSAGES_READ = gql`
+  mutation UpdateGroupMessagesRead($messageIDs: [String!]!, $groupID: String!) {
+    updateGroupMessagesRead(messageIDs: $messageIDs, groupID: $groupID) {
+      _id
+      sender {
+        _id
+        phoneNumber
+        profilePhoto
+        countryCode
+        name
+      }
+      message
+      createdAt
+      read
+      received
+      deleted
+      group
+    }
+  }
+`;

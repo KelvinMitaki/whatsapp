@@ -28,9 +28,9 @@ export interface GroupMsg {
   };
   message: string;
   group: string;
-  read: string;
+  read: string[];
   deleted: string;
-  received: string;
+  received: string[];
   createdAt: string;
 }
 
