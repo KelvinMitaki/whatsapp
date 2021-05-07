@@ -18,6 +18,8 @@ import {
 import { GroupMsg, GroupWithParticipants } from "../interfaces/GroupInterface";
 import { UPDATE_GROUP_MESSAGES_READ } from "../graphql/mutations";
 import { CurrentUser } from "../interfaces/ChatInterface";
+import { useDispatch } from "react-redux";
+import { SetIncommingUnread } from "../components/Group/GroupChat";
 
 interface Params {
   groupID: string;
@@ -28,8 +30,12 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
   const groupID = navigation.getParam("groupID");
   const { data: userData } = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
   const currentUser: CurrentUser = userData.fetchCurrentUser;
+  const dispatch = useDispatch();
   const [updateGroupMessagesRead] = useMutation(UPDATE_GROUP_MESSAGES_READ, {
-    refetchQueries: [{ query: FETCH_UNREAD_GROUP_MSGS }]
+    refetchQueries: [{ query: FETCH_UNREAD_GROUP_MSGS }],
+    onCompleted() {
+      dispatch<SetIncommingUnread>({ type: "setIncommingUnread", payload: [] });
+    }
   });
   const { data, loading } = useQuery(FETCH_GROUP_MSGS, {
     variables: { groupID },
