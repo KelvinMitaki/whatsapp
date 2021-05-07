@@ -154,3 +154,12 @@ export const FETCH_GROUP = gql`
     }
   }
 `;
+
+export const FETCH_UNREAD_GROUP_MSGS = gql`
+  query {
+    fetchUnreadGroupMsgs {
+      messageCount
+      group
+    }
+  }
+`;

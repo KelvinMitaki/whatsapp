@@ -6,14 +6,18 @@ import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 import inspect from "../inspect";
 import GroupChat from "../components/Group/GroupChat";
 import { useQuery } from "@apollo/client";
-import { FETCH_GROUPS } from "../graphql/queries";
+import { FETCH_GROUPS, FETCH_UNREAD_GROUP_MSGS } from "../graphql/queries";
 
 const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   const { data } = useQuery(FETCH_GROUPS);
+  const { data: data2 } = useQuery(FETCH_UNREAD_GROUP_MSGS);
 
   return (
     <View style={styles.prt}>
-      <GroupChat groups={data ? data.fetchGroups : []} />
+      <GroupChat
+        groups={data ? data.fetchGroups : []}
+        unread={data2 ? data2.fetchUnreadGroupMsgs : []}
+      />
       <TouchableNativeFeedback onPress={() => navigation.navigate("Contact")}>
         <View style={styles.plus}>
           <MaterialCommunityIcons

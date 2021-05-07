@@ -33,3 +33,8 @@ export interface GroupMsg {
   received: string;
   createdAt: string;
 }
+
+export interface UnreadGroupMsg {
+  group: string;
+  messageCount: number;
+}

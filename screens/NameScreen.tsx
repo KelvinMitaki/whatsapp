@@ -13,7 +13,13 @@ import inspect from "../inspect";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { REGISTER_USER } from "../graphql/mutations";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { FETCH_CHATS, FETCH_CURRENT_USER, FETCH_GROUPS, FETCH_USERS } from "../graphql/queries";
+import {
+  FETCH_CHATS,
+  FETCH_CURRENT_USER,
+  FETCH_GROUPS,
+  FETCH_UNREAD_GROUP_MSGS,
+  FETCH_USERS
+} from "../graphql/queries";
 
 interface Params {
   code: string;
@@ -32,6 +38,7 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [fetchCurrentUser] = useLazyQuery(FETCH_CURRENT_USER);
   const [fetchUsers] = useLazyQuery(FETCH_USERS);
   const [fetchGroups] = useLazyQuery(FETCH_GROUPS);
+  const [fetchUnreadGroupMsgs] = useLazyQuery(FETCH_UNREAD_GROUP_MSGS);
   const [registerUser, { loading }] = useMutation(REGISTER_USER, {
     async onCompleted(data) {
       setTokenLoading(true);
@@ -41,6 +48,7 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       fetchChats();
       fetchUsers();
       fetchGroups();
+      fetchUnreadGroupMsgs();
     },
     onError(err) {
       console.log(err);

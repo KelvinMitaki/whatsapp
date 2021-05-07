@@ -5,7 +5,7 @@ import { TouchableNativeFeedback } from "react-native";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
-import { Group } from "../../interfaces/GroupInterface";
+import { Group, UnreadGroupMsg } from "../../interfaces/GroupInterface";
 import { formatDate } from "../Home/ChatComponent";
 import { useQuery, useSubscription } from "@apollo/client";
 import { FETCH_CURRENT_USER } from "../../graphql/queries";
@@ -15,9 +15,10 @@ import AppColors from "../../Colors/color";
 
 interface Props {
   groups: Group[];
+  unread: UnreadGroupMsg[];
 }
 
-const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, groups }) => {
+const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, groups, unread }) => {
   const { data } = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
   const currentUser: CurrentUser = data.fetchCurrentUser;
   const [subscriptionGroups, setSubscriptionGroups] = useState<Group[]>([]);
@@ -31,6 +32,13 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
     return [...subscriptionGroups, ...groups].filter(
       (g, i, s) => i === s.findIndex(gr => gr._id === g._id)
     );
+  };
+  const renderUnreadCount = (groupID: string): number => {
+    const group = unread.find(u => u.group === groupID);
+    if (group) {
+      return group.messageCount;
+    }
+    return 0;
   };
   const renderGroupMessage = ({ message, admin }: Group): string | JSX.Element => {
     if (message) {
@@ -100,7 +108,12 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
               >
                 {renderGroupMessage(item)}
               </Text>
-              <Badge value="99" badgeStyle={{ backgroundColor: "#00af9c" }} />
+              {renderUnreadCount(item._id) && (
+                <Badge
+                  value={renderUnreadCount(item._id)}
+                  badgeStyle={{ backgroundColor: "#00af9c" }}
+                />
+              )}
             </View>
             <Card.Divider
               style={{
