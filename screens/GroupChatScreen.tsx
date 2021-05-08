@@ -113,6 +113,7 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
             count={countData.fetchGroupMessageCount.count}
             fetchMore={fetchMore}
             setShowLoading={setShowLoading}
+            showLoading={showLoading}
           />
           <Input screen="group" group={groupID} />
         </>

@@ -26,9 +26,17 @@ interface Props {
   fetchMore: LazyQueryResult<any, OperationVariables>["fetchMore"] | undefined;
   count: number;
   setShowLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  showLoading: boolean;
 }
 
-const GroupMessage: React.FC<Props> = ({ messages, groupID, fetchMore, count, setShowLoading }) => {
+const GroupMessage: React.FC<Props> = ({
+  messages,
+  groupID,
+  fetchMore,
+  count,
+  setShowLoading,
+  showLoading
+}) => {
   const { data } = useQuery(FETCH_CURRENT_USER);
   const scrollViewRef = useRef<ScrollView>(null);
   const [incommingMessages, setIncommingMessages] = useState<GroupMsg[]>([]);
@@ -40,7 +48,7 @@ const GroupMessage: React.FC<Props> = ({ messages, groupID, fetchMore, count, se
     }
   });
   useEffect(() => {
-    if (messages && scrollViewRef.current && messages.length <= MESSAGE_LIMIT) {
+    if (messages && scrollViewRef.current && showLoading) {
       scrollViewRef.current.scrollToEnd();
     }
   }, [messages]);
