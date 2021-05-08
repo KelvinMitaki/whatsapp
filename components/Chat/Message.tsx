@@ -22,9 +22,12 @@ interface Props {
   messages: MessageInterface[];
   recipient: string;
   fetchMore: LazyQueryResult<any, OperationVariables>["fetchMore"] | undefined;
+  setShowLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  showLoading: boolean;
 }
 
-const Message: React.FC<Props> = ({ messages, recipient, fetchMore }) => {
+const Message: React.FC<Props> = props => {
+  const { messages, recipient, fetchMore, setShowLoading, showLoading } = props;
   const { data } = useQuery(FETCH_CURRENT_USER);
   const count = useQuery(FETCH_MESSAGE_COUNT, { variables: { recipient } });
   const currentUser: CurrentUser = data.fetchCurrentUser;
@@ -37,7 +40,7 @@ const Message: React.FC<Props> = ({ messages, recipient, fetchMore }) => {
   });
   const scrollViewRef = useRef<ScrollView>(null);
   useEffect(() => {
-    if (scrollViewRef.current && messages.length <= MESSAGE_LIMIT) {
+    if (scrollViewRef.current && showLoading) {
       scrollViewRef.current.scrollToEnd();
     }
   }, [messages]);
@@ -63,6 +66,7 @@ const Message: React.FC<Props> = ({ messages, recipient, fetchMore }) => {
             count.data &&
             count.data.fetchMessageCount.count > filteredMsgs.length
           ) {
+            setShowLoading(false);
             fetchMore({ variables: { offset: filteredMsgs.length, limit: MESSAGE_LIMIT } });
           }
         }}

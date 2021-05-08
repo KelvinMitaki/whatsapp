@@ -17,7 +17,7 @@ interface Params {
   chatID: string;
 }
 const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
-  const [showLoading, setShowLoading] = useState<boolean>(false);
+  const [showLoading, setShowLoading] = useState<boolean>(true);
   const count = useQuery(FETCH_MESSAGE_COUNT, {
     variables: { recipient: navigation.getParam("recipient")._id },
     onCompleted() {
@@ -44,11 +44,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const user = useQuery(FETCH_CURRENT_USER);
   const currentUser: CurrentUser = user.data.fetchCurrentUser;
   const chatID = navigation.getParam("chatID");
-  const [updateReadMessages] = useMutation(UPDATE_READ_MESSAGES, {
-    onCompleted() {
-      setShowLoading(false);
-    }
-  });
+  const [updateReadMessages] = useMutation(UPDATE_READ_MESSAGES);
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackBtnPressAndroid);
     return () => {
@@ -56,7 +52,6 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
     };
   }, []);
   useEffect(() => {
-    setShowLoading(true);
     if (data && data.fetchMessages && data.fetchMessages.length) {
       const messageIDs = (data.fetchMessages as MessageInterface[])
         .filter(m => !m.read && m.sender !== currentUser._id)
@@ -100,6 +95,8 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
             messages={data.fetchMessages}
             recipient={navigation.getParam("recipient")._id}
             fetchMore={fetchMore}
+            setShowLoading={setShowLoading}
+            showLoading={showLoading}
           />
           <Input screen="chat" recipient={navigation.getParam("recipient")._id} />
         </View>
