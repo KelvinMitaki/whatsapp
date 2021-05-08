@@ -24,10 +24,11 @@ interface Props {
   fetchMore: LazyQueryResult<any, OperationVariables>["fetchMore"] | undefined;
   setShowLoading: React.Dispatch<React.SetStateAction<boolean>>;
   showLoading: boolean;
+  keyboardShown: boolean;
 }
 
 const Message: React.FC<Props> = props => {
-  const { messages, recipient, fetchMore, setShowLoading, showLoading } = props;
+  const { messages, recipient, fetchMore, setShowLoading, showLoading, keyboardShown } = props;
   const { data } = useQuery(FETCH_CURRENT_USER);
   const count = useQuery(FETCH_MESSAGE_COUNT, { variables: { recipient } });
   const currentUser: CurrentUser = data.fetchCurrentUser;
@@ -43,7 +44,7 @@ const Message: React.FC<Props> = props => {
     if (scrollViewRef.current && showLoading) {
       scrollViewRef.current.scrollToEnd();
     }
-  }, [messages, subScriptionMsgs]);
+  }, [messages, subScriptionMsgs, keyboardShown]);
   const isCloseToTop = ({ contentOffset }: NativeScrollEvent) => {
     return contentOffset.y === 0;
   };
@@ -56,7 +57,7 @@ const Message: React.FC<Props> = props => {
     )
     .sort((a, b) => parseInt(a.createdAt) - parseInt(b.createdAt));
   return (
-    <View style={{ height: "90%" }}>
+    <View style={{ height: keyboardShown ? "85%" : "90%" }}>
       <ScrollView
         ref={scrollViewRef}
         onScroll={({ nativeEvent }) => {

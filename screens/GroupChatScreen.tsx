@@ -29,6 +29,7 @@ interface Params {
 
 const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [showLoading, setShowLoading] = useState<boolean>(true);
+  const [keyboardShown, setKeyboardShown] = useState<boolean>(false);
   const groupID = navigation.getParam("groupID");
   const { data: userData } = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
   const currentUser: CurrentUser = userData.fetchCurrentUser;
@@ -116,8 +117,9 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
             fetchMore={fetchMore}
             setShowLoading={setShowLoading}
             showLoading={showLoading}
+            keyboardShown={keyboardShown}
           />
-          <Input screen="group" group={groupID} />
+          <Input screen="group" group={groupID} setKeyboardShown={setKeyboardShown} />
         </>
       )}
     </View>

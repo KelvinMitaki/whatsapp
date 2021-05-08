@@ -27,16 +27,11 @@ interface Props {
   count: number;
   setShowLoading: React.Dispatch<React.SetStateAction<boolean>>;
   showLoading: boolean;
+  keyboardShown: boolean;
 }
 
-const GroupMessage: React.FC<Props> = ({
-  messages,
-  groupID,
-  fetchMore,
-  count,
-  setShowLoading,
-  showLoading
-}) => {
+const GroupMessage: React.FC<Props> = props => {
+  const { messages, groupID, fetchMore, count, setShowLoading, showLoading, keyboardShown } = props;
   const { data } = useQuery(FETCH_CURRENT_USER);
   const scrollViewRef = useRef<ScrollView>(null);
   const [incommingMessages, setIncommingMessages] = useState<GroupMsg[]>([]);
@@ -51,7 +46,7 @@ const GroupMessage: React.FC<Props> = ({
     if (messages && scrollViewRef.current && showLoading) {
       scrollViewRef.current.scrollToEnd();
     }
-  }, [messages, incommingMessages]);
+  }, [messages, incommingMessages, keyboardShown]);
   const isCloseToTop = ({ contentOffset }: NativeScrollEvent) => {
     return contentOffset.y === 0;
   };
@@ -67,7 +62,7 @@ const GroupMessage: React.FC<Props> = ({
     .filter(msg => msg.group === groupID)
     .sort((a, b) => parseInt(a.createdAt) - parseInt(b.createdAt));
   return (
-    <View style={{ height: "90%" }}>
+    <View style={{ height: keyboardShown ? "85%" : "90%" }}>
       <ScrollView
         ref={scrollViewRef}
         onScroll={({ nativeEvent }) => {

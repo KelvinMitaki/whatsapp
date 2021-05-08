@@ -18,6 +18,7 @@ interface Params {
 }
 const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [showLoading, setShowLoading] = useState<boolean>(true);
+  const [keyboardShown, setKeyboardShown] = useState<boolean>(false);
   const count = useQuery(FETCH_MESSAGE_COUNT, {
     variables: { recipient: navigation.getParam("recipient")._id },
     onCompleted() {
@@ -97,8 +98,13 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
             fetchMore={fetchMore}
             setShowLoading={setShowLoading}
             showLoading={showLoading}
+            keyboardShown={keyboardShown}
           />
-          <Input screen="chat" recipient={navigation.getParam("recipient")._id} />
+          <Input
+            screen="chat"
+            recipient={navigation.getParam("recipient")._id}
+            setKeyboardShown={setKeyboardShown}
+          />
         </View>
       )}
     </View>

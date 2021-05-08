@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableNativeFeedback, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Keyboard, StyleSheet, Text, TextInput, TouchableNativeFeedback, View } from "react-native";
 import { Fontisto, Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { useMutation } from "@apollo/client";
@@ -12,12 +12,26 @@ interface Props {
   screen: "chat" | "group";
   recipient?: string;
   group?: string;
+  setKeyboardShown: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Input: React.FC<Props> = ({ screen, recipient, group }) => {
+const Input: React.FC<Props> = ({ screen, recipient, group, setKeyboardShown }) => {
   const [inp, setInp] = useState<string>("");
   const [addNewMessage] = useMutation(ADD_NEW_MESSAGE);
   const [addNewGroupMsg] = useMutation(ADD_NEW_GROUP_MSG);
+
+  useEffect(() => {
+    Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardShown(true);
+    });
+    Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardShown(false);
+    });
+    return () => {
+      Keyboard.removeListener("keyboardDidShow", () => {});
+      Keyboard.removeListener("keyboardDidHide", () => {});
+    };
+  }, []);
   return (
     <View style={styles.prt}>
       <View style={styles.smiley}>
