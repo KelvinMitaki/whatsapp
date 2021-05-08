@@ -96,16 +96,18 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
     return true;
   };
   const loaders =
-    data &&
-    data.fetchGroupMsgs &&
-    group.data &&
-    group.data.fetchGroup &&
-    !msgsLoading &&
-    !loading &&
-    showLoading;
+    !(data && data.fetchGroupMsgs) ||
+    !(group.data && group.data.fetchGroup) ||
+    (msgsLoading && showLoading) ||
+    loading;
   return (
     <View style={{ height: "100%" }}>
       {loaders ? (
+        <View style={{ height: "100%", alignItems: "center", justifyContent: "center" }}>
+          <ActivityIndicator size="large" color={AppColors.secodary} />
+          <Text style={{ color: "rgba(255,255,255,.8)" }}>Fetching messages...</Text>
+        </View>
+      ) : (
         <>
           <GroupMessage
             messages={data.fetchGroupMsgs}
@@ -117,11 +119,6 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
           />
           <Input screen="group" group={groupID} />
         </>
-      ) : (
-        <View style={{ height: "100%", alignItems: "center", justifyContent: "center" }}>
-          <ActivityIndicator size="large" color={AppColors.secodary} />
-          <Text style={{ color: "rgba(255,255,255,.8)" }}>Fetching messages...</Text>
-        </View>
       )}
     </View>
   );
