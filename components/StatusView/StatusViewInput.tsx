@@ -19,8 +19,8 @@ const StatusViewInput: React.FC<Props> = ({ showKeyboard }) => {
 
     return () => {
       mounted.current = false;
-      Keyboard.removeListener("keyboardDidShow", keyboardDidShow);
-      Keyboard.addListener("keyboardDidHide", keyboardDidHide);
+      Keyboard.removeListener("keyboardDidShow", () => {});
+      Keyboard.addListener("keyboardDidHide", () => {});
     };
   }, []);
   const keyboardDidShow = (e: KeyboardEvent) => {

@@ -51,12 +51,8 @@ const PhoneNumberScreen: NavigationStackScreenComponent = ({ navigation }) => {
           });
         }}
         onWillBlur={() => {
-          Keyboard.removeListener("keyboardDidHide", e => {
-            setKeyboardHeight(0);
-          });
-          Keyboard.removeListener("keyboardDidShow", e => {
-            setKeyboardHeight(e.endCoordinates.height);
-          });
+          Keyboard.removeListener("keyboardDidHide", e => {});
+          Keyboard.removeListener("keyboardDidShow", e => {});
         }}
       />
       <PhoneNumberComponent
