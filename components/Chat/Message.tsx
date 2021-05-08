@@ -43,7 +43,7 @@ const Message: React.FC<Props> = props => {
     if (scrollViewRef.current && showLoading) {
       scrollViewRef.current.scrollToEnd();
     }
-  }, [messages]);
+  }, [messages, subScriptionMsgs]);
   const isCloseToTop = ({ contentOffset }: NativeScrollEvent) => {
     return contentOffset.y === 0;
   };

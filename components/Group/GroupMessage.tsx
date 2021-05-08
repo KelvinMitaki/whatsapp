@@ -51,7 +51,7 @@ const GroupMessage: React.FC<Props> = ({
     if (messages && scrollViewRef.current && showLoading) {
       scrollViewRef.current.scrollToEnd();
     }
-  }, [messages]);
+  }, [messages, incommingMessages]);
   const isCloseToTop = ({ contentOffset }: NativeScrollEvent) => {
     return contentOffset.y === 0;
   };
