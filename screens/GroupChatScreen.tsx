@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, View, BackHandler, ActivityIndicator } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons, Ionicons, FontAwesome, AntDesign } from "@expo/vector-icons";
@@ -28,6 +28,7 @@ interface Params {
 }
 
 const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
+  const [showLoading, setShowLoading] = useState<boolean>(true);
   const groupID = navigation.getParam("groupID");
   const { data: userData } = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
   const currentUser: CurrentUser = userData.fetchCurrentUser;
@@ -52,23 +53,29 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
       });
     }
   });
-  const [fetchGroupMsgs, { data, fetchMore }] = useLazyQuery(FETCH_GROUP_MSGS, {
-    fetchPolicy: "cache-and-network",
-    onCompleted(data) {
-      const groupMsgs: GroupMsg[] = data.fetchGroupMsgs;
-      const messageIDs = groupMsgs
-        .filter(
-          msg => msg.sender._id !== currentUser._id && !msg.read.some(id => id === currentUser._id)
-        )
-        .map(msg => msg._id);
-      updateGroupMessagesRead({
-        variables: {
-          messageIDs,
-          groupID
+  const [fetchGroupMsgs, { data, fetchMore, loading: msgsLoading }] = useLazyQuery(
+    FETCH_GROUP_MSGS,
+    {
+      fetchPolicy: "cache-and-network",
+      onCompleted(data) {
+        const groupMsgs: GroupMsg[] = data.fetchGroupMsgs;
+        const messageIDs = groupMsgs
+          .filter(
+            msg =>
+              msg.sender._id !== currentUser._id && !msg.read.some(id => id === currentUser._id)
+          )
+          .map(msg => msg._id);
+        if (groupID && messageIDs.length) {
+          updateGroupMessagesRead({
+            variables: {
+              messageIDs,
+              groupID
+            }
+          });
         }
-      });
+      }
     }
-  });
+  );
   const group = useQuery(FETCH_GROUP, { variables: { groupID } });
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackBtnPressAndroid);
@@ -88,21 +95,31 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
     navigation.navigate("Group");
     return true;
   };
+  const loaders =
+    data &&
+    data.fetchGroupMsgs &&
+    group.data &&
+    group.data.fetchGroup &&
+    !msgsLoading &&
+    !loading &&
+    showLoading;
   return (
     <View style={{ height: "100%" }}>
-      {data && data.fetchGroupMsgs && group.data && group.data.fetchGroup && !loading ? (
+      {loaders ? (
         <>
           <GroupMessage
             messages={data.fetchGroupMsgs}
             groupID={groupID}
             count={countData.fetchGroupMessageCount.count}
             fetchMore={fetchMore}
+            setShowLoading={setShowLoading}
           />
           <Input screen="group" group={groupID} />
         </>
       ) : (
         <View style={{ height: "100%", alignItems: "center", justifyContent: "center" }}>
           <ActivityIndicator size="large" color={AppColors.secodary} />
+          <Text style={{ color: "rgba(255,255,255,.8)" }}>Fetching messages...</Text>
         </View>
       )}
     </View>

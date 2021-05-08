@@ -25,9 +25,10 @@ interface Props {
   groupID: string;
   fetchMore: LazyQueryResult<any, OperationVariables>["fetchMore"] | undefined;
   count: number;
+  setShowLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const GroupMessage: React.FC<Props> = ({ messages, groupID, fetchMore, count }) => {
+const GroupMessage: React.FC<Props> = ({ messages, groupID, fetchMore, count, setShowLoading }) => {
   const { data } = useQuery(FETCH_CURRENT_USER);
   const scrollViewRef = useRef<ScrollView>(null);
   const [incommingMessages, setIncommingMessages] = useState<GroupMsg[]>([]);
@@ -63,6 +64,7 @@ const GroupMessage: React.FC<Props> = ({ messages, groupID, fetchMore, count }) 
         ref={scrollViewRef}
         onScroll={({ nativeEvent }) => {
           if (isCloseToTop(nativeEvent) && fetchMore && count > syncedMessages.length) {
+            setShowLoading(false);
             fetchMore({ variables: { offset: syncedMessages.length, limit: MESSAGE_LIMIT } });
           }
         }}
