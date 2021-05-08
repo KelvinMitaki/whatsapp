@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { TouchableNativeFeedback } from "react-native";
-import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
+import React, { useEffect, useRef, useState } from "react";
+import { StyleSheet, View, AppState, AppStateStatus } from "react-native";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 import { users } from "../data/data";
 import inspect from "../inspect";
@@ -28,14 +26,30 @@ export interface SetSearchModal {
 const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   const { data } = useQuery(FETCH_CHATS, { fetchPolicy: "cache-only" });
   const user = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const [chatSub, setChatSub] = useState<Chat[]>([]);
   const currentUser: CurrentUser = user.data.fetchCurrentUser;
   const chat = useSubscription(ADD_NEW_CHAT_SUB, { variables: { userID: currentUser._id } });
   const dispatch = useDispatch();
   const headerHeight = useHeaderHeight();
   useEffect(() => {
+    AppState.addEventListener("change", _handleAppStateChange);
+
     dispatch<SetHeaderHeight>({ type: "setHeaderHeight", payload: headerHeight });
+    return () => {
+      AppState.removeEventListener("change", _handleAppStateChange);
+    };
   }, []);
+  const _handleAppStateChange = (nextAppState: AppStateStatus) => {
+    if (appState.current.match(/inactive|background/) && nextAppState === "active") {
+      console.log("App has come to the foreground!");
+    }
+
+    appState.current = nextAppState;
+    setAppStateVisible(appState.current);
+    console.log("AppState", appState.current);
+  };
   useEffect(() => {
     if (chat.data && chat.data.addNewChat) {
       setChatSub(c => [chat.data.addNewChat, ...c]);
