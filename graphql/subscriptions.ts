@@ -21,10 +21,16 @@ export const ADD_NEW_CHAT_SUB = gql`
       sender {
         _id
         name
+        typing
+        lastSeen
+        online
       }
       recipient {
         _id
         name
+        typing
+        lastSeen
+        online
       }
       message
       createdAt

@@ -15,6 +15,7 @@ export const FETCH_USERS = gql`
       createdAt
       typing
       lastSeen
+      online
     }
   }
 `;
@@ -36,6 +37,7 @@ export const FETCH_CURRENT_USER = gql`
       createdAt
       typing
       lastSeen
+      online
     }
   }
 `;
@@ -49,12 +51,14 @@ export const FETCH_CHATS = gql`
         name
         typing
         lastSeen
+        online
       }
       recipient {
         _id
         name
         typing
         lastSeen
+        online
       }
       message
       createdAt
