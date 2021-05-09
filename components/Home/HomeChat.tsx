@@ -28,7 +28,7 @@ const HomeChat: React.FC<NavigationInjectedProps & Props> = ({ chatSub, chat }) 
     []
   );
   const keyExtractor = ({ _id }: Chat) => _id;
-
+  console.log(data);
   const renderChats = (): Chat[] => {
     if (!chat) {
       let existingChats: Chat[] = data.fetchChats;

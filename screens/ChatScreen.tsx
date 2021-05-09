@@ -13,6 +13,8 @@ interface Params {
   recipient: {
     _id: string;
     name: string;
+    typing: string;
+    lastSeen: string;
   };
   chatID: string;
 }

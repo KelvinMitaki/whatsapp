@@ -13,6 +13,8 @@ export const FETCH_USERS = gql`
         _id
       }
       createdAt
+      typing
+      lastSeen
     }
   }
 `;
@@ -32,6 +34,8 @@ export const FETCH_CURRENT_USER = gql`
         groupProfilePhoto
       }
       createdAt
+      typing
+      lastSeen
     }
   }
 `;
@@ -43,10 +47,14 @@ export const FETCH_CHATS = gql`
       sender {
         _id
         name
+        typing
+        lastSeen
       }
       recipient {
         _id
         name
+        typing
+        lastSeen
       }
       message
       createdAt
