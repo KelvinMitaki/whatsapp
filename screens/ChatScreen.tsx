@@ -15,6 +15,7 @@ interface Params {
     name: string;
     typing: string;
     lastSeen: string;
+    online: boolean;
   };
   chatID: string;
 }

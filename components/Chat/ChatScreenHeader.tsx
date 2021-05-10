@@ -2,8 +2,23 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableNativeFeedback } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons, Ionicons, AntDesign } from "@expo/vector-icons";
+import { formatRelative } from "date-fns";
 
-const ChatScreenHeader: NavigationStackScreenComponent["navigationOptions"] = ({ navigation }) => {
+interface Params {
+  recipient: {
+    _id: string;
+    name: string;
+    typing: string;
+    lastSeen: string;
+    online: boolean;
+  };
+  chatID: string;
+}
+
+const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOptions"] = ({
+  navigation
+}) => {
+  const recipient = navigation.getParam("recipient");
   return {
     headerTitle: () => (
       <View style={styles.headerLeft}>
@@ -16,18 +31,26 @@ const ChatScreenHeader: NavigationStackScreenComponent["navigationOptions"] = ({
         <View style={styles.person}>
           <Ionicons name="person" size={25} color="rgba(241, 241, 242, 0.8)" />
         </View>
-        <Text
-          numberOfLines={1}
+        <View
           style={{
-            color: "white",
-            marginLeft: 10,
-            fontSize: 20,
-            fontWeight: "400",
-            width: "75%"
+            marginLeft: 10
           }}
         >
-          {navigation.getParam("recipient").name}
-        </Text>
+          <Text
+            numberOfLines={1}
+            style={{
+              color: "white",
+              fontSize: 20,
+              fontWeight: "400",
+              width: "75%"
+            }}
+          >
+            {recipient.name}
+          </Text>
+          <Text style={{ color: "#fff" }}>
+            {recipient.online ? "Online" : formatRelative(new Date(recipient.lastSeen), new Date())}
+          </Text>
+        </View>
       </View>
     ),
     headerRight: () => (
