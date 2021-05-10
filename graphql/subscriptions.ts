@@ -90,3 +90,21 @@ export const ADD_NEW_GROUP_MSG_SUB = gql`
     }
   }
 `;
+
+export const UPDATE_USER_ONLINE_SUB = gql`
+  subscription {
+    updateUserOnline {
+      userID
+      online
+    }
+  }
+`;
+
+export const UPDATE_USER_TYPING_SUB = gql`
+  subscription UpdateUserTyping($chatID: String!) {
+    updateUserTyping(chatID: $chatID) {
+      chatID
+      typing
+    }
+  }
+`;

@@ -13,10 +13,10 @@ import ChatComponent from "./ChatComponent";
 interface Props {
   chatSub: Chat[];
   chat: Chat | null;
+  data: any;
 }
 
-const HomeChat: React.FC<NavigationInjectedProps & Props> = ({ chatSub, chat }) => {
-  const { data } = useQuery(FETCH_CHATS, { fetchPolicy: "cache-only" });
+const HomeChat: React.FC<NavigationInjectedProps & Props> = ({ chatSub, chat, data }) => {
   const user = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
   const dispatch = useDispatch();
   const currentUser: CurrentUser = user.data.fetchCurrentUser;

@@ -3,10 +3,16 @@ export interface Chat {
   sender: {
     _id: string;
     name: string;
+    online: boolean;
+    typing: boolean;
+    lastSeen: string;
   };
   recipient: {
     _id: string;
     name: string;
+    online: boolean;
+    typing: boolean;
+    lastSeen: string;
   };
   message: string;
   createdAt: string;

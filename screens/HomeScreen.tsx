@@ -10,8 +10,8 @@ import { NavigationEvents } from "react-navigation";
 import { useMutation, useQuery, useSubscription } from "@apollo/client";
 import { FETCH_CHATS, FETCH_CURRENT_USER } from "../graphql/queries";
 import StartChat from "../components/Home/StartChat";
-import { ADD_NEW_CHAT_SUB } from "../graphql/subscriptions";
-import { Chat, CurrentUser } from "../interfaces/ChatInterface";
+import { ADD_NEW_CHAT_SUB, UPDATE_USER_ONLINE_SUB } from "../graphql/subscriptions";
+import { Chat, CurrentUser, UserOnline } from "../interfaces/ChatInterface";
 import { UPDATE_USER_ONLINE } from "../graphql/mutations";
 
 export interface SetHeaderHeight {
@@ -25,7 +25,8 @@ export interface SetSearchModal {
 }
 
 const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
-  const { data } = useQuery(FETCH_CHATS, { fetchPolicy: "cache-only" });
+  const { data } = useQuery(FETCH_CHATS);
+  const userOnlineSub = useSubscription(UPDATE_USER_ONLINE_SUB);
   const user = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
   const [updateUserOnline] = useMutation(UPDATE_USER_ONLINE);
   const appState = useRef(AppState.currentState);
@@ -56,6 +57,35 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
       setChatSub(c => [chat.data.addNewChat, ...c]);
     }
   }, [chat.data]);
+  const renderData = (): { fetchChats: Chat[] } => {
+    if (data && data.fetchChats && userOnlineSub.data && userOnlineSub.data.updateUserOnline) {
+      const onlineData: UserOnline = userOnlineSub.data.updateUserOnline;
+      const chats: Chat[] = data.fetchChats;
+      return {
+        ...data,
+        fetchChats: chats.map(ch => {
+          if (ch.sender._id === onlineData.userID) {
+            return {
+              ...ch,
+              sender: { ...ch.sender, online: onlineData.online, lastSeen: new Date().toString() }
+            };
+          }
+          if (ch.recipient._id === onlineData.userID) {
+            return {
+              ...ch,
+              recipient: {
+                ...ch.recipient,
+                online: onlineData.online,
+                lastSeen: new Date().toString()
+              }
+            };
+          }
+          return ch;
+        })
+      };
+    }
+    return data;
+  };
   return (
     <View style={styles.prt}>
       <NavigationEvents
@@ -64,6 +94,7 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
       <HomeChat
         chatSub={chatSub}
         chat={chat.data && chat.data.addNewChat ? chat.data.addNewChat : null}
+        data={renderData()}
       />
       {data && data.fetchChats && <StartChat chats={data.fetchChats} />}
     </View>
