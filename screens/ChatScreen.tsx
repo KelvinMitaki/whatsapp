@@ -3,11 +3,12 @@ import { BackHandler, StyleSheet, Text, View, ActivityIndicator, Dimensions } fr
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import Message from "../components/Chat/Message";
 import Input, { MESSAGE_LIMIT } from "../components/Chat/Input";
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery, useSubscription } from "@apollo/client";
 import { FETCH_CURRENT_USER, FETCH_MESSAGES, FETCH_MESSAGE_COUNT } from "../graphql/queries";
 import { UPDATE_READ_MESSAGES, UPDATE_USER_TYPING } from "../graphql/mutations";
-import { CurrentUser, MessageInterface } from "../interfaces/ChatInterface";
+import { CurrentUser, MessageInterface, UserOnline } from "../interfaces/ChatInterface";
 import ChatScreenHeader from "../components/Chat/ChatScreenHeader";
+import { UPDATE_USER_ONLINE_SUB } from "../graphql/subscriptions";
 
 interface Params {
   recipient: {
@@ -22,12 +23,23 @@ interface Params {
 const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [showLoading, setShowLoading] = useState<boolean>(true);
   const [keyboardShown, setKeyboardShown] = useState<boolean>(false);
+  const recipient = navigation.getParam("recipient");
+  useSubscription(UPDATE_USER_ONLINE_SUB, {
+    onSubscriptionData(subData) {
+      const onlineData: UserOnline = subData.subscriptionData.data.updateUserOnline;
+      if (onlineData.userID === recipient._id) {
+        navigation.setParams({
+          recipient: { ...recipient, online: onlineData.online, lastSeen: new Date().toString() }
+        });
+      }
+    }
+  });
   const count = useQuery(FETCH_MESSAGE_COUNT, {
-    variables: { recipient: navigation.getParam("recipient")._id },
+    variables: { recipient: recipient._id },
     onCompleted() {
       fetchMessages({
         variables: {
-          recipient: navigation.getParam("recipient")._id,
+          recipient: recipient._id,
           offset: 0,
           limit: MESSAGE_LIMIT,
           messageCount: count.data.fetchMessageCount.count

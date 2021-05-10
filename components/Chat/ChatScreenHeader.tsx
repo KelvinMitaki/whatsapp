@@ -33,7 +33,8 @@ const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOption
         </View>
         <View
           style={{
-            marginLeft: 10
+            marginLeft: 10,
+            width: "75%"
           }}
         >
           <Text
@@ -41,8 +42,7 @@ const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOption
             style={{
               color: "white",
               fontSize: 20,
-              fontWeight: "400",
-              width: "75%"
+              fontWeight: "400"
             }}
           >
             {recipient.name}
