@@ -14,6 +14,7 @@ import { ADD_NEW_GROUP_SUB } from "../../graphql/subscriptions";
 import AppColors from "../../Colors/color";
 import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../../interfaces/Redux";
+import { useHeaderHeight } from "react-navigation-stack";
 
 interface Props {
   groups: Group[];
@@ -29,7 +30,9 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
   const dispatch = useDispatch();
   const { data } = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
   const currentUser: CurrentUser = data.fetchCurrentUser;
+  const headerHeight = useHeaderHeight();
   const incommingUnread = useSelector((state: Redux) => state.group.incommingUnread);
+  const searchModal = useSelector((state: Redux) => state.chat.searchModal);
   const [subscriptionGroups, setSubscriptionGroups] = useState<Group[]>([]);
   useSubscription(ADD_NEW_GROUP_SUB, {
     onSubscriptionData(subdata) {
@@ -162,6 +165,7 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
   );
   return (
     <View style={styles.prt}>
+      {searchModal && <View style={{ height: headerHeight / 2 }}></View>}
       <FlatList
         data={syncGroups()}
         keyExtractor={keyExtractor}

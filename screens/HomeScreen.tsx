@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, View, AppState, AppStateStatus } from "react-native";
+import { StyleSheet, View, AppState, AppStateStatus, Text } from "react-native";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
 import { users } from "../data/data";
 import inspect from "../inspect";

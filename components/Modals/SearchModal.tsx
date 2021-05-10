@@ -64,7 +64,12 @@ const SearchModal: React.FC<Props> = ({ height, width, hideFilter }) => {
               </TouchableNativeFeedback>
             </View>
           </View>
-          <TextInput placeholder="Search..." style={styles.input} placeholderTextColor="#fff" />
+          <TextInput
+            placeholder="Search..."
+            style={styles.input}
+            placeholderTextColor="#fff"
+            autoFocus
+          />
         </View>
         {!hideFilter && (
           <View style={styles.filterPrt}>

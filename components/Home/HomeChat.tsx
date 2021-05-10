@@ -3,12 +3,14 @@ import { FlatList, ListRenderItemInfo, StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SetSearchModal } from "../../screens/HomeScreen";
 import { FETCH_CHATS, FETCH_CURRENT_USER } from "../../graphql/queries";
 import { useQuery } from "@apollo/client";
 import { Chat, CurrentUser } from "../../interfaces/ChatInterface";
 import ChatComponent from "./ChatComponent";
+import { useHeaderHeight } from "react-navigation-stack";
+import { Redux } from "../../interfaces/Redux";
 
 interface Props {
   chatSub: Chat[];
@@ -18,6 +20,8 @@ interface Props {
 
 const HomeChat: React.FC<NavigationInjectedProps & Props> = ({ chatSub, chat, data }) => {
   const user = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
+  const searchModal = useSelector((state: Redux) => state.chat.searchModal);
+  const headerHeight = useHeaderHeight();
   const dispatch = useDispatch();
   const currentUser: CurrentUser = user.data.fetchCurrentUser;
   const renderItem = ({ item }: ListRenderItemInfo<Chat>) => (
@@ -51,6 +55,7 @@ const HomeChat: React.FC<NavigationInjectedProps & Props> = ({ chatSub, chat, da
   };
   return (
     <View>
+      {searchModal && <View style={{ height: headerHeight / 2 }}></View>}
       {data && data.fetchChats && data.fetchChats.length ? (
         <FlatList
           data={renderChats()}
