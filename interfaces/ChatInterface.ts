@@ -52,3 +52,13 @@ export interface MessageInterface {
   createdAt: string;
   deleted: boolean;
 }
+
+export interface UserOnline {
+  userID: string;
+  online: boolean;
+}
+
+export interface UserTyping {
+  chatID: string;
+  typing: boolean;
+}

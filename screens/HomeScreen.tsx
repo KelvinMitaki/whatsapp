@@ -7,11 +7,12 @@ import HomeChat from "../components/Home/HomeChat";
 import { useHeaderHeight } from "react-navigation-stack";
 import { useDispatch } from "react-redux";
 import { NavigationEvents } from "react-navigation";
-import { useQuery, useSubscription } from "@apollo/client";
+import { useMutation, useQuery, useSubscription } from "@apollo/client";
 import { FETCH_CHATS, FETCH_CURRENT_USER } from "../graphql/queries";
 import StartChat from "../components/Home/StartChat";
 import { ADD_NEW_CHAT_SUB } from "../graphql/subscriptions";
 import { Chat, CurrentUser } from "../interfaces/ChatInterface";
+import { UPDATE_USER_ONLINE } from "../graphql/mutations";
 
 export interface SetHeaderHeight {
   type: "setHeaderHeight";
@@ -26,6 +27,7 @@ export interface SetSearchModal {
 const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   const { data } = useQuery(FETCH_CHATS, { fetchPolicy: "cache-only" });
   const user = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
+  const [updateUserOnline] = useMutation(UPDATE_USER_ONLINE);
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const [chatSub, setChatSub] = useState<Chat[]>([]);
@@ -35,7 +37,6 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   const headerHeight = useHeaderHeight();
   useEffect(() => {
     AppState.addEventListener("change", _handleAppStateChange);
-
     dispatch<SetHeaderHeight>({ type: "setHeaderHeight", payload: headerHeight });
     return () => {
       AppState.removeEventListener("change", _handleAppStateChange);
@@ -43,12 +44,12 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   }, []);
   const _handleAppStateChange = (nextAppState: AppStateStatus) => {
     if (appState.current.match(/inactive|background/) && nextAppState === "active") {
-      console.log("App has come to the foreground!");
+      updateUserOnline({ variables: { online: true } });
+    } else {
+      updateUserOnline({ variables: { online: false } });
     }
-
     appState.current = nextAppState;
     setAppStateVisible(appState.current);
-    console.log("AppState", appState.current);
   };
   useEffect(() => {
     if (chat.data && chat.data.addNewChat) {

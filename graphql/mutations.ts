@@ -119,3 +119,21 @@ export const UPDATE_GROUP_MESSAGES_READ = gql`
     }
   }
 `;
+
+export const UPDATE_USER_ONLINE = gql`
+  mutation UpdateUserOnline($online: Boolean!) {
+    updateUserOnline(online: $online) {
+      userID
+      online
+    }
+  }
+`;
+
+export const UPDATE_USER_TYPING = gql`
+  mutation UpdateUserOnline($typing: Boolean!, $chatID: String!) {
+    updateUserTyping(typing: $typing, chatID: $chatID) {
+      chatID
+      typing
+    }
+  }
+`;
