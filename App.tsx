@@ -39,9 +39,8 @@ import CountryScreen from "./screens/CountryScreen";
 import VerificationScreen from "./screens/VerificationScreen";
 import NameScreen from "./screens/NameScreen";
 import BlankScreen from "./screens/BlankScreen";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getMainDefinition } from "@apollo/client/utilities";
 import { NavigationCommonTabOptions } from "react-navigation-tabs/lib/typescript/src/types";
+import client from "./apollo";
 
 enableScreens();
 
@@ -225,61 +224,7 @@ const stackNavigator = createStackNavigator(
 );
 const App = createAppContainer(stackNavigator);
 const store = createStore(reducer);
-const httpLink = createHttpLink({
-  uri: "https://kevin-whatsapp-api.herokuapp.com/graphql"
-});
-const authLink = setContext(async (_, { headers }) => {
-  return {
-    headers: {
-      ...headers,
-      authorization: `Bearer ${await AsyncStorage.getItem("token")}` || ""
-    }
-  };
-});
-const webSocketLink = new WebSocketLink({
-  uri: "wss://kevin-whatsapp-api.herokuapp.com/graphql",
-  options: {
-    reconnect: true
-  }
-});
-const httpAuthLink = authLink.concat(httpLink);
-const splitLink = split(
-  ({ query }) => {
-    const definition = getMainDefinition(query);
-    return definition.kind === "OperationDefinition" && definition.operation === "subscription";
-  },
-  webSocketLink,
-  httpAuthLink
-);
-const client = new ApolloClient({
-  link: splitLink,
-  cache: new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          fetchMessages: {
-            keyArgs: false,
-            merge(existing = [], incoming) {
-              return [...incoming, ...existing];
-            }
-          },
-          fetchGroupMsgs: {
-            keyArgs: false,
-            merge(existing = [], incoming) {
-              return [...incoming, ...existing];
-            }
-          },
-          fetchUnreadGroupMsgs: {
-            keyArgs: false,
-            merge(existing = [], incoming) {
-              return incoming;
-            }
-          }
-        }
-      }
-    }
-  })
-});
+
 export default () => (
   <ApolloProvider client={client}>
     <Provider store={store}>
