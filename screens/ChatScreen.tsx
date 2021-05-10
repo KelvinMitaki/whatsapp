@@ -5,7 +5,7 @@ import Message from "../components/Chat/Message";
 import Input, { MESSAGE_LIMIT } from "../components/Chat/Input";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { FETCH_CURRENT_USER, FETCH_MESSAGES, FETCH_MESSAGE_COUNT } from "../graphql/queries";
-import { UPDATE_READ_MESSAGES } from "../graphql/mutations";
+import { UPDATE_READ_MESSAGES, UPDATE_USER_TYPING } from "../graphql/mutations";
 import { CurrentUser, MessageInterface } from "../interfaces/ChatInterface";
 import ChatScreenHeader from "../components/Chat/ChatScreenHeader";
 
@@ -48,6 +48,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const currentUser: CurrentUser = user.data.fetchCurrentUser;
   const chatID = navigation.getParam("chatID");
   const [updateReadMessages] = useMutation(UPDATE_READ_MESSAGES);
+  const [updateUserTyping] = useMutation(UPDATE_USER_TYPING);
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackBtnPressAndroid);
     return () => {
@@ -69,6 +70,13 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
         });
     }
   }, [data]);
+  useEffect(() => {
+    if (keyboardShown) {
+      updateUserTyping({ variables: { typing: true, chatID } });
+    } else {
+      updateUserTyping({ variables: { typing: false, chatID } });
+    }
+  }, [keyboardShown]);
   const handleBackBtnPressAndroid = () => {
     if (!navigation.isFocused()) {
       return false;
