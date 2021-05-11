@@ -58,6 +58,7 @@ const BroadcastScreen: NavigationStackScreenComponent<Params> = ({ navigation })
           dispatch<SetSearchModal>({ type: "setSearchModal", payload: false });
         }}
       />
+      {searchModal && <View style={{ height: headerHeight / 3 }}></View>}
       <HorizontalScrollContacts Contacts={Contacts} />
       <View style={styles.continue}>
         <TouchableNativeFeedback
