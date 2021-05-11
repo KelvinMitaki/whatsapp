@@ -29,6 +29,7 @@ export interface SetContacts {
 const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
   const Contacts = useSelector((state: Redux) => state.chat.Contacts);
+  const [inp, setInp] = useState<string>("");
   const dispatch = useDispatch();
   useEffect(() => {
     if (Contacts.length) {
@@ -55,6 +56,7 @@ const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
             dispatch<SetContacts>({ type: "setContacts", payload: usr });
           }}
           Contacts={Contacts}
+          inp={inp}
         />
       </ScrollView>
       <Animated.View style={position.getLayout()}>

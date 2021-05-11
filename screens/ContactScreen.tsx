@@ -88,7 +88,7 @@ const ContactScreen: NavigationStackScreenComponent<Params> = ({ navigation }) =
             </View>
           </TouchableNativeFeedback>
         </View>
-        <Contact />
+        <Contact inp={inp} />
       </ScrollView>
     </>
   );

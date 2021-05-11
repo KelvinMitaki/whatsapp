@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   Animated,
   ScrollView,
@@ -24,6 +24,7 @@ export interface SetMessage {
 }
 
 const BroadcastScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  const [inp, setInp] = useState<string>("");
   const dispatch = useDispatch();
   const Contacts = useSelector((state: Redux) => state.chat.Contacts);
   return (
@@ -56,6 +57,7 @@ const BroadcastScreen: NavigationStackScreenComponent = ({ navigation }) => {
         <Contact
           setContacts={usr => dispatch<SetContacts>({ type: "setContacts", payload: usr })}
           Contacts={Contacts}
+          inp={inp}
         />
       </ScrollView>
     </>

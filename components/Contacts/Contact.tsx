@@ -13,63 +13,65 @@ import { Chat, User } from "../../interfaces/ChatInterface";
 interface Props {
   setContacts?: (usr: User) => void;
   Contacts?: User[];
+  inp: string;
 }
 
-const Contact: React.FC<NavigationInjectedProps & Props> = ({
-  navigation,
-  setContacts,
-  Contacts
-}) => {
+const Contact: React.FC<NavigationInjectedProps & Props> = props => {
+  const { navigation, setContacts, Contacts, inp } = props;
   const { data } = useQuery(FETCH_USERS, { fetchPolicy: "cache-only" });
   const chat = useQuery(FETCH_CHATS, { fetchPolicy: "cache-only" });
   return (
     <>
-      {(data.fetchUsers as User[]).map(usr => (
-        <TouchableNativeFeedback
-          background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
-          onPress={() => {
-            if (!setContacts) {
-              navigation.navigate("Chat", {
-                recipient: usr,
-                chatID: (chat.data.fetchChats as Chat[]).find(
-                  c => c.sender._id === usr._id || c.recipient._id === usr._id
-                )
-              });
-            } else {
-              setContacts(usr);
-            }
-          }}
-          key={usr._id}
-        >
-          <View style={styles.contact}>
-            <View>
-              <View style={styles.person}>
-                <Ionicons name="person" size={35} color="rgba(241, 241, 242, 0.8)" />
-              </View>
-              {Contacts && Contacts.find(ct => ct._id === usr._id) && (
-                <View style={styles.selectedContact}>
-                  <Octicons name="check" size={15} />
+      {(data.fetchUsers as User[])
+        .filter(c =>
+          inp.trim().length ? c.name.trim().toLowerCase().includes(inp.trim().toLowerCase()) : true
+        )
+        .map(usr => (
+          <TouchableNativeFeedback
+            background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
+            onPress={() => {
+              if (!setContacts) {
+                navigation.navigate("Chat", {
+                  recipient: usr,
+                  chatID: (chat.data.fetchChats as Chat[]).find(
+                    c => c.sender._id === usr._id || c.recipient._id === usr._id
+                  )
+                });
+              } else {
+                setContacts(usr);
+              }
+            }}
+            key={usr._id}
+          >
+            <View style={styles.contact}>
+              <View>
+                <View style={styles.person}>
+                  <Ionicons name="person" size={35} color="rgba(241, 241, 242, 0.8)" />
                 </View>
-              )}
-            </View>
-            <View style={styles.contactTxt}>
-              <View style={{ justifyContent: "center", height: "100%" }}>
-                <Text style={{ fontSize: 22, color: "#fff" }} numberOfLines={1}>
-                  {usr.name}
-                </Text>
-                <Text
-                  numberOfLines={1}
-                  style={{
-                    color: "rgba(255,255,255,.6)"
-                  }}
-                >
-                  Hey there! I'm using WhatsApp
-                </Text>
+                {Contacts && Contacts.find(ct => ct._id === usr._id) && (
+                  <View style={styles.selectedContact}>
+                    <Octicons name="check" size={15} />
+                  </View>
+                )}
+              </View>
+              <View style={styles.contactTxt}>
+                <View style={{ justifyContent: "center", height: "100%" }}>
+                  <Text style={{ fontSize: 22, color: "#fff" }} numberOfLines={1}>
+                    {usr.name}
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    style={{
+                      color: "rgba(255,255,255,.6)"
+                    }}
+                  >
+                    Hey there! I'm using WhatsApp
+                  </Text>
+                </View>
               </View>
             </View>
-          </View>
-        </TouchableNativeFeedback>
-      ))}
+          </TouchableNativeFeedback>
+        ))}
     </>
   );
 };
