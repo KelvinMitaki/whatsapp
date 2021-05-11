@@ -14,7 +14,7 @@ import { NavigationStackScreenComponent, useHeaderHeight } from "react-navigatio
 import { users } from "../data/data";
 import SelectedContact from "../components/SelectContacts/SelectedContact";
 import SearchModal from "../components/Modals/SearchModal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { SetSearchModal } from "./HomeScreen";
 import SelectContactsHeader from "../components/SelectContacts/SelectContactsHeader";
@@ -22,6 +22,7 @@ import { User } from "../interfaces/ChatInterface";
 import { useQuery } from "@apollo/client";
 import { FETCH_USERS } from "../graphql/queries";
 import { NavigationEvents } from "react-navigation";
+import { Redux } from "../interfaces/Redux";
 
 interface Params {
   slctn: "myContactsExc" | "onlyShareWith";
@@ -41,6 +42,7 @@ const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigati
   const [checked, setChecked] = useState<User[]>([]);
   const [inp, setInp] = useState<string>("");
   const { data } = useQuery(FETCH_USERS);
+  const searchModal = useSelector((state: Redux) => state.chat.searchModal);
   const dispatch = useDispatch();
   const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
   const searchHeight = useRef(new Animated.Value(20)).current;
@@ -81,6 +83,7 @@ const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigati
       <NavigationEvents
         onWillFocus={() => dispatch<SetSearchModal>({ type: "setSearchModal", payload: false })}
       />
+      {searchModal && <View style={{ height: headerHeight / 3 }}></View>}
       <FlatList
         data={
           data
