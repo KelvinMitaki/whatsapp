@@ -1,7 +1,8 @@
 import { AnyAction } from "redux";
 import { messages } from "../data/messages";
-import { User } from "../interfaces/ChatInterface";
+import { User, UserTyping } from "../interfaces/ChatInterface";
 import { SetMessage } from "../screens/BroadcastScreen";
+import { SetUserTyping } from "../screens/ChatScreen";
 import { SetHeaderHeight, SetSearchModal } from "../screens/HomeScreen";
 import { ResetContacts } from "../screens/NewGroupInfoScreen";
 import { SetContacts } from "../screens/NewGroupScreen";
@@ -13,9 +14,16 @@ export interface ChatState {
   scaleNum: number;
   headerHeight: number;
   searchModal: boolean;
+  typingChats: UserTyping[];
 }
 
-type Action = SetContacts | ResetContacts | SetMessage | SetHeaderHeight | SetSearchModal;
+type Action =
+  | SetContacts
+  | ResetContacts
+  | SetMessage
+  | SetHeaderHeight
+  | SetSearchModal
+  | SetUserTyping;
 
 const INITIAL_STATE: ChatState = {
   Contacts: [],
@@ -23,7 +31,8 @@ const INITIAL_STATE: ChatState = {
   indexToAnimate: null,
   scaleNum: 1,
   headerHeight: 0,
-  searchModal: false
+  searchModal: false,
+  typingChats: []
 };
 
 const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
@@ -48,6 +57,15 @@ const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
       return { ...state, messages: [action.payload, ...state.messages] };
     case "setSearchModal":
       return { ...state, searchModal: action.payload };
+    case "setUserTyping":
+      let chats = [...state.typingChats];
+      const typingChatIndex = chats.findIndex(c => c.chatID === action.payload.chatID);
+      if (typingChatIndex !== -1) {
+        chats[typingChatIndex] = action.payload;
+      } else {
+        chats = [...chats, action.payload];
+      }
+      return { ...state, typingChats: chats };
     default:
       return state;
   }

@@ -9,6 +9,7 @@ import { UPDATE_READ_MESSAGES, UPDATE_USER_TYPING } from "../graphql/mutations";
 import { CurrentUser, MessageInterface, UserOnline, UserTyping } from "../interfaces/ChatInterface";
 import ChatScreenHeader from "../components/Chat/ChatScreenHeader";
 import { UPDATE_USER_ONLINE_SUB, UPDATE_USER_TYPING_SUB } from "../graphql/subscriptions";
+import { useDispatch } from "react-redux";
 
 interface Params {
   recipient: {
@@ -20,9 +21,15 @@ interface Params {
   };
   chatID: string;
 }
+
+export interface SetUserTyping {
+  type: "setUserTyping";
+  payload: UserTyping;
+}
 const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [showLoading, setShowLoading] = useState<boolean>(true);
   const [keyboardShown, setKeyboardShown] = useState<boolean>(false);
+  const dispatch = useDispatch();
   const chatID = navigation.getParam("chatID");
   const recipient = navigation.getParam("recipient");
   useSubscription(UPDATE_USER_ONLINE_SUB, {
@@ -39,6 +46,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
     variables: { chatID },
     onSubscriptionData(subData) {
       const userTyping: UserTyping = subData.subscriptionData.data.updateUserTyping;
+      dispatch<SetUserTyping>({ type: "setUserTyping", payload: userTyping });
       if (chatID === userTyping.chatID) {
         navigation.setParams({ recipient: { ...recipient, typing: userTyping.typing } });
       }
