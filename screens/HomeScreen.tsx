@@ -94,6 +94,7 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
     <View style={styles.prt}>
       <NavigationEvents
         onDidBlur={() => dispatch<SetSearchModal>({ type: "setSearchModal", payload: false })}
+        onWillFocus={() => dispatch<SetSearchModal>({ type: "setSearchModal", payload: false })}
       />
       <HomeChat
         chatSub={chatSub}
