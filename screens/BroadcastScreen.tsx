@@ -52,7 +52,12 @@ const BroadcastScreen: NavigationStackScreenComponent<Params> = ({ navigation })
   }, [inp]);
   return (
     <>
-      <NavigationEvents onWillFocus={() => dispatch<ResetContacts>({ type: "resetContacts" })} />
+      <NavigationEvents
+        onWillFocus={() => {
+          dispatch<ResetContacts>({ type: "resetContacts" });
+          dispatch<SetSearchModal>({ type: "setSearchModal", payload: false });
+        }}
+      />
       <HorizontalScrollContacts Contacts={Contacts} />
       <View style={styles.continue}>
         <TouchableNativeFeedback
