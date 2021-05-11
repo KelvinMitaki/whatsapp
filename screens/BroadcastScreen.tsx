@@ -1,13 +1,14 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Animated,
+  Dimensions,
   ScrollView,
   StyleSheet,
   Text,
   TouchableNativeFeedback,
   View
 } from "react-native";
-import { NavigationStackScreenComponent } from "react-navigation-stack";
+import { NavigationStackScreenComponent, useHeaderHeight } from "react-navigation-stack";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../interfaces/Redux";
@@ -17,16 +18,38 @@ import { SetContacts } from "./NewGroupScreen";
 import { NavigationEvents } from "react-navigation";
 import { ResetContacts } from "./NewGroupInfoScreen";
 import { messages } from "../data/messages";
+import { Dispatch } from "redux";
+import { SetSearchModal } from "./HomeScreen";
+import SearchModal from "../components/Modals/SearchModal";
 
 export interface SetMessage {
   type: "setMessage";
   payload: typeof messages[0];
 }
 
-const BroadcastScreen: NavigationStackScreenComponent = ({ navigation }) => {
+interface Params {
+  dispatch: Dispatch<any>;
+  searchHeight: Animated.Value;
+  searchWidth: Animated.Value;
+  setInp: React.Dispatch<React.SetStateAction<string>>;
+  inp: string;
+  headerHeight: number;
+}
+
+const BroadcastScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [inp, setInp] = useState<string>("");
   const dispatch = useDispatch();
   const Contacts = useSelector((state: Redux) => state.chat.Contacts);
+  const searchHeight = useRef(new Animated.Value(20)).current;
+  const searchWidth = useRef(new Animated.Value(20)).current;
+  const searchModal = useSelector((state: Redux) => state.chat.searchModal);
+  const headerHeight = useHeaderHeight();
+  useEffect(() => {
+    navigation.setParams({ searchHeight, searchWidth, dispatch, setInp, headerHeight });
+  }, [searchHeight, searchWidth, dispatch, setInp, headerHeight]);
+  useEffect(() => {
+    navigation.setParams({ inp });
+  }, [inp]);
   return (
     <>
       <NavigationEvents onWillFocus={() => dispatch<ResetContacts>({ type: "resetContacts" })} />
@@ -64,22 +87,51 @@ const BroadcastScreen: NavigationStackScreenComponent = ({ navigation }) => {
   );
 };
 
-BroadcastScreen.navigationOptions = {
-  headerTitle: "New broadcast",
-  headerRight: () => (
-    <View style={{ width: "125%", alignItems: "center" }}>
-      <View style={styles.searchBorder}>
-        <TouchableNativeFeedback
-          onPress={() => {}}
-          background={TouchableNativeFeedback.Ripple("#fff", true)}
-        >
-          <View>
-            <MaterialIcons name="search" size={25} color="#fff" />
-          </View>
-        </TouchableNativeFeedback>
+BroadcastScreen.navigationOptions = ({ navigation }) => {
+  const searchHeight = navigation.getParam("searchHeight");
+  const searchWidth = navigation.getParam("searchWidth");
+  const dispatch = navigation.getParam("dispatch");
+  const inp = navigation.getParam("inp");
+  const setInp = navigation.getParam("setInp");
+  const headerHeight = navigation.getParam("headerHeight");
+  return {
+    headerTitle: "New broadcast",
+    headerRight: () => (
+      <View style={{ width: "125%", alignItems: "center" }}>
+        <SearchModal
+          inp={inp}
+          setInp={setInp}
+          height={searchHeight}
+          width={searchWidth}
+          hideFilter
+        />
+        <View style={styles.searchBorder}>
+          <TouchableNativeFeedback
+            onPress={() => {
+              dispatch<SetSearchModal>({ type: "setSearchModal", payload: true });
+              Animated.parallel([
+                Animated.timing(searchHeight, {
+                  toValue: headerHeight,
+                  useNativeDriver: false,
+                  duration: 300
+                }),
+                Animated.timing(searchWidth, {
+                  toValue: Dimensions.get("screen").width,
+                  useNativeDriver: false,
+                  duration: 300
+                })
+              ]).start();
+            }}
+            background={TouchableNativeFeedback.Ripple("#fff", true)}
+          >
+            <View>
+              <MaterialIcons name="search" size={25} color="#fff" />
+            </View>
+          </TouchableNativeFeedback>
+        </View>
       </View>
-    </View>
-  )
+    )
+  };
 };
 
 export default BroadcastScreen;

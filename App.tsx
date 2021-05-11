@@ -191,6 +191,7 @@ const stackNavigator = createStackNavigator(
       ...stackScreenSettings
     },
     Broadcast: {
+      // @ts-ignore
       screen: BroadcastScreen,
       ...stackScreenSettings
     },
