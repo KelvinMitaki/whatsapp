@@ -6,10 +6,11 @@ import {
   View,
   ScrollView,
   Animated,
-  Easing
+  Easing,
+  Dimensions
 } from "react-native";
 import { Text } from "react-native-elements";
-import { NavigationStackScreenComponent } from "react-navigation-stack";
+import { NavigationStackScreenComponent, useHeaderHeight } from "react-navigation-stack";
 import { MaterialIcons } from "@expo/vector-icons";
 import inspect from "../inspect";
 import Contact from "../components/Contacts/Contact";
@@ -20,17 +21,38 @@ import HorizontalScrollContacts from "../components/Contacts/HorizontalScrollCon
 import { NavigationEvents } from "react-navigation";
 import { ResetContacts } from "./NewGroupInfoScreen";
 import { User } from "../interfaces/ChatInterface";
+import { Dispatch } from "redux";
+import { SetSearchModal } from "./HomeScreen";
+import SearchModal from "../components/Modals/SearchModal";
 
 export interface SetContacts {
   type: "setContacts";
   payload: User;
 }
 
-const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
+interface Params {
+  dispatch: Dispatch<any>;
+  searchHeight: Animated.Value;
+  searchWidth: Animated.Value;
+  setInp: React.Dispatch<React.SetStateAction<string>>;
+  inp: string;
+  headerHeight: number;
+}
+const NewGroupScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
   const Contacts = useSelector((state: Redux) => state.chat.Contacts);
   const [inp, setInp] = useState<string>("");
   const dispatch = useDispatch();
+  const searchHeight = useRef(new Animated.Value(20)).current;
+  const searchWidth = useRef(new Animated.Value(20)).current;
+  const searchModal = useSelector((state: Redux) => state.chat.searchModal);
+  const headerHeight = useHeaderHeight();
+  useEffect(() => {
+    navigation.setParams({ searchHeight, searchWidth, dispatch, setInp, headerHeight });
+  }, [searchHeight, searchWidth, dispatch, setInp, headerHeight]);
+  useEffect(() => {
+    navigation.setParams({ inp });
+  }, [inp]);
   useEffect(() => {
     if (Contacts.length) {
       Animated.spring(position, {
@@ -75,29 +97,58 @@ const NewGroupScreen: NavigationStackScreenComponent = ({ navigation }) => {
   );
 };
 
-NewGroupScreen.navigationOptions = {
-  headerTitle: () => (
-    <View>
-      <Text h4Style={{ color: "#fff" }} h4>
-        New group
-      </Text>
-      <Text style={{ color: "#fff" }}>Add participants</Text>
-    </View>
-  ),
-  headerRight: () => (
-    <View style={{ width: "125%", alignItems: "center" }}>
-      <View style={styles.searchBorder}>
-        <TouchableNativeFeedback
-          onPress={() => {}}
-          background={TouchableNativeFeedback.Ripple("#fff", true)}
-        >
-          <View>
-            <MaterialIcons name="search" size={25} color="#fff" />
-          </View>
-        </TouchableNativeFeedback>
+NewGroupScreen.navigationOptions = ({ navigation }) => {
+  const searchHeight = navigation.getParam("searchHeight");
+  const searchWidth = navigation.getParam("searchWidth");
+  const dispatch = navigation.getParam("dispatch");
+  const inp = navigation.getParam("inp");
+  const setInp = navigation.getParam("setInp");
+  const headerHeight = navigation.getParam("headerHeight");
+  return {
+    headerTitle: () => (
+      <View>
+        <Text h4Style={{ color: "#fff" }} h4>
+          New group
+        </Text>
+        <Text style={{ color: "#fff" }}>Add participants</Text>
       </View>
-    </View>
-  )
+    ),
+    headerRight: () => (
+      <View style={{ width: "125%", alignItems: "center" }}>
+        <SearchModal
+          inp={inp}
+          setInp={setInp}
+          height={searchHeight}
+          width={searchWidth}
+          hideFilter
+        />
+        <View style={styles.searchBorder}>
+          <TouchableNativeFeedback
+            onPress={() => {
+              dispatch<SetSearchModal>({ type: "setSearchModal", payload: true });
+              Animated.parallel([
+                Animated.timing(searchHeight, {
+                  toValue: headerHeight,
+                  useNativeDriver: false,
+                  duration: 300
+                }),
+                Animated.timing(searchWidth, {
+                  toValue: Dimensions.get("screen").width,
+                  useNativeDriver: false,
+                  duration: 300
+                })
+              ]).start();
+            }}
+            background={TouchableNativeFeedback.Ripple("#fff", true)}
+          >
+            <View>
+              <MaterialIcons name="search" size={25} color="#fff" />
+            </View>
+          </TouchableNativeFeedback>
+        </View>
+      </View>
+    )
+  };
 };
 {
   /* <HeaderButtons HeaderButtonComponent={props => <HeaderButton {...props} />}>

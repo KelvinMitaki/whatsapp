@@ -172,6 +172,7 @@ const stackNavigator = createStackNavigator(
       }
     },
     NewGroup: {
+      // @ts-ignore
       screen: NewGroupScreen,
       ...stackScreenSettings
     },
