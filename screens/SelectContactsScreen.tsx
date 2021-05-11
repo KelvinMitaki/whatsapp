@@ -21,6 +21,7 @@ import SelectContactsHeader from "../components/SelectContacts/SelectContactsHea
 import { User } from "../interfaces/ChatInterface";
 import { useQuery } from "@apollo/client";
 import { FETCH_USERS } from "../graphql/queries";
+import { NavigationEvents } from "react-navigation";
 
 interface Params {
   slctn: "myContactsExc" | "onlyShareWith";
@@ -71,14 +72,17 @@ const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigati
 
   return (
     <View style={{ height: "100%" }}>
+      <NavigationEvents
+        onWillFocus={() => dispatch<SetSearchModal>({ type: "setSearchModal", payload: false })}
+      />
       <FlatList
         data={
           data
-            ? (((data.fetchUsers as User[]).map(({ profilePhoto, _id, name }) => ({
+            ? ((data.fetchUsers as User[]).map(({ profilePhoto, _id, name }) => ({
                 profilePhoto,
                 _id,
                 name
-              })) as unknown) as User[])
+              })) as unknown as User[])
             : ([] as User[])
         }
         keyExtractor={u => u._id}
