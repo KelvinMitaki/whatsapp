@@ -8,7 +8,7 @@ interface Params {
   recipient: {
     _id: string;
     name: string;
-    typing: string;
+    typing: boolean;
     lastSeen: string;
     online: boolean;
   };
@@ -48,7 +48,11 @@ const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOption
             {recipient.name}
           </Text>
           <Text style={{ color: "#fff" }}>
-            {recipient.online ? "Online" : formatRelative(new Date(recipient.lastSeen), new Date())}
+            {recipient.typing
+              ? "typing..."
+              : recipient.online
+              ? "Online"
+              : formatRelative(new Date(recipient.lastSeen), new Date())}
           </Text>
         </View>
       </View>
