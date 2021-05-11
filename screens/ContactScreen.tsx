@@ -1,18 +1,47 @@
-import React, { useEffect } from "react";
-import { ScrollView, StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
-import { NavigationStackScreenComponent } from "react-navigation-stack";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableNativeFeedback,
+  View,
+  Animated,
+  Dimensions
+} from "react-native";
+import { NavigationStackScreenComponent, useHeaderHeight } from "react-navigation-stack";
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import inspect from "../inspect";
 import Contact from "../components/Contacts/Contact";
 import { FETCH_USERS } from "../graphql/queries";
 import { useQuery } from "@apollo/client";
+import { Dispatch } from "redux";
+import { useDispatch } from "react-redux";
+import SearchModal from "../components/Modals/SearchModal";
+import { SetSearchModal } from "./HomeScreen";
 
 interface Params {
   contacts: number;
+  dispatch: Dispatch<any>;
+  searchHeight: Animated.Value;
+  searchWidth: Animated.Value;
+  setInp: React.Dispatch<React.SetStateAction<string>>;
+  inp: string;
+  headerHeight: number;
 }
 
 const ContactScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const { data } = useQuery(FETCH_USERS, { fetchPolicy: "cache-and-network" });
+  const [inp, setInp] = useState<string>("");
+  const searchHeight = useRef(new Animated.Value(20)).current;
+  const searchWidth = useRef(new Animated.Value(20)).current;
+  const dispatch = useDispatch();
+  const headerHeight = useHeaderHeight();
+  useEffect(() => {
+    navigation.setParams({ searchHeight, searchWidth, dispatch, setInp, headerHeight });
+  }, [searchHeight, searchWidth, dispatch, setInp, headerHeight]);
+  useEffect(() => {
+    navigation.setParams({ inp });
+  }, [inp]);
   useEffect(() => {
     navigation.setParams({ contacts: data.fetchUsers.length });
   }, [data.fetchUsers]);
@@ -57,6 +86,13 @@ const ContactScreen: NavigationStackScreenComponent<Params> = ({ navigation }) =
 
 ContactScreen.navigationOptions = ({ navigation }) => {
   const contacts = navigation.getParam("contacts");
+  const searchHeight = navigation.getParam("searchHeight");
+  const searchWidth = navigation.getParam("searchWidth");
+  const dispatch = navigation.getParam("dispatch");
+  const inp = navigation.getParam("inp");
+  const setInp = navigation.getParam("setInp");
+  const headerHeight = navigation.getParam("headerHeight");
+
   return {
     headerTitle: () => (
       <View>
@@ -68,10 +104,31 @@ ContactScreen.navigationOptions = ({ navigation }) => {
     ),
     headerRight: () => (
       <View style={styles.headerRight}>
+        <SearchModal
+          width={searchWidth}
+          height={searchHeight}
+          inp={inp}
+          setInp={setInp}
+          hideFilter
+        />
         <View style={styles.ellipsis}>
           <TouchableNativeFeedback
             background={TouchableNativeFeedback.Ripple("#fff", true)}
-            onPress={() => {}}
+            onPress={() => {
+              dispatch<SetSearchModal>({ type: "setSearchModal", payload: true });
+              Animated.parallel([
+                Animated.timing(searchHeight, {
+                  toValue: headerHeight,
+                  useNativeDriver: false,
+                  duration: 300
+                }),
+                Animated.timing(searchWidth, {
+                  toValue: Dimensions.get("screen").width,
+                  useNativeDriver: false,
+                  duration: 300
+                })
+              ]).start();
+            }}
           >
             <View>
               <MaterialIcons name="search" size={25} color="#fff" />
