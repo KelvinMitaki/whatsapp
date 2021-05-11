@@ -15,10 +15,11 @@ import Contact from "../components/Contacts/Contact";
 import { FETCH_USERS } from "../graphql/queries";
 import { useQuery } from "@apollo/client";
 import { Dispatch } from "redux";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SearchModal from "../components/Modals/SearchModal";
 import { SetSearchModal } from "./HomeScreen";
 import { NavigationEvents } from "react-navigation";
+import { Redux } from "../interfaces/Redux";
 
 interface Params {
   contacts: number;
@@ -35,6 +36,7 @@ const ContactScreen: NavigationStackScreenComponent<Params> = ({ navigation }) =
   const [inp, setInp] = useState<string>("");
   const searchHeight = useRef(new Animated.Value(20)).current;
   const searchWidth = useRef(new Animated.Value(20)).current;
+  const searchModal = useSelector((state: Redux) => state.chat.searchModal);
   const dispatch = useDispatch();
   const headerHeight = useHeaderHeight();
   useEffect(() => {
@@ -47,44 +49,47 @@ const ContactScreen: NavigationStackScreenComponent<Params> = ({ navigation }) =
     navigation.setParams({ contacts: data.fetchUsers.length });
   }, [data.fetchUsers]);
   return (
-    <ScrollView>
-      <NavigationEvents
-        onWillFocus={() => dispatch<SetSearchModal>({ type: "setSearchModal", payload: false })}
-      />
-      <View>
-        <TouchableNativeFeedback
-          background={TouchableNativeFeedback.Ripple("#fff", false)}
-          onPress={() => navigation.navigate("NewGroup")}
-        >
-          <View style={styles.meta}>
-            <View style={styles.person}>
-              <MaterialCommunityIcons name="account-group" size={25} color="#fff" />
-            </View>
-            <View style={styles.textPrt}>
-              <View>
-                <Text style={styles.metaText}>New Group</Text>
+    <>
+      {searchModal && <View style={{ height: headerHeight / 3 }}></View>}
+      <ScrollView>
+        <NavigationEvents
+          onWillFocus={() => dispatch<SetSearchModal>({ type: "setSearchModal", payload: false })}
+        />
+        <View>
+          <TouchableNativeFeedback
+            background={TouchableNativeFeedback.Ripple("#fff", false)}
+            onPress={() => navigation.navigate("NewGroup")}
+          >
+            <View style={styles.meta}>
+              <View style={styles.person}>
+                <MaterialCommunityIcons name="account-group" size={25} color="#fff" />
+              </View>
+              <View style={styles.textPrt}>
+                <View>
+                  <Text style={styles.metaText}>New Group</Text>
+                </View>
               </View>
             </View>
-          </View>
-        </TouchableNativeFeedback>
-      </View>
-      <View>
-        <TouchableNativeFeedback
-          background={TouchableNativeFeedback.Ripple("#fff", false)}
-          onPress={() => {}}
-        >
-          <View style={styles.meta}>
-            <View style={styles.person}>
-              <Ionicons name="person-add" size={25} color="#fff" />
+          </TouchableNativeFeedback>
+        </View>
+        <View>
+          <TouchableNativeFeedback
+            background={TouchableNativeFeedback.Ripple("#fff", false)}
+            onPress={() => {}}
+          >
+            <View style={styles.meta}>
+              <View style={styles.person}>
+                <Ionicons name="person-add" size={25} color="#fff" />
+              </View>
+              <View style={styles.textPrt}>
+                <Text style={styles.metaText}>New Contact</Text>
+              </View>
             </View>
-            <View style={styles.textPrt}>
-              <Text style={styles.metaText}>New Contact</Text>
-            </View>
-          </View>
-        </TouchableNativeFeedback>
-      </View>
-      <Contact />
-    </ScrollView>
+          </TouchableNativeFeedback>
+        </View>
+        <Contact />
+      </ScrollView>
+    </>
   );
 };
 
