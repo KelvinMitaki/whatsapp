@@ -18,6 +18,7 @@ import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 import SearchModal from "../components/Modals/SearchModal";
 import { SetSearchModal } from "./HomeScreen";
+import { NavigationEvents } from "react-navigation";
 
 interface Params {
   contacts: number;
@@ -47,6 +48,9 @@ const ContactScreen: NavigationStackScreenComponent<Params> = ({ navigation }) =
   }, [data.fetchUsers]);
   return (
     <ScrollView>
+      <NavigationEvents
+        onWillFocus={() => dispatch<SetSearchModal>({ type: "setSearchModal", payload: false })}
+      />
       <View>
         <TouchableNativeFeedback
           background={TouchableNativeFeedback.Ripple("#fff", false)}
