@@ -18,6 +18,7 @@ import { SetSearchModal } from "../../screens/HomeScreen";
 
 const HomeHeaderRight: React.FC<NavigationInjectedProps> = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [inp, setInp] = useState<string>("");
   const headerHeight = useSelector((state: Redux) => state.chat.headerHeight);
   const searchModal = useSelector((state: Redux) => state.chat.searchModal);
   const dispatch = useDispatch();
@@ -88,7 +89,7 @@ const HomeHeaderRight: React.FC<NavigationInjectedProps> = () => {
         height={height}
         width={width}
       />
-      <SearchModal height={searchHeight} width={searchWidth} />
+      <SearchModal height={searchHeight} width={searchWidth} setInp={setInp} inp={inp} />
     </View>
   );
 };

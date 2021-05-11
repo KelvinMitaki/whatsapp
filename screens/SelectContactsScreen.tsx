@@ -33,10 +33,13 @@ interface Params {
   searchWidth: Animated.Value;
   headerHeight: number;
   contacts: User[];
+  setInp: React.Dispatch<React.SetStateAction<string>>;
+  inp: string;
 }
 
 const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [checked, setChecked] = useState<User[]>([]);
+  const [inp, setInp] = useState<string>("");
   const { data } = useQuery(FETCH_USERS);
   const dispatch = useDispatch();
   const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
@@ -66,10 +69,13 @@ const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigati
       searchHeight,
       searchWidth,
       headerHeight,
-      contacts: data ? data.fetchUsers : []
+      contacts: data ? data.fetchUsers : [],
+      setInp
     });
   }, [dispatch, searchHeight, searchWidth, headerHeight, data]);
-
+  useEffect(() => {
+    navigation.setParams({ inp });
+  }, [inp]);
   return (
     <View style={{ height: "100%" }}>
       <NavigationEvents
@@ -78,11 +84,13 @@ const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigati
       <FlatList
         data={
           data
-            ? ((data.fetchUsers as User[]).map(({ profilePhoto, _id, name }) => ({
-                profilePhoto,
-                _id,
-                name
-              })) as unknown as User[])
+            ? (
+                (data.fetchUsers as User[]).map(({ profilePhoto, _id, name }) => ({
+                  profilePhoto,
+                  _id,
+                  name
+                })) as unknown as User[]
+              ).filter(u => (inp.trim().length ? inp.trim().includes(u.name.trim()) : true))
             : ([] as User[])
         }
         keyExtractor={u => u._id}

@@ -26,9 +26,11 @@ interface Props {
   height: Animated.Value;
   width: Animated.Value;
   hideFilter?: boolean;
+  setInp: React.Dispatch<React.SetStateAction<string>>;
+  inp: string;
 }
 
-const SearchModal: React.FC<Props> = ({ height, width, hideFilter }) => {
+const SearchModal: React.FC<Props> = ({ height, width, hideFilter, setInp, inp }) => {
   const searchModal = useSelector((state: Redux) => state.chat.searchModal);
   const dispatch = useDispatch();
   const reset = () => {
@@ -69,6 +71,8 @@ const SearchModal: React.FC<Props> = ({ height, width, hideFilter }) => {
             style={styles.input}
             placeholderTextColor="#fff"
             autoFocus
+            onChangeText={setInp}
+            value={inp}
           />
         </View>
         {!hideFilter && (

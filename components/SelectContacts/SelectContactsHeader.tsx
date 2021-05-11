@@ -18,6 +18,8 @@ interface Params {
   searchWidth: Animated.Value;
   headerHeight: number;
   contacts: User[];
+  setInp: React.Dispatch<React.SetStateAction<string>>;
+  inp: string;
 }
 
 const SelectContactsHeader: NavigationStackScreenComponent<Params>["navigationOptions"] = ({
@@ -32,7 +34,8 @@ const SelectContactsHeader: NavigationStackScreenComponent<Params>["navigationOp
   const headerHeight = navigation.getParam("headerHeight");
   const dispatch = navigation.getParam("dispatch");
   const contacts = navigation.getParam("contacts");
-
+  const inp = navigation.getParam("inp");
+  const setInp = navigation.getParam("setInp");
   return {
     headerTitle: () => (
       <View>
@@ -52,7 +55,13 @@ const SelectContactsHeader: NavigationStackScreenComponent<Params>["navigationOp
     ),
     headerRight: () => (
       <>
-        <SearchModal width={searchWidth} height={searchHeight} hideFilter />
+        <SearchModal
+          width={searchWidth}
+          height={searchHeight}
+          hideFilter
+          setInp={setInp}
+          inp={inp}
+        />
         <View style={styles.headerIconsPrt}>
           <View style={styles.ellipsis}>
             <TouchableNativeFeedback
