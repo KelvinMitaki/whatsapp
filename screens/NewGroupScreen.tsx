@@ -70,8 +70,14 @@ const NewGroupScreen: NavigationStackScreenComponent<Params> = ({ navigation }) 
   }, [Contacts]);
   return (
     <>
+      <NavigationEvents
+        onWillFocus={() => {
+          dispatch<ResetContacts>({ type: "resetContacts" });
+          dispatch<SetSearchModal>({ type: "setSearchModal", payload: false });
+        }}
+      />
+      {searchModal && <View style={{ height: headerHeight / 3 }}></View>}
       <HorizontalScrollContacts Contacts={Contacts} />
-      <NavigationEvents onWillFocus={() => dispatch<ResetContacts>({ type: "resetContacts" })} />
       <ScrollView>
         <Contact
           setContacts={usr => {
