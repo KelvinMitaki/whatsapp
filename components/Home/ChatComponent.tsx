@@ -9,6 +9,8 @@ import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { Chat, CurrentUser } from "../../interfaces/ChatInterface";
 import { format } from "date-fns/esm";
 import AppColors from "../../Colors/color";
+import { useSelector } from "react-redux";
+import { Redux } from "../../interfaces/Redux";
 
 interface Props {
   item: Chat;
@@ -25,11 +27,13 @@ export const formatDate = (date: Date) => {
 };
 
 const ChatComponent: React.FC<Props & NavigationInjectedProps> = props => {
+  const typingChats = useSelector((state: Redux) => state.chat.typingChats);
   const {
     item: { message, sender, type, updatedAt, recipient, unread, _id },
     currentUser,
     navigation
   } = props;
+  const chat = typingChats.find(c => c.chatID === _id);
   return (
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
@@ -99,12 +103,20 @@ const ChatComponent: React.FC<Props & NavigationInjectedProps> = props => {
                 width: unread ? "90%" : "100%"
               }}
             >
-              {currentUser._id === sender._id && !unread && (
-                <Ionicons name="checkmark-done" size={18} color={AppColors.blue_tick} />
-              )}
-              {currentUser._id === sender._id && unread && <Ionicons name="checkmark" size={18} />}
+              {chat && chat.typing ? (
+                <Text style={{ color: AppColors.secodary }}>typing...</Text>
+              ) : (
+                <>
+                  {currentUser._id === sender._id && !unread && (
+                    <Ionicons name="checkmark-done" size={18} color={AppColors.blue_tick} />
+                  )}
+                  {currentUser._id === sender._id && unread && (
+                    <Ionicons name="checkmark" size={18} />
+                  )}
 
-              {message}
+                  {message}
+                </>
+              )}
             </Text>
             {unread && currentUser._id !== sender._id ? (
               <Badge value={unread} badgeStyle={{ backgroundColor: "#00af9c" }} />
