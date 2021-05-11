@@ -10,7 +10,11 @@ import { NavigationEvents } from "react-navigation";
 import { useMutation, useQuery, useSubscription } from "@apollo/client";
 import { FETCH_CHATS, FETCH_CURRENT_USER } from "../graphql/queries";
 import StartChat from "../components/Home/StartChat";
-import { ADD_NEW_CHAT_SUB, UPDATE_USER_ONLINE_SUB } from "../graphql/subscriptions";
+import {
+  ADD_NEW_CHAT_SUB,
+  UPDATE_USER_ONLINE_SUB,
+  UPDATE_USER_TYPING_SUB
+} from "../graphql/subscriptions";
 import { Chat, CurrentUser, UserOnline } from "../interfaces/ChatInterface";
 import { UPDATE_USER_ONLINE } from "../graphql/mutations";
 
