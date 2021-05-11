@@ -90,7 +90,11 @@ const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigati
                   _id,
                   name
                 })) as unknown as User[]
-              ).filter(u => (inp.trim().length ? inp.trim().includes(u.name.trim()) : true))
+              ).filter(u =>
+                inp.trim().length
+                  ? u.name.trim().toLowerCase().includes(inp.trim().toLowerCase())
+                  : true
+              )
             : ([] as User[])
         }
         keyExtractor={u => u._id}
