@@ -70,7 +70,7 @@ ContactScreen.navigationOptions = ({ navigation }) => {
       <View style={styles.headerRight}>
         <View style={styles.ellipsis}>
           <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple("#fff", false)}
+            background={TouchableNativeFeedback.Ripple("#fff", true)}
             onPress={() => {}}
           >
             <View>
@@ -80,7 +80,7 @@ ContactScreen.navigationOptions = ({ navigation }) => {
         </View>
         <View style={styles.ellipsis}>
           <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple("#fff", false)}
+            background={TouchableNativeFeedback.Ripple("#fff", true)}
             onPress={() => {}}
           >
             <View>
