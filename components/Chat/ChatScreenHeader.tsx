@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableNativeFeedback } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons, Ionicons, AntDesign } from "@expo/vector-icons";
 import { formatRelative } from "date-fns";
+import { CurrentUser } from "../../interfaces/ChatInterface";
 
 interface Params {
   recipient: {
@@ -13,12 +14,14 @@ interface Params {
     online: boolean;
   };
   chatID: string;
+  currentUser: CurrentUser;
 }
 
 const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOptions"] = ({
   navigation
 }) => {
   const recipient = navigation.getParam("recipient");
+  const currentUser = navigation.getParam("currentUser");
   return {
     headerTitle: () => (
       <View style={styles.headerLeft}>
@@ -48,7 +51,7 @@ const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOption
             {recipient.name}
           </Text>
           <Text style={{ color: "#fff" }}>
-            {recipient.typing
+            {recipient.typing && recipient._id !== currentUser._id
               ? "typing..."
               : recipient.online
               ? "Online"

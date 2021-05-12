@@ -66,5 +66,6 @@ export interface UserOnline {
 
 export interface UserTyping {
   chatID: string;
+  typingUserID: string;
   typing: boolean;
 }

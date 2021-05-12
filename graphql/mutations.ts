@@ -130,10 +130,11 @@ export const UPDATE_USER_ONLINE = gql`
 `;
 
 export const UPDATE_USER_TYPING = gql`
-  mutation UpdateUserTyping($typing: Boolean!, $chatID: String!) {
-    updateUserTyping(typing: $typing, chatID: $chatID) {
+  mutation UpdateUserTyping($typing: Boolean!, $chatID: String!, $typingUserID: String!) {
+    updateUserTyping(typing: $typing, chatID: $chatID, typingUserID: $typingUserID) {
       chatID
       typing
+      typingUserID
     }
   }
 `;
