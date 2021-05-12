@@ -64,17 +64,27 @@ const StatusScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
         <StatusList />
       </ScrollView>
       <Animated.View style={position.getLayout()}>
-        <TouchableNativeFeedback onPress={() => {}}>
-          <View style={styles.pencil}>
-            <MaterialCommunityIcons name="pencil" size={20} color="#fff" />
+        <View style={styles.pencilPrt}>
+          <TouchableNativeFeedback
+            onPress={() => {}}
+            background={TouchableNativeFeedback.Ripple("#fff", true)}
+          >
+            <View style={styles.pencil}>
+              <MaterialCommunityIcons name="pencil" size={20} color="#fff" />
+            </View>
+          </TouchableNativeFeedback>
+        </View>
+      </Animated.View>
+      <View style={styles.cameraPrt}>
+        <TouchableNativeFeedback
+          onPress={() => {}}
+          background={TouchableNativeFeedback.Ripple("#fff", true)}
+        >
+          <View style={styles.camera}>
+            <FontAwesome name="camera" size={20} color="#fff" />
           </View>
         </TouchableNativeFeedback>
-      </Animated.View>
-      <TouchableNativeFeedback onPress={() => {}}>
-        <View style={styles.camera}>
-          <FontAwesome name="camera" size={20} color="#fff" />
-        </View>
-      </TouchableNativeFeedback>
+      </View>
     </View>
   );
 };
@@ -122,10 +132,16 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginVertical: 10
   },
-  camera: {
+  cameraPrt: {
     position: "absolute",
     right: "5%",
     bottom: "3%",
+    height: 55,
+    width: 55,
+    borderRadius: 55,
+    borderColor: "transparent"
+  },
+  camera: {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#00af9c",
@@ -133,10 +149,15 @@ const styles = StyleSheet.create({
     width: 55,
     borderRadius: 55
   },
-  pencil: {
+  pencilPrt: {
+    height: 45,
+    width: 45,
+    borderRadius: 45,
     position: "absolute",
     right: "5%",
-    bottom: "15%",
+    bottom: "15%"
+  },
+  pencil: {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#00af9c",
