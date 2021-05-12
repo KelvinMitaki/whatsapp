@@ -38,3 +38,9 @@ export interface UnreadGroupMsg {
   group: string;
   messageCount: number;
 }
+
+export interface GroupUserTyping {
+  groupID: string;
+  typingUserID: string;
+  typing: boolean;
+}

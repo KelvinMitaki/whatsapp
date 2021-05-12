@@ -3,17 +3,21 @@ import { StyleSheet, Text, View } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons, Ionicons, FontAwesome, AntDesign } from "@expo/vector-icons";
 import { TouchableNativeFeedback } from "react-native";
-import { GroupWithParticipants } from "../../interfaces/GroupInterface";
+import { GroupUserTyping, GroupWithParticipants } from "../../interfaces/GroupInterface";
 
 interface Params {
   groupID: string;
   group: GroupWithParticipants;
+  typingData?: GroupUserTyping;
 }
 
 const GroupChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOptions"] = ({
   navigation
 }) => {
   const group = navigation.getParam("group");
+  const typingData = navigation.getParam("typingData");
+  const typingParticipant =
+    group && group.participants.find(p => p._id === typingData?.typingUserID);
   return {
     headerShown: !!group,
     ...(group && {
@@ -27,10 +31,12 @@ const GroupChatScreenHeader: NavigationStackScreenComponent<Params>["navigationO
               {group.name}
             </Text>
             <Text numberOfLines={1} style={{ color: "white", marginLeft: 10 }}>
-              {group.participants
-                .map(p => p.name)
-                .toString()
-                .replace(/,/g, ", ")}
+              {typingData && typingData.typing
+                ? `${typingParticipant?.name} is typing...`
+                : group.participants
+                    .map(p => p.name)
+                    .toString()
+                    .replace(/,/g, ", ")}
             </Text>
           </View>
         </View>

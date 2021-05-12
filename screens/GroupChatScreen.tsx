@@ -8,7 +8,7 @@ import { TouchableNativeFeedback } from "react-native";
 import Input, { MESSAGE_LIMIT } from "../components/Chat/Input";
 import GroupMessage from "../components/GroupChat/GroupMessage";
 import AppColors from "../Colors/color";
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery, useSubscription } from "@apollo/client";
 import {
   FETCH_CURRENT_USER,
   FETCH_GROUP,
@@ -16,16 +16,18 @@ import {
   FETCH_GROUP_MSG_COUNT,
   FETCH_UNREAD_GROUP_MSGS
 } from "../graphql/queries";
-import { GroupMsg, GroupWithParticipants } from "../interfaces/GroupInterface";
+import { GroupMsg, GroupWithParticipants, GroupUserTyping } from "../interfaces/GroupInterface";
 import { UPDATE_GROUP_MESSAGES_READ, UPDATE_GROUP_TYPING } from "../graphql/mutations";
 import { CurrentUser } from "../interfaces/ChatInterface";
 import { useDispatch } from "react-redux";
 import { SetIncommingUnread } from "../components/Group/GroupChat";
 import GroupChatScreenHeader from "../components/GroupChat/GroupChatScreenHeader";
+import { UPDATE_GROUP_TYPING_SUB } from "../graphql/subscriptions";
 
 interface Params {
   groupID: string;
   group: GroupWithParticipants;
+  typingData?: GroupUserTyping;
 }
 
 const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
@@ -79,6 +81,15 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
     }
   );
   const [updateGroupTyping] = useMutation(UPDATE_GROUP_TYPING);
+  useSubscription(UPDATE_GROUP_TYPING_SUB, {
+    variables: { groupID },
+    onSubscriptionData({ subscriptionData: { data } }) {
+      const parsedData: GroupUserTyping = data.updateGroupTyping;
+      if (parsedData.typingUserID !== currentUser._id) {
+        navigation.setParams({ typingData: parsedData });
+      }
+    }
+  });
   const group = useQuery(FETCH_GROUP, { variables: { groupID } });
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackBtnPressAndroid);
@@ -93,9 +104,9 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
   }, [group.data]);
   useEffect(() => {
     if (keyboardShown) {
-      updateGroupTyping({ variables: { groupID, typing: true, $typingUserID: currentUser._id } });
+      updateGroupTyping({ variables: { groupID, typing: true, typingUserID: currentUser._id } });
     } else {
-      updateGroupTyping({ variables: { groupID, typing: false, $typingUserID: currentUser._id } });
+      updateGroupTyping({ variables: { groupID, typing: false, typingUserID: currentUser._id } });
     }
   }, [keyboardShown]);
   const handleBackBtnPressAndroid = () => {
