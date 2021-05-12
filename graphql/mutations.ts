@@ -138,3 +138,13 @@ export const UPDATE_USER_TYPING = gql`
     }
   }
 `;
+
+export const UPDATE_GROUP_TYPING = gql`
+  mutation UpdateGroupTyping($groupID: String!, $typing: Boolean!, $typingUserID: String!) {
+    updateGroupTyping(groupID: $groupID, typing: $typing, typingUserID: $typingUserID) {
+      groupID
+      typing
+      typingUserID
+    }
+  }
+`;

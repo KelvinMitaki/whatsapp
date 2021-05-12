@@ -109,3 +109,13 @@ export const UPDATE_USER_TYPING_SUB = gql`
     }
   }
 `;
+
+export const UPDATE_GROUP_TYPING_SUB = gql`
+  subscription UpdateGroupTyping($groupID: String!) {
+    updateGroupTyping(groupID: $groupID) {
+      groupID
+      typing
+      typingUserID
+    }
+  }
+`;
