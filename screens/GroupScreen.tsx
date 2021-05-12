@@ -17,16 +17,23 @@ const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
         groups={data ? data.fetchGroups : []}
         unread={data2 ? data2.fetchUnreadGroupMsgs : []}
       />
-      <TouchableNativeFeedback onPress={() => navigation.navigate("Contact")}>
-        <View style={styles.plus}>
-          <MaterialCommunityIcons
-            name="android-messages"
-            size={30}
-            color="#fff"
-            style={styles.msgIcon}
-          />
+      <View style={styles.withChatsPrt}>
+        <View style={styles.messageNavPrt}>
+          <TouchableNativeFeedback
+            onPress={() => navigation.navigate("Contact")}
+            background={TouchableNativeFeedback.Ripple("#fff", true)}
+          >
+            <View style={styles.message}>
+              <MaterialCommunityIcons
+                name="android-messages"
+                size={30}
+                color="#fff"
+                style={styles.msgIcon}
+              />
+            </View>
+          </TouchableNativeFeedback>
         </View>
-      </TouchableNativeFeedback>
+      </View>
     </View>
   );
 };
@@ -41,10 +48,21 @@ const styles = StyleSheet.create({
   prt: {
     height: "100%"
   },
-  plus: {
+  withChatsPrt: {
+    width: "100%",
+    alignItems: "flex-end",
     position: "absolute",
+    bottom: 20,
+    paddingHorizontal: 10
+  },
+  messageNavPrt: {
+    height: 55,
+    width: 55,
+    borderRadius: 55,
+    borderColor: "transparent"
+  },
+  message: {
     right: "5%",
-    bottom: "3%",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#00af9c",
