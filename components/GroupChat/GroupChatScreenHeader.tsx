@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TextInput, View, BackHandler, ActivityIndicator } from "react-native";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { MaterialIcons, Ionicons, FontAwesome, AntDesign } from "@expo/vector-icons";
-import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import { TouchableNativeFeedback } from "react-native";
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
-import { useDispatch } from "react-redux";
 import { GroupWithParticipants } from "../../interfaces/GroupInterface";
 
 interface Params {

@@ -17,7 +17,7 @@ import {
   FETCH_UNREAD_GROUP_MSGS
 } from "../graphql/queries";
 import { GroupMsg, GroupWithParticipants } from "../interfaces/GroupInterface";
-import { UPDATE_GROUP_MESSAGES_READ } from "../graphql/mutations";
+import { UPDATE_GROUP_MESSAGES_READ, UPDATE_GROUP_TYPING } from "../graphql/mutations";
 import { CurrentUser } from "../interfaces/ChatInterface";
 import { useDispatch } from "react-redux";
 import { SetIncommingUnread } from "../components/Group/GroupChat";
@@ -78,6 +78,7 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
       }
     }
   );
+  const [updateGroupTyping] = useMutation(UPDATE_GROUP_TYPING);
   const group = useQuery(FETCH_GROUP, { variables: { groupID } });
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackBtnPressAndroid);
@@ -90,6 +91,13 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
       navigation.setParams({ group: group.data.fetchGroup });
     }
   }, [group.data]);
+  useEffect(() => {
+    if (keyboardShown) {
+      updateGroupTyping({ variables: { groupID, typing: true, $typingUserID: currentUser._id } });
+    } else {
+      updateGroupTyping({ variables: { groupID, typing: false, $typingUserID: currentUser._id } });
+    }
+  }, [keyboardShown]);
   const handleBackBtnPressAndroid = () => {
     if (!navigation.isFocused()) {
       return false;
