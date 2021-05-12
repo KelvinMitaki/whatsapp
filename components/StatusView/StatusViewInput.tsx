@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Image, Keyboard, KeyboardEvent, StyleSheet, Text, TextInput, View } from "react-native";
 import { Entypo, FontAwesome, Fontisto, Ionicons } from "@expo/vector-icons";
-import { genRandomNum } from "../Group/GroupMessage";
+import { genRandomNum } from "../GroupChat/GroupMessage";
 import inspect from "../../inspect";
 
 interface Props {
