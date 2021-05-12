@@ -8,7 +8,9 @@ const StarredMessage: React.FC<NavigationInjectedProps> = React.memo(({ navigati
   return (
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#fff", false)}
-      onPress={() => navigation.navigate("Chat")}
+      onPress={() => {
+        // navigation.navigate("Chat",{recipient})
+      }}
     >
       <View style={styles.starredMsgPrt}>
         <View style={styles.starredMsgHeader}>

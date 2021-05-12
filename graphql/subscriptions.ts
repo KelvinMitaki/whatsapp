@@ -105,6 +105,7 @@ export const UPDATE_USER_TYPING_SUB = gql`
     updateUserTyping(chatID: $chatID) {
       chatID
       typing
+      typingUserID
     }
   }
 `;

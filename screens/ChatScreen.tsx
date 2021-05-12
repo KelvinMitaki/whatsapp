@@ -20,7 +20,6 @@ interface Params {
     online: boolean;
   };
   chatID: string;
-  currentUser: CurrentUser;
 }
 
 export interface SetUserTyping {
@@ -47,9 +46,8 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
     variables: { chatID },
     onSubscriptionData(subData) {
       const userTyping: UserTyping = subData.subscriptionData.data.updateUserTyping;
-      console.log(userTyping);
       dispatch<SetUserTyping>({ type: "setUserTyping", payload: userTyping });
-      if (chatID === userTyping.chatID) {
+      if (chatID === userTyping.chatID && userTyping.typingUserID !== currentUser._id) {
         navigation.setParams({ recipient: { ...recipient, typing: userTyping.typing } });
       }
     }
@@ -82,7 +80,6 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [updateReadMessages] = useMutation(UPDATE_READ_MESSAGES);
   const [updateUserTyping] = useMutation(UPDATE_USER_TYPING);
   useEffect(() => {
-    navigation.setParams({ currentUser });
     BackHandler.addEventListener("hardwareBackPress", handleBackBtnPressAndroid);
     return () => {
       BackHandler.removeEventListener("hardwareBackPress", handleBackBtnPressAndroid);
