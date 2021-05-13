@@ -183,3 +183,37 @@ export const FETCH_GROUP_MSG_COUNT = gql`
     }
   }
 `;
+
+export const FETCH_STARRED_MESSAGES = gql`
+  query {
+    fetchStarredMsgs {
+      message {
+        _id
+        message
+        sender {
+          _id
+          name
+          profilePhoto
+        }
+        recipient {
+          _id
+          name
+          profilePhoto
+        }
+      }
+      groupMsg {
+        _id
+        read
+        received
+        createdAt
+        group
+        message
+        sender {
+          _id
+          name
+          profilePhoto
+        }
+      }
+    }
+  }
+`;

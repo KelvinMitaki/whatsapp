@@ -148,3 +148,37 @@ export const UPDATE_GROUP_TYPING = gql`
     }
   }
 `;
+
+export const ADD_STARRED_MESSAGE = gql`
+  mutation AddStarredMessage($message: String, $groupMsg: String) {
+    addStarredMessage(message: $message, groupMsg: $groupMsg) {
+      message {
+        _id
+        message
+        sender {
+          _id
+          name
+          profilePhoto
+        }
+        recipient {
+          _id
+          name
+          profilePhoto
+        }
+      }
+      groupMsg {
+        _id
+        read
+        received
+        createdAt
+        group
+        message
+        sender {
+          _id
+          name
+          profilePhoto
+        }
+      }
+    }
+  }
+`;
