@@ -7,8 +7,8 @@ import { GroupUserTyping, GroupWithParticipants } from "../../interfaces/GroupIn
 
 interface Params {
   groupID: string;
-  group: GroupWithParticipants;
-  typingData?: GroupUserTyping;
+  group: GroupWithParticipants | undefined;
+  typingData: GroupUserTyping | undefined;
 }
 
 const GroupChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOptions"] = ({
