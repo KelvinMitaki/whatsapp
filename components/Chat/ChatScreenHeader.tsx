@@ -13,6 +13,7 @@ import { formatRelative } from "date-fns";
 import { MessageInterface } from "../../interfaces/ChatInterface";
 import AppColors from "../../Colors/color";
 import inspect from "../../inspect";
+import { MutationTuple, OperationVariables } from "@apollo/client";
 
 interface Params {
   recipient: {
@@ -25,6 +26,7 @@ interface Params {
   chatID: string;
   setSelectedMsgs: React.Dispatch<React.SetStateAction<MessageInterface[]>>;
   selectedMsgs: MessageInterface[];
+  addStarredMessages: MutationTuple<any, OperationVariables>[0];
 }
 
 const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOptions"] = ({
@@ -33,6 +35,7 @@ const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOption
   const recipient = navigation.getParam("recipient");
   const selectedMsgs = navigation.getParam("selectedMsgs");
   const setSelectedMsgs = navigation.getParam("setSelectedMsgs");
+  const addStarredMessages = navigation.getParam("addStarredMessages");
   if (!selectedMsgs || (selectedMsgs && !selectedMsgs.length)) {
     return {
       headerTitle: () => (

@@ -56,6 +56,7 @@ export interface MessageInterface {
   message: string;
   read: boolean;
   createdAt: string;
+  starredBy: string[];
   deleted: boolean;
 }
 

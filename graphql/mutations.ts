@@ -149,7 +149,7 @@ export const UPDATE_GROUP_TYPING = gql`
   }
 `;
 
-export const ADD_STARRED_MESSAGE = gql`
+export const ADD_STARRED_MESSAGES = gql`
   mutation AddStarredMessages($messageIDs: [String!]!) {
     addStarredMessages(messageIDs: $messageIDs) {
       _id
@@ -163,9 +163,43 @@ export const ADD_STARRED_MESSAGE = gql`
   }
 `;
 
-export const ADD_STARRED_GROUP_MSG = gql`
+export const REMOVE_STARRED_MESSAGES = gql`
+  mutation RemoveStarredMessages($messageIDs: [String!]!) {
+    removeStarredMessages(messageIDs: $messageIDs) {
+      _id
+      sender
+      recipient
+      message
+      read
+      createdAt
+      deleted
+    }
+  }
+`;
+
+export const ADD_STARRED_GROUP_MSGS = gql`
   mutation AddStarredGroupMessages($groupMsgIDs: [String!]!) {
     addStarredGroupMessages(groupMsgIDs: $groupMsgIDs) {
+      _id
+      sender {
+        _id
+        phoneNumber
+        profilePhoto
+        countryCode
+        name
+      }
+      message
+      createdAt
+      read
+      received
+      deleted
+      group
+    }
+  }
+`;
+export const REMOVE_STARRED_GROUP_MESSAGES = gql`
+  mutation RemoveStarredGroupMessages($groupMsgIDs: [String!]!) {
+    removeStarredGroupMessages(groupMsgIDs: $groupMsgIDs) {
       _id
       sender {
         _id

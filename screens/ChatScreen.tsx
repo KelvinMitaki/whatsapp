@@ -3,9 +3,20 @@ import { BackHandler, StyleSheet, Text, View, ActivityIndicator, Dimensions } fr
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import Message from "../components/Chat/Message";
 import Input, { MESSAGE_LIMIT } from "../components/Chat/Input";
-import { useLazyQuery, useMutation, useQuery, useSubscription } from "@apollo/client";
+import {
+  MutationTuple,
+  OperationVariables,
+  useLazyQuery,
+  useMutation,
+  useQuery,
+  useSubscription
+} from "@apollo/client";
 import { FETCH_CURRENT_USER, FETCH_MESSAGES, FETCH_MESSAGE_COUNT } from "../graphql/queries";
-import { UPDATE_READ_MESSAGES, UPDATE_USER_TYPING } from "../graphql/mutations";
+import {
+  ADD_STARRED_MESSAGES,
+  UPDATE_READ_MESSAGES,
+  UPDATE_USER_TYPING
+} from "../graphql/mutations";
 import { CurrentUser, MessageInterface, UserOnline, UserTyping } from "../interfaces/ChatInterface";
 import ChatScreenHeader from "../components/Chat/ChatScreenHeader";
 import { UPDATE_USER_ONLINE_SUB, UPDATE_USER_TYPING_SUB } from "../graphql/subscriptions";
@@ -22,6 +33,7 @@ interface Params {
   chatID: string;
   setSelectedMsgs: React.Dispatch<React.SetStateAction<MessageInterface[]>>;
   selectedMsgs: MessageInterface[];
+  addStarredMessages: MutationTuple<any, OperationVariables>[0];
 }
 
 export interface SetUserTyping {
@@ -82,8 +94,9 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const currentUser: CurrentUser = user.data.fetchCurrentUser;
   const [updateReadMessages] = useMutation(UPDATE_READ_MESSAGES);
   const [updateUserTyping] = useMutation(UPDATE_USER_TYPING);
+  const [addStarredMessages] = useMutation(ADD_STARRED_MESSAGES);
   useEffect(() => {
-    navigation.setParams({ setSelectedMsgs });
+    navigation.setParams({ setSelectedMsgs, addStarredMessages });
     BackHandler.addEventListener("hardwareBackPress", handleBackBtnPressAndroid);
     return () => {
       BackHandler.removeEventListener("hardwareBackPress", handleBackBtnPressAndroid);

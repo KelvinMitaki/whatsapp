@@ -32,6 +32,7 @@ export interface GroupMsg {
   deleted: string;
   received: string[];
   createdAt: string;
+  starredBy: string[];
 }
 
 export interface UnreadGroupMsg {

@@ -84,6 +84,7 @@ export const FETCH_MESSAGES = gql`
       read
       createdAt
       deleted
+      starredBy
     }
   }
 `;
@@ -142,6 +143,7 @@ export const FETCH_GROUP_MSGS = gql`
       received
       deleted
       group
+      starredBy
     }
   }
 `;
