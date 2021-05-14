@@ -5,7 +5,8 @@ import {
   View,
   ScrollView,
   NativeScrollEvent,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableNativeFeedback
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
@@ -29,6 +30,7 @@ interface Props {
 
 const Message: React.FC<Props> = props => {
   const { messages, recipient, fetchMore, setShowLoading, showLoading, keyboardShown } = props;
+  const [selectedMsgs, setSelectedMsgs] = useState<MessageInterface[]>([]);
   const { data } = useQuery(FETCH_CURRENT_USER);
   const count = useQuery(FETCH_MESSAGE_COUNT, { variables: { recipient } });
   const currentUser: CurrentUser = data.fetchCurrentUser;
@@ -73,31 +75,57 @@ const Message: React.FC<Props> = props => {
         }}
       >
         {filteredMsgs.map((item, index) => (
-          <View key={item._id}>
-            {index === 0 &&
-              count.data &&
-              count.data.fetchMessageCount.count > filteredMsgs.length && (
-                <ActivityIndicator size="large" color={AppColors.secodary} />
+          <TouchableNativeFeedback
+            onLongPress={() => !selectedMsgs.length && setSelectedMsgs(msgs => [item, ...msgs])}
+            onPress={() =>
+              selectedMsgs.length &&
+              setSelectedMsgs(msgs => {
+                let selectedMsgs = [...msgs];
+                const selectedMsgIndex = selectedMsgs.findIndex(msg => msg._id === item._id);
+                if (selectedMsgIndex !== -1) {
+                  selectedMsgs.splice(selectedMsgIndex, 1);
+                } else {
+                  selectedMsgs = [item, ...selectedMsgs];
+                }
+                return selectedMsgs;
+              })
+            }
+            key={item._id}
+            touchSoundDisabled={selectedMsgs.length === 0}
+          >
+            <View>
+              {index === 0 &&
+                count.data &&
+                count.data.fetchMessageCount.count > filteredMsgs.length && (
+                  <ActivityIndicator size="large" color={AppColors.secodary} />
+                )}
+              {selectedMsgs.some(msg => msg._id === item._id) && (
+                <View style={styles.selectedMsgPrt}>
+                  <View style={styles.selectedMsg}>
+                    <Text style={{ color: "transparent" }}>{item.message}</Text>
+                  </View>
+                </View>
               )}
-            {currentUser._id === item.sender ? (
-              <View style={styles.me}>
-                <Text style={{ color: "#fff" }}>{item.message}</Text>
-                <Text style={styles.meta}>
-                  {format(new Date(parseInt(item.createdAt)), "p")}{" "}
-                  {item.read ? (
-                    <Ionicons name="checkmark-done" size={18} color={AppColors.blue_tick} />
-                  ) : (
-                    <Ionicons name="checkmark" size={18} />
-                  )}
-                </Text>
-              </View>
-            ) : (
-              <View style={styles.sender}>
-                <Text style={{ color: "#fff" }}>{item.message}</Text>
-                <Text style={styles.meta}>{format(new Date(parseInt(item.createdAt)), "p")}</Text>
-              </View>
-            )}
-          </View>
+              {currentUser._id === item.sender ? (
+                <View style={styles.me}>
+                  <Text style={{ color: "#fff" }}>{item.message}</Text>
+                  <Text style={styles.meta}>
+                    {format(new Date(parseInt(item.createdAt)), "p")}{" "}
+                    {item.read ? (
+                      <Ionicons name="checkmark-done" size={18} color={AppColors.blue_tick} />
+                    ) : (
+                      <Ionicons name="checkmark" size={18} />
+                    )}
+                  </Text>
+                </View>
+              ) : (
+                <View style={styles.sender}>
+                  <Text style={{ color: "#fff" }}>{item.message}</Text>
+                  <Text style={styles.meta}>{format(new Date(parseInt(item.createdAt)), "p")}</Text>
+                </View>
+              )}
+            </View>
+          </TouchableNativeFeedback>
         ))}
       </ScrollView>
     </View>
@@ -144,5 +172,22 @@ const styles = StyleSheet.create({
     bottom: 3,
     right: 5,
     paddingLeft: 10
+  },
+  selectedMsgPrt: {
+    backgroundColor: AppColors.message_selection_highlight,
+    position: "absolute",
+    elevation: 1000,
+    width: "100%"
+  },
+  selectedMsg: {
+    paddingHorizontal: 5,
+    maxWidth: "70%",
+    minWidth: "20%",
+    minHeight: 50,
+    borderRadius: 5,
+    paddingBottom: 20,
+    marginBottom: 10,
+    marginRight: 10,
+    marginTop: 10
   }
 });
