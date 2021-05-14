@@ -1,3 +1,5 @@
+import { GroupMsg } from "./GroupInterface";
+
 export interface Chat {
   _id: string;
   sender: {
@@ -69,4 +71,9 @@ export interface UserTyping {
   chatID: string;
   typingUserID: string;
   typing: boolean;
+}
+
+export interface StarredMessagesInterface {
+  messages: MessageInterface[];
+  groupMsgs: GroupMsg[];
 }

@@ -3,66 +3,78 @@ import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { Ionicons, MaterialIcons, Entypo } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
+import { GroupMsg } from "../../interfaces/GroupInterface";
+import { MessageInterface } from "../../interfaces/ChatInterface";
+import { formatDate } from "../Home/ChatComponent";
+import { format } from "date-fns";
 
-const StarredMessage: React.FC<NavigationInjectedProps> = React.memo(({ navigation }) => {
-  return (
-    <TouchableNativeFeedback
-      background={TouchableNativeFeedback.Ripple("#fff", false)}
-      onPress={() => {
-        // navigation.navigate("Chat",{recipient})
-      }}
-    >
-      <View style={styles.starredMsgPrt}>
-        <View style={styles.starredMsgHeader}>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginLeft: 10,
-              width: "75%"
-            }}
-          >
-            <View style={styles.person}>
-              <Ionicons name="person" size={25} color="rgba(241, 241, 242, 0.8)" />
-            </View>
+interface props {
+  starredMsg: MessageInterface | GroupMsg;
+}
+
+const StarredMessage: React.FC<NavigationInjectedProps & props> = React.memo(
+  ({ navigation, starredMsg }) => {
+    return (
+      <TouchableNativeFeedback
+        background={TouchableNativeFeedback.Ripple("#fff", false)}
+        onPress={() => {
+          // navigation.navigate("Chat",{recipient})
+        }}
+      >
+        <View style={styles.starredMsgPrt}>
+          <View style={styles.starredMsgHeader}>
             <View
               style={{
-                marginLeft: 10,
                 flexDirection: "row",
-                width: "80%",
-                overflow: "hidden"
+                alignItems: "center",
+                marginLeft: 10,
+                width: "75%"
               }}
             >
-              <Text style={{ color: "#fff" }} numberOfLines={1}>
-                Kevin
-              </Text>
-              <MaterialIcons name="arrow-right" size={20} color="#fff" />
-              <View style={{ maxWidth: "75%" }}>
+              <View style={styles.person}>
+                <Ionicons name="person" size={25} color="rgba(241, 241, 242, 0.8)" />
+              </View>
+              <View
+                style={{
+                  marginLeft: 10,
+                  flexDirection: "row",
+                  width: "80%",
+                  overflow: "hidden"
+                }}
+              >
                 <Text style={{ color: "#fff" }} numberOfLines={1}>
-                  You
+                  {
+                    // @ts-ignore
+                    starredMsg.sender.name
+                  }
                 </Text>
+                <MaterialIcons name="arrow-right" size={20} color="#fff" />
+                <View style={{ maxWidth: "75%" }}>
+                  <Text style={{ color: "#fff" }} numberOfLines={1}></Text>
+                </View>
               </View>
             </View>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text style={{ color: "rgba(255,255,255,.7)" }}>
+                {" "}
+                {formatDate(new Date(parseInt(starredMsg.createdAt)))}
+              </Text>
+              <Entypo name="chevron-small-right" size={25} color="rgba(255,255,255,.7)" />
+            </View>
           </View>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={{ color: "rgba(255,255,255,.7)" }}>{new Date().toLocaleDateString()}</Text>
-            <Entypo name="chevron-small-right" size={25} color="rgba(255,255,255,.7)" />
+          <View style={styles.me}>
+            <Text style={{ color: "#fff" }}>{starredMsg.message}</Text>
+            <Text style={styles.meta}>
+              <Entypo name="star" size={15} />
+              {format(new Date(parseInt(starredMsg.createdAt)), "p")}{" "}
+              <Ionicons name="checkmark-done" size={18} />
+            </Text>
           </View>
         </View>
-        <View style={styles.me}>
-          <Text style={{ color: "#fff" }}>
-            M Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat velit eum doloremque
-            quo, animi blanditiis alias, amet voluptatem asperiores repellendus iusto quam eveniet
-            quidem molestias id, illum rerum eligendi voluptate
-          </Text>
-          <Text style={styles.meta}>
-            <Entypo name="star" size={15} /> 1:38 PM <Ionicons name="checkmark-done" size={18} />
-          </Text>
-        </View>
-      </View>
-    </TouchableNativeFeedback>
-  );
-});
+      </TouchableNativeFeedback>
+    );
+  }
+);
 
 export default withNavigation(StarredMessage);
 
@@ -91,7 +103,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#00af9c",
     paddingHorizontal: 5,
     maxWidth: "70%",
-    minWidth: "20%",
+    minWidth: "25%",
+    alignSelf: "flex-start",
     minHeight: 50,
     borderRadius: 5,
     paddingBottom: 20,
