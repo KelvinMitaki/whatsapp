@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import React from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Dimensions, FlatList, StyleSheet, Text, View } from "react-native";
 import { NavigationStackScreenComponent, useHeaderHeight } from "react-navigation-stack";
 import { useSelector } from "react-redux";
 import HomeHeaderRight from "../components/Home/HomeHeaderRight";
@@ -19,18 +19,33 @@ const StarredMessagesScreen: NavigationStackScreenComponent = () => {
     starredMessages = data.fetchStarredMsgs;
   }
   const starredMsgs = starredMessages
-    ? [...starredMessages.messages, ...starredMessages.groupMsgs].sort(
-        (a, b) => parseInt(a.createdAt) - parseInt(b.createdAt)
-      )
+    ? [...starredMessages.messages, ...starredMessages.groupMsgs]
+        .sort((a, b) => parseInt(a.createdAt) - parseInt(b.createdAt))
+        .map(msg => ({ ...msg, id: msg._id }))
     : [];
+  const screen = Dimensions.get("screen");
   return (
     <View>
       {searchModal && <View style={{ height: headerHeight }}></View>}
-      <FlatList
-        data={starredMsgs}
-        keyExtractor={m => m._id}
-        renderItem={({ item }) => <StarredMessage starredMsg={item} key={item._id} />}
-      />
+      {!loading ? (
+        <FlatList
+          data={starredMsgs}
+          keyExtractor={m => m._id}
+          renderItem={({ item }) => <StarredMessage starredMsg={item} key={item._id} />}
+        />
+      ) : (
+        <View
+          style={{
+            height: screen.height,
+            width: screen.width,
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        >
+          <ActivityIndicator size="large" color="#00af9c" />
+          <Text style={{ color: "rgba(255,255,255,.8)" }}>Fetching Messages...</Text>
+        </View>
+      )}
     </View>
   );
 };

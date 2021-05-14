@@ -50,7 +50,12 @@ const StarredMessage: React.FC<NavigationInjectedProps & props> = React.memo(
                 </Text>
                 <MaterialIcons name="arrow-right" size={20} color="#fff" />
                 <View style={{ maxWidth: "75%" }}>
-                  <Text style={{ color: "#fff" }} numberOfLines={1}></Text>
+                  <Text style={{ color: "#fff" }} numberOfLines={1}>
+                    {
+                      // @ts-ignore
+                      starredMsg.recipient ? starredMsg.recipient.name : starredMsg.group.name
+                    }
+                  </Text>
                 </View>
               </View>
             </View>
