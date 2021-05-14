@@ -187,32 +187,37 @@ export const FETCH_GROUP_MSG_COUNT = gql`
 export const FETCH_STARRED_MESSAGES = gql`
   query {
     fetchStarredMsgs {
-      message {
-        _id
-        message
+      messages {
         sender {
           _id
-          name
           profilePhoto
+          name
         }
         recipient {
           _id
           name
-          profilePhoto
         }
-      }
-      groupMsg {
-        _id
+        message
         read
+        deleted
         received
         createdAt
-        group
-        message
+      }
+      groupMsgs {
         sender {
           _id
-          name
           profilePhoto
+          name
         }
+        group {
+          _id
+          name
+        }
+        message
+        read
+        deleted
+        received
+        createdAt
       }
     }
   }
