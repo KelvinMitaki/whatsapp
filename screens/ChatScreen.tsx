@@ -14,6 +14,7 @@ import {
 import { FETCH_CURRENT_USER, FETCH_MESSAGES, FETCH_MESSAGE_COUNT } from "../graphql/queries";
 import {
   ADD_STARRED_MESSAGES,
+  REMOVE_STARRED_MESSAGES,
   UPDATE_READ_MESSAGES,
   UPDATE_USER_TYPING
 } from "../graphql/mutations";
@@ -34,6 +35,8 @@ interface Params {
   setSelectedMsgs: React.Dispatch<React.SetStateAction<MessageInterface[]>>;
   selectedMsgs: MessageInterface[];
   addStarredMessages: MutationTuple<any, OperationVariables>[0];
+  removeStarredMessages: MutationTuple<any, OperationVariables>[0];
+  currentUser: CurrentUser;
 }
 
 export interface SetUserTyping {
@@ -95,8 +98,14 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [updateReadMessages] = useMutation(UPDATE_READ_MESSAGES);
   const [updateUserTyping] = useMutation(UPDATE_USER_TYPING);
   const [addStarredMessages] = useMutation(ADD_STARRED_MESSAGES);
+  const [removeStarredMessages] = useMutation(REMOVE_STARRED_MESSAGES);
   useEffect(() => {
-    navigation.setParams({ setSelectedMsgs, addStarredMessages });
+    navigation.setParams({
+      setSelectedMsgs,
+      addStarredMessages,
+      removeStarredMessages,
+      currentUser
+    });
     BackHandler.addEventListener("hardwareBackPress", handleBackBtnPressAndroid);
     return () => {
       BackHandler.removeEventListener("hardwareBackPress", handleBackBtnPressAndroid);

@@ -7,10 +7,11 @@ import {
   AntDesign,
   Entypo,
   FontAwesome,
-  FontAwesome5
+  FontAwesome5,
+  MaterialCommunityIcons
 } from "@expo/vector-icons";
 import { formatRelative } from "date-fns";
-import { MessageInterface } from "../../interfaces/ChatInterface";
+import { CurrentUser, MessageInterface } from "../../interfaces/ChatInterface";
 import AppColors from "../../Colors/color";
 import inspect from "../../inspect";
 import { MutationTuple, OperationVariables } from "@apollo/client";
@@ -27,6 +28,8 @@ interface Params {
   setSelectedMsgs: React.Dispatch<React.SetStateAction<MessageInterface[]>>;
   selectedMsgs: MessageInterface[];
   addStarredMessages: MutationTuple<any, OperationVariables>[0];
+  removeStarredMessages: MutationTuple<any, OperationVariables>[0];
+  currentUser: CurrentUser;
 }
 
 const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOptions"] = ({
@@ -36,6 +39,17 @@ const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOption
   const selectedMsgs = navigation.getParam("selectedMsgs");
   const setSelectedMsgs = navigation.getParam("setSelectedMsgs");
   const addStarredMessages = navigation.getParam("addStarredMessages");
+  const removeStarredMessages = navigation.getParam("removeStarredMessages");
+  const currentUser = navigation.getParam("currentUser");
+  const starred =
+    selectedMsgs.length ===
+    selectedMsgs.filter(m => m.starredBy.some(id => id === currentUser._id)).length;
+  const starredMsgs = selectedMsgs
+    .filter(m => m.starredBy.some(id => id === currentUser._id))
+    .map(m => m._id);
+  const unstarredMsgs = selectedMsgs
+    .filter(m => !m.starredBy.some(id => id === currentUser._id))
+    .map(m => m._id);
   if (!selectedMsgs || (selectedMsgs && !selectedMsgs.length)) {
     return {
       headerTitle: () => (
@@ -137,8 +151,18 @@ const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOption
             style={{ transform: [{ scaleX: -1 }] }}
           />
         </Ellipsis>
-        <Ellipsis>
-          <FontAwesome name="star" size={20} color={AppColors.white} />
+        <Ellipsis
+          onPress={() =>
+            starred
+              ? removeStarredMessages({ variables: { messageIDs: starredMsgs } })
+              : addStarredMessages({ variables: { messageIDs: unstarredMsgs } })
+          }
+        >
+          {starred ? (
+            <MaterialCommunityIcons name="star-off" size={20} color={AppColors.white} />
+          ) : (
+            <FontAwesome name="star" size={20} color={AppColors.white} />
+          )}
         </Ellipsis>
         <Ellipsis>
           <FontAwesome5 name="trash" size={20} color={AppColors.white} />
@@ -193,11 +217,15 @@ const styles = StyleSheet.create({
   }
 });
 
-const Ellipsis: React.FC = ({ children }) => (
+interface Props {
+  onPress?: () => void;
+}
+
+const Ellipsis: React.FC<Props> = ({ children, onPress }) => (
   <View style={styles.ellipsis}>
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#fff", true)}
-      onPress={() => {}}
+      onPress={e => onPress && onPress()}
     >
       <View style={{ height: 45, width: 45, alignItems: "center", justifyContent: "center" }}>
         {children}
