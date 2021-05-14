@@ -150,8 +150,8 @@ export const UPDATE_GROUP_TYPING = gql`
 `;
 
 export const ADD_STARRED_MESSAGE = gql`
-  mutation AddStarredMessage($messageID: String!) {
-    addStarredMessage(messageID: $messageID) {
+  mutation AddStarredMessages($messageIDs: [String!]!) {
+    addStarredMessages(messageIDs: $messageIDs) {
       _id
       sender
       recipient
@@ -164,8 +164,8 @@ export const ADD_STARRED_MESSAGE = gql`
 `;
 
 export const ADD_STARRED_GROUP_MSG = gql`
-  mutation AddStarredGroupMessage($groupMsgID: String!) {
-    addStarredGroupMessage(groupMsgID: $groupMsgID) {
+  mutation AddStarredGroupMessages($groupMsgIDs: [String!]!) {
+    addStarredGroupMessages(groupMsgIDs: $groupMsgIDs) {
       _id
       sender {
         _id
