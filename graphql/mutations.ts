@@ -162,3 +162,24 @@ export const ADD_STARRED_MESSAGE = gql`
     }
   }
 `;
+
+export const ADD_STARRED_GROUP_MSG = gql`
+  mutation AddStarredGroupMessage($groupMsgID: String!) {
+    addStarredGroupMessage(groupMsgID: $groupMsgID) {
+      _id
+      sender {
+        _id
+        phoneNumber
+        profilePhoto
+        countryCode
+        name
+      }
+      message
+      createdAt
+      read
+      received
+      deleted
+      group
+    }
+  }
+`;
