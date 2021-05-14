@@ -20,6 +20,8 @@ interface Params {
     online: boolean;
   };
   chatID: string;
+  setSelectedMsgs: React.Dispatch<React.SetStateAction<MessageInterface[]>>;
+  selectedMsgs: MessageInterface[];
 }
 
 export interface SetUserTyping {
@@ -29,6 +31,7 @@ export interface SetUserTyping {
 const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [showLoading, setShowLoading] = useState<boolean>(true);
   const [keyboardShown, setKeyboardShown] = useState<boolean>(false);
+  const [selectedMsgs, setSelectedMsgs] = useState<MessageInterface[]>([]);
   const dispatch = useDispatch();
   const chatID = navigation.getParam("chatID");
   const recipient = navigation.getParam("recipient");
@@ -80,11 +83,15 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [updateReadMessages] = useMutation(UPDATE_READ_MESSAGES);
   const [updateUserTyping] = useMutation(UPDATE_USER_TYPING);
   useEffect(() => {
+    navigation.setParams({ setSelectedMsgs });
     BackHandler.addEventListener("hardwareBackPress", handleBackBtnPressAndroid);
     return () => {
       BackHandler.removeEventListener("hardwareBackPress", handleBackBtnPressAndroid);
     };
   }, []);
+  useEffect(() => {
+    navigation.setParams({ selectedMsgs });
+  }, [selectedMsgs]);
   useEffect(() => {
     if (data && data.fetchMessages && data.fetchMessages.length) {
       const messageIDs = (data.fetchMessages as MessageInterface[])
@@ -139,6 +146,8 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
             setShowLoading={setShowLoading}
             showLoading={showLoading}
             keyboardShown={keyboardShown}
+            selectedMsgs={selectedMsgs}
+            setSelectedMsgs={setSelectedMsgs}
           />
           <Input
             screen="chat"

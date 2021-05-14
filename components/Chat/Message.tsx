@@ -26,11 +26,21 @@ interface Props {
   setShowLoading: React.Dispatch<React.SetStateAction<boolean>>;
   showLoading: boolean;
   keyboardShown: boolean;
+  setSelectedMsgs: React.Dispatch<React.SetStateAction<MessageInterface[]>>;
+  selectedMsgs: MessageInterface[];
 }
 
 const Message: React.FC<Props> = props => {
-  const { messages, recipient, fetchMore, setShowLoading, showLoading, keyboardShown } = props;
-  const [selectedMsgs, setSelectedMsgs] = useState<MessageInterface[]>([]);
+  const {
+    messages,
+    recipient,
+    fetchMore,
+    setShowLoading,
+    showLoading,
+    keyboardShown,
+    selectedMsgs,
+    setSelectedMsgs
+  } = props;
   const { data } = useQuery(FETCH_CURRENT_USER);
   const count = useQuery(FETCH_MESSAGE_COUNT, { variables: { recipient } });
   const currentUser: CurrentUser = data.fetchCurrentUser;

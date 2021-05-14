@@ -1,8 +1,18 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableNativeFeedback } from "react-native";
+import { StyleSheet, Text, View, TouchableNativeFeedback, Dimensions } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
-import { MaterialIcons, Ionicons, AntDesign } from "@expo/vector-icons";
+import {
+  MaterialIcons,
+  Ionicons,
+  AntDesign,
+  Entypo,
+  FontAwesome,
+  FontAwesome5
+} from "@expo/vector-icons";
 import { formatRelative } from "date-fns";
+import { MessageInterface } from "../../interfaces/ChatInterface";
+import AppColors from "../../Colors/color";
+import inspect from "../../inspect";
 
 interface Params {
   recipient: {
@@ -13,68 +23,155 @@ interface Params {
     online: boolean;
   };
   chatID: string;
+  setSelectedMsgs: React.Dispatch<React.SetStateAction<MessageInterface[]>>;
+  selectedMsgs: MessageInterface[];
 }
 
 const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOptions"] = ({
   navigation
 }) => {
   const recipient = navigation.getParam("recipient");
-  return {
-    headerTitle: () => (
-      <View style={styles.headerLeft}>
-        {/* <Avatar
-              rounded
-              source={require("../assets/blank.png")}
-              containerStyle={{ marginLeft: "-8%" }}
-              size={40}
-            /> */}
-        <View style={styles.person}>
-          <Ionicons name="person" size={25} color="rgba(241, 241, 242, 0.8)" />
-        </View>
-        <View
-          style={{
-            marginLeft: 10,
-            width: "75%"
-          }}
-        >
-          <Text
-            numberOfLines={1}
+  const selectedMsgs = navigation.getParam("selectedMsgs");
+  const setSelectedMsgs = navigation.getParam("setSelectedMsgs");
+  if (!selectedMsgs || (selectedMsgs && !selectedMsgs.length)) {
+    return {
+      headerTitle: () => (
+        <View style={styles.headerLeft}>
+          {/* <Avatar
+                rounded
+                source={require("../assets/blank.png")}
+                containerStyle={{ marginLeft: "-8%" }}
+                size={40}
+              /> */}
+          <View style={styles.person}>
+            <Ionicons name="person" size={25} color="rgba(241, 241, 242, 0.8)" />
+          </View>
+          <View
             style={{
-              color: "white",
-              fontSize: 20,
-              fontWeight: "400"
+              marginLeft: 10,
+              width: "75%"
             }}
           >
-            {recipient.name}
-          </Text>
-          <Text style={{ color: "#fff" }}>
-            {recipient.typing
-              ? "typing..."
-              : recipient.online
-              ? "Online"
-              : formatRelative(new Date(recipient.lastSeen), new Date())}
-          </Text>
+            <Text
+              numberOfLines={1}
+              style={{
+                color: "white",
+                fontSize: 20,
+                fontWeight: "400"
+              }}
+            >
+              {recipient.name}
+            </Text>
+            <Text style={{ color: "#fff" }}>
+              {recipient.typing
+                ? "typing..."
+                : recipient.online
+                ? "Online"
+                : formatRelative(new Date(recipient.lastSeen), new Date())}
+            </Text>
+          </View>
         </View>
-      </View>
+      ),
+      headerRight: () => (
+        <View style={styles.headerRight}>
+          <View
+            style={{
+              alignSelf: "center",
+              ...styles.ellipsis
+            }}
+          >
+            <TouchableNativeFeedback
+              background={TouchableNativeFeedback.Ripple("#fff", true)}
+              onPress={() => {}}
+            >
+              <View>
+                <MaterialIcons name="call" size={25} color={"#fff"} />
+              </View>
+            </TouchableNativeFeedback>
+          </View>
+          <View style={styles.ellipsis}>
+            <TouchableNativeFeedback
+              background={TouchableNativeFeedback.Ripple("#fff", true)}
+              onPress={() => {}}
+            >
+              <View>
+                <Ionicons name="ellipsis-vertical-sharp" size={20} color={"rgba(255,255,255,.5)"} />
+              </View>
+            </TouchableNativeFeedback>
+          </View>
+        </View>
+      ),
+      headerBackImage: () => (
+        <View>
+          <AntDesign
+            name="arrowleft"
+            size={20}
+            color="#fff"
+            onPress={() => navigation.navigate("Home")}
+          />
+        </View>
+      )
+    };
+  }
+  return {
+    headerTitle: () => (
+      <Text style={{ color: AppColors.dull_white, fontSize: 20 }}>{selectedMsgs.length}</Text>
     ),
     headerRight: () => (
-      <View style={styles.headerRight}>
-        <View
-          style={{
-            alignSelf: "center",
-            ...styles.ellipsis
-          }}
-        >
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: Dimensions.get("screen").width * 0.6
+        }}
+      >
+        <View style={[styles.ellipsis]}>
           <TouchableNativeFeedback
             background={TouchableNativeFeedback.Ripple("#fff", true)}
             onPress={() => {}}
           >
-            <View>
-              <MaterialIcons name="call" size={25} color={"#fff"} />
+            <View style={{ height: 45, width: 45, alignItems: "center", justifyContent: "center" }}>
+              <Entypo
+                name="forward"
+                size={20}
+                color={AppColors.white}
+                style={{ transform: [{ scaleX: -1 }] }}
+              />
             </View>
           </TouchableNativeFeedback>
         </View>
-        <View style={styles.ellipsis}>
+        <View style={[styles.ellipsis]}>
+          <TouchableNativeFeedback
+            background={TouchableNativeFeedback.Ripple("#fff", true)}
+            onPress={() => {}}
+          >
+            <View style={{ height: 45, width: 45, alignItems: "center", justifyContent: "center" }}>
+              <FontAwesome name="star" size={20} color={AppColors.white} />
+            </View>
+          </TouchableNativeFeedback>
+        </View>
+        <View style={[styles.ellipsis]}>
+          <TouchableNativeFeedback
+            background={TouchableNativeFeedback.Ripple("#fff", true)}
+            onPress={() => {}}
+          >
+            <View style={{ height: 45, width: 45, alignItems: "center", justifyContent: "center" }}>
+              <FontAwesome5 name="trash" size={20} color={AppColors.white} />
+            </View>
+          </TouchableNativeFeedback>
+        </View>
+        <View style={[styles.ellipsis]}>
+          <TouchableNativeFeedback
+            background={TouchableNativeFeedback.Ripple("#fff", true)}
+            onPress={() => {}}
+          >
+            <View style={{ height: 45, width: 45, alignItems: "center", justifyContent: "center" }}>
+              <Entypo name="forward" size={20} color={AppColors.white} />
+            </View>
+          </TouchableNativeFeedback>
+        </View>
+        <View style={[styles.ellipsis]}>
           <TouchableNativeFeedback
             background={TouchableNativeFeedback.Ripple("#fff", true)}
             onPress={() => {}}
@@ -84,16 +181,6 @@ const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOption
             </View>
           </TouchableNativeFeedback>
         </View>
-      </View>
-    ),
-    headerBackImage: () => (
-      <View>
-        <AntDesign
-          name="arrowleft"
-          size={20}
-          color="#fff"
-          onPress={() => navigation.navigate("Home")}
-        />
       </View>
     )
   };
