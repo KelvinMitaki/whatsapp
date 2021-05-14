@@ -126,51 +126,23 @@ const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOption
           width: Dimensions.get("screen").width * 0.6
         }}
       >
-        <View style={[styles.ellipsis]}>
-          <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple("#fff", true)}
-            onPress={() => {}}
-          >
-            <View style={{ height: 45, width: 45, alignItems: "center", justifyContent: "center" }}>
-              <Entypo
-                name="forward"
-                size={20}
-                color={AppColors.white}
-                style={{ transform: [{ scaleX: -1 }] }}
-              />
-            </View>
-          </TouchableNativeFeedback>
-        </View>
-        <View style={[styles.ellipsis]}>
-          <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple("#fff", true)}
-            onPress={() => {}}
-          >
-            <View style={{ height: 45, width: 45, alignItems: "center", justifyContent: "center" }}>
-              <FontAwesome name="star" size={20} color={AppColors.white} />
-            </View>
-          </TouchableNativeFeedback>
-        </View>
-        <View style={[styles.ellipsis]}>
-          <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple("#fff", true)}
-            onPress={() => {}}
-          >
-            <View style={{ height: 45, width: 45, alignItems: "center", justifyContent: "center" }}>
-              <FontAwesome5 name="trash" size={20} color={AppColors.white} />
-            </View>
-          </TouchableNativeFeedback>
-        </View>
-        <View style={[styles.ellipsis]}>
-          <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple("#fff", true)}
-            onPress={() => {}}
-          >
-            <View style={{ height: 45, width: 45, alignItems: "center", justifyContent: "center" }}>
-              <Entypo name="forward" size={20} color={AppColors.white} />
-            </View>
-          </TouchableNativeFeedback>
-        </View>
+        <Ellipsis>
+          <Entypo
+            name="forward"
+            size={20}
+            color={AppColors.white}
+            style={{ transform: [{ scaleX: -1 }] }}
+          />
+        </Ellipsis>
+        <Ellipsis>
+          <FontAwesome name="star" size={20} color={AppColors.white} />
+        </Ellipsis>
+        <Ellipsis>
+          <FontAwesome5 name="trash" size={20} color={AppColors.white} />
+        </Ellipsis>
+        <Ellipsis>
+          <Entypo name="forward" size={20} color={AppColors.white} />
+        </Ellipsis>
         <View style={[styles.ellipsis]}>
           <TouchableNativeFeedback
             background={TouchableNativeFeedback.Ripple("#fff", true)}
@@ -217,3 +189,16 @@ const styles = StyleSheet.create({
     borderColor: "transparent"
   }
 });
+
+const Ellipsis: React.FC = ({ children }) => (
+  <View style={styles.ellipsis}>
+    <TouchableNativeFeedback
+      background={TouchableNativeFeedback.Ripple("#fff", true)}
+      onPress={() => {}}
+    >
+      <View style={{ height: 45, width: 45, alignItems: "center", justifyContent: "center" }}>
+        {children}
+      </View>
+    </TouchableNativeFeedback>
+  </View>
+);
