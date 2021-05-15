@@ -159,6 +159,7 @@ export const ADD_STARRED_MESSAGES = gql`
       read
       createdAt
       deleted
+      starredBy
     }
   }
 `;
@@ -173,6 +174,7 @@ export const REMOVE_STARRED_MESSAGES = gql`
       read
       createdAt
       deleted
+      starredBy
     }
   }
 `;
@@ -194,6 +196,7 @@ export const ADD_STARRED_GROUP_MSGS = gql`
       received
       deleted
       group
+      starredBy
     }
   }
 `;
@@ -214,6 +217,7 @@ export const REMOVE_STARRED_GROUP_MESSAGES = gql`
       received
       deleted
       group
+      starredBy
     }
   }
 `;
