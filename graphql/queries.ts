@@ -190,6 +190,7 @@ export const FETCH_STARRED_MESSAGES = gql`
   query {
     fetchStarredMsgs {
       messages {
+        _id
         sender {
           _id
           profilePhoto
@@ -206,6 +207,7 @@ export const FETCH_STARRED_MESSAGES = gql`
         createdAt
       }
       groupMsgs {
+        _id
         sender {
           _id
           profilePhoto
