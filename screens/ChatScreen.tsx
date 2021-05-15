@@ -97,7 +97,22 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const currentUser: CurrentUser = user.data.fetchCurrentUser;
   const [updateReadMessages] = useMutation(UPDATE_READ_MESSAGES);
   const [updateUserTyping] = useMutation(UPDATE_USER_TYPING);
-  const [addStarredMessages] = useMutation(ADD_STARRED_MESSAGES);
+  const [addStarredMessages] = useMutation(ADD_STARRED_MESSAGES, {
+    update(cache, { data: { addStarredMessages } }) {
+      const incommingMsgs: MessageInterface[] = addStarredMessages;
+      const msgs: { fetchMessages: MessageInterface[] } | null = cache.readQuery({
+        query: FETCH_MESSAGES
+      });
+      let existingMessages = [...(msgs?.fetchMessages || [])];
+      incommingMsgs.forEach(msg => {
+        const index = existingMessages.findIndex(m => m._id === msg._id);
+        if (index !== -1) {
+          existingMessages[index] = msg;
+        }
+      });
+      cache.writeQuery({ query: FETCH_MESSAGES, data: { fetchMessages: existingMessages } });
+    }
+  });
   const [removeStarredMessages] = useMutation(REMOVE_STARRED_MESSAGES);
   useEffect(() => {
     navigation.setParams({
