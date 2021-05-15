@@ -16,7 +16,16 @@ import { Redux } from "../../interfaces/Redux";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { SetSearchModal } from "../../screens/HomeScreen";
 
-const HomeHeaderRight: React.FC<NavigationInjectedProps> = () => {
+interface Props {
+  starredMsgsScreen?: boolean;
+}
+
+export interface SetStarredMsgsInput {
+  type: "setStarredMsgsInput";
+  payload: string;
+}
+
+const HomeHeaderRight: React.FC<NavigationInjectedProps & Props> = ({ starredMsgsScreen }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [inp, setInp] = useState<string>("");
   const headerHeight = useSelector((state: Redux) => state.chat.headerHeight);
@@ -32,6 +41,11 @@ const HomeHeaderRight: React.FC<NavigationInjectedProps> = () => {
       searchWidth.setValue(0);
     }
   }, [searchModal]);
+  useEffect(() => {
+    if (starredMsgsScreen) {
+      dispatch<SetStarredMsgsInput>({ type: "setStarredMsgsInput", payload: inp });
+    }
+  }, [inp]);
   return (
     <View style={styles.headerRight}>
       <View style={styles.ellipsis}>
