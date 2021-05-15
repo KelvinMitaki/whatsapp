@@ -12,6 +12,7 @@ import { Redux } from "../interfaces/Redux";
 
 const StarredMessagesScreen: NavigationStackScreenComponent = () => {
   const searchModal = useSelector((state: Redux) => state.chat.searchModal);
+  const starredInput = useSelector((state: Redux) => state.chat.starredInput);
   const headerHeight = useHeaderHeight();
   const { data, loading } = useQuery(FETCH_STARRED_MESSAGES);
   let starredMessages: StarredMessagesInterface | null = null;
@@ -29,7 +30,11 @@ const StarredMessagesScreen: NavigationStackScreenComponent = () => {
       {searchModal && <View style={{ height: headerHeight }}></View>}
       {!loading ? (
         <FlatList
-          data={starredMsgs}
+          data={starredMsgs.filter(msg =>
+            starredInput.trim().length
+              ? msg.message.trim().toLowerCase().includes(starredInput.trim().toLowerCase())
+              : true
+          )}
           keyExtractor={m => m._id}
           renderItem={({ item }) => <StarredMessage starredMsg={item} key={item._id} />}
         />
