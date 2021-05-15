@@ -52,7 +52,7 @@ const StarredMessagesScreen: NavigationStackScreenComponent = () => {
 
 StarredMessagesScreen.navigationOptions = {
   headerTitle: "Starred messages",
-  headerRight: () => <HomeHeaderRight />
+  headerRight: () => <HomeHeaderRight starredMsgsScreen />
 };
 
 export default StarredMessagesScreen;

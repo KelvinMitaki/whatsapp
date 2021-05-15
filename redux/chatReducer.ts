@@ -1,4 +1,5 @@
 import { AnyAction } from "redux";
+import { SetStarredMsgsInput } from "../components/Home/HomeHeaderRight";
 import { messages } from "../data/messages";
 import { User, UserTyping } from "../interfaces/ChatInterface";
 import { SetMessage } from "../screens/BroadcastScreen";
@@ -15,6 +16,7 @@ export interface ChatState {
   headerHeight: number;
   searchModal: boolean;
   typingChats: UserTyping[];
+  starredInput: string;
 }
 
 type Action =
@@ -23,7 +25,8 @@ type Action =
   | SetMessage
   | SetHeaderHeight
   | SetSearchModal
-  | SetUserTyping;
+  | SetUserTyping
+  | SetStarredMsgsInput;
 
 const INITIAL_STATE: ChatState = {
   Contacts: [],
@@ -32,7 +35,8 @@ const INITIAL_STATE: ChatState = {
   scaleNum: 1,
   headerHeight: 0,
   searchModal: false,
-  typingChats: []
+  typingChats: [],
+  starredInput: ""
 };
 
 const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
@@ -66,6 +70,8 @@ const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
         chats = [...chats, action.payload];
       }
       return { ...state, typingChats: chats };
+    case "setStarredMsgsInput":
+      return { ...state, starredInput: action.payload };
     default:
       return state;
   }
