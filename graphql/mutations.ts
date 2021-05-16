@@ -32,6 +32,7 @@ export const ADD_NEW_MESSAGE = gql`
       read
       createdAt
       deleted
+      starredBy
     }
   }
 `;
@@ -95,6 +96,8 @@ export const ADD_NEW_GROUP_MSG = gql`
       read
       received
       deleted
+      group
+      starredBy
     }
   }
 `;
