@@ -80,7 +80,27 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
       cache.writeQuery({ query: FETCH_GROUP_MSGS, data: { fetchGroupMsgs: existingMessages } });
     }
   });
-  const [removeStarredGroupMessages] = useMutation(REMOVE_STARRED_GROUP_MESSAGES);
+  const [removeStarredGroupMessages] = useMutation(REMOVE_STARRED_GROUP_MESSAGES, {
+    update(cache, { data: { removeStarredGroupMessages } }) {
+      const incommingMessages: GroupMsg[] = removeStarredGroupMessages;
+      const msgs: { fetchGroupMsgs: GroupMsg[] } | null = cache.readQuery({
+        query: FETCH_GROUP_MSGS
+      });
+
+      let existingMessages = [...(msgs?.fetchGroupMsgs || [])];
+      incommingMessages.forEach(msg => {
+        const index = existingMessages.findIndex(m => m._id === msg._id);
+        if (index !== -1) {
+          existingMessages[index] = msg;
+        }
+      });
+      dispatch<SetShouldScrollToBottomOnNewMessages>({
+        type: "setShouldScrollToBottomOnNewMessages",
+        payload: false
+      });
+      cache.writeQuery({ query: FETCH_GROUP_MSGS, data: { fetchGroupMsgs: existingMessages } });
+    }
+  });
   const { data: userData } = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
   const currentUser: CurrentUser = userData.fetchCurrentUser;
   const [updateGroupMessagesRead] = useMutation(UPDATE_GROUP_MESSAGES_READ, {
