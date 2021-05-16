@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
   TouchableNativeFeedback
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Entypo } from "@expo/vector-icons";
 import inspect from "../../inspect";
 import { GroupMsg } from "../../interfaces/GroupInterface";
 import { LazyQueryResult, OperationVariables, useQuery, useSubscription } from "@apollo/client";
@@ -119,6 +119,10 @@ const GroupMessage: React.FC<Props> = props => {
                 <View style={[styles.me, index === 0 && { marginTop: 10 }]}>
                   <Text style={{ color: AppColors.white }}>{item.message}</Text>
                   <Text style={styles.meta}>
+                    {" "}
+                    {item.starredBy.some(id => id === currentUser._id) && (
+                      <Entypo name="star" size={13} />
+                    )}{" "}
                     {format(new Date(parseInt(item.createdAt)), "p")}{" "}
                     <Ionicons name="checkmark" size={18} />
                   </Text>
@@ -150,6 +154,10 @@ const GroupMessage: React.FC<Props> = props => {
                     </View>
                     <Text style={{ color: AppColors.white }}>{item.message}</Text>
                     <Text style={styles.meta}>
+                      {" "}
+                      {item.starredBy.some(id => id === currentUser._id) && (
+                        <Entypo name="star" size={13} />
+                      )}{" "}
                       {format(new Date(parseInt(item.createdAt)), "p")}
                     </Text>
                   </View>
@@ -175,7 +183,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#00af9c",
     paddingHorizontal: 5,
     maxWidth: "70%",
-    minWidth: "20%",
+    minWidth: "25%",
     minHeight: 50,
     borderRadius: 5,
     paddingBottom: 20,
@@ -187,7 +195,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#262d31",
     paddingHorizontal: 5,
     maxWidth: "70%",
-    minWidth: "20%",
+    minWidth: "25%",
     minHeight: 50,
     borderRadius: 5,
     paddingBottom: 20,
