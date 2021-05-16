@@ -35,6 +35,7 @@ import { useDispatch } from "react-redux";
 import { SetIncommingUnread } from "../components/Group/GroupChat";
 import GroupChatScreenHeader from "../components/GroupChat/GroupChatScreenHeader";
 import { UPDATE_GROUP_TYPING_SUB } from "../graphql/subscriptions";
+import { SetShouldScrollToBottomOnNewMessages } from "../components/Chat/Message";
 
 interface Params {
   groupID: string;
@@ -56,12 +57,32 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
   const [showLoading, setShowLoading] = useState<boolean>(true);
   const [keyboardShown, setKeyboardShown] = useState<boolean>(false);
   const [selectedMsgs, setSelectedMsgs] = useState<GroupMsg[]>([]);
+  const dispatch = useDispatch();
   const groupID = navigation.getParam("groupID");
-  const [addStarredGroupMessages] = useMutation(ADD_STARRED_GROUP_MSGS);
+  const [addStarredGroupMessages] = useMutation(ADD_STARRED_GROUP_MSGS, {
+    update(cache, { data: { addStarredGroupMessages } }) {
+      const incommingMessages: GroupMsg[] = addStarredGroupMessages;
+      const msgs: { fetchGroupMsgs: GroupMsg[] } | null = cache.readQuery({
+        query: FETCH_GROUP_MSGS
+      });
+
+      let existingMessages = [...(msgs?.fetchGroupMsgs || [])];
+      incommingMessages.forEach(msg => {
+        const index = existingMessages.findIndex(m => m._id === msg._id);
+        if (index !== -1) {
+          existingMessages[index] = msg;
+        }
+      });
+      dispatch<SetShouldScrollToBottomOnNewMessages>({
+        type: "setShouldScrollToBottomOnNewMessages",
+        payload: false
+      });
+      cache.writeQuery({ query: FETCH_GROUP_MSGS, data: { fetchGroupMsgs: existingMessages } });
+    }
+  });
   const [removeStarredGroupMessages] = useMutation(REMOVE_STARRED_GROUP_MESSAGES);
   const { data: userData } = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
   const currentUser: CurrentUser = userData.fetchCurrentUser;
-  const dispatch = useDispatch();
   const [updateGroupMessagesRead] = useMutation(UPDATE_GROUP_MESSAGES_READ, {
     refetchQueries: [{ query: FETCH_UNREAD_GROUP_MSGS }],
     onCompleted() {
