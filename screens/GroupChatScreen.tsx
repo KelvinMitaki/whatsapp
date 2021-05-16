@@ -26,8 +26,8 @@ import { UPDATE_GROUP_TYPING_SUB } from "../graphql/subscriptions";
 
 interface Params {
   groupID: string;
-  group: GroupWithParticipants;
-  typingData?: GroupUserTyping;
+  group: GroupWithParticipants | undefined;
+  typingData: GroupUserTyping | undefined;
 }
 
 const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {

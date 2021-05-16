@@ -3,8 +3,13 @@ import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
 import { Ionicons, Foundation, MaterialIcons } from "@expo/vector-icons";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import inspect from "../inspect";
+import { FETCH_CURRENT_USER } from "../graphql/queries";
+import { useQuery } from "@apollo/client";
+import { CurrentUser } from "../interfaces/ChatInterface";
 
 const SettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  const { data: userData } = useQuery(FETCH_CURRENT_USER);
+  const currentUser: CurrentUser = userData.fetchCurrentUser;
   return (
     <View>
       <TouchableNativeFeedback
@@ -20,8 +25,8 @@ const SettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
               marginLeft: 15
             }}
           >
-            <Text style={{ color: "#fff", fontSize: 20 }}>Kevin</Text>
-            <Text style={{ color: "rgba(255,255,255,.7)" }}>Hey there, I am using WhatsApp</Text>
+            <Text style={{ color: "#fff", fontSize: 20 }}>{currentUser.name}</Text>
+            <Text style={{ color: "rgba(255,255,255,.7)" }}>{currentUser.about}</Text>
           </View>
         </View>
       </TouchableNativeFeedback>

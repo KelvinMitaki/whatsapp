@@ -48,7 +48,7 @@ const ContactScreen: NavigationStackScreenComponent<Params> = ({ navigation }) =
   }, [inp]);
   useEffect(() => {
     navigation.setParams({ contacts: data.fetchUsers.length });
-  }, [data.fetchUsers]);
+  }, [data && data.fetchUsers]);
   return (
     <>
       {searchModal && <View style={{ height: headerHeight / 3 }}></View>}

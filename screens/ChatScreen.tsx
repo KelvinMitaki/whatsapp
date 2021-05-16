@@ -186,6 +186,12 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
         onWillBlur={() =>
           updateUserTyping({ variables: { typing: false, chatID, typingUserID: currentUser._id } })
         }
+        onDidFocus={() =>
+          dispatch<SetShouldScrollToBottomOnNewMessages>({
+            type: "setShouldScrollToBottomOnNewMessages",
+            payload: true
+          })
+        }
       />
       {((loading && showLoading) || count.loading) && (
         <View
