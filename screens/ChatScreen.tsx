@@ -22,6 +22,7 @@ import { CurrentUser, MessageInterface, UserOnline, UserTyping } from "../interf
 import ChatScreenHeader from "../components/Chat/ChatScreenHeader";
 import { UPDATE_USER_ONLINE_SUB, UPDATE_USER_TYPING_SUB } from "../graphql/subscriptions";
 import { useDispatch } from "react-redux";
+import { NavigationEvents } from "react-navigation";
 
 interface Params {
   recipient: {
@@ -161,6 +162,11 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const screen = Dimensions.get("screen");
   return (
     <View>
+      <NavigationEvents
+        onWillBlur={() =>
+          updateUserTyping({ variables: { typing: false, chatID, typingUserID: currentUser._id } })
+        }
+      />
       {((loading && showLoading) || count.loading) && (
         <View
           style={{
