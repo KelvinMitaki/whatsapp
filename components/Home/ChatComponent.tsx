@@ -103,7 +103,7 @@ const ChatComponent: React.FC<Props & NavigationInjectedProps> = props => {
                 width: unread ? "90%" : "100%"
               }}
             >
-              {chat && chat.typing ? (
+              {chat && chat.typing && currentUser._id !== chat.typingUserID ? (
                 <Text style={{ color: AppColors.secodary }}>typing...</Text>
               ) : (
                 <>

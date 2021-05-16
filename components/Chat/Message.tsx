@@ -67,7 +67,6 @@ const Message: React.FC<Props> = props => {
         (msg.sender === recipient && msg.recipient === currentUser._id)
     )
     .sort((a, b) => parseInt(a.createdAt) - parseInt(b.createdAt));
-  console.log(messages.filter(msg => !msg.starredBy.length).length);
   return (
     <View style={{ height: keyboardShown ? "85%" : "90%" }}>
       <ScrollView
