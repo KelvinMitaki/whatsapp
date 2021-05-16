@@ -17,7 +17,8 @@ import format from "date-fns/format";
 import { ADD_NEW_MESSAGE_SUB } from "../../graphql/subscriptions";
 import AppColors from "../../Colors/color";
 import { MESSAGE_LIMIT } from "./Input";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Redux } from "../../interfaces/Redux";
 
 interface Props {
   messages: MessageInterface[];
@@ -48,22 +49,27 @@ const Message: React.FC<Props> = props => {
   } = props;
   const { data } = useQuery(FETCH_CURRENT_USER);
   const count = useQuery(FETCH_MESSAGE_COUNT, { variables: { recipient } });
+  const shouldScrollToBottomOnNewMessages = useSelector(
+    (state: Redux) => state.chat.shouldScrollToBottomOnNewMessages
+  );
   const currentUser: CurrentUser = data.fetchCurrentUser;
   const dispatch = useDispatch();
   const [subScriptionMsgs, setSubScriptionMsgs] = useState<MessageInterface[]>([]);
   useSubscription(ADD_NEW_MESSAGE_SUB, {
     variables: { sender: currentUser._id, recipient },
     onSubscriptionData(data) {
-      dispatch<SetShouldScrollToBottomOnNewMessages>({
-        type: "setShouldScrollToBottomOnNewMessages",
-        payload: true
-      });
+      if (!shouldScrollToBottomOnNewMessages) {
+        dispatch<SetShouldScrollToBottomOnNewMessages>({
+          type: "setShouldScrollToBottomOnNewMessages",
+          payload: true
+        });
+      }
       setSubScriptionMsgs(m => [...m, data.subscriptionData.data.addNewMessage]);
     }
   });
   const scrollViewRef = useRef<ScrollView>(null);
   useEffect(() => {
-    if (scrollViewRef.current && showLoading) {
+    if (scrollViewRef.current && showLoading && shouldScrollToBottomOnNewMessages) {
       scrollViewRef.current.scrollToEnd();
     }
   }, [messages, subScriptionMsgs, keyboardShown]);
@@ -89,6 +95,12 @@ const Message: React.FC<Props> = props => {
             count.data &&
             count.data.fetchMessageCount.count > filteredMsgs.length
           ) {
+            if (!shouldScrollToBottomOnNewMessages) {
+              dispatch<SetShouldScrollToBottomOnNewMessages>({
+                type: "setShouldScrollToBottomOnNewMessages",
+                payload: true
+              });
+            }
             setShowLoading(false);
             fetchMore({ variables: { offset: filteredMsgs.length, limit: MESSAGE_LIMIT } });
           }

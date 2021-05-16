@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BackHandler, StyleSheet, Text, View, ActivityIndicator, Dimensions } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
-import Message from "../components/Chat/Message";
+import Message, { SetShouldScrollToBottomOnNewMessages } from "../components/Chat/Message";
 import Input, { MESSAGE_LIMIT } from "../components/Chat/Input";
 import {
   MutationTuple,
@@ -107,6 +107,10 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
         if (index !== -1) {
           existingMessages[index] = msg;
         }
+      });
+      dispatch<SetShouldScrollToBottomOnNewMessages>({
+        type: "setShouldScrollToBottomOnNewMessages",
+        payload: false
       });
       cache.writeQuery({ query: FETCH_MESSAGES, data: { fetchMessages: existingMessages } });
     }
