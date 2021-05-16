@@ -10,6 +10,7 @@ export const ADD_NEW_MESSAGE_SUB = gql`
       read
       createdAt
       deleted
+      starredBy
     }
   }
 `;
@@ -87,6 +88,7 @@ export const ADD_NEW_GROUP_MSG_SUB = gql`
       received
       deleted
       group
+      starredBy
     }
   }
 `;
