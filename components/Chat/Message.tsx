@@ -125,7 +125,7 @@ const Message: React.FC<Props> = props => {
             key={item._id}
             touchSoundDisabled={selectedMsgs.length === 0}
           >
-            <View>
+            <View style={{ marginVertical: 5 }}>
               {index === 0 &&
                 count.data &&
                 count.data.fetchMessageCount.count > filteredMsgs.length && (
@@ -188,9 +188,7 @@ const styles = StyleSheet.create({
     minHeight: 50,
     borderRadius: 5,
     paddingBottom: 20,
-    marginBottom: 10,
-    marginRight: 10,
-    marginTop: 10
+    marginRight: 10
   },
   sender: {
     alignSelf: "flex-start",
@@ -201,9 +199,7 @@ const styles = StyleSheet.create({
     minHeight: 50,
     borderRadius: 5,
     paddingBottom: 20,
-    marginBottom: 10,
-    marginLeft: 10,
-    marginTop: 10
+    marginLeft: 10
   },
   meta: {
     color: "rgba(255,255,255,.7)",
@@ -217,6 +213,7 @@ const styles = StyleSheet.create({
     backgroundColor: AppColors.message_selection_highlight,
     position: "absolute",
     elevation: 1000,
+    bottom: 0,
     width: "100%"
   },
   selectedMsg: {
@@ -226,8 +223,6 @@ const styles = StyleSheet.create({
     minHeight: 50,
     borderRadius: 5,
     paddingBottom: 20,
-    marginBottom: 10,
-    marginRight: 10,
-    marginTop: 10
+    marginRight: 10
   }
 });
