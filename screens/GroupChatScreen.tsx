@@ -30,6 +30,11 @@ interface Params {
   typingData: GroupUserTyping | undefined;
 }
 
+export interface SetGroupUserTyping {
+  type: "setGroupUserTyping";
+  payload: GroupUserTyping;
+}
+
 const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [showLoading, setShowLoading] = useState<boolean>(true);
   const [keyboardShown, setKeyboardShown] = useState<boolean>(false);
@@ -86,6 +91,7 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
     onSubscriptionData({ subscriptionData: { data } }) {
       const parsedData: GroupUserTyping = data.updateGroupTyping;
       if (parsedData.typingUserID !== currentUser._id) {
+        dispatch<SetGroupUserTyping>({ type: "setGroupUserTyping", payload: parsedData });
         navigation.setParams({ typingData: parsedData });
       }
     }

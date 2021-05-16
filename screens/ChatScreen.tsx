@@ -65,8 +65,8 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
     variables: { chatID },
     onSubscriptionData(subData) {
       const userTyping: UserTyping = subData.subscriptionData.data.updateUserTyping;
-      dispatch<SetUserTyping>({ type: "setUserTyping", payload: userTyping });
       if (chatID === userTyping.chatID && userTyping.typingUserID !== currentUser._id) {
+        dispatch<SetUserTyping>({ type: "setUserTyping", payload: userTyping });
         navigation.setParams({ recipient: { ...recipient, typing: userTyping.typing } });
       }
     }
