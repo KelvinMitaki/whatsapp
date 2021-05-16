@@ -126,7 +126,6 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
   const [fetchGroupMsgs, { data, fetchMore, loading: msgsLoading }] = useLazyQuery(
     FETCH_GROUP_MSGS,
     {
-      fetchPolicy: "cache-and-network",
       onCompleted(data) {
         const groupMsgs: GroupMsg[] = data.fetchGroupMsgs;
         const messageIDs = groupMsgs
