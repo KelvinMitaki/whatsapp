@@ -9,8 +9,13 @@ import {
 } from "react-native";
 import { Ionicons, FontAwesome, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import inspect from "../inspect";
+import { FETCH_CURRENT_USER } from "../graphql/queries";
+import { useQuery } from "@apollo/client";
+import { CurrentUser } from "../interfaces/ChatInterface";
 
 const ProfileScreen = () => {
+  const { data: userData } = useQuery(FETCH_CURRENT_USER);
+  const currentUser: CurrentUser = userData.fetchCurrentUser;
   const scale = useRef(new Animated.Value(0.5)).current;
   const cameraScale = useRef(new Animated.Value(0)).current;
   const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
@@ -61,14 +66,14 @@ const ProfileScreen = () => {
             <View style={styles.edit}>
               <View>
                 <Text style={{ color: "rgba(241, 241, 242, 0.7)" }}>Name</Text>
-                <Text style={{ color: "#fff" }}>Kevin</Text>
+                <Text style={{ color: "#fff" }}>{currentUser.name}</Text>
               </View>
               <MaterialIcons name="edit" size={20} color="#00af9c" />
             </View>
           </View>
           <View style={styles.meta}>
             <Text style={{ color: "rgba(241, 241, 242, 0.7)" }}>
-              This is not your username or pin. This name will be visible to your WhatsApp contacts
+              This is not your username or pin. This name will be visible to your ChatApp contacts
             </Text>
           </View>
         </View>
@@ -97,7 +102,7 @@ const ProfileScreen = () => {
             >
               <View>
                 <Text style={{ color: "rgba(241, 241, 242, 0.7)" }}>About</Text>
-                <Text style={{ color: "#fff" }}>Hey there! I am using ChatApp</Text>
+                <Text style={{ color: "#fff" }}>{currentUser.about}</Text>
               </View>
               <View style={{}}>
                 <MaterialIcons name="edit" size={20} color="#00af9c" />
@@ -129,7 +134,9 @@ const ProfileScreen = () => {
           </View>
           <View>
             <Text style={{ color: "rgba(241, 241, 242, 0.7)" }}>Phone</Text>
-            <Text style={{ color: "#fff" }}>+254 721 559392</Text>
+            <Text style={{ color: "#fff" }}>
+              +{currentUser.countryCode} {currentUser.phoneNumber}
+            </Text>
           </View>
         </View>
       </TouchableNativeFeedback>
