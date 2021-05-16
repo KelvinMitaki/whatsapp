@@ -8,7 +8,14 @@ import { TouchableNativeFeedback } from "react-native";
 import Input, { MESSAGE_LIMIT } from "../components/Chat/Input";
 import GroupMessage from "../components/GroupChat/GroupMessage";
 import AppColors from "../Colors/color";
-import { useLazyQuery, useMutation, useQuery, useSubscription } from "@apollo/client";
+import {
+  MutationTuple,
+  OperationVariables,
+  useLazyQuery,
+  useMutation,
+  useQuery,
+  useSubscription
+} from "@apollo/client";
 import {
   FETCH_CURRENT_USER,
   FETCH_GROUP,
@@ -17,7 +24,12 @@ import {
   FETCH_UNREAD_GROUP_MSGS
 } from "../graphql/queries";
 import { GroupMsg, GroupWithParticipants, GroupUserTyping } from "../interfaces/GroupInterface";
-import { UPDATE_GROUP_MESSAGES_READ, UPDATE_GROUP_TYPING } from "../graphql/mutations";
+import {
+  ADD_STARRED_GROUP_MSGS,
+  REMOVE_STARRED_GROUP_MESSAGES,
+  UPDATE_GROUP_MESSAGES_READ,
+  UPDATE_GROUP_TYPING
+} from "../graphql/mutations";
 import { CurrentUser } from "../interfaces/ChatInterface";
 import { useDispatch } from "react-redux";
 import { SetIncommingUnread } from "../components/Group/GroupChat";
@@ -28,6 +40,11 @@ interface Params {
   groupID: string;
   group: GroupWithParticipants | undefined;
   typingData: GroupUserTyping | undefined;
+  setSelectedMsgs: React.Dispatch<React.SetStateAction<GroupMsg[]>>;
+  selectedMsgs: GroupMsg[];
+  addStarredGroupMessages: MutationTuple<any, OperationVariables>[0];
+  removeStarredGroupMessages: MutationTuple<any, OperationVariables>[0];
+  currentUser: CurrentUser;
 }
 
 export interface SetGroupUserTyping {
@@ -40,6 +57,8 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
   const [keyboardShown, setKeyboardShown] = useState<boolean>(false);
   const [selectedMsgs, setSelectedMsgs] = useState<GroupMsg[]>([]);
   const groupID = navigation.getParam("groupID");
+  const [addStarredGroupMessages] = useMutation(ADD_STARRED_GROUP_MSGS);
+  const [removeStarredGroupMessages] = useMutation(REMOVE_STARRED_GROUP_MESSAGES);
   const { data: userData } = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
   const currentUser: CurrentUser = userData.fetchCurrentUser;
   const dispatch = useDispatch();
@@ -99,11 +118,20 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
   });
   const group = useQuery(FETCH_GROUP, { variables: { groupID } });
   useEffect(() => {
+    navigation.setParams({
+      addStarredGroupMessages,
+      removeStarredGroupMessages,
+      setSelectedMsgs,
+      currentUser
+    });
     BackHandler.addEventListener("hardwareBackPress", handleBackBtnPressAndroid);
     return () => {
       BackHandler.removeEventListener("hardwareBackPress", handleBackBtnPressAndroid);
     };
   }, []);
+  useEffect(() => {
+    navigation.setParams({ selectedMsgs });
+  }, [selectedMsgs]);
   useEffect(() => {
     if (group.data && group.data.fetchGroup) {
       navigation.setParams({ group: group.data.fetchGroup });
