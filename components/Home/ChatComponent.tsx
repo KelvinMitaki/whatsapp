@@ -110,7 +110,7 @@ const ChatComponent: React.FC<Props & NavigationInjectedProps> = props => {
                   {currentUser._id === sender._id && !unread && (
                     <Ionicons name="checkmark-done" size={18} color={AppColors.blue_tick} />
                   )}
-                  {currentUser._id === sender._id && unread && (
+                  {currentUser._id === sender._id && !!unread && (
                     <Ionicons name="checkmark" size={18} />
                   )}
 

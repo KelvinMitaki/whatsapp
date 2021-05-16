@@ -38,6 +38,7 @@ export interface SetGroupUserTyping {
 const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [showLoading, setShowLoading] = useState<boolean>(true);
   const [keyboardShown, setKeyboardShown] = useState<boolean>(false);
+  const [selectedMsgs, setSelectedMsgs] = useState<GroupMsg[]>([]);
   const groupID = navigation.getParam("groupID");
   const { data: userData } = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
   const currentUser: CurrentUser = userData.fetchCurrentUser;
@@ -144,6 +145,8 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
             setShowLoading={setShowLoading}
             showLoading={showLoading}
             keyboardShown={keyboardShown}
+            selectedMsgs={selectedMsgs}
+            setSelectedMsgs={setSelectedMsgs}
           />
           <Input screen="group" group={groupID} setKeyboardShown={setKeyboardShown} />
         </>

@@ -5,7 +5,8 @@ import {
   View,
   NativeScrollEvent,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableNativeFeedback
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import inspect from "../../inspect";
@@ -28,10 +29,22 @@ interface Props {
   setShowLoading: React.Dispatch<React.SetStateAction<boolean>>;
   showLoading: boolean;
   keyboardShown: boolean;
+  setSelectedMsgs: React.Dispatch<React.SetStateAction<GroupMsg[]>>;
+  selectedMsgs: GroupMsg[];
 }
 
 const GroupMessage: React.FC<Props> = props => {
-  const { messages, groupID, fetchMore, count, setShowLoading, showLoading, keyboardShown } = props;
+  const {
+    messages,
+    groupID,
+    fetchMore,
+    count,
+    setShowLoading,
+    showLoading,
+    keyboardShown,
+    selectedMsgs,
+    setSelectedMsgs
+  } = props;
   const { data } = useQuery(FETCH_CURRENT_USER);
   const scrollViewRef = useRef<ScrollView>(null);
   const [incommingMessages, setIncommingMessages] = useState<GroupMsg[]>([]);
@@ -73,49 +86,77 @@ const GroupMessage: React.FC<Props> = props => {
         }}
       >
         {syncedMessages.map((item, index) => (
-          <View key={item._id}>
-            {index === 0 && count > syncedMessages.length && (
-              <ActivityIndicator size="large" color={AppColors.secodary} />
-            )}
-            {currentUser._id === item.sender._id ? (
-              <View style={[styles.me, index === 0 && { marginTop: 10 }]}>
-                <Text style={{ color: AppColors.white }}>{item.message}</Text>
-                <Text style={styles.meta}>
-                  {format(new Date(parseInt(item.createdAt)), "p")}{" "}
-                  <Ionicons name="checkmark" size={18} />
-                </Text>
-              </View>
-            ) : (
-              <View style={[{ flexDirection: "row" }, index === 0 && { marginTop: 10 }]}>
-                <View style={styles.person}>
-                  <Ionicons name="person" size={25} color="rgba(241, 241, 242, 0.8)" />
+          <TouchableNativeFeedback
+            onLongPress={() => !selectedMsgs.length && setSelectedMsgs(msgs => [item, ...msgs])}
+            onPress={() =>
+              selectedMsgs.length &&
+              setSelectedMsgs(msgs => {
+                let selectedMsgs = [...msgs];
+                const selectedMsgIndex = selectedMsgs.findIndex(msg => msg._id === item._id);
+                if (selectedMsgIndex !== -1) {
+                  selectedMsgs.splice(selectedMsgIndex, 1);
+                } else {
+                  selectedMsgs = [item, ...selectedMsgs];
+                }
+                return selectedMsgs;
+              })
+            }
+            key={item._id}
+            touchSoundDisabled={selectedMsgs.length === 0}
+          >
+            <View key={item._id} style={{ marginVertical: 5 }}>
+              {index === 0 && count > syncedMessages.length && (
+                <ActivityIndicator size="large" color={AppColors.secodary} />
+              )}
+              {selectedMsgs.some(msg => msg._id === item._id) && (
+                <View style={styles.selectedMsgPrt}>
+                  <View style={styles.selectedMsg}>
+                    <Text style={{ color: "transparent" }}>{item.message}</Text>
+                  </View>
                 </View>
-                <View style={{ ...styles.sender }}>
-                  <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <Text
-                      style={{
-                        color: `hsl(${genHue(item.sender.phoneNumber)},80%,60%)`
-                      }}
-                    >
-                      +{item.sender.countryCode} {item.sender.phoneNumber}
-                    </Text>
-                    <Text
-                      numberOfLines={1}
-                      style={{
-                        color: "rgba(255,255,255,.7)",
-                        marginLeft: 10,
-                        maxWidth: "55%"
-                      }}
-                    >
-                      ~{item.sender.name}
+              )}
+              {currentUser._id === item.sender._id ? (
+                <View style={[styles.me, index === 0 && { marginTop: 10 }]}>
+                  <Text style={{ color: AppColors.white }}>{item.message}</Text>
+                  <Text style={styles.meta}>
+                    {format(new Date(parseInt(item.createdAt)), "p")}{" "}
+                    <Ionicons name="checkmark" size={18} />
+                  </Text>
+                </View>
+              ) : (
+                <View style={[{ flexDirection: "row" }, index === 0 && { marginTop: 10 }]}>
+                  <View style={styles.person}>
+                    <Ionicons name="person" size={25} color="rgba(241, 241, 242, 0.8)" />
+                  </View>
+                  <View style={{ ...styles.sender }}>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                      <Text
+                        style={{
+                          color: `hsl(${genHue(item.sender.phoneNumber)},80%,60%)`
+                        }}
+                      >
+                        +{item.sender.countryCode} {item.sender.phoneNumber}
+                      </Text>
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          color: "rgba(255,255,255,.7)",
+                          marginLeft: 10,
+                          maxWidth: "55%"
+                        }}
+                      >
+                        ~{item.sender.name}
+                      </Text>
+                    </View>
+                    <Text style={{ color: AppColors.white }}>{item.message}</Text>
+                    <Text style={styles.meta}>
+                      {format(new Date(parseInt(item.createdAt)), "p")}
                     </Text>
                   </View>
-                  <Text style={{ color: AppColors.white }}>{item.message}</Text>
-                  <Text style={styles.meta}>{format(new Date(parseInt(item.createdAt)), "p")}</Text>
                 </View>
-              </View>
-            )}
-          </View>
+              )}
+            </View>
+          </TouchableNativeFeedback>
         ))}
       </ScrollView>
     </View>
@@ -138,8 +179,8 @@ const styles = StyleSheet.create({
     minHeight: 50,
     borderRadius: 5,
     paddingBottom: 20,
-    marginBottom: 10,
-    marginRight: 10
+    marginRight: 10,
+    marginVertical: 5
   },
   sender: {
     alignSelf: "flex-start",
@@ -150,7 +191,6 @@ const styles = StyleSheet.create({
     minHeight: 50,
     borderRadius: 5,
     paddingBottom: 20,
-    marginBottom: 10,
     marginLeft: 5
   },
   meta: {
@@ -169,5 +209,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginLeft: "1%"
+  },
+  selectedMsgPrt: {
+    backgroundColor: AppColors.message_selection_highlight,
+    position: "absolute",
+    elevation: 1000,
+    width: "100%"
+  },
+  selectedMsg: {
+    paddingHorizontal: 5,
+    maxWidth: "70%",
+    minWidth: "20%",
+    minHeight: 50,
+    borderRadius: 5,
+    paddingBottom: 20,
+    marginBottom: 10,
+    marginRight: 10
   }
 });
