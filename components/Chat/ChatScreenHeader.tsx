@@ -80,12 +80,12 @@ const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOption
             >
               {recipient.name}
             </Text>
-            <Text style={{ color: "#fff" }}>
+            <Text style={{ color: "#fff" }} numberOfLines={1}>
               {recipient.typing
                 ? "typing..."
                 : recipient.online
                 ? "online"
-                : formatRelative(new Date(recipient.lastSeen), new Date())}
+                : `last seen ${formatRelative(new Date(recipient.lastSeen), new Date())}`}
             </Text>
           </View>
         </View>
