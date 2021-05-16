@@ -89,10 +89,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
     fetchPolicy: "network-only"
   });
   const [fetchMessages, { loading, data, fetchMore }] = useLazyQuery(FETCH_MESSAGES, {
-    fetchPolicy: "network-only",
-    onError(err) {
-      console.log(err);
-    }
+    fetchPolicy: "network-only"
   });
   const user = useQuery(FETCH_CURRENT_USER);
   const currentUser: CurrentUser = user.data.fetchCurrentUser;

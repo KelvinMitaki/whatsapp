@@ -17,6 +17,7 @@ import format from "date-fns/format";
 import { ADD_NEW_MESSAGE_SUB } from "../../graphql/subscriptions";
 import AppColors from "../../Colors/color";
 import { MESSAGE_LIMIT } from "./Input";
+import { useDispatch } from "react-redux";
 
 interface Props {
   messages: MessageInterface[];
@@ -27,6 +28,11 @@ interface Props {
   keyboardShown: boolean;
   setSelectedMsgs: React.Dispatch<React.SetStateAction<MessageInterface[]>>;
   selectedMsgs: MessageInterface[];
+}
+
+export interface SetShouldScrollToBottomOnNewMessages {
+  type: "setShouldScrollToBottomOnNewMessages";
+  payload: boolean;
 }
 
 const Message: React.FC<Props> = props => {
@@ -43,12 +49,17 @@ const Message: React.FC<Props> = props => {
   const { data } = useQuery(FETCH_CURRENT_USER);
   const count = useQuery(FETCH_MESSAGE_COUNT, { variables: { recipient } });
   const currentUser: CurrentUser = data.fetchCurrentUser;
+  const dispatch = useDispatch();
   const [subScriptionMsgs, setSubScriptionMsgs] = useState<MessageInterface[]>([]);
   useSubscription(ADD_NEW_MESSAGE_SUB, {
+    variables: { sender: currentUser._id, recipient },
     onSubscriptionData(data) {
+      dispatch<SetShouldScrollToBottomOnNewMessages>({
+        type: "setShouldScrollToBottomOnNewMessages",
+        payload: true
+      });
       setSubScriptionMsgs(m => [...m, data.subscriptionData.data.addNewMessage]);
-    },
-    variables: { sender: currentUser._id, recipient }
+    }
   });
   const scrollViewRef = useRef<ScrollView>(null);
   useEffect(() => {

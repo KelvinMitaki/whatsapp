@@ -1,4 +1,5 @@
 import { AnyAction } from "redux";
+import { SetShouldScrollToBottomOnNewMessages } from "../components/Chat/Message";
 import { SetStarredMsgsInput } from "../components/Home/HomeHeaderRight";
 import { messages } from "../data/messages";
 import { User, UserTyping } from "../interfaces/ChatInterface";
@@ -17,6 +18,7 @@ export interface ChatState {
   searchModal: boolean;
   typingChats: UserTyping[];
   starredInput: string;
+  shouldScrollToBottomOnNewMessages: boolean;
 }
 
 type Action =
@@ -26,7 +28,8 @@ type Action =
   | SetHeaderHeight
   | SetSearchModal
   | SetUserTyping
-  | SetStarredMsgsInput;
+  | SetStarredMsgsInput
+  | SetShouldScrollToBottomOnNewMessages;
 
 const INITIAL_STATE: ChatState = {
   Contacts: [],
@@ -36,7 +39,8 @@ const INITIAL_STATE: ChatState = {
   headerHeight: 0,
   searchModal: false,
   typingChats: [],
-  starredInput: ""
+  starredInput: "",
+  shouldScrollToBottomOnNewMessages: true
 };
 
 const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
@@ -72,6 +76,8 @@ const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
       return { ...state, typingChats: chats };
     case "setStarredMsgsInput":
       return { ...state, starredInput: action.payload };
+    case "setShouldScrollToBottomOnNewMessages":
+      return { ...state, shouldScrollToBottomOnNewMessages: action.payload };
     default:
       return state;
   }
