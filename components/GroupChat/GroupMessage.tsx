@@ -18,6 +18,9 @@ import { format } from "date-fns";
 import AppColors from "../../Colors/color";
 import { ADD_NEW_GROUP_MSG_SUB } from "../../graphql/subscriptions";
 import { MESSAGE_LIMIT } from "../Chat/Input";
+import { SetShouldScrollToBottomOnNewMessages } from "../Chat/Message";
+import { useDispatch, useSelector } from "react-redux";
+import { Redux } from "../../interfaces/Redux";
 
 export const genRandomNum = () => Math.random() * (255 - 1) + 1;
 
@@ -49,14 +52,22 @@ const GroupMessage: React.FC<Props> = props => {
   const scrollViewRef = useRef<ScrollView>(null);
   const [incommingMessages, setIncommingMessages] = useState<GroupMsg[]>([]);
   const currentUser: CurrentUser = data.fetchCurrentUser;
+  const dispatch = useDispatch();
+  const shouldScrollToBottomOnNewMessages = useSelector(
+    (state: Redux) => state.chat.shouldScrollToBottomOnNewMessages
+  );
   useSubscription(ADD_NEW_GROUP_MSG_SUB, {
     variables: { groupID },
     onSubscriptionData(data) {
+      dispatch<SetShouldScrollToBottomOnNewMessages>({
+        type: "setShouldScrollToBottomOnNewMessages",
+        payload: true
+      });
       setIncommingMessages(m => [...m, data.subscriptionData.data.addNewGroupMsg]);
     }
   });
   useEffect(() => {
-    if (messages && scrollViewRef.current && showLoading) {
+    if (messages && scrollViewRef.current && showLoading && shouldScrollToBottomOnNewMessages) {
       scrollViewRef.current.scrollToEnd();
     }
   }, [messages, incommingMessages, keyboardShown]);
@@ -80,6 +91,10 @@ const GroupMessage: React.FC<Props> = props => {
         ref={scrollViewRef}
         onScroll={({ nativeEvent }) => {
           if (isCloseToTop(nativeEvent) && fetchMore && count > syncedMessages.length) {
+            dispatch<SetShouldScrollToBottomOnNewMessages>({
+              type: "setShouldScrollToBottomOnNewMessages",
+              payload: true
+            });
             setShowLoading(false);
             fetchMore({ variables: { offset: syncedMessages.length, limit: MESSAGE_LIMIT } });
           }

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TextInput, View, BackHandler, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, View, BackHandler, ActivityIndicator } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
-import { MaterialIcons, Ionicons, FontAwesome, AntDesign } from "@expo/vector-icons";
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import inspect from "../inspect";
 import { TouchableNativeFeedback } from "react-native";
@@ -36,6 +35,7 @@ import { SetIncommingUnread } from "../components/Group/GroupChat";
 import GroupChatScreenHeader from "../components/GroupChat/GroupChatScreenHeader";
 import { UPDATE_GROUP_TYPING_SUB } from "../graphql/subscriptions";
 import { SetShouldScrollToBottomOnNewMessages } from "../components/Chat/Message";
+import { NavigationEvents } from "react-navigation";
 
 interface Params {
   groupID: string;
@@ -199,6 +199,14 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
     loading;
   return (
     <View style={{ height: "100%" }}>
+      <NavigationEvents
+        onDidFocus={() =>
+          dispatch<SetShouldScrollToBottomOnNewMessages>({
+            type: "setShouldScrollToBottomOnNewMessages",
+            payload: true
+          })
+        }
+      />
       {loaders ? (
         <View style={{ height: "100%", alignItems: "center", justifyContent: "center" }}>
           <ActivityIndicator size="large" color={AppColors.secodary} />
