@@ -3,6 +3,7 @@ import React from "react";
 import { ActivityIndicator, Dimensions, FlatList, StyleSheet, Text, View } from "react-native";
 import { NavigationStackScreenComponent, useHeaderHeight } from "react-navigation-stack";
 import { useSelector } from "react-redux";
+import AppColors from "../Colors/color";
 import HomeHeaderRight from "../components/Home/HomeHeaderRight";
 import StarredMessage from "../components/Starred/StarredMessage";
 import { FETCH_STARRED_MESSAGES } from "../graphql/queries";
@@ -49,6 +50,11 @@ const StarredMessagesScreen: NavigationStackScreenComponent = () => {
         >
           <ActivityIndicator size="large" color="#00af9c" />
           <Text style={{ color: "rgba(255,255,255,.8)" }}>Fetching Messages...</Text>
+        </View>
+      )}
+      {!starredMsgs.length && !loading && (
+        <View style={{ height: "100%", alignItems: "center", justifyContent: "center" }}>
+          <Text style={{ color: AppColors.dull_white }}>No starred messages</Text>
         </View>
       )}
     </View>
