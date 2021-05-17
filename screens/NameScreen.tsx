@@ -59,7 +59,7 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const keyboardDidHide = (e: KeyboardEvent) => {
     setKeyboardHeight(0);
   };
-  const [fetchChats] = useLazyQuery(FETCH_CHATS, {
+  const [fetchChats, { loading: chatsLoading }] = useLazyQuery(FETCH_CHATS, {
     onCompleted() {
       navigation.replace("Tab");
     }
@@ -130,7 +130,7 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
         >
           <View style={styles.btn}>
             <Text>NEXT</Text>
-            {!loading && !tokenLoading ? (
+            {!loading && !tokenLoading && !chatsLoading ? (
               <AntDesign name="arrowright" size={20} />
             ) : (
               <ActivityIndicator color="#191f23" size="small" />

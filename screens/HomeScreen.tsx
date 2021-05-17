@@ -101,7 +101,13 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
         chat={chat.data && chat.data.addNewChat ? chat.data.addNewChat : null}
         data={renderData()}
       />
-      {data && data.fetchChats && <StartChat chats={data.fetchChats} />}
+      {data && data.fetchChats && (
+        <View
+          style={{ ...(!data.fetchChats.length && { height: "100%", justifyContent: "flex-end" }) }}
+        >
+          <StartChat chats={data.fetchChats} />
+        </View>
+      )}
     </View>
   );
 };
