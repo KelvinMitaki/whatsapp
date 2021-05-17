@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
+  Keyboard,
+  KeyboardAvoidingView,
+  KeyboardEvent,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -29,7 +33,32 @@ interface Params {
 const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [name, setName] = useState<string>("");
   const [tokenLoading, setTokenLoading] = useState<boolean>(false);
+  const [keyboard, setKeyboardHeight] = useState<number>(0);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const mounted = useRef<boolean>(true);
+  useEffect(() => {
+    if (mounted.current) {
+      Keyboard.addListener("keyboardDidShow", keyboardDidShow);
+      Keyboard.addListener("keyboardDidHide", keyboardDidHide);
+    }
 
+    return () => {
+      mounted.current = false;
+      Keyboard.removeListener("keyboardDidShow", () => {});
+      Keyboard.removeListener("keyboardDidHide", () => {});
+    };
+  }, []);
+  useEffect(() => {
+    if (scrollViewRef.current && keyboard) {
+      scrollViewRef.current.scrollToEnd();
+    }
+  }, [keyboard]);
+  const keyboardDidShow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+  const keyboardDidHide = (e: KeyboardEvent) => {
+    setKeyboardHeight(0);
+  };
   const [fetchChats] = useLazyQuery(FETCH_CHATS, {
     onCompleted() {
       navigation.replace("Tab");
@@ -57,57 +86,59 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const phoneNumber = navigation.getParam("phoneNumber");
   const code = navigation.getParam("code");
   return (
-    <View style={{ flex: 1, justifyContent: "space-between" }}>
-      <View style={{ marginTop: "20%" }}>
-        <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 20, textAlign: "center" }}>
-          Profile info
-        </Text>
-        <Text style={{ color: "rgba(255,255,255,.8)", textAlign: "center", marginVertical: 20 }}>
-          Please provide your name and an optional profile photo
-        </Text>
-        <View style={[styles.person]}>
-          <Ionicons name="person" size={100} color="rgba(241, 241, 242, 0.8)" />
-          <View style={[styles.cameraPrt]}>
-            <TouchableNativeFeedback
-              onPress={() => {}}
-              background={TouchableNativeFeedback.Ripple("#fff", true)}
-            >
-              <View style={styles.camera}>
-                <FontAwesome name="camera" size={20} color="#fff" />
-              </View>
-            </TouchableNativeFeedback>
+    <ScrollView ref={scrollViewRef}>
+      <View style={{ flex: 1, justifyContent: "space-between" }}>
+        <View style={{ marginTop: "20%" }}>
+          <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 20, textAlign: "center" }}>
+            Profile info
+          </Text>
+          <Text style={{ color: "rgba(255,255,255,.8)", textAlign: "center", marginVertical: 20 }}>
+            Please provide your name and an optional profile photo
+          </Text>
+          <View style={[styles.person]}>
+            <Ionicons name="person" size={100} color="rgba(241, 241, 242, 0.8)" />
+            <View style={[styles.cameraPrt]}>
+              <TouchableNativeFeedback
+                onPress={() => {}}
+                background={TouchableNativeFeedback.Ripple("#fff", true)}
+              >
+                <View style={styles.camera}>
+                  <FontAwesome name="camera" size={20} color="#fff" />
+                </View>
+              </TouchableNativeFeedback>
+            </View>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: "center", alignSelf: "center" }}>
+            <TextInput style={styles.inp} autoFocus onChangeText={setName} />
+            <Octicons name="smiley" color="rgba(241, 241, 242, 0.8)" size={25} />
           </View>
         </View>
-        <View style={{ flexDirection: "row", alignItems: "center", alignSelf: "center" }}>
-          <TextInput style={styles.inp} autoFocus onChangeText={setName} />
-          <Octicons name="smiley" color="rgba(241, 241, 242, 0.8)" size={25} />
-        </View>
-      </View>
 
-      <TouchableNativeFeedback
-        onPress={() =>
-          name.trim().length &&
-          registerUser({
-            variables: {
-              name,
-              about: "Hey there! I am using ChatApp",
-              phoneNumber: parseInt(phoneNumber),
-              countryCode: code,
-              groups: []
-            }
-          })
-        }
-      >
-        <View style={styles.btn}>
-          <Text>NEXT</Text>
-          {!loading && !tokenLoading ? (
-            <AntDesign name="arrowright" size={20} />
-          ) : (
-            <ActivityIndicator color="#191f23" size="small" />
-          )}
-        </View>
-      </TouchableNativeFeedback>
-    </View>
+        <TouchableNativeFeedback
+          onPress={() =>
+            name.trim().length &&
+            registerUser({
+              variables: {
+                name,
+                about: "Hey there! I am using ChatApp",
+                phoneNumber: parseInt(phoneNumber),
+                countryCode: code,
+                groups: []
+              }
+            })
+          }
+        >
+          <View style={styles.btn}>
+            <Text>NEXT</Text>
+            {!loading && !tokenLoading ? (
+              <AntDesign name="arrowright" size={20} />
+            ) : (
+              <ActivityIndicator color="#191f23" size="small" />
+            )}
+          </View>
+        </TouchableNativeFeedback>
+      </View>
+    </ScrollView>
   );
 };
 
