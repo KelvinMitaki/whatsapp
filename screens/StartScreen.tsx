@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { Button } from "react-native-elements";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
+import inspect from "../inspect";
 
 const StartScreen: NavigationStackScreenComponent = ({ navigation }) => {
   return (
@@ -9,11 +10,13 @@ const StartScreen: NavigationStackScreenComponent = ({ navigation }) => {
       <Text style={{ color: "#fff", marginTop: "20%", fontSize: 30, alignSelf: "center" }}>
         Welcome to ChatApp
       </Text>
-      <Image
-        source={require("../assets/hero.png")}
-        style={{ width: "70%", alignSelf: "center" }}
-        resizeMode="contain"
-      />
+      <View style={{ height: "70%" }}>
+        <Image
+          source={require("../assets/hero.png")}
+          style={{ width: "70%", alignSelf: "center" }}
+          resizeMode="contain"
+        />
+      </View>
       <Button
         title="AGREE AND CONTINUE"
         containerStyle={{ alignSelf: "center", width: "70%" }}
