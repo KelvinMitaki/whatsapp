@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { TouchableNativeFeedback } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
@@ -7,9 +7,10 @@ import inspect from "../inspect";
 import GroupChat from "../components/Group/GroupChat";
 import { useQuery } from "@apollo/client";
 import { FETCH_GROUPS, FETCH_UNREAD_GROUP_MSGS } from "../graphql/queries";
+import AppColors from "../Colors/color";
 
 const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
-  const { data } = useQuery(FETCH_GROUPS);
+  const { data, loading } = useQuery(FETCH_GROUPS);
   const { data: data2 } = useQuery(FETCH_UNREAD_GROUP_MSGS);
   return (
     <View style={styles.prt}>
@@ -17,6 +18,14 @@ const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
         groups={data ? data.fetchGroups : []}
         unread={data2 ? data2.fetchUnreadGroupMsgs : []}
       />
+      {!data ||
+        (data && !data.fetchGroups && !loading && (
+          <View style={{ height: "100%", alignItems: "center", justifyContent: "center" }}>
+            <Text style={{ color: AppColors.dull_white }}>
+              You are currently not in any groups.
+            </Text>
+          </View>
+        ))}
       <View style={styles.withChatsPrt}>
         <View style={styles.messageNavPrt}>
           <TouchableNativeFeedback

@@ -54,7 +54,7 @@ const StarredMessagesScreen: NavigationStackScreenComponent = () => {
       )}
       {!starredMsgs.length && !loading && (
         <View style={{ height: "100%", alignItems: "center", justifyContent: "center" }}>
-          <Text style={{ color: AppColors.dull_white }}>No starred messages</Text>
+          <Text style={{ color: AppColors.dull_white }}>No starred messages.</Text>
         </View>
       )}
     </View>
