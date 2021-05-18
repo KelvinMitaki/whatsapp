@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, BackHandler, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, View, BackHandler, ActivityIndicator, ToastAndroid } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import inspect from "../inspect";
@@ -78,6 +78,10 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
         payload: false
       });
       cache.writeQuery({ query: FETCH_GROUP_MSGS, data: { fetchGroupMsgs: existingMessages } });
+      ToastAndroid.show(
+        `Starred ${incommingMessages.length === 1 ? "message" : "messages"}`,
+        ToastAndroid.LONG
+      );
     }
   });
   const [removeStarredGroupMessages] = useMutation(REMOVE_STARRED_GROUP_MESSAGES, {
@@ -99,6 +103,10 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
         payload: false
       });
       cache.writeQuery({ query: FETCH_GROUP_MSGS, data: { fetchGroupMsgs: existingMessages } });
+      ToastAndroid.show(
+        `Unstarred ${incommingMessages.length === 1 ? "message" : "messages"} `,
+        ToastAndroid.LONG
+      );
     }
   });
   const { data: userData } = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });

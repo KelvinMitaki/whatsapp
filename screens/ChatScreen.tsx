@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { BackHandler, StyleSheet, Text, View, ActivityIndicator, Dimensions } from "react-native";
+import {
+  BackHandler,
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+  Dimensions,
+  ToastAndroid
+} from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import Message, { SetShouldScrollToBottomOnNewMessages } from "../components/Chat/Message";
 import Input, { MESSAGE_LIMIT } from "../components/Chat/Input";
@@ -113,6 +121,10 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
         payload: false
       });
       cache.writeQuery({ query: FETCH_MESSAGES, data: { fetchMessages: existingMessages } });
+      ToastAndroid.show(
+        `Starred ${incommingMsgs.length === 1 ? "message" : "messages"}`,
+        ToastAndroid.LONG
+      );
     }
   });
   const [removeStarredMessages] = useMutation(REMOVE_STARRED_MESSAGES, {
@@ -133,6 +145,10 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
         payload: false
       });
       cache.writeQuery({ query: FETCH_MESSAGES, data: { fetchMessages: existingMessages } });
+      ToastAndroid.show(
+        `Unstarred ${incommingMsgs.length === 1 ? "message" : "messages"}`,
+        ToastAndroid.LONG
+      );
     }
   });
   useEffect(() => {
