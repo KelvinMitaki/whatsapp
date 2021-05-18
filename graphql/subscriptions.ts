@@ -121,3 +121,18 @@ export const UPDATE_GROUP_TYPING_SUB = gql`
     }
   }
 `;
+
+export const UPDATE_READ_MESSAGES_SUB = gql`
+  subscription UpdateReadMessages($sender: String!, $recipient: String!) {
+    updateReadMessages(sender: $sender, recipient: $recipient) {
+      _id
+      sender
+      recipient
+      message
+      read
+      createdAt
+      deleted
+      starredBy
+    }
+  }
+`;

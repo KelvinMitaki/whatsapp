@@ -28,7 +28,11 @@ import {
 } from "../graphql/mutations";
 import { CurrentUser, MessageInterface, UserOnline, UserTyping } from "../interfaces/ChatInterface";
 import ChatScreenHeader from "../components/Chat/ChatScreenHeader";
-import { UPDATE_USER_ONLINE_SUB, UPDATE_USER_TYPING_SUB } from "../graphql/subscriptions";
+import {
+  UPDATE_READ_MESSAGES_SUB,
+  UPDATE_USER_ONLINE_SUB,
+  UPDATE_USER_TYPING_SUB
+} from "../graphql/subscriptions";
 import { useDispatch } from "react-redux";
 import { NavigationEvents } from "react-navigation";
 
@@ -56,6 +60,8 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [showLoading, setShowLoading] = useState<boolean>(true);
   const [keyboardShown, setKeyboardShown] = useState<boolean>(false);
   const [selectedMsgs, setSelectedMsgs] = useState<MessageInterface[]>([]);
+  const user = useQuery(FETCH_CURRENT_USER);
+  const currentUser: CurrentUser = user.data.fetchCurrentUser;
   const dispatch = useDispatch();
   const chatID = navigation.getParam("chatID");
   const recipient = navigation.getParam("recipient");
@@ -79,6 +85,30 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       }
     }
   });
+  useSubscription(UPDATE_READ_MESSAGES_SUB, {
+    variables: { sender: currentUser._id, recipient: recipient._id },
+    onSubscriptionData({ client: { writeQuery, readQuery }, subscriptionData: { data } }) {
+      const incommingMsgs: MessageInterface[] = data.updateReadMessages;
+      const msgs: { fetchMessages: MessageInterface[] } | null = readQuery({
+        query: FETCH_MESSAGES
+      });
+      let existingMessages = [...(msgs?.fetchMessages || [])];
+      incommingMsgs.forEach(msg => {
+        const index = existingMessages.findIndex(m => m._id === msg._id);
+        if (index !== -1) {
+          existingMessages[index] = msg;
+        }
+      });
+      dispatch<SetShouldScrollToBottomOnNewMessages>({
+        type: "setShouldScrollToBottomOnNewMessages",
+        payload: false
+      });
+      writeQuery({
+        query: FETCH_MESSAGES,
+        data: { fetchMessages: existingMessages }
+      });
+    }
+  });
   const count = useQuery(FETCH_MESSAGE_COUNT, {
     variables: { recipient: recipient._id },
     onCompleted() {
@@ -99,8 +129,6 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [fetchMessages, { loading, data, fetchMore }] = useLazyQuery(FETCH_MESSAGES, {
     fetchPolicy: "network-only"
   });
-  const user = useQuery(FETCH_CURRENT_USER);
-  const currentUser: CurrentUser = user.data.fetchCurrentUser;
   const [updateReadMessages] = useMutation(UPDATE_READ_MESSAGES);
   const [updateUserTyping] = useMutation(UPDATE_USER_TYPING);
   const [addStarredMessages] = useMutation(ADD_STARRED_MESSAGES, {
