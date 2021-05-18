@@ -19,14 +19,26 @@ import {
   useQuery,
   useSubscription
 } from "@apollo/client";
-import { FETCH_CURRENT_USER, FETCH_MESSAGES, FETCH_MESSAGE_COUNT } from "../graphql/queries";
+import {
+  FETCH_CHATS,
+  FETCH_CURRENT_USER,
+  FETCH_MESSAGES,
+  FETCH_MESSAGES_COUNT,
+  FETCH_MESSAGE_COUNT
+} from "../graphql/queries";
 import {
   ADD_STARRED_MESSAGES,
   REMOVE_STARRED_MESSAGES,
   UPDATE_READ_MESSAGES,
   UPDATE_USER_TYPING
 } from "../graphql/mutations";
-import { CurrentUser, MessageInterface, UserOnline, UserTyping } from "../interfaces/ChatInterface";
+import {
+  Chat,
+  CurrentUser,
+  MessageInterface,
+  UserOnline,
+  UserTyping
+} from "../interfaces/ChatInterface";
 import ChatScreenHeader from "../components/Chat/ChatScreenHeader";
 import {
   UPDATE_READ_MESSAGES_SUB,
@@ -109,15 +121,20 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       });
     }
   });
-  const count = useQuery(FETCH_MESSAGE_COUNT, {
-    variables: { recipient: recipient._id },
+  const { data: chatsData } = useQuery(FETCH_CHATS);
+  const count = useQuery(FETCH_MESSAGES_COUNT, {
+    variables: {
+      userIDs: (chatsData.fetchChats as Chat[]).map(c =>
+        c.sender._id === currentUser._id ? c.recipient._id : c.sender._id
+      )
+    },
     onCompleted() {
       fetchMessages({
         variables: {
           recipient: recipient._id,
           offset: 0,
           limit: MESSAGE_LIMIT,
-          messageCount: count.data.fetchMessageCount.count
+          messageCount: count.data.fetchMessagesCount.count
         }
       });
     },

@@ -228,8 +228,8 @@ export const FETCH_STARRED_MESSAGES = gql`
 `;
 
 export const FETCH_MESSAGES_COUNT = gql`
-  query FetchMessagesCount($chatIDs: [String!]!) {
-    fetchMessagesCount(chatIDs: $chatIDs) {
+  query FetchMessagesCount($userIDs: [String!]!) {
+    fetchMessagesCount(userIDs: $userIDs) {
       messageCount
       chatID
     }

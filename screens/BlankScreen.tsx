@@ -11,12 +11,29 @@ import {
   FETCH_UNREAD_GROUP_MSGS,
   FETCH_USERS
 } from "../graphql/queries";
-import { Chat } from "../interfaces/ChatInterface";
+import { Chat, CurrentUser } from "../interfaces/ChatInterface";
 
 const BlankScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  const [fetchCurrentUser, { data: user }] = useLazyQuery(FETCH_CURRENT_USER, {
+    onCompleted() {
+      fetchChats();
+      fetchGroups();
+      fetchUnreadGroupMsgs();
+    },
+    onError() {
+      navigation.replace("Start");
+    }
+  });
+  const currentUser: CurrentUser = user.data.fetchCurrentUser;
   const [fetchChats, { data }] = useLazyQuery(FETCH_CHATS, {
     onCompleted() {
-      fetchMessagesCount({ variables: { chatIDs: (data.fetchChats as Chat[]).map(c => c._id) } });
+      fetchMessagesCount({
+        variables: {
+          userIDs: (data.fetchChats as Chat[]).map(c =>
+            c.sender._id === currentUser._id ? c.recipient._id : c.sender._id
+          )
+        }
+      });
     }
   });
   const [fetchMessagesCount] = useLazyQuery(FETCH_MESSAGES_COUNT, {
@@ -27,16 +44,6 @@ const BlankScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [fetchUsers] = useLazyQuery(FETCH_USERS);
   const [fetchGroups] = useLazyQuery(FETCH_GROUPS);
   const [fetchUnreadGroupMsgs] = useLazyQuery(FETCH_UNREAD_GROUP_MSGS);
-  const [fetchCurrentUser] = useLazyQuery(FETCH_CURRENT_USER, {
-    onCompleted() {
-      fetchChats();
-      fetchGroups();
-      fetchUnreadGroupMsgs();
-    },
-    onError() {
-      navigation.replace("Start");
-    }
-  });
   useEffect(() => {
     loginUser();
   }, []);
