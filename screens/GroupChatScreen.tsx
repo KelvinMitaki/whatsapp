@@ -30,12 +30,13 @@ import {
   UPDATE_GROUP_TYPING
 } from "../graphql/mutations";
 import { CurrentUser } from "../interfaces/ChatInterface";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SetIncommingUnread } from "../components/Group/GroupChat";
 import GroupChatScreenHeader from "../components/GroupChat/GroupChatScreenHeader";
 import { UPDATE_GROUP_TYPING_SUB } from "../graphql/subscriptions";
 import { SetShouldScrollToBottomOnNewMessages } from "../components/Chat/Message";
 import { NavigationEvents } from "react-navigation";
+import { Redux } from "../interfaces/Redux";
 
 interface Params {
   groupID: string;
@@ -57,6 +58,9 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
   const [showLoading, setShowLoading] = useState<boolean>(true);
   const [keyboardShown, setKeyboardShown] = useState<boolean>(false);
   const [selectedMsgs, setSelectedMsgs] = useState<GroupMsg[]>([]);
+  const shouldScrollToBottomOnNewMessages = useSelector(
+    (state: Redux) => state.chat.shouldScrollToBottomOnNewMessages
+  );
   const dispatch = useDispatch();
   const groupID = navigation.getParam("groupID");
   const [addStarredGroupMessages] = useMutation(ADD_STARRED_GROUP_MSGS, {
@@ -201,10 +205,11 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
     return true;
   };
   const loaders =
-    !(data && data.fetchGroupMsgs) ||
-    !(group.data && group.data.fetchGroup) ||
-    (msgsLoading && showLoading) ||
-    loading;
+    (!(data && data.fetchGroupMsgs) ||
+      !(group.data && group.data.fetchGroup) ||
+      (msgsLoading && showLoading) ||
+      loading) &&
+    shouldScrollToBottomOnNewMessages;
   return (
     <View style={{ height: "100%" }}>
       <NavigationEvents
