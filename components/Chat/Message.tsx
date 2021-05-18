@@ -10,7 +10,12 @@ import {
 } from "react-native";
 import { Ionicons, Entypo } from "@expo/vector-icons";
 import inspect from "../../inspect";
-import { Chat, CurrentUser, MessageInterface } from "../../interfaces/ChatInterface";
+import {
+  Chat,
+  CurrentUser,
+  MessageCountInterface,
+  MessageInterface
+} from "../../interfaces/ChatInterface";
 import { LazyQueryResult, OperationVariables, useQuery, useSubscription } from "@apollo/client";
 import { FETCH_CHATS, FETCH_CURRENT_USER, FETCH_MESSAGES_COUNT } from "../../graphql/queries";
 import format from "date-fns/format";
@@ -29,6 +34,7 @@ interface Props {
   keyboardShown: boolean;
   setSelectedMsgs: React.Dispatch<React.SetStateAction<MessageInterface[]>>;
   selectedMsgs: MessageInterface[];
+  chatID: string;
 }
 
 export interface SetShouldScrollToBottomOnNewMessages {
@@ -45,7 +51,8 @@ const Message: React.FC<Props> = props => {
     showLoading,
     keyboardShown,
     selectedMsgs,
-    setSelectedMsgs
+    setSelectedMsgs,
+    chatID
   } = props;
   const { data } = useQuery(FETCH_CURRENT_USER);
   const { data: chatsData } = useQuery(FETCH_CHATS);
@@ -100,7 +107,9 @@ const Message: React.FC<Props> = props => {
             isCloseToTop(nativeEvent) &&
             fetchMore &&
             count.data &&
-            count.data.fetchMessageCount.count > filteredMsgs.length
+            ((count.data.fetchMessagesCount as MessageCountInterface[]).find(
+              mc => mc.chatID === chatID
+            )?.messageCount || 0) > filteredMsgs.length
           ) {
             if (!shouldScrollToBottomOnNewMessages) {
               dispatch<SetShouldScrollToBottomOnNewMessages>({
@@ -135,7 +144,9 @@ const Message: React.FC<Props> = props => {
             <View style={{ marginVertical: 5 }}>
               {index === 0 &&
                 count.data &&
-                count.data.fetchMessageCount.count > filteredMsgs.length &&
+                ((count.data.fetchMessagesCount as MessageCountInterface[]).find(
+                  mc => mc.chatID === chatID
+                )?.messageCount || 0) > filteredMsgs.length &&
                 filteredMsgs.length > 20 && (
                   <ActivityIndicator size="large" color={AppColors.secodary} />
                 )}

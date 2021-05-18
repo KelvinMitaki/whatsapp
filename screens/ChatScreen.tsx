@@ -34,6 +34,7 @@ import {
 import {
   Chat,
   CurrentUser,
+  MessageCountInterface,
   MessageInterface,
   UserOnline,
   UserTyping
@@ -133,7 +134,10 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
           recipient: recipient._id,
           offset: 0,
           limit: MESSAGE_LIMIT,
-          messageCount: count.data.fetchMessagesCount.count
+          messageCount:
+            (count.data.fetchMessagesCount as MessageCountInterface[]).find(
+              mc => mc.chatID === chatID
+            )?.messageCount || MESSAGE_LIMIT
         }
       });
     },
@@ -277,6 +281,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
             keyboardShown={keyboardShown}
             selectedMsgs={selectedMsgs}
             setSelectedMsgs={setSelectedMsgs}
+            chatID={chatID}
           />
           <Input
             screen="chat"

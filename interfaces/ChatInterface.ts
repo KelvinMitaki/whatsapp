@@ -77,3 +77,8 @@ export interface StarredMessagesInterface {
   messages: MessageInterface[];
   groupMsgs: GroupMsg[];
 }
+
+export interface MessageCountInterface {
+  messageCount: number;
+  chatID: string;
+}
