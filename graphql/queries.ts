@@ -89,14 +89,6 @@ export const FETCH_MESSAGES = gql`
   }
 `;
 
-export const FETCH_MESSAGE_COUNT = gql`
-  query FetchMessageCount($recipient: String!) {
-    fetchMessageCount(recipient: $recipient) {
-      count
-    }
-  }
-`;
-
 export const FETCH_GROUPS = gql`
   query {
     fetchGroups {

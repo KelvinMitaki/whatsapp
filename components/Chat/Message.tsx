@@ -10,9 +10,9 @@ import {
 } from "react-native";
 import { Ionicons, Entypo } from "@expo/vector-icons";
 import inspect from "../../inspect";
-import { CurrentUser, MessageInterface } from "../../interfaces/ChatInterface";
+import { Chat, CurrentUser, MessageInterface } from "../../interfaces/ChatInterface";
 import { LazyQueryResult, OperationVariables, useQuery, useSubscription } from "@apollo/client";
-import { FETCH_CURRENT_USER, FETCH_MESSAGE_COUNT } from "../../graphql/queries";
+import { FETCH_CHATS, FETCH_CURRENT_USER, FETCH_MESSAGES_COUNT } from "../../graphql/queries";
 import format from "date-fns/format";
 import { ADD_NEW_MESSAGE_SUB } from "../../graphql/subscriptions";
 import AppColors from "../../Colors/color";
@@ -48,7 +48,14 @@ const Message: React.FC<Props> = props => {
     setSelectedMsgs
   } = props;
   const { data } = useQuery(FETCH_CURRENT_USER);
-  const count = useQuery(FETCH_MESSAGE_COUNT, { variables: { recipient } });
+  const { data: chatsData } = useQuery(FETCH_CHATS);
+  const count = useQuery(FETCH_MESSAGES_COUNT, {
+    variables: {
+      userIDs: (chatsData.fetchChats as Chat[]).map(c =>
+        c.sender._id === currentUser._id ? c.recipient._id : c.sender._id
+      )
+    }
+  });
   const shouldScrollToBottomOnNewMessages = useSelector(
     (state: Redux) => state.chat.shouldScrollToBottomOnNewMessages
   );
