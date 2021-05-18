@@ -126,6 +126,7 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
   const [fetchGroupMsgs, { data, fetchMore, loading: msgsLoading }] = useLazyQuery(
     FETCH_GROUP_MSGS,
     {
+      fetchPolicy: "cache-and-network",
       onCompleted(incommingData) {
         const groupMsgs: GroupMsg[] = incommingData.fetchGroupMsgs;
         const messageIDs = groupMsgs
@@ -142,9 +143,6 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
             }
           });
         }
-      },
-      onError(err) {
-        console.log(JSON.stringify(err, null, 4));
       }
     }
   );
