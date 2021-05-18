@@ -128,7 +128,8 @@ const Message: React.FC<Props> = props => {
             <View style={{ marginVertical: 5 }}>
               {index === 0 &&
                 count.data &&
-                count.data.fetchMessageCount.count > filteredMsgs.length && (
+                count.data.fetchMessageCount.count > filteredMsgs.length &&
+                filteredMsgs.length > 20 && (
                   <ActivityIndicator size="large" color={AppColors.secodary} />
                 )}
               {selectedMsgs.some(msg => msg._id === item._id) && (

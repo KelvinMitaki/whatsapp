@@ -120,7 +120,7 @@ const GroupMessage: React.FC<Props> = props => {
             touchSoundDisabled={selectedMsgs.length === 0}
           >
             <View key={item._id} style={{ marginVertical: 5 }}>
-              {index === 0 && count > syncedMessages.length && (
+              {index === 0 && count > syncedMessages.length && syncedMessages.length > 20 && (
                 <ActivityIndicator size="large" color={AppColors.secodary} />
               )}
               {selectedMsgs.some(msg => msg._id === item._id) && (

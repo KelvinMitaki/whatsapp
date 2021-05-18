@@ -126,8 +126,8 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
   const [fetchGroupMsgs, { data, fetchMore, loading: msgsLoading }] = useLazyQuery(
     FETCH_GROUP_MSGS,
     {
-      onCompleted(data) {
-        const groupMsgs: GroupMsg[] = data.fetchGroupMsgs;
+      onCompleted(incommingData) {
+        const groupMsgs: GroupMsg[] = incommingData.fetchGroupMsgs;
         const messageIDs = groupMsgs
           .filter(
             msg =>
@@ -142,6 +142,9 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
             }
           });
         }
+      },
+      onError(err) {
+        console.log(JSON.stringify(err, null, 4));
       }
     }
   );
