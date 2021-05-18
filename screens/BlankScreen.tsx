@@ -7,12 +7,19 @@ import {
   FETCH_CHATS,
   FETCH_CURRENT_USER,
   FETCH_GROUPS,
+  FETCH_MESSAGES_COUNT,
   FETCH_UNREAD_GROUP_MSGS,
   FETCH_USERS
 } from "../graphql/queries";
+import { Chat } from "../interfaces/ChatInterface";
 
 const BlankScreen: NavigationStackScreenComponent = ({ navigation }) => {
-  const [fetchChats] = useLazyQuery(FETCH_CHATS, {
+  const [fetchChats, { data }] = useLazyQuery(FETCH_CHATS, {
+    onCompleted() {
+      fetchMessagesCount({ variables: { chatIDs: (data.fetchChats as Chat[]).map(c => c._id) } });
+    }
+  });
+  const [fetchMessagesCount] = useLazyQuery(FETCH_MESSAGES_COUNT, {
     onCompleted() {
       navigation.replace("Tab");
     }
