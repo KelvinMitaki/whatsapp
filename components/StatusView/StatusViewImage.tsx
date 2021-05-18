@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Animated,
   Dimensions,
   StyleSheet,
@@ -8,6 +9,7 @@ import {
   View
 } from "react-native";
 import { Image } from "react-native-elements";
+import AppColors from "../../Colors/color";
 import { images } from "../../data/images";
 import StatusViewInput from "./StatusViewInput";
 
@@ -47,6 +49,9 @@ const StatusViewImage: React.FC<Props> = ({
         }
       ]}
       resizeMode="contain"
+      PlaceholderContent={<ActivityIndicator color={AppColors.primary} size="large" />}
+      progressiveRenderingEnabled
+      placeholderStyle={{ backgroundColor: "#000" }}
     >
       <TouchableWithoutFeedback
         onPress={() => {

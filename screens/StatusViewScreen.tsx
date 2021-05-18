@@ -111,7 +111,7 @@ const StatusViewScreen: NavigationStackScreenComponent = ({ navigation }) => {
           {images.map((image, i) => (
             <StatusBarTopLoader
               statusBarWidth={statusBarWidth}
-              key={image}
+              key={i}
               index={i}
               currentImg={currentImg}
             />
