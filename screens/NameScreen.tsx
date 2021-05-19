@@ -21,9 +21,11 @@ import {
   FETCH_CHATS,
   FETCH_CURRENT_USER,
   FETCH_GROUPS,
+  FETCH_MESSAGES_COUNT,
   FETCH_UNREAD_GROUP_MSGS,
   FETCH_USERS
 } from "../graphql/queries";
+import { Chat, CurrentUser } from "../interfaces/ChatInterface";
 
 interface Params {
   code: string;
@@ -59,12 +61,25 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const keyboardDidHide = (e: KeyboardEvent) => {
     setKeyboardHeight(0);
   };
-  const [fetchChats, { loading: chatsLoading }] = useLazyQuery(FETCH_CHATS, {
+
+  const [fetchCurrentUser, user] = useLazyQuery(FETCH_CURRENT_USER);
+  const currentUser: { fetchCurrentUser: CurrentUser } = user.data;
+  const [fetchChats, { loading: chatsLoading, data }] = useLazyQuery(FETCH_CHATS, {
+    onCompleted() {
+      fetchMessagesCount({
+        variables: {
+          userIDs: (data.fetchChats as Chat[]).map(c =>
+            c.sender._id === currentUser.fetchCurrentUser._id ? c.recipient._id : c.sender._id
+          )
+        }
+      });
+    }
+  });
+  const [fetchMessagesCount] = useLazyQuery(FETCH_MESSAGES_COUNT, {
     onCompleted() {
       navigation.replace("Tab");
     }
   });
-  const [fetchCurrentUser] = useLazyQuery(FETCH_CURRENT_USER);
   const [fetchUsers] = useLazyQuery(FETCH_USERS);
   const [fetchGroups] = useLazyQuery(FETCH_GROUPS);
   const [fetchUnreadGroupMsgs] = useLazyQuery(FETCH_UNREAD_GROUP_MSGS);
