@@ -9,13 +9,19 @@ import { NavigationInjectedProps, withNavigation } from "react-navigation";
 import { Chat, CurrentUser } from "../../interfaces/ChatInterface";
 import { format } from "date-fns/esm";
 import AppColors from "../../Colors/color";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Redux } from "../../interfaces/Redux";
 
 interface Props {
   item: Chat;
   currentUser: CurrentUser;
 }
+
+export interface SetPreviousSelectedChat {
+  type: "setPreviousSelectedChat";
+  payload: Chat;
+}
+
 export const formatDate = (date: Date) => {
   if (isToday(date)) {
     return format(date, "p");
@@ -28,16 +34,16 @@ export const formatDate = (date: Date) => {
 
 const ChatComponent: React.FC<Props & NavigationInjectedProps> = props => {
   const typingChats = useSelector((state: Redux) => state.chat.typingChats);
-  const {
-    item: { message, sender, type, updatedAt, recipient, unread, _id },
-    currentUser,
-    navigation
-  } = props;
+  const dispatch = useDispatch();
+  const { item, currentUser, navigation } = props;
+  const { message, sender, type, updatedAt, recipient, unread, _id } = item;
   const chat = typingChats.find(c => c.chatID === _id);
+
   return (
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
       onPress={() => {
+        dispatch<SetPreviousSelectedChat>({ type: "setPreviousSelectedChat", payload: item });
         navigation.navigate("Chat", {
           recipient: recipient._id !== currentUser._id ? recipient : sender,
           chatID: _id
