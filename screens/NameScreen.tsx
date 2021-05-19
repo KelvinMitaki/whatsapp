@@ -34,7 +34,7 @@ interface Params {
 
 const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [name, setName] = useState<string>("");
-  const [tokenLoading, setTokenLoading] = useState<boolean>(false);
+  const [dataLoading, setdDataLoading] = useState<boolean>(false);
   const [keyboard, setKeyboardHeight] = useState<number>(0);
   const scrollViewRef = useRef<ScrollView>(null);
   const mounted = useRef<boolean>(true);
@@ -64,7 +64,7 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
 
   const [fetchCurrentUser, user] = useLazyQuery(FETCH_CURRENT_USER);
   const currentUser: { fetchCurrentUser: CurrentUser } = user.data;
-  const [fetchChats, { loading: chatsLoading, data }] = useLazyQuery(FETCH_CHATS, {
+  const [fetchChats, { data }] = useLazyQuery(FETCH_CHATS, {
     onCompleted() {
       fetchMessagesCount({
         variables: {
@@ -77,17 +77,16 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   });
   const [fetchMessagesCount] = useLazyQuery(FETCH_MESSAGES_COUNT, {
     onCompleted() {
+      setdDataLoading(false);
       navigation.replace("Tab");
     }
   });
   const [fetchUsers] = useLazyQuery(FETCH_USERS);
   const [fetchGroups] = useLazyQuery(FETCH_GROUPS);
   const [fetchUnreadGroupMsgs] = useLazyQuery(FETCH_UNREAD_GROUP_MSGS);
-  const [registerUser, { loading }] = useMutation(REGISTER_USER, {
+  const [registerUser] = useMutation(REGISTER_USER, {
     async onCompleted(data) {
-      setTokenLoading(true);
       await AsyncStorage.setItem("token", data.registerUser.token);
-      setTokenLoading(false);
       fetchCurrentUser();
       fetchChats();
       fetchUsers();
@@ -95,6 +94,7 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       fetchUnreadGroupMsgs();
     },
     onError(err) {
+      setdDataLoading(false);
       console.log(err);
     }
   });
@@ -140,12 +140,13 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
                 countryCode: code,
                 groups: []
               }
-            })
+            }) &&
+            setdDataLoading(true)
           }
         >
           <View style={styles.btn}>
             <Text>NEXT</Text>
-            {!loading && !tokenLoading && !chatsLoading ? (
+            {!dataLoading ? (
               <AntDesign name="arrowright" size={20} />
             ) : (
               <ActivityIndicator color="#191f23" size="small" />
