@@ -20,7 +20,7 @@ export interface ChatState {
   typingChats: UserTyping[];
   starredInput: string;
   shouldScrollToBottomOnNewMessages: boolean;
-  previousSelectedChat: Chat | null;
+  previousSelectedChats: Chat[];
 }
 
 type Action =
@@ -44,7 +44,7 @@ const INITIAL_STATE: ChatState = {
   typingChats: [],
   starredInput: "",
   shouldScrollToBottomOnNewMessages: true,
-  previousSelectedChat: null
+  previousSelectedChats: []
 };
 
 const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
@@ -83,7 +83,11 @@ const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
     case "setShouldScrollToBottomOnNewMessages":
       return { ...state, shouldScrollToBottomOnNewMessages: action.payload };
     case "setPreviousSelectedChat":
-      return { ...state, previousSelectedChat: action.payload };
+      let selectedChats = [...state.previousSelectedChats];
+      if (!selectedChats.find(c => c._id === action.payload._id)) {
+        selectedChats = [...selectedChats, action.payload];
+      }
+      return { ...state, previousSelectedChats: selectedChats };
     default:
       return state;
   }

@@ -45,8 +45,9 @@ import {
   UPDATE_USER_ONLINE_SUB,
   UPDATE_USER_TYPING_SUB
 } from "../graphql/subscriptions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavigationEvents } from "react-navigation";
+import { Redux } from "../interfaces/Redux";
 
 interface Params {
   recipient: {
@@ -72,6 +73,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [showLoading, setShowLoading] = useState<boolean>(true);
   const [keyboardShown, setKeyboardShown] = useState<boolean>(false);
   const [selectedMsgs, setSelectedMsgs] = useState<MessageInterface[]>([]);
+  const previousSelectedChats = useSelector((state: Redux) => state.chat.previousSelectedChats);
   const user = useQuery(FETCH_CURRENT_USER);
   const currentUser: CurrentUser = user.data.fetchCurrentUser;
   const dispatch = useDispatch();
@@ -143,8 +145,12 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
     }
   });
   const [fetchMessages, { loading, data, fetchMore }] = useLazyQuery(FETCH_MESSAGES, {
-    fetchPolicy: "network-only"
+    fetchPolicy:
+      previousSelectedChats.length && previousSelectedChats.find(c => c._id === chatID)
+        ? "cache-first"
+        : "network-only"
   });
+  console.log(previousSelectedChats);
   const [updateReadMessages] = useMutation(UPDATE_READ_MESSAGES);
   const [updateUserTyping] = useMutation(UPDATE_USER_TYPING);
   const [addStarredMessages] = useMutation(ADD_STARRED_MESSAGES, {
