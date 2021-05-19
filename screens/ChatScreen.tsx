@@ -140,11 +140,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
             )?.messageCount || MESSAGE_LIMIT
         }
       });
-    },
-    onError(err) {
-      console.log(err);
-    },
-    fetchPolicy: "network-only"
+    }
   });
   const [fetchMessages, { loading, data, fetchMore }] = useLazyQuery(FETCH_MESSAGES, {
     fetchPolicy: "network-only"
