@@ -69,11 +69,17 @@ export interface SetUserTyping {
   type: "setUserTyping";
   payload: UserTyping;
 }
+
+export interface SetPreviousSelectedChat {
+  type: "setPreviousSelectedChat";
+  payload: string;
+}
+
 const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [showLoading, setShowLoading] = useState<boolean>(true);
   const [keyboardShown, setKeyboardShown] = useState<boolean>(false);
   const [selectedMsgs, setSelectedMsgs] = useState<MessageInterface[]>([]);
-  const previousSelectedChats = useSelector((state: Redux) => state.chat.previousSelectedChats);
+  const previousSelectedChatIds = useSelector((state: Redux) => state.chat.previousSelectedChatIds);
   const user = useQuery(FETCH_CURRENT_USER);
   const currentUser: CurrentUser = user.data.fetchCurrentUser;
   const dispatch = useDispatch();
@@ -146,11 +152,15 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   });
   const [fetchMessages, { loading, data, fetchMore }] = useLazyQuery(FETCH_MESSAGES, {
     fetchPolicy:
-      previousSelectedChats.length && previousSelectedChats.find(c => c._id === chatID)
+      previousSelectedChatIds.length && previousSelectedChatIds.find(id => id === chatID)
         ? "cache-first"
-        : "network-only"
+        : "network-only",
+    onCompleted() {
+      if (!previousSelectedChatIds.find(id => id === chatID)) {
+        dispatch<SetPreviousSelectedChat>({ type: "setPreviousSelectedChat", payload: chatID });
+      }
+    }
   });
-  console.log(previousSelectedChats);
   const [updateReadMessages] = useMutation(UPDATE_READ_MESSAGES);
   const [updateUserTyping] = useMutation(UPDATE_USER_TYPING);
   const [addStarredMessages] = useMutation(ADD_STARRED_MESSAGES, {

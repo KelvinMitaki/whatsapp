@@ -1,11 +1,10 @@
 import { AnyAction } from "redux";
 import { SetShouldScrollToBottomOnNewMessages } from "../components/Chat/Message";
-import { SetPreviousSelectedChat } from "../components/Home/ChatComponent";
 import { SetStarredMsgsInput } from "../components/Home/HomeHeaderRight";
 import { messages } from "../data/messages";
 import { Chat, User, UserTyping } from "../interfaces/ChatInterface";
 import { SetMessage } from "../screens/BroadcastScreen";
-import { SetUserTyping } from "../screens/ChatScreen";
+import { SetPreviousSelectedChat, SetUserTyping } from "../screens/ChatScreen";
 import { SetHeaderHeight, SetSearchModal } from "../screens/HomeScreen";
 import { ResetContacts } from "../screens/NewGroupInfoScreen";
 import { SetContacts } from "../screens/NewGroupScreen";
@@ -20,7 +19,7 @@ export interface ChatState {
   typingChats: UserTyping[];
   starredInput: string;
   shouldScrollToBottomOnNewMessages: boolean;
-  previousSelectedChats: Chat[];
+  previousSelectedChatIds: string[];
 }
 
 type Action =
@@ -44,7 +43,7 @@ const INITIAL_STATE: ChatState = {
   typingChats: [],
   starredInput: "",
   shouldScrollToBottomOnNewMessages: true,
-  previousSelectedChats: []
+  previousSelectedChatIds: []
 };
 
 const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
@@ -83,11 +82,11 @@ const chatReducer = (state = INITIAL_STATE, action: Action): ChatState => {
     case "setShouldScrollToBottomOnNewMessages":
       return { ...state, shouldScrollToBottomOnNewMessages: action.payload };
     case "setPreviousSelectedChat":
-      let selectedChats = [...state.previousSelectedChats];
-      if (!selectedChats.find(c => c._id === action.payload._id)) {
-        selectedChats = [...selectedChats, action.payload];
+      let selectedChatIds = [...state.previousSelectedChatIds];
+      if (!selectedChatIds.find(id => id === action.payload)) {
+        selectedChatIds = [...selectedChatIds, action.payload];
       }
-      return { ...state, previousSelectedChats: selectedChats };
+      return { ...state, previousSelectedChatIds: selectedChatIds };
     default:
       return state;
   }

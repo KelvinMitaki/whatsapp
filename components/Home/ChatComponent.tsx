@@ -17,11 +17,6 @@ interface Props {
   currentUser: CurrentUser;
 }
 
-export interface SetPreviousSelectedChat {
-  type: "setPreviousSelectedChat";
-  payload: Chat;
-}
-
 export const formatDate = (date: Date) => {
   if (isToday(date)) {
     return format(date, "p");
@@ -34,7 +29,6 @@ export const formatDate = (date: Date) => {
 
 const ChatComponent: React.FC<Props & NavigationInjectedProps> = props => {
   const typingChats = useSelector((state: Redux) => state.chat.typingChats);
-  const dispatch = useDispatch();
   const { item, currentUser, navigation } = props;
   const { message, sender, type, updatedAt, recipient, unread, _id } = item;
   const chat = typingChats.find(c => c.chatID === _id);
@@ -43,7 +37,6 @@ const ChatComponent: React.FC<Props & NavigationInjectedProps> = props => {
     <TouchableNativeFeedback
       background={TouchableNativeFeedback.Ripple("#FFFFFF", false)}
       onPress={() => {
-        dispatch<SetPreviousSelectedChat>({ type: "setPreviousSelectedChat", payload: item });
         navigation.navigate("Chat", {
           recipient: recipient._id !== currentUser._id ? recipient : sender,
           chatID: _id
