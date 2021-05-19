@@ -14,7 +14,7 @@ import {
 import { Chat, CurrentUser } from "../interfaces/ChatInterface";
 
 const BlankScreen: NavigationStackScreenComponent = ({ navigation }) => {
-  const [fetchCurrentUser, { data: user }] = useLazyQuery(FETCH_CURRENT_USER, {
+  const [fetchCurrentUser, user] = useLazyQuery(FETCH_CURRENT_USER, {
     onCompleted() {
       fetchChats();
       fetchGroups();
@@ -24,13 +24,13 @@ const BlankScreen: NavigationStackScreenComponent = ({ navigation }) => {
       navigation.replace("Start");
     }
   });
-  const currentUser: CurrentUser = user.data.fetchCurrentUser;
+  const currentUser: { fetchCurrentUser: CurrentUser } = user.data;
   const [fetchChats, { data }] = useLazyQuery(FETCH_CHATS, {
     onCompleted() {
       fetchMessagesCount({
         variables: {
           userIDs: (data.fetchChats as Chat[]).map(c =>
-            c.sender._id === currentUser._id ? c.recipient._id : c.sender._id
+            c.sender._id === currentUser.fetchCurrentUser._id ? c.recipient._id : c.sender._id
           )
         }
       });
