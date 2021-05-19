@@ -227,3 +227,12 @@ export const FETCH_MESSAGES_COUNT = gql`
     }
   }
 `;
+
+export const FETCH_GROUP_MESSAGES_COUNT = gql`
+  query {
+    fetchGroupMessagesCount {
+      messageCount
+      groupID
+    }
+  }
+`;

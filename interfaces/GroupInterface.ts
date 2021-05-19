@@ -45,3 +45,8 @@ export interface GroupUserTyping {
   typingUserID: string;
   typing: boolean;
 }
+
+export interface GroupMessageCount {
+  messageCount: number;
+  groupID: string;
+}
