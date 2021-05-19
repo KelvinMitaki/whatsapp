@@ -55,6 +55,7 @@ const Message: React.FC<Props> = props => {
     chatID
   } = props;
   const { data } = useQuery(FETCH_CURRENT_USER);
+  const currentUser: CurrentUser = data.fetchCurrentUser;
   const { data: chatsData } = useQuery(FETCH_CHATS);
   const count = useQuery(FETCH_MESSAGES_COUNT, {
     variables: {
@@ -66,7 +67,6 @@ const Message: React.FC<Props> = props => {
   const shouldScrollToBottomOnNewMessages = useSelector(
     (state: Redux) => state.chat.shouldScrollToBottomOnNewMessages
   );
-  const currentUser: CurrentUser = data.fetchCurrentUser;
   const dispatch = useDispatch();
   const [subScriptionMsgs, setSubScriptionMsgs] = useState<MessageInterface[]>([]);
   useSubscription(ADD_NEW_MESSAGE_SUB, {
