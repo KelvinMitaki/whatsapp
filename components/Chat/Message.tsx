@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,40 +7,40 @@ import {
   NativeScrollEvent,
   ActivityIndicator,
   TouchableNativeFeedback,
-} from 'react-native'
-import { Ionicons, Entypo } from '@expo/vector-icons'
-import inspect from '../../inspect'
+} from 'react-native';
+import { Ionicons, Entypo } from '@expo/vector-icons';
+import inspect from '../../inspect';
 import {
   Chat,
   CurrentUser,
   MessageCountInterface,
   MessageInterface,
-} from '../../interfaces/ChatInterface'
-import { LazyQueryResult, OperationVariables, useQuery, useSubscription } from '@apollo/client'
-import { FETCH_CHATS, FETCH_CURRENT_USER, FETCH_MESSAGES_COUNT } from '../../graphql/queries'
-import format from 'date-fns/format'
-import { ADD_NEW_MESSAGE_SUB } from '../../graphql/subscriptions'
-import AppColors from '../../Colors/color'
-import { MESSAGE_LIMIT } from './Input'
-import { useDispatch, useSelector } from 'react-redux'
-import { Redux } from '../../interfaces/Redux'
-import { useFetchCurrentUserQuery } from '../../generated/graphql'
+} from '../../interfaces/ChatInterface';
+import { LazyQueryResult, OperationVariables, useQuery, useSubscription } from '@apollo/client';
+import { FETCH_CHATS, FETCH_CURRENT_USER, FETCH_MESSAGES_COUNT } from '../../graphql/queries';
+import format from 'date-fns/format';
+import { ADD_NEW_MESSAGE_SUB } from '../../graphql/subscriptions';
+import AppColors from '../../Colors/color';
+import { MESSAGE_LIMIT } from './Input';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redux } from '../../interfaces/Redux';
+import { useFetchChatsQuery, useFetchCurrentUserQuery } from '../../generated/graphql';
 
 interface Props {
-  messages: MessageInterface[]
-  recipient: string
-  fetchMore: LazyQueryResult<any, OperationVariables>['fetchMore'] | undefined
-  setShowLoading: React.Dispatch<React.SetStateAction<boolean>>
-  showLoading: boolean
-  keyboardShown: boolean
-  setSelectedMsgs: React.Dispatch<React.SetStateAction<MessageInterface[]>>
-  selectedMsgs: MessageInterface[]
-  chatID: string
+  messages: MessageInterface[];
+  recipient: string;
+  fetchMore: LazyQueryResult<any, OperationVariables>['fetchMore'] | undefined;
+  setShowLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  showLoading: boolean;
+  keyboardShown: boolean;
+  setSelectedMsgs: React.Dispatch<React.SetStateAction<MessageInterface[]>>;
+  selectedMsgs: MessageInterface[];
+  chatID: string;
 }
 
 export interface SetShouldScrollToBottomOnNewMessages {
-  type: 'setShouldScrollToBottomOnNewMessages'
-  payload: boolean
+  type: 'setShouldScrollToBottomOnNewMessages';
+  payload: boolean;
 }
 
 const Message: React.FC<Props> = (props) => {
@@ -54,22 +54,22 @@ const Message: React.FC<Props> = (props) => {
     selectedMsgs,
     setSelectedMsgs,
     chatID,
-  } = props
-  const { data } = useFetchCurrentUserQuery()
-  const currentUser = data?.fetchCurrentUser
-  const { data: chatsData } = useQuery(FETCH_CHATS)
+  } = props;
+  const { data } = useFetchCurrentUserQuery();
+  const currentUser = data?.fetchCurrentUser;
+  const { data: chatsData } = useFetchChatsQuery();
   const count = useQuery(FETCH_MESSAGES_COUNT, {
     variables: {
-      userIDs: (chatsData.fetchChats as Chat[]).map((c) =>
+      userIDs: (chatsData?.fetchChats || []).map((c) =>
         c.sender._id === (currentUser && currentUser._id) ? c.recipient._id : c.sender._id
       ),
     },
-  })
+  });
   const shouldScrollToBottomOnNewMessages = useSelector(
     (state: Redux) => state.chat.shouldScrollToBottomOnNewMessages
-  )
-  const dispatch = useDispatch()
-  const [subScriptionMsgs, setSubScriptionMsgs] = useState<MessageInterface[]>([])
+  );
+  const dispatch = useDispatch();
+  const [subScriptionMsgs, setSubScriptionMsgs] = useState<MessageInterface[]>([]);
   useSubscription(ADD_NEW_MESSAGE_SUB, {
     variables: { sender: currentUser?._id, recipient },
     onSubscriptionData(data) {
@@ -77,20 +77,20 @@ const Message: React.FC<Props> = (props) => {
         dispatch<SetShouldScrollToBottomOnNewMessages>({
           type: 'setShouldScrollToBottomOnNewMessages',
           payload: true,
-        })
+        });
       }
-      setSubScriptionMsgs((m) => [...m, data.subscriptionData.data.addNewMessage])
+      setSubScriptionMsgs((m) => [...m, data.subscriptionData.data.addNewMessage]);
     },
-  })
-  const scrollViewRef = useRef<ScrollView>(null)
+  });
+  const scrollViewRef = useRef<ScrollView>(null);
   useEffect(() => {
     if (scrollViewRef.current && showLoading && shouldScrollToBottomOnNewMessages) {
-      scrollViewRef.current.scrollToEnd()
+      scrollViewRef.current.scrollToEnd();
     }
-  }, [messages, subScriptionMsgs, keyboardShown])
+  }, [messages, subScriptionMsgs, keyboardShown]);
   const isCloseToTop = ({ contentOffset }: NativeScrollEvent) => {
-    return contentOffset.y === 0
-  }
+    return contentOffset.y === 0;
+  };
   const filteredMsgs = [...messages, ...subScriptionMsgs]
     .filter((m, i, s) => i === s.findIndex((ms) => ms._id === m._id))
     .filter(
@@ -98,7 +98,7 @@ const Message: React.FC<Props> = (props) => {
         (msg.sender === currentUser?._id && msg.recipient === recipient) ||
         (msg.sender === recipient && msg.recipient === currentUser?._id)
     )
-    .sort((a, b) => parseInt(a.createdAt) - parseInt(b.createdAt))
+    .sort((a, b) => parseInt(a.createdAt) - parseInt(b.createdAt));
   return (
     <View style={{ height: keyboardShown ? '85%' : '90%' }}>
       <ScrollView
@@ -116,10 +116,10 @@ const Message: React.FC<Props> = (props) => {
               dispatch<SetShouldScrollToBottomOnNewMessages>({
                 type: 'setShouldScrollToBottomOnNewMessages',
                 payload: true,
-              })
+              });
             }
-            setShowLoading(false)
-            fetchMore({ variables: { offset: filteredMsgs.length, limit: MESSAGE_LIMIT } })
+            setShowLoading(false);
+            fetchMore({ variables: { offset: filteredMsgs.length, limit: MESSAGE_LIMIT } });
           }
         }}
       >
@@ -129,14 +129,14 @@ const Message: React.FC<Props> = (props) => {
             onPress={() =>
               selectedMsgs.length &&
               setSelectedMsgs((msgs) => {
-                let selectedMsgs = [...msgs]
-                const selectedMsgIndex = selectedMsgs.findIndex((msg) => msg._id === item._id)
+                let selectedMsgs = [...msgs];
+                const selectedMsgIndex = selectedMsgs.findIndex((msg) => msg._id === item._id);
                 if (selectedMsgIndex !== -1) {
-                  selectedMsgs.splice(selectedMsgIndex, 1)
+                  selectedMsgs.splice(selectedMsgIndex, 1);
                 } else {
-                  selectedMsgs = [item, ...selectedMsgs]
+                  selectedMsgs = [item, ...selectedMsgs];
                 }
-                return selectedMsgs
+                return selectedMsgs;
               })
             }
             key={item._id}
@@ -189,10 +189,10 @@ const Message: React.FC<Props> = (props) => {
         ))}
       </ScrollView>
     </View>
-  )
-}
+  );
+};
 
-export default Message
+export default Message;
 
 const styles = StyleSheet.create({
   prt: {
@@ -245,4 +245,4 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     marginRight: 10,
   },
-})
+});
