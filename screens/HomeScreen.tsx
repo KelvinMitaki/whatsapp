@@ -17,7 +17,11 @@ import {
 } from '../graphql/subscriptions';
 import { Chat, CurrentUser, UserOnline } from '../interfaces/ChatInterface';
 import { UPDATE_USER_ONLINE } from '../graphql/mutations';
-import { useFetchCurrentUserQuery } from '../generated/graphql';
+import {
+  FetchChatsQuery,
+  useFetchChatsQuery,
+  useFetchCurrentUserQuery,
+} from '../generated/graphql';
 
 export interface SetHeaderHeight {
   type: 'setHeaderHeight';
@@ -30,7 +34,7 @@ export interface SetSearchModal {
 }
 
 const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
-  const { data } = useQuery(FETCH_CHATS);
+  const { data } = useFetchChatsQuery();
   const userOnlineSub = useSubscription(UPDATE_USER_ONLINE_SUB);
   const user = useFetchCurrentUserQuery();
   const [updateUserOnline] = useMutation(UPDATE_USER_ONLINE);
@@ -62,10 +66,10 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
       setChatSub((c) => [chat.data.addNewChat, ...c]);
     }
   }, [chat.data]);
-  const renderData = (): { fetchChats: Chat[] } => {
+  const renderData = (): { fetchChats: FetchChatsQuery['fetchChats'] } => {
     if (data && data.fetchChats && userOnlineSub.data && userOnlineSub.data.updateUserOnline) {
       const onlineData: UserOnline = userOnlineSub.data.updateUserOnline;
-      const chats: Chat[] = data.fetchChats;
+      const chats = data.fetchChats;
       return {
         ...data,
         fetchChats: chats.map((ch) => {
@@ -89,7 +93,7 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
         }),
       };
     }
-    return data;
+    return data!;
   };
   return (
     <View style={styles.prt}>

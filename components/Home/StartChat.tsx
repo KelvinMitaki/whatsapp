@@ -1,12 +1,12 @@
-import React, { useEffect, useRef } from "react";
-import { Animated, StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
-import { NavigationInjectedProps, withNavigation } from "react-navigation";
-import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
-import AppColors from "../../Colors/color";
-import { Chat } from "../../interfaces/ChatInterface";
+import React, { useEffect, useRef } from 'react';
+import { Animated, StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native';
+import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
+import AppColors from '../../Colors/color';
+import { FetchChatsQuery } from '../../generated/graphql';
 
 interface Props {
-  chats: Chat[];
+  chats: FetchChatsQuery['fetchChats'];
 }
 
 const StartChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, chats }) => {
@@ -31,10 +31,10 @@ const StartChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, chat
       <View style={styles.prt}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            width: "50%"
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '50%',
           }}
         >
           <Text style={{ color: AppColors.secodary, fontSize: 23 }}>Start a chat</Text>
@@ -44,8 +44,8 @@ const StartChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, chat
         </View>
         <View style={styles.messageNavPrt}>
           <TouchableNativeFeedback
-            onPress={() => navigation.navigate("Contact")}
-            background={TouchableNativeFeedback.Ripple("#fff", true)}
+            onPress={() => navigation.navigate('Contact')}
+            background={TouchableNativeFeedback.Ripple('#fff', true)}
           >
             <View style={styles.message}>
               <MaterialCommunityIcons
@@ -64,8 +64,8 @@ const StartChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, chat
     <View style={styles.withChatsPrt}>
       <View style={styles.messageNavPrt}>
         <TouchableNativeFeedback
-          onPress={() => navigation.navigate("Contact")}
-          background={TouchableNativeFeedback.Ripple("#fff", true)}
+          onPress={() => navigation.navigate('Contact')}
+          background={TouchableNativeFeedback.Ripple('#fff', true)}
         >
           <View style={styles.message}>
             <MaterialCommunityIcons
@@ -87,35 +87,35 @@ const styles = StyleSheet.create({
   prt: {
     backgroundColor: AppColors.primary_dark,
     height: 80,
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingHorizontal: 20,
-    alignItems: "center"
+    alignItems: 'center',
   },
   withChatsPrt: {
-    width: "100%",
-    alignItems: "flex-end",
-    position: "absolute",
+    width: '100%',
+    alignItems: 'flex-end',
+    position: 'absolute',
     bottom: 20,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   messageNavPrt: {
     height: 55,
     width: 55,
     borderRadius: 55,
-    borderColor: "transparent"
+    borderColor: 'transparent',
   },
   message: {
-    right: "5%",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#00af9c",
+    right: '5%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#00af9c',
     height: 55,
     width: 55,
-    borderRadius: 55
+    borderRadius: 55,
   },
   msgIcon: {
-    transform: [{ scaleX: -1 }, { scaleY: 1 }]
-  }
+    transform: [{ scaleX: -1 }, { scaleY: 1 }],
+  },
 });
