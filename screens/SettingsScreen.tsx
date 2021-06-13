@@ -1,78 +1,78 @@
-import React from "react";
-import { StyleSheet, Text, TouchableNativeFeedback, View } from "react-native";
-import { Ionicons, Foundation, MaterialIcons } from "@expo/vector-icons";
-import { NavigationStackScreenComponent } from "react-navigation-stack";
-import inspect from "../inspect";
-import { FETCH_CURRENT_USER } from "../graphql/queries";
-import { useQuery } from "@apollo/client";
-import { CurrentUser } from "../interfaces/ChatInterface";
+import React from 'react';
+import { StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native';
+import { Ionicons, Foundation, MaterialIcons } from '@expo/vector-icons';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
+import inspect from '../inspect';
+import { useFetchCurrentUserQuery } from '../generated/graphql';
 
 const SettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
-  const { data: userData } = useQuery(FETCH_CURRENT_USER);
-  const currentUser: CurrentUser = userData.fetchCurrentUser;
+  const { data: userData } = useFetchCurrentUserQuery();
+  const currentUser = userData?.fetchCurrentUser;
   return (
     <View>
       <TouchableNativeFeedback
-        onPress={() => navigation.navigate("Profile")}
-        background={TouchableNativeFeedback.Ripple("#fff", false)}
+        onPress={() => navigation.navigate('Profile')}
+        background={TouchableNativeFeedback.Ripple('#fff', false)}
       >
         <View style={styles.profile}>
           <View style={styles.person}>
             <Ionicons name="person" size={35} color="rgba(241, 241, 242, 0.8)" />
           </View>
-          <View
-            style={{
-              marginLeft: 15
-            }}
-          >
-            <Text style={{ color: "#fff", fontSize: 20 }}>{currentUser.name}</Text>
-            <Text style={{ color: "rgba(255,255,255,.7)" }}>{currentUser.about}</Text>
-          </View>
+          {currentUser && (
+            <View
+              style={{
+                marginLeft: 15,
+              }}
+            >
+              <Text style={{ color: '#fff', fontSize: 20 }}>{currentUser.name}</Text>
+              <Text style={{ color: 'rgba(255,255,255,.7)' }}>{currentUser.about}</Text>
+            </View>
+          )}
         </View>
       </TouchableNativeFeedback>
       <TouchableNativeFeedback
-        background={TouchableNativeFeedback.Ripple("#fff", false)}
-        onPress={() => navigation.navigate("Privacy")}
+        background={TouchableNativeFeedback.Ripple('#fff', false)}
+        onPress={() => navigation.navigate('Privacy')}
       >
         <View style={styles.settingsItem}>
-          <View style={{ width: "20%", alignItems: "center" }}>
+          <View style={{ width: '20%', alignItems: 'center' }}>
             <MaterialIcons name="lock" size={25} color="rgba(255,255,255,.7)" />
           </View>
-          <View style={{ width: "80%" }}>
-            <Text style={{ color: "#fff", fontSize: 17 }}>Privacy</Text>
-            <Text numberOfLines={1} style={{ color: "rgba(255,255,255,.7)" }}>
+          <View style={{ width: '80%' }}>
+            <Text style={{ color: '#fff', fontSize: 17 }}>Privacy</Text>
+            <Text numberOfLines={1} style={{ color: 'rgba(255,255,255,.7)' }}>
               Last seen, profile photo, about
             </Text>
           </View>
         </View>
       </TouchableNativeFeedback>
       <TouchableNativeFeedback
-        background={TouchableNativeFeedback.Ripple("#fff", false)}
+        background={TouchableNativeFeedback.Ripple('#fff', false)}
         onPress={() => {}}
       >
         <View style={styles.settingsItem}>
-          <View style={{ width: "20%", alignItems: "center" }}>
+          <View style={{ width: '20%', alignItems: 'center' }}>
             <MaterialIcons name="group" size={25} color="rgba(255,255,255,.7)" />
           </View>
-          <View style={{ width: "80%" }}>
-            <Text style={{ color: "#fff", fontSize: 17 }}>Invite a friend</Text>
-            <Text numberOfLines={1} style={{ color: "rgba(255,255,255,.7)" }}>
+          <View style={{ width: '80%' }}>
+            <Text style={{ color: '#fff', fontSize: 17 }}>Invite a friend</Text>
+            <Text numberOfLines={1} style={{ color: 'rgba(255,255,255,.7)' }}>
               Share the link with a friend to join ChatApp
             </Text>
           </View>
         </View>
       </TouchableNativeFeedback>
       <TouchableNativeFeedback
-        background={TouchableNativeFeedback.Ripple("#fff", false)}
+        background={TouchableNativeFeedback.Ripple('#fff', false)}
         onPress={() => {}}
       >
         <View style={styles.settingsItem}>
-          <View style={{ width: "20%", alignItems: "center" }}>
+          <View style={{ width: '20%', alignItems: 'center' }}>
             <Foundation name="trash" size={25} color="rgba(255,255,255,.7)" />
           </View>
-          <View style={{ width: "80%" }}>
-            <Text style={{ color: "#fff", fontSize: 17 }}>Delete account</Text>
-            <Text numberOfLines={1} style={{ color: "rgba(255,255,255,.7)" }}>
+          <View style={{ width: '80%' }}>
+            <Text style={{ color: '#fff', fontSize: 17 }}>Delete account</Text>
+            <Text numberOfLines={1} style={{ color: 'rgba(255,255,255,.7)' }}>
               All your data in the system will be deleted.
             </Text>
           </View>
@@ -86,24 +86,24 @@ export default SettingsScreen;
 
 const styles = StyleSheet.create({
   profile: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingHorizontal: 15,
     borderBottomWidth: 0.5,
-    borderBottomColor: "rgba(255,255,255,.4)",
+    borderBottomColor: 'rgba(255,255,255,.4)',
     paddingVertical: 20,
-    alignItems: "center"
+    alignItems: 'center',
   },
   person: {
     height: 60,
     width: 60,
     borderRadius: 500,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "grey"
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'grey',
   },
   settingsItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 20
-  }
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 20,
+  },
 });
