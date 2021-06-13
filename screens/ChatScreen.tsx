@@ -48,7 +48,11 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { NavigationEvents } from 'react-navigation';
 import { Redux } from '../interfaces/Redux';
-import { FetchCurrentUserQuery, useFetchCurrentUserQuery } from '../generated/graphql';
+import {
+  FetchCurrentUserQuery,
+  useFetchChatsQuery,
+  useFetchCurrentUserQuery,
+} from '../generated/graphql';
 
 interface Params {
   recipient: {
@@ -130,10 +134,10 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       });
     },
   });
-  const { data: chatsData } = useQuery(FETCH_CHATS);
+  const { data: chatsData } = useFetchChatsQuery();
   const count = useQuery(FETCH_MESSAGES_COUNT, {
     variables: {
-      userIDs: (chatsData.fetchChats as Chat[]).map((c) =>
+      userIDs: (chatsData?.fetchChats as Chat[]).map((c) =>
         c.sender._id === currentUser?._id ? c.recipient._id : c.sender._id
       ),
     },
