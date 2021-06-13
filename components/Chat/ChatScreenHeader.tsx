@@ -1,6 +1,6 @@
-import React from "react";
-import { StyleSheet, Text, View, TouchableNativeFeedback, Dimensions } from "react-native";
-import { NavigationStackScreenComponent } from "react-navigation-stack";
+import React from 'react';
+import { StyleSheet, Text, View, TouchableNativeFeedback, Dimensions } from 'react-native';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import {
   MaterialIcons,
   Ionicons,
@@ -8,13 +8,14 @@ import {
   Entypo,
   FontAwesome,
   FontAwesome5,
-  MaterialCommunityIcons
-} from "@expo/vector-icons";
-import { formatRelative } from "date-fns";
-import { CurrentUser, MessageInterface } from "../../interfaces/ChatInterface";
-import AppColors from "../../Colors/color";
-import inspect from "../../inspect";
-import { MutationTuple, OperationVariables } from "@apollo/client";
+  MaterialCommunityIcons,
+} from '@expo/vector-icons';
+import { formatRelative } from 'date-fns';
+import { CurrentUser, MessageInterface } from '../../interfaces/ChatInterface';
+import AppColors from '../../Colors/color';
+import inspect from '../../inspect';
+import { MutationTuple, OperationVariables } from '@apollo/client';
+import { FetchCurrentUserQuery } from '../../generated/graphql';
 
 interface Params {
   recipient: {
@@ -29,28 +30,28 @@ interface Params {
   selectedMsgs: MessageInterface[];
   addStarredMessages: MutationTuple<any, OperationVariables>[0];
   removeStarredMessages: MutationTuple<any, OperationVariables>[0];
-  currentUser: CurrentUser;
+  currentUser: FetchCurrentUserQuery['fetchCurrentUser'];
 }
 
-const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOptions"] = ({
-  navigation
+const ChatScreenHeader: NavigationStackScreenComponent<Params>['navigationOptions'] = ({
+  navigation,
 }) => {
-  const recipient = navigation.getParam("recipient");
-  const selectedMsgs = navigation.getParam("selectedMsgs");
-  const setSelectedMsgs = navigation.getParam("setSelectedMsgs");
-  const addStarredMessages = navigation.getParam("addStarredMessages");
-  const removeStarredMessages = navigation.getParam("removeStarredMessages");
-  const currentUser = navigation.getParam("currentUser");
+  const recipient = navigation.getParam('recipient');
+  const selectedMsgs = navigation.getParam('selectedMsgs');
+  const setSelectedMsgs = navigation.getParam('setSelectedMsgs');
+  const addStarredMessages = navigation.getParam('addStarredMessages');
+  const removeStarredMessages = navigation.getParam('removeStarredMessages');
+  const currentUser = navigation.getParam('currentUser');
   const starred =
     selectedMsgs &&
     selectedMsgs.length ===
-      selectedMsgs.filter(m => m.starredBy.some(id => id === currentUser._id)).length;
+      selectedMsgs.filter((m) => m.starredBy.some((id) => id === currentUser._id)).length;
   const starredMsgs =
     selectedMsgs &&
-    selectedMsgs.filter(m => m.starredBy.some(id => id === currentUser._id)).map(m => m._id);
+    selectedMsgs.filter((m) => m.starredBy.some((id) => id === currentUser._id)).map((m) => m._id);
   const unstarredMsgs =
     selectedMsgs &&
-    selectedMsgs.filter(m => !m.starredBy.some(id => id === currentUser._id)).map(m => m._id);
+    selectedMsgs.filter((m) => !m.starredBy.some((id) => id === currentUser._id)).map((m) => m._id);
   if (!selectedMsgs || (selectedMsgs && !selectedMsgs.length)) {
     return {
       headerTitle: () => (
@@ -67,24 +68,24 @@ const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOption
           <View
             style={{
               marginLeft: 10,
-              width: "75%"
+              width: '75%',
             }}
           >
             <Text
               numberOfLines={1}
               style={{
-                color: "white",
+                color: 'white',
                 fontSize: 20,
-                fontWeight: "400"
+                fontWeight: '400',
               }}
             >
               {recipient.name}
             </Text>
-            <Text style={{ color: "#fff" }} numberOfLines={1}>
+            <Text style={{ color: '#fff' }} numberOfLines={1}>
               {recipient.typing
-                ? "typing..."
+                ? 'typing...'
                 : recipient.online
-                ? "online"
+                ? 'online'
                 : `last seen ${formatRelative(new Date(recipient.lastSeen), new Date())}`}
             </Text>
           </View>
@@ -94,26 +95,26 @@ const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOption
         <View style={styles.headerRight}>
           <View
             style={{
-              alignSelf: "center",
-              ...styles.ellipsis
+              alignSelf: 'center',
+              ...styles.ellipsis,
             }}
           >
             <TouchableNativeFeedback
-              background={TouchableNativeFeedback.Ripple("#fff", true)}
+              background={TouchableNativeFeedback.Ripple('#fff', true)}
               onPress={() => {}}
             >
               <View>
-                <MaterialIcons name="call" size={25} color={"#fff"} />
+                <MaterialIcons name="call" size={25} color={'#fff'} />
               </View>
             </TouchableNativeFeedback>
           </View>
           <View style={styles.ellipsis}>
             <TouchableNativeFeedback
-              background={TouchableNativeFeedback.Ripple("#fff", true)}
+              background={TouchableNativeFeedback.Ripple('#fff', true)}
               onPress={() => {}}
             >
               <View>
-                <Ionicons name="ellipsis-vertical-sharp" size={20} color={"rgba(255,255,255,.5)"} />
+                <Ionicons name="ellipsis-vertical-sharp" size={20} color={'rgba(255,255,255,.5)'} />
               </View>
             </TouchableNativeFeedback>
           </View>
@@ -125,10 +126,10 @@ const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOption
             name="arrowleft"
             size={20}
             color="#fff"
-            onPress={() => navigation.navigate("Home")}
+            onPress={() => navigation.navigate('Home')}
           />
         </View>
-      )
+      ),
     };
   }
   return {
@@ -138,10 +139,10 @@ const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOption
     headerRight: () => (
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: Dimensions.get("screen").width * 0.6
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: Dimensions.get('screen').width * 0.6,
         }}
       >
         <Ellipsis>
@@ -176,16 +177,16 @@ const ChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOption
         </Ellipsis>
         <View style={[styles.ellipsis]}>
           <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple("#fff", true)}
+            background={TouchableNativeFeedback.Ripple('#fff', true)}
             onPress={() => {}}
           >
             <View>
-              <Ionicons name="ellipsis-vertical-sharp" size={20} color={"rgba(255,255,255,.5)"} />
+              <Ionicons name="ellipsis-vertical-sharp" size={20} color={'rgba(255,255,255,.5)'} />
             </View>
           </TouchableNativeFeedback>
         </View>
       </View>
-    )
+    ),
   };
 };
 
@@ -193,32 +194,32 @@ export default ChatScreenHeader;
 
 const styles = StyleSheet.create({
   headerLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginLeft: "-10%"
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: '-10%',
   },
   headerRight: {
-    flexDirection: "row",
+    flexDirection: 'row',
     width: 100,
-    justifyContent: "space-around"
+    justifyContent: 'space-around',
   },
   person: {
     borderRadius: 70,
-    backgroundColor: "grey",
+    backgroundColor: 'grey',
     height: 40,
     width: 40,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   ellipsis: {
     height: 35,
     width: 35,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 35,
     borderWidth: 1,
-    borderColor: "transparent"
-  }
+    borderColor: 'transparent',
+  },
 });
 
 interface Props {
@@ -228,10 +229,10 @@ interface Props {
 const Ellipsis: React.FC<Props> = ({ children, onPress }) => (
   <View style={styles.ellipsis}>
     <TouchableNativeFeedback
-      background={TouchableNativeFeedback.Ripple("#fff", true)}
-      onPress={e => onPress && onPress()}
+      background={TouchableNativeFeedback.Ripple('#fff', true)}
+      onPress={(e) => onPress && onPress()}
     >
-      <View style={{ height: 45, width: 45, alignItems: "center", justifyContent: "center" }}>
+      <View style={{ height: 45, width: 45, alignItems: 'center', justifyContent: 'center' }}>
         {children}
       </View>
     </TouchableNativeFeedback>
