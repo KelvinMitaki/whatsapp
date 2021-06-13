@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -6,21 +6,22 @@ import {
   TouchableNativeFeedback,
   View,
   Animated,
-  Dimensions
-} from "react-native";
-import { NavigationStackScreenComponent, useHeaderHeight } from "react-navigation-stack";
-import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import inspect from "../inspect";
-import Contact from "../components/Contacts/Contact";
-import { FETCH_USERS } from "../graphql/queries";
-import { useQuery } from "@apollo/client";
-import { Dispatch } from "redux";
-import { useDispatch, useSelector } from "react-redux";
-import SearchModal from "../components/Modals/SearchModal";
-import { SetSearchModal } from "./HomeScreen";
-import { NavigationEvents } from "react-navigation";
-import { Redux } from "../interfaces/Redux";
-import ContactScreenHeader from "../components/Contacts/ContactScreenHeader";
+  Dimensions,
+} from 'react-native';
+import { NavigationStackScreenComponent, useHeaderHeight } from 'react-navigation-stack';
+import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import inspect from '../inspect';
+import Contact from '../components/Contacts/Contact';
+import { FETCH_USERS } from '../graphql/queries';
+import { useQuery } from '@apollo/client';
+import { Dispatch } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
+import SearchModal from '../components/Modals/SearchModal';
+import { SetSearchModal } from './HomeScreen';
+import { NavigationEvents } from 'react-navigation';
+import { Redux } from '../interfaces/Redux';
+import ContactScreenHeader from '../components/Contacts/ContactScreenHeader';
+import { useFetchUsersQuery } from '../generated/graphql';
 
 interface Params {
   contacts: number;
@@ -33,8 +34,8 @@ interface Params {
 }
 
 const ContactScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
-  const { data } = useQuery(FETCH_USERS, { fetchPolicy: "cache-and-network" });
-  const [inp, setInp] = useState<string>("");
+  const { data } = useFetchUsersQuery();
+  const [inp, setInp] = useState<string>('');
   const searchHeight = useRef(new Animated.Value(20)).current;
   const searchWidth = useRef(new Animated.Value(20)).current;
   const searchModal = useSelector((state: Redux) => state.chat.searchModal);
@@ -47,19 +48,19 @@ const ContactScreen: NavigationStackScreenComponent<Params> = ({ navigation }) =
     navigation.setParams({ inp });
   }, [inp]);
   useEffect(() => {
-    navigation.setParams({ contacts: data.fetchUsers.length });
+    navigation.setParams({ contacts: data?.fetchUsers.length });
   }, [data && data.fetchUsers]);
   return (
     <>
       {searchModal && <View style={{ height: headerHeight / 3 }}></View>}
       <ScrollView>
         <NavigationEvents
-          onWillFocus={() => dispatch<SetSearchModal>({ type: "setSearchModal", payload: false })}
+          onWillFocus={() => dispatch<SetSearchModal>({ type: 'setSearchModal', payload: false })}
         />
         <View>
           <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple("#fff", false)}
-            onPress={() => navigation.navigate("NewGroup")}
+            background={TouchableNativeFeedback.Ripple('#fff', false)}
+            onPress={() => navigation.navigate('NewGroup')}
           >
             <View style={styles.meta}>
               <View style={styles.person}>
@@ -75,7 +76,7 @@ const ContactScreen: NavigationStackScreenComponent<Params> = ({ navigation }) =
         </View>
         <View>
           <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple("#fff", false)}
+            background={TouchableNativeFeedback.Ripple('#fff', false)}
             onPress={() => {}}
           >
             <View style={styles.meta}>
@@ -100,29 +101,29 @@ export default ContactScreen;
 
 const styles = StyleSheet.create({
   person: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#00af9c",
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#00af9c',
     height: 45,
     width: 45,
-    borderRadius: 55
+    borderRadius: 55,
   },
   meta: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingLeft: 10,
-    height: 70
+    height: 70,
   },
   textPrt: {
-    justifyContent: "center",
-    height: "100%",
-    width: "85%",
+    justifyContent: 'center',
+    height: '100%',
+    width: '85%',
     borderBottomWidth: 0.5,
-    borderBottomColor: "rgba(255,255,255,.3)"
+    borderBottomColor: 'rgba(255,255,255,.3)',
   },
   metaText: {
-    color: "#fff",
+    color: '#fff',
     marginLeft: 10,
-    fontSize: 17
-  }
+    fontSize: 17,
+  },
 });
