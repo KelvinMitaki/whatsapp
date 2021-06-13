@@ -26,7 +26,7 @@ import {
   FETCH_USERS,
 } from '../graphql/queries';
 import { Chat, CurrentUser } from '../interfaces/ChatInterface';
-import { useFetchCurrentUserLazyQuery } from '../generated/graphql';
+import { useFetchCurrentUserLazyQuery, useFetchUsersLazyQuery } from '../generated/graphql';
 
 interface Params {
   code: string;
@@ -82,7 +82,7 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       navigation.replace('Tab');
     },
   });
-  const [fetchUsers] = useLazyQuery(FETCH_USERS);
+  const [fetchUsers] = useFetchUsersLazyQuery();
   const [fetchGroups] = useLazyQuery(FETCH_GROUPS);
   const [fetchUnreadGroupMsgs] = useLazyQuery(FETCH_UNREAD_GROUP_MSGS);
   const [registerUser] = useMutation(REGISTER_USER, {
