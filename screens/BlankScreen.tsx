@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
-import { useFetchCurrentUserLazyQuery } from '../generated/graphql';
+import { useFetchCurrentUserLazyQuery, useFetchUsersLazyQuery } from '../generated/graphql';
 import {
   FETCH_CHATS,
   FETCH_CURRENT_USER,
@@ -42,7 +42,7 @@ const BlankScreen: NavigationStackScreenComponent = ({ navigation }) => {
       navigation.replace('Tab');
     },
   });
-  const [fetchUsers] = useLazyQuery(FETCH_USERS);
+  const [fetchUsers] = useFetchUsersLazyQuery();
   const [fetchGroups] = useLazyQuery(FETCH_GROUPS);
   const [fetchUnreadGroupMsgs] = useLazyQuery(FETCH_UNREAD_GROUP_MSGS);
   useEffect(() => {
