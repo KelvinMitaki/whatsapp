@@ -6,7 +6,7 @@ import inspect from '../../inspect';
 import { useQuery } from '@apollo/client';
 import { FETCH_CHATS, FETCH_USERS } from '../../graphql/queries';
 import { Chat, User } from '../../interfaces/ChatInterface';
-import { FetchUsersQuery, useFetchUsersQuery } from '../../generated/graphql';
+import { FetchUsersQuery, useFetchChatsQuery, useFetchUsersQuery } from '../../generated/graphql';
 
 interface Props {
   setContacts?: (usr: FetchUsersQuery['fetchUsers'][0]) => void;
@@ -17,7 +17,7 @@ interface Props {
 const Contact: React.FC<NavigationInjectedProps & Props> = (props) => {
   const { navigation, setContacts, Contacts, inp } = props;
   const { data } = useFetchUsersQuery();
-  const chat = useQuery(FETCH_CHATS, { fetchPolicy: 'cache-only' });
+  const chat = useFetchChatsQuery();
   return (
     <>
       {data &&
@@ -34,7 +34,7 @@ const Contact: React.FC<NavigationInjectedProps & Props> = (props) => {
                 if (!setContacts) {
                   navigation.navigate('Chat', {
                     recipient: usr,
-                    chatID: (chat.data.fetchChats as Chat[]).find(
+                    chatID: (chat.data?.fetchChats || []).find(
                       (c) => c.sender._id === usr._id || c.recipient._id === usr._id
                     ),
                   });
