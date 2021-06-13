@@ -1,7 +1,7 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag'
 
 export const ADD_NEW_MESSAGE_SUB = gql`
-  subscription AddNewMessage($sender: String!, $recipient: String!) {
+  subscription AddNewMessageSub($sender: String!, $recipient: String!) {
     addNewMessage(sender: $sender, recipient: $recipient) {
       _id
       sender
@@ -13,10 +13,10 @@ export const ADD_NEW_MESSAGE_SUB = gql`
       starredBy
     }
   }
-`;
+`
 
 export const ADD_NEW_CHAT_SUB = gql`
-  subscription AddNewChat($userID: String!) {
+  subscription AddNewChatSub($userID: String!) {
     addNewChat(userID: $userID) {
       _id
       sender {
@@ -40,10 +40,10 @@ export const ADD_NEW_CHAT_SUB = gql`
       type
     }
   }
-`;
+`
 
 export const ADD_NEW_GROUP_SUB = gql`
-  subscription AddNewGroup($userID: String!) {
+  subscription AddNewGroupSub($userID: String!) {
     addNewGroup(userID: $userID) {
       _id
       name
@@ -69,10 +69,10 @@ export const ADD_NEW_GROUP_SUB = gql`
       createdAt
     }
   }
-`;
+`
 
 export const ADD_NEW_GROUP_MSG_SUB = gql`
-  subscription AddNewGroupMsg($groupID: String!) {
+  subscription AddNewGroupMsgSub($groupID: String!) {
     addNewGroupMsg(groupID: $groupID) {
       _id
       sender {
@@ -91,39 +91,39 @@ export const ADD_NEW_GROUP_MSG_SUB = gql`
       starredBy
     }
   }
-`;
+`
 
 export const UPDATE_USER_ONLINE_SUB = gql`
-  subscription {
+  subscription UpdateUserOnlineSub {
     updateUserOnline {
       userID
       online
     }
   }
-`;
+`
 
 export const UPDATE_USER_TYPING_SUB = gql`
-  subscription UpdateUserTyping($chatID: String!) {
+  subscription UpdateUserTypingSub($chatID: String!) {
     updateUserTyping(chatID: $chatID) {
       chatID
       typing
       typingUserID
     }
   }
-`;
+`
 
 export const UPDATE_GROUP_TYPING_SUB = gql`
-  subscription UpdateGroupTyping($groupID: String!) {
+  subscription UpdateGroupTypingSub($groupID: String!) {
     updateGroupTyping(groupID: $groupID) {
       groupID
       typing
       typingUserID
     }
   }
-`;
+`
 
 export const UPDATE_READ_MESSAGES_SUB = gql`
-  subscription UpdateReadMessages($sender: String!, $recipient: String!) {
+  subscription UpdateReadMessagesSub($sender: String!, $recipient: String!) {
     updateReadMessages(sender: $sender, recipient: $recipient) {
       _id
       sender
@@ -135,4 +135,4 @@ export const UPDATE_READ_MESSAGES_SUB = gql`
       starredBy
     }
   }
-`;
+`
