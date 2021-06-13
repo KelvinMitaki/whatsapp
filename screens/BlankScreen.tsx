@@ -3,7 +3,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
-import { useFetchCurrentUserLazyQuery, useFetchUsersLazyQuery } from '../generated/graphql';
+import {
+  useFetchChatsLazyQuery,
+  useFetchCurrentUserLazyQuery,
+  useFetchUsersLazyQuery,
+} from '../generated/graphql';
 import {
   FETCH_CHATS,
   FETCH_CURRENT_USER,
@@ -26,11 +30,11 @@ const BlankScreen: NavigationStackScreenComponent = ({ navigation }) => {
     },
   });
   const currentUser = user.data;
-  const [fetchChats, { data }] = useLazyQuery(FETCH_CHATS, {
-    onCompleted() {
+  const [fetchChats] = useFetchChatsLazyQuery({
+    onCompleted(chatData) {
       fetchMessagesCount({
         variables: {
-          userIDs: (data.fetchChats as Chat[]).map((c) =>
+          userIDs: chatData.fetchChats.map((c) =>
             c.sender._id === currentUser?.fetchCurrentUser._id ? c.recipient._id : c.sender._id
           ),
         },
