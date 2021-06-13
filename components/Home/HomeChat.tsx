@@ -1,58 +1,59 @@
-import React, { useCallback } from "react";
-import { FlatList, ListRenderItemInfo, StyleSheet, View } from "react-native";
-import { Text } from "react-native-elements";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { NavigationInjectedProps, withNavigation } from "react-navigation";
-import { useDispatch, useSelector } from "react-redux";
-import { SetSearchModal } from "../../screens/HomeScreen";
-import { FETCH_CHATS, FETCH_CURRENT_USER } from "../../graphql/queries";
-import { useQuery } from "@apollo/client";
-import { Chat, CurrentUser } from "../../interfaces/ChatInterface";
-import ChatComponent from "./ChatComponent";
-import { useHeaderHeight } from "react-navigation-stack";
-import { Redux } from "../../interfaces/Redux";
+import React, { useCallback } from 'react'
+import { FlatList, ListRenderItemInfo, StyleSheet, View } from 'react-native'
+import { Text } from 'react-native-elements'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { NavigationInjectedProps, withNavigation } from 'react-navigation'
+import { useDispatch, useSelector } from 'react-redux'
+import { SetSearchModal } from '../../screens/HomeScreen'
+import { FETCH_CHATS, FETCH_CURRENT_USER } from '../../graphql/queries'
+import { useQuery } from '@apollo/client'
+import { Chat, CurrentUser } from '../../interfaces/ChatInterface'
+import ChatComponent from './ChatComponent'
+import { useHeaderHeight } from 'react-navigation-stack'
+import { Redux } from '../../interfaces/Redux'
+import { useFetchCurrentUserQuery } from '../../generated/graphql'
 
 interface Props {
-  chatSub: Chat[];
-  chat: Chat | null;
-  data: any;
+  chatSub: Chat[]
+  chat: Chat | null
+  data: any
 }
 
 const HomeChat: React.FC<NavigationInjectedProps & Props> = ({ chatSub, chat, data }) => {
-  const user = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
-  const searchModal = useSelector((state: Redux) => state.chat.searchModal);
-  const headerHeight = useHeaderHeight();
-  const dispatch = useDispatch();
-  const currentUser: CurrentUser = user.data.fetchCurrentUser;
+  const user = useFetchCurrentUserQuery()
+  const searchModal = useSelector((state: Redux) => state.chat.searchModal)
+  const headerHeight = useHeaderHeight()
+  const dispatch = useDispatch()
+  const currentUser = user.data?.fetchCurrentUser
   const renderItem = ({ item }: ListRenderItemInfo<Chat>) => (
-    <ChatComponent item={item} currentUser={currentUser} />
-  );
+    <ChatComponent item={item} currentUser={currentUser!} />
+  )
   const getItemLayout = useCallback(
     (data: any, i: number) => ({ length: 70, offset: 70 * i, index: i }),
     []
-  );
-  const keyExtractor = ({ _id }: Chat) => _id;
+  )
+  const keyExtractor = ({ _id }: Chat) => _id
   const renderChats = (): Chat[] => {
     if (!chat) {
-      let existingChats: Chat[] = data.fetchChats;
-      chatSub.forEach(c => {
-        const chatIndex = existingChats.findIndex(ch => ch._id === c._id);
+      let existingChats: Chat[] = data.fetchChats
+      chatSub.forEach((c) => {
+        const chatIndex = existingChats.findIndex((ch) => ch._id === c._id)
         if (chatIndex !== -1) {
-          existingChats.splice(chatIndex, 1);
-          existingChats = [c, ...existingChats];
+          existingChats.splice(chatIndex, 1)
+          existingChats = [c, ...existingChats]
         } else {
-          existingChats = [c, ...existingChats];
+          existingChats = [c, ...existingChats]
         }
-      });
-      return existingChats;
+      })
+      return existingChats
     }
     if (chat) {
       return [...chatSub, ...(data.fetchChats as Chat[])].filter(
-        (c, i, s) => i === s.findIndex(ch => ch._id === c._id)
-      );
+        (c, i, s) => i === s.findIndex((ch) => ch._id === c._id)
+      )
     }
-    return data.fetchChats;
-  };
+    return data.fetchChats
+  }
   return (
     <View>
       {searchModal && <View style={{ height: headerHeight / 2 }}></View>}
@@ -62,16 +63,16 @@ const HomeChat: React.FC<NavigationInjectedProps & Props> = ({ chatSub, chat, da
           keyExtractor={keyExtractor}
           renderItem={renderItem}
           getItemLayout={getItemLayout}
-          onTouchStart={() => dispatch<SetSearchModal>({ type: "setSearchModal", payload: false })}
+          onTouchStart={() => dispatch<SetSearchModal>({ type: 'setSearchModal', payload: false })}
         />
       ) : (
         <View style={styles.noMsgs}>
           <Text
-            style={{ color: "rgba(255,255,255,.7)", textAlign: "center", justifyContent: "center" }}
+            style={{ color: 'rgba(255,255,255,.7)', textAlign: 'center', justifyContent: 'center' }}
           >
-            To start messaging contacts who have ChatApp, tap{" "}
+            To start messaging contacts who have ChatApp, tap{' '}
           </Text>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: 'row' }}>
             <MaterialCommunityIcons
               name="android-messages"
               size={20}
@@ -80,32 +81,32 @@ const HomeChat: React.FC<NavigationInjectedProps & Props> = ({ chatSub, chat, da
             />
             <Text
               style={{
-                color: "rgba(255,255,255,.7)",
-                textAlign: "center",
-                justifyContent: "center"
+                color: 'rgba(255,255,255,.7)',
+                textAlign: 'center',
+                justifyContent: 'center',
               }}
             >
-              {" "}
+              {' '}
               at the bottom right of your screen.
             </Text>
           </View>
         </View>
       )}
     </View>
-  );
-};
+  )
+}
 
-export default withNavigation(HomeChat);
+export default withNavigation(HomeChat)
 
 const styles = StyleSheet.create({
   msgIcon: {
-    transform: [{ scaleX: -1 }, { scaleY: 1 }]
+    transform: [{ scaleX: -1 }, { scaleY: 1 }],
   },
   noMsgs: {
-    height: "80%",
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 30
-  }
-});
+    height: '80%',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 30,
+  },
+})
