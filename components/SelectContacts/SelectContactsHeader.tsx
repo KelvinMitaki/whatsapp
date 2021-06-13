@@ -1,54 +1,55 @@
-import React from "react";
-import { Animated, Dimensions, StyleSheet, TouchableNativeFeedback, View } from "react-native";
-import { Text } from "react-native-elements";
-import { MaterialIcons } from "@expo/vector-icons";
-import { NavigationStackScreenComponent } from "react-navigation-stack";
-import SearchModal from "../Modals/SearchModal";
-import { SetSearchModal } from "../../screens/HomeScreen";
-import { Dispatch } from "redux";
-import { User } from "../../interfaces/ChatInterface";
+import React from 'react';
+import { Animated, Dimensions, StyleSheet, TouchableNativeFeedback, View } from 'react-native';
+import { Text } from 'react-native-elements';
+import { MaterialIcons } from '@expo/vector-icons';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
+import SearchModal from '../Modals/SearchModal';
+import { SetSearchModal } from '../../screens/HomeScreen';
+import { Dispatch } from 'redux';
+import { User } from '../../interfaces/ChatInterface';
+import { FetchUsersQuery } from '../../generated/graphql';
 
 interface Params {
-  slctn: "myContactsExc" | "onlyShareWith";
+  slctn: 'myContactsExc' | 'onlyShareWith';
   selected: number;
   selectAll: boolean;
-  setChecked: React.Dispatch<React.SetStateAction<User[]>>;
+  setChecked: React.Dispatch<React.SetStateAction<FetchUsersQuery['fetchUsers']>>;
   dispatch: Dispatch<any>;
   searchHeight: Animated.Value;
   searchWidth: Animated.Value;
   headerHeight: number;
-  contacts: User[];
+  contacts: FetchUsersQuery['fetchUsers'];
   setInp: React.Dispatch<React.SetStateAction<string>>;
   inp: string;
 }
 
-const SelectContactsHeader: NavigationStackScreenComponent<Params>["navigationOptions"] = ({
-  navigation
+const SelectContactsHeader: NavigationStackScreenComponent<Params>['navigationOptions'] = ({
+  navigation,
 }) => {
-  const slctn = navigation.getParam("slctn");
-  const selected = navigation.getParam("selected");
-  const selectAll = navigation.getParam("selectAll");
-  const setChecked = navigation.getParam("setChecked");
-  const searchHeight = navigation.getParam("searchHeight");
-  const searchWidth = navigation.getParam("searchWidth");
-  const headerHeight = navigation.getParam("headerHeight");
-  const dispatch = navigation.getParam("dispatch");
-  const contacts = navigation.getParam("contacts");
-  const inp = navigation.getParam("inp");
-  const setInp = navigation.getParam("setInp");
+  const slctn = navigation.getParam('slctn');
+  const selected = navigation.getParam('selected');
+  const selectAll = navigation.getParam('selectAll');
+  const setChecked = navigation.getParam('setChecked');
+  const searchHeight = navigation.getParam('searchHeight');
+  const searchWidth = navigation.getParam('searchWidth');
+  const headerHeight = navigation.getParam('headerHeight');
+  const dispatch = navigation.getParam('dispatch');
+  const contacts = navigation.getParam('contacts');
+  const inp = navigation.getParam('inp');
+  const setInp = navigation.getParam('setInp');
   return {
     headerTitle: () => (
       <View>
-        <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>
-          {slctn === "myContactsExc" ? "Hide status from..." : "Share status with..."}
+        <Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>
+          {slctn === 'myContactsExc' ? 'Hide status from...' : 'Share status with...'}
         </Text>
-        <Text style={{ color: "#fff" }}>
+        <Text style={{ color: '#fff' }}>
           {!selected
-            ? slctn === "myContactsExc"
-              ? "No contacts excluded"
-              : "No contacts selected"
-            : `${selected.toLocaleString()} ${selected === 1 ? "contact" : "contacts"} ${
-                slctn === "myContactsExc" ? "excluded" : "selected"
+            ? slctn === 'myContactsExc'
+              ? 'No contacts excluded'
+              : 'No contacts selected'
+            : `${selected.toLocaleString()} ${selected === 1 ? 'contact' : 'contacts'} ${
+                slctn === 'myContactsExc' ? 'excluded' : 'selected'
               }`}
         </Text>
       </View>
@@ -65,20 +66,20 @@ const SelectContactsHeader: NavigationStackScreenComponent<Params>["navigationOp
         <View style={styles.headerIconsPrt}>
           <View style={styles.ellipsis}>
             <TouchableNativeFeedback
-              background={TouchableNativeFeedback.Ripple("#fff", true)}
+              background={TouchableNativeFeedback.Ripple('#fff', true)}
               onPress={() => {
-                dispatch<SetSearchModal>({ type: "setSearchModal", payload: true });
+                dispatch<SetSearchModal>({ type: 'setSearchModal', payload: true });
                 Animated.parallel([
                   Animated.timing(searchHeight, {
                     toValue: headerHeight,
                     useNativeDriver: false,
-                    duration: 300
+                    duration: 300,
                   }),
                   Animated.timing(searchWidth, {
-                    toValue: Dimensions.get("screen").width,
+                    toValue: Dimensions.get('screen').width,
                     useNativeDriver: false,
-                    duration: 300
-                  })
+                    duration: 300,
+                  }),
                 ]).start();
               }}
             >
@@ -89,7 +90,7 @@ const SelectContactsHeader: NavigationStackScreenComponent<Params>["navigationOp
           </View>
           <View style={styles.ellipsis}>
             <TouchableNativeFeedback
-              background={TouchableNativeFeedback.Ripple("#fff", true)}
+              background={TouchableNativeFeedback.Ripple('#fff', true)}
               onPress={() => {
                 navigation.setParams({ selectAll: !selectAll });
                 if (!selectAll) {
@@ -106,7 +107,7 @@ const SelectContactsHeader: NavigationStackScreenComponent<Params>["navigationOp
           </View>
         </View>
       </>
-    )
+    ),
   };
 };
 
@@ -116,17 +117,17 @@ const styles = StyleSheet.create({
   ellipsis: {
     height: 35,
     width: 35,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 35,
     borderWidth: 1,
-    borderColor: "transparent"
+    borderColor: 'transparent',
   },
   headerIconsPrt: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     width: 90,
-    marginHorizontal: 10
-  }
+    marginHorizontal: 10,
+  },
 });
