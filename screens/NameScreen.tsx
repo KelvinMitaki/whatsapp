@@ -17,16 +17,12 @@ import inspect from '../inspect';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { REGISTER_USER } from '../graphql/mutations';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FETCH_GROUPS, FETCH_MESSAGES_COUNT, FETCH_UNREAD_GROUP_MSGS } from '../graphql/queries';
 import {
-  FETCH_CHATS,
-  FETCH_CURRENT_USER,
-  FETCH_GROUPS,
-  FETCH_MESSAGES_COUNT,
-  FETCH_UNREAD_GROUP_MSGS,
-  FETCH_USERS,
-} from '../graphql/queries';
-import { Chat, CurrentUser } from '../interfaces/ChatInterface';
-import { useFetchCurrentUserLazyQuery, useFetchUsersLazyQuery } from '../generated/graphql';
+  useFetchChatsLazyQuery,
+  useFetchCurrentUserLazyQuery,
+  useFetchUsersLazyQuery,
+} from '../generated/graphql';
 
 interface Params {
   code: string;
@@ -65,11 +61,11 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
 
   const [fetchCurrentUser, user] = useFetchCurrentUserLazyQuery();
   const currentUser = user.data;
-  const [fetchChats, { data }] = useLazyQuery(FETCH_CHATS, {
-    onCompleted() {
+  const [fetchChats] = useFetchChatsLazyQuery({
+    onCompleted(chatData) {
       fetchMessagesCount({
         variables: {
-          userIDs: (data.fetchChats as Chat[]).map((c) =>
+          userIDs: chatData.fetchChats.map((c) =>
             c.sender._id === currentUser?.fetchCurrentUser._id ? c.recipient._id : c.sender._id
           ),
         },
