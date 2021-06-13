@@ -1,21 +1,18 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   TouchableNativeFeedback,
   Animated,
-  Dimensions
-} from "react-native";
-import { Ionicons, FontAwesome, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
-import inspect from "../inspect";
-import { FETCH_CURRENT_USER } from "../graphql/queries";
-import { useQuery } from "@apollo/client";
-import { CurrentUser } from "../interfaces/ChatInterface";
+  Dimensions,
+} from 'react-native';
+import { Ionicons, FontAwesome, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+import { useFetchCurrentUserQuery } from '../generated/graphql';
 
 const ProfileScreen = () => {
-  const { data: userData } = useQuery(FETCH_CURRENT_USER);
-  const currentUser: CurrentUser = userData.fetchCurrentUser;
+  const { data: userData } = useFetchCurrentUserQuery();
+  const currentUser = userData?.fetchCurrentUser;
   const scale = useRef(new Animated.Value(0.5)).current;
   const cameraScale = useRef(new Animated.Value(0)).current;
   const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
@@ -25,16 +22,16 @@ const ProfileScreen = () => {
       Animated.parallel([
         Animated.timing(scale, { toValue: 1, useNativeDriver: false, duration: 300 }),
         Animated.timing(position, {
-          toValue: { x: Dimensions.get("screen").width / 2 - 75, y: 0 },
+          toValue: { x: Dimensions.get('screen').width / 2 - 75, y: 0 },
           useNativeDriver: false,
-          duration: 300
-        })
+          duration: 300,
+        }),
       ]),
       Animated.timing(cameraScale, {
         toValue: 1,
         useNativeDriver: true,
-        duration: 300
-      })
+        duration: 300,
+      }),
     ]).start();
   }, []);
   return (
@@ -46,7 +43,7 @@ const ProfileScreen = () => {
         <Animated.View style={[styles.cameraPrt, { transform: [{ scale: cameraScale }] }]}>
           <TouchableNativeFeedback
             onPress={() => {}}
-            background={TouchableNativeFeedback.Ripple("#fff", true)}
+            background={TouchableNativeFeedback.Ripple('#fff', true)}
           >
             <View style={styles.camera}>
               <FontAwesome name="camera" size={20} color="#fff" />
@@ -55,54 +52,54 @@ const ProfileScreen = () => {
         </Animated.View>
       </View>
       <TouchableNativeFeedback
-        background={TouchableNativeFeedback.Ripple("#fff", false)}
+        background={TouchableNativeFeedback.Ripple('#fff', false)}
         onPress={() => {}}
       >
         <View>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <View style={{ width: "20%", alignItems: "center" }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ width: '20%', alignItems: 'center' }}>
               <Ionicons name="person" size={20} color="rgba(241, 241, 242, 0.7)" />
             </View>
             <View style={styles.edit}>
               <View>
-                <Text style={{ color: "rgba(241, 241, 242, 0.7)" }}>Name</Text>
-                <Text style={{ color: "#fff" }}>{currentUser.name}</Text>
+                <Text style={{ color: 'rgba(241, 241, 242, 0.7)' }}>Name</Text>
+                <Text style={{ color: '#fff' }}>{currentUser && currentUser.name}</Text>
               </View>
               <MaterialIcons name="edit" size={20} color="#00af9c" />
             </View>
           </View>
           <View style={styles.meta}>
-            <Text style={{ color: "rgba(241, 241, 242, 0.7)" }}>
+            <Text style={{ color: 'rgba(241, 241, 242, 0.7)' }}>
               This is not your username or pin. This name will be visible to your ChatApp contacts
             </Text>
           </View>
         </View>
       </TouchableNativeFeedback>
       <TouchableNativeFeedback
-        background={TouchableNativeFeedback.Ripple("#fff", false)}
+        background={TouchableNativeFeedback.Ripple('#fff', false)}
         onPress={() => {}}
       >
-        <View style={{ flexDirection: "row", paddingTop: 20 }}>
+        <View style={{ flexDirection: 'row', paddingTop: 20 }}>
           <View
             style={{
-              width: "20%",
-              alignItems: "center"
+              width: '20%',
+              alignItems: 'center',
             }}
           >
             <MaterialIcons name="info-outline" size={25} color="rgba(241, 241, 242, 0.7)" />
           </View>
-          <View style={{ width: "80%" }}>
+          <View style={{ width: '80%' }}>
             <View
               style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                width: "95%"
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '95%',
               }}
             >
               <View>
-                <Text style={{ color: "rgba(241, 241, 242, 0.7)" }}>About</Text>
-                <Text style={{ color: "#fff" }}>{currentUser.about}</Text>
+                <Text style={{ color: 'rgba(241, 241, 242, 0.7)' }}>About</Text>
+                <Text style={{ color: '#fff' }}>{currentUser && currentUser.about}</Text>
               </View>
               <View style={{}}>
                 <MaterialIcons name="edit" size={20} color="#00af9c" />
@@ -110,33 +107,35 @@ const ProfileScreen = () => {
             </View>
             <View
               style={{
-                borderBottomColor: "rgba(241, 241, 242, 0.3)",
+                borderBottomColor: 'rgba(241, 241, 242, 0.3)',
                 borderBottomWidth: 0.4,
-                paddingTop: 20
+                paddingTop: 20,
               }}
             ></View>
           </View>
         </View>
       </TouchableNativeFeedback>
       <TouchableNativeFeedback
-        background={TouchableNativeFeedback.Ripple("#fff", false)}
+        background={TouchableNativeFeedback.Ripple('#fff', false)}
         onPress={() => {}}
       >
-        <View style={{ flexDirection: "row", paddingVertical: 20 }}>
+        <View style={{ flexDirection: 'row', paddingVertical: 20 }}>
           <View
             style={{
-              width: "20%",
-              justifyContent: "center",
-              alignItems: "center"
+              width: '20%',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
             <FontAwesome5 name="phone-alt" size={20} color="rgba(241, 241, 242, 0.7)" />
           </View>
           <View>
-            <Text style={{ color: "rgba(241, 241, 242, 0.7)" }}>Phone</Text>
-            <Text style={{ color: "#fff" }}>
-              +{currentUser.countryCode} {currentUser.phoneNumber}
-            </Text>
+            <Text style={{ color: 'rgba(241, 241, 242, 0.7)' }}>Phone</Text>
+            {currentUser && (
+              <Text style={{ color: '#fff' }}>
+                +{currentUser.countryCode} {currentUser.phoneNumber}
+              </Text>
+            )}
           </View>
         </View>
       </TouchableNativeFeedback>
@@ -151,37 +150,37 @@ const styles = StyleSheet.create({
     height: 150,
     width: 150,
     borderRadius: 500,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "grey",
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'grey',
     marginVertical: 25,
-    alignSelf: "flex-start"
+    alignSelf: 'flex-start',
   },
   cameraPrt: {
-    position: "absolute",
-    right: "30%",
-    bottom: "7%",
-    backgroundColor: "#00af9c",
-    borderRadius: 55
+    position: 'absolute',
+    right: '30%',
+    bottom: '7%',
+    backgroundColor: '#00af9c',
+    borderRadius: 55,
   },
   camera: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     height: 55,
-    width: 55
+    width: 55,
   },
   meta: {
     paddingTop: 10,
     paddingBottom: 20,
-    width: "80%",
-    alignSelf: "flex-end",
-    borderBottomColor: "rgba(241, 241, 242, 0.3)",
-    borderBottomWidth: 0.4
+    width: '80%',
+    alignSelf: 'flex-end',
+    borderBottomColor: 'rgba(241, 241, 242, 0.3)',
+    borderBottomWidth: 0.4,
   },
   edit: {
-    width: "75%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  }
+    width: '75%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
 });
