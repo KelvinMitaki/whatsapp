@@ -1,54 +1,55 @@
-import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, View, AppState, AppStateStatus, Text } from "react-native";
-import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
-import { users } from "../data/data";
-import inspect from "../inspect";
-import HomeChat from "../components/Home/HomeChat";
-import { useHeaderHeight } from "react-navigation-stack";
-import { useDispatch } from "react-redux";
-import { NavigationEvents } from "react-navigation";
-import { useMutation, useQuery, useSubscription } from "@apollo/client";
-import { FETCH_CHATS, FETCH_CURRENT_USER } from "../graphql/queries";
-import StartChat from "../components/Home/StartChat";
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, View, AppState, AppStateStatus, Text } from 'react-native';
+import { NavigationMaterialTabScreenComponent } from 'react-navigation-tabs';
+import { users } from '../data/data';
+import inspect from '../inspect';
+import HomeChat from '../components/Home/HomeChat';
+import { useHeaderHeight } from 'react-navigation-stack';
+import { useDispatch } from 'react-redux';
+import { NavigationEvents } from 'react-navigation';
+import { useMutation, useQuery, useSubscription } from '@apollo/client';
+import { FETCH_CHATS, FETCH_CURRENT_USER } from '../graphql/queries';
+import StartChat from '../components/Home/StartChat';
 import {
   ADD_NEW_CHAT_SUB,
   UPDATE_USER_ONLINE_SUB,
-  UPDATE_USER_TYPING_SUB
-} from "../graphql/subscriptions";
-import { Chat, CurrentUser, UserOnline } from "../interfaces/ChatInterface";
-import { UPDATE_USER_ONLINE } from "../graphql/mutations";
+  UPDATE_USER_TYPING_SUB,
+} from '../graphql/subscriptions';
+import { Chat, CurrentUser, UserOnline } from '../interfaces/ChatInterface';
+import { UPDATE_USER_ONLINE } from '../graphql/mutations';
+import { useFetchCurrentUserQuery } from '../generated/graphql';
 
 export interface SetHeaderHeight {
-  type: "setHeaderHeight";
+  type: 'setHeaderHeight';
   payload: number;
 }
 
 export interface SetSearchModal {
-  type: "setSearchModal";
+  type: 'setSearchModal';
   payload: boolean;
 }
 
 const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   const { data } = useQuery(FETCH_CHATS);
   const userOnlineSub = useSubscription(UPDATE_USER_ONLINE_SUB);
-  const user = useQuery(FETCH_CURRENT_USER, { fetchPolicy: "cache-only" });
+  const user = useFetchCurrentUserQuery();
   const [updateUserOnline] = useMutation(UPDATE_USER_ONLINE);
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const [chatSub, setChatSub] = useState<Chat[]>([]);
-  const currentUser: CurrentUser = user.data.fetchCurrentUser;
-  const chat = useSubscription(ADD_NEW_CHAT_SUB, { variables: { userID: currentUser._id } });
+  const currentUser = user.data?.fetchCurrentUser;
+  const chat = useSubscription(ADD_NEW_CHAT_SUB, { variables: { userID: currentUser?._id } });
   const dispatch = useDispatch();
   const headerHeight = useHeaderHeight();
   useEffect(() => {
-    AppState.addEventListener("change", _handleAppStateChange);
-    dispatch<SetHeaderHeight>({ type: "setHeaderHeight", payload: headerHeight });
+    AppState.addEventListener('change', _handleAppStateChange);
+    dispatch<SetHeaderHeight>({ type: 'setHeaderHeight', payload: headerHeight });
     return () => {
-      AppState.removeEventListener("change", _handleAppStateChange);
+      AppState.removeEventListener('change', _handleAppStateChange);
     };
   }, []);
   const _handleAppStateChange = (nextAppState: AppStateStatus) => {
-    if (appState.current.match(/inactive|background/) && nextAppState === "active") {
+    if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
       updateUserOnline({ variables: { online: true } });
     } else {
       updateUserOnline({ variables: { online: false } });
@@ -58,7 +59,7 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   };
   useEffect(() => {
     if (chat.data && chat.data.addNewChat) {
-      setChatSub(c => [chat.data.addNewChat, ...c]);
+      setChatSub((c) => [chat.data.addNewChat, ...c]);
     }
   }, [chat.data]);
   const renderData = (): { fetchChats: Chat[] } => {
@@ -67,11 +68,11 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
       const chats: Chat[] = data.fetchChats;
       return {
         ...data,
-        fetchChats: chats.map(ch => {
+        fetchChats: chats.map((ch) => {
           if (ch.sender._id === onlineData.userID) {
             return {
               ...ch,
-              sender: { ...ch.sender, online: onlineData.online, lastSeen: new Date().toString() }
+              sender: { ...ch.sender, online: onlineData.online, lastSeen: new Date().toString() },
             };
           }
           if (ch.recipient._id === onlineData.userID) {
@@ -80,12 +81,12 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
               recipient: {
                 ...ch.recipient,
                 online: onlineData.online,
-                lastSeen: new Date().toString()
-              }
+                lastSeen: new Date().toString(),
+              },
             };
           }
           return ch;
-        })
+        }),
       };
     }
     return data;
@@ -93,8 +94,8 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   return (
     <View style={styles.prt}>
       <NavigationEvents
-        onDidBlur={() => dispatch<SetSearchModal>({ type: "setSearchModal", payload: false })}
-        onWillFocus={() => dispatch<SetSearchModal>({ type: "setSearchModal", payload: false })}
+        onDidBlur={() => dispatch<SetSearchModal>({ type: 'setSearchModal', payload: false })}
+        onWillFocus={() => dispatch<SetSearchModal>({ type: 'setSearchModal', payload: false })}
       />
       <HomeChat
         chatSub={chatSub}
@@ -103,7 +104,7 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
       />
       {data && data.fetchChats && (
         <View
-          style={{ ...(!data.fetchChats.length && { height: "100%", justifyContent: "flex-end" }) }}
+          style={{ ...(!data.fetchChats.length && { height: '100%', justifyContent: 'flex-end' }) }}
         >
           <StartChat chats={data.fetchChats} />
         </View>
@@ -116,7 +117,7 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
   prt: {
-    height: "100%",
-    justifyContent: "space-between"
-  }
+    height: '100%',
+    justifyContent: 'space-between',
+  },
 });
