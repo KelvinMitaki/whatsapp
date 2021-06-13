@@ -1,6 +1,6 @@
-import React from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
-import { NavigationStackScreenComponent } from "react-navigation-stack";
+import React from 'react';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import {
   MaterialIcons,
   Ionicons,
@@ -8,13 +8,13 @@ import {
   AntDesign,
   MaterialCommunityIcons,
   FontAwesome5,
-  Entypo
-} from "@expo/vector-icons";
-import { TouchableNativeFeedback } from "react-native";
-import { GroupMsg, GroupUserTyping, GroupWithParticipants } from "../../interfaces/GroupInterface";
-import { MutationTuple, OperationVariables } from "@apollo/client";
-import { CurrentUser } from "../../interfaces/ChatInterface";
-import AppColors from "../../Colors/color";
+  Entypo,
+} from '@expo/vector-icons';
+import { TouchableNativeFeedback } from 'react-native';
+import { GroupMsg, GroupUserTyping, GroupWithParticipants } from '../../interfaces/GroupInterface';
+import { MutationTuple, OperationVariables } from '@apollo/client';
+import AppColors from '../../Colors/color';
+import { FetchCurrentUserQuery } from '../../generated/graphql';
 
 interface Params {
   groupID: string;
@@ -24,31 +24,31 @@ interface Params {
   selectedMsgs: GroupMsg[];
   addStarredGroupMessages: MutationTuple<any, OperationVariables>[0];
   removeStarredGroupMessages: MutationTuple<any, OperationVariables>[0];
-  currentUser: CurrentUser;
+  currentUser: FetchCurrentUserQuery['fetchCurrentUser'];
 }
 
-const GroupChatScreenHeader: NavigationStackScreenComponent<Params>["navigationOptions"] = ({
-  navigation
+const GroupChatScreenHeader: NavigationStackScreenComponent<Params>['navigationOptions'] = ({
+  navigation,
 }) => {
-  const group = navigation.getParam("group");
-  const typingData = navigation.getParam("typingData");
+  const group = navigation.getParam('group');
+  const typingData = navigation.getParam('typingData');
   const typingParticipant =
-    group && group.participants.find(p => p._id === typingData?.typingUserID);
-  const selectedMsgs = navigation.getParam("selectedMsgs");
-  const setSelectedMsgs = navigation.getParam("setSelectedMsgs");
-  const addStarredGroupMessages = navigation.getParam("addStarredGroupMessages");
-  const removeStarredGroupMessages = navigation.getParam("removeStarredGroupMessages");
-  const currentUser = navigation.getParam("currentUser");
+    group && group.participants.find((p) => p._id === typingData?.typingUserID);
+  const selectedMsgs = navigation.getParam('selectedMsgs');
+  const setSelectedMsgs = navigation.getParam('setSelectedMsgs');
+  const addStarredGroupMessages = navigation.getParam('addStarredGroupMessages');
+  const removeStarredGroupMessages = navigation.getParam('removeStarredGroupMessages');
+  const currentUser = navigation.getParam('currentUser');
   const starred =
     selectedMsgs &&
     selectedMsgs.length ===
-      selectedMsgs.filter(m => m.starredBy.some(id => id === currentUser._id)).length;
+      selectedMsgs.filter((m) => m.starredBy.some((id) => id === currentUser._id)).length;
   const starredMsgs =
     selectedMsgs &&
-    selectedMsgs.filter(m => m.starredBy.some(id => id === currentUser._id)).map(m => m._id);
+    selectedMsgs.filter((m) => m.starredBy.some((id) => id === currentUser._id)).map((m) => m._id);
   const unstarredMsgs =
     selectedMsgs &&
-    selectedMsgs.filter(m => !m.starredBy.some(id => id === currentUser._id)).map(m => m._id);
+    selectedMsgs.filter((m) => !m.starredBy.some((id) => id === currentUser._id)).map((m) => m._id);
   if (!selectedMsgs || (selectedMsgs && !selectedMsgs.length)) {
     return {
       headerShown: !!group,
@@ -58,46 +58,46 @@ const GroupChatScreenHeader: NavigationStackScreenComponent<Params>["navigationO
             <View style={styles.group}>
               <FontAwesome name="group" size={25} color="rgba(241, 241, 242, 0.8)" />
             </View>
-            <View style={{ width: "75%" }}>
+            <View style={{ width: '75%' }}>
               <Text numberOfLines={1} style={styles.grpName}>
                 {group.name}
               </Text>
-              <Text numberOfLines={1} style={{ color: "white", marginLeft: 10 }}>
+              <Text numberOfLines={1} style={{ color: 'white', marginLeft: 10 }}>
                 {typingData && typingData.typing
                   ? `${typingParticipant?.name} is typing...`
                   : group.participants
-                      .map(p => p.name)
+                      .map((p) => p.name)
                       .toString()
-                      .replace(/,/g, ", ")}
+                      .replace(/,/g, ', ')}
               </Text>
             </View>
           </View>
-        )
+        ),
       }),
       headerRight: () => (
         <View style={styles.headerRight}>
           <View
             style={{
-              alignSelf: "center",
-              ...styles.ellipsis
+              alignSelf: 'center',
+              ...styles.ellipsis,
             }}
           >
             <TouchableNativeFeedback
-              background={TouchableNativeFeedback.Ripple("#fff", true)}
+              background={TouchableNativeFeedback.Ripple('#fff', true)}
               onPress={() => {}}
             >
               <View>
-                <MaterialIcons name="add-ic-call" size={25} color={"#fff"} />
+                <MaterialIcons name="add-ic-call" size={25} color={'#fff'} />
               </View>
             </TouchableNativeFeedback>
           </View>
           <View style={styles.ellipsis}>
             <TouchableNativeFeedback
-              background={TouchableNativeFeedback.Ripple("#fff", true)}
+              background={TouchableNativeFeedback.Ripple('#fff', true)}
               onPress={() => {}}
             >
               <View>
-                <Ionicons name="ellipsis-vertical-sharp" size={20} color={"rgba(255,255,255,.5)"} />
+                <Ionicons name="ellipsis-vertical-sharp" size={20} color={'rgba(255,255,255,.5)'} />
               </View>
             </TouchableNativeFeedback>
           </View>
@@ -109,10 +109,10 @@ const GroupChatScreenHeader: NavigationStackScreenComponent<Params>["navigationO
             name="arrowleft"
             size={20}
             color="#fff"
-            onPress={() => navigation.navigate("Group")}
+            onPress={() => navigation.navigate('Group')}
           />
         </View>
-      )
+      ),
     };
   }
   return {
@@ -122,10 +122,10 @@ const GroupChatScreenHeader: NavigationStackScreenComponent<Params>["navigationO
     headerRight: () => (
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: Dimensions.get("screen").width * 0.6
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: Dimensions.get('screen').width * 0.6,
         }}
       >
         <Ellipsis>
@@ -160,16 +160,16 @@ const GroupChatScreenHeader: NavigationStackScreenComponent<Params>["navigationO
         </Ellipsis>
         <View style={[styles.ellipsis]}>
           <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple("#fff", true)}
+            background={TouchableNativeFeedback.Ripple('#fff', true)}
             onPress={() => {}}
           >
             <View>
-              <Ionicons name="ellipsis-vertical-sharp" size={20} color={"rgba(255,255,255,.5)"} />
+              <Ionicons name="ellipsis-vertical-sharp" size={20} color={'rgba(255,255,255,.5)'} />
             </View>
           </TouchableNativeFeedback>
         </View>
       </View>
-    )
+    ),
   };
 };
 
@@ -177,38 +177,38 @@ export default GroupChatScreenHeader;
 
 const styles = StyleSheet.create({
   headerLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginLeft: "-10%"
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: '-10%',
   },
   headerRight: {
-    flexDirection: "row",
+    flexDirection: 'row',
     width: 100,
-    justifyContent: "space-around"
+    justifyContent: 'space-around',
   },
   group: {
     borderRadius: 70,
-    backgroundColor: "grey",
+    backgroundColor: 'grey',
     height: 40,
     width: 40,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   ellipsis: {
     height: 35,
     width: 35,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 35,
     borderWidth: 1,
-    borderColor: "transparent"
+    borderColor: 'transparent',
   },
   grpName: {
-    color: "white",
+    color: 'white',
     marginLeft: 10,
     fontSize: 20,
-    fontWeight: "400"
-  }
+    fontWeight: '400',
+  },
 });
 
 interface Props {
@@ -218,10 +218,10 @@ interface Props {
 const Ellipsis: React.FC<Props> = ({ children, onPress }) => (
   <View style={styles.ellipsis}>
     <TouchableNativeFeedback
-      background={TouchableNativeFeedback.Ripple("#fff", true)}
-      onPress={e => onPress && onPress()}
+      background={TouchableNativeFeedback.Ripple('#fff', true)}
+      onPress={(e) => onPress && onPress()}
     >
-      <View style={{ height: 45, width: 45, alignItems: "center", justifyContent: "center" }}>
+      <View style={{ height: 45, width: 45, alignItems: 'center', justifyContent: 'center' }}>
         {children}
       </View>
     </TouchableNativeFeedback>
