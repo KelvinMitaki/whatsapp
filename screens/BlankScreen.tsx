@@ -1,4 +1,3 @@
-import { useLazyQuery } from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
@@ -7,18 +6,10 @@ import {
   useFetchChatsLazyQuery,
   useFetchCurrentUserLazyQuery,
   useFetchGroupsLazyQuery,
+  useFetchMessagesCountLazyQuery,
   useFetchUnreadGroupMsgsLazyQuery,
   useFetchUsersLazyQuery,
 } from '../generated/graphql';
-import {
-  FETCH_CHATS,
-  FETCH_CURRENT_USER,
-  FETCH_GROUPS,
-  FETCH_MESSAGES_COUNT,
-  FETCH_UNREAD_GROUP_MSGS,
-  FETCH_USERS,
-} from '../graphql/queries';
-import { Chat } from '../interfaces/ChatInterface';
 
 const BlankScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [fetchCurrentUser, user] = useFetchCurrentUserLazyQuery({
@@ -43,7 +34,7 @@ const BlankScreen: NavigationStackScreenComponent = ({ navigation }) => {
       });
     },
   });
-  const [fetchMessagesCount] = useLazyQuery(FETCH_MESSAGES_COUNT, {
+  const [fetchMessagesCount] = useFetchMessagesCountLazyQuery({
     onCompleted() {
       navigation.replace('Tab');
     },
