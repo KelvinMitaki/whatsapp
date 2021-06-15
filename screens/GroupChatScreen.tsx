@@ -39,13 +39,15 @@ import { Redux } from '../interfaces/Redux';
 import {
   FetchCurrentUserQuery,
   FetchGroupMsgsQuery,
+  FetchGroupQuery,
   useFetchCurrentUserQuery,
   useFetchGroupMsgsLazyQuery,
+  useFetchGroupQuery,
 } from '../generated/graphql';
 
 interface Params {
   groupID: string;
-  group: GroupWithParticipants | undefined;
+  group: FetchGroupQuery['fetchGroup'];
   typingData: GroupUserTyping | undefined;
   setSelectedMsgs: React.Dispatch<React.SetStateAction<FetchGroupMsgsQuery['fetchGroupMsgs']>>;
   selectedMsgs: FetchGroupMsgsQuery['fetchGroupMsgs'];
@@ -171,7 +173,7 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
       }
     },
   });
-  const group = useQuery(FETCH_GROUP, { variables: { groupID } });
+  const group = useFetchGroupQuery({ variables: { groupID } });
   useEffect(() => {
     navigation.setParams({
       addStarredGroupMessages,

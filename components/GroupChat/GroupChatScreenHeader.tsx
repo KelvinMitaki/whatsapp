@@ -14,11 +14,15 @@ import { TouchableNativeFeedback } from 'react-native';
 import { GroupMsg, GroupUserTyping, GroupWithParticipants } from '../../interfaces/GroupInterface';
 import { MutationTuple, OperationVariables } from '@apollo/client';
 import AppColors from '../../Colors/color';
-import { FetchCurrentUserQuery, FetchGroupMsgsQuery } from '../../generated/graphql';
+import {
+  FetchCurrentUserQuery,
+  FetchGroupMsgsQuery,
+  FetchGroupQuery,
+} from '../../generated/graphql';
 
 interface Params {
   groupID: string;
-  group: GroupWithParticipants | undefined;
+  group: FetchGroupQuery['fetchGroup'];
   typingData: GroupUserTyping | undefined;
   setSelectedMsgs: React.Dispatch<React.SetStateAction<FetchGroupMsgsQuery['fetchGroupMsgs']>>;
   selectedMsgs: FetchGroupMsgsQuery['fetchGroupMsgs'];
