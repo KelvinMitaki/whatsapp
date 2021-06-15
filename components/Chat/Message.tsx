@@ -28,6 +28,7 @@ import {
   FetchMessagesQuery,
   useFetchChatsQuery,
   useFetchCurrentUserQuery,
+  useFetchMessagesCountQuery,
 } from '../../generated/graphql';
 
 interface Props {
@@ -62,7 +63,7 @@ const Message: React.FC<Props> = (props) => {
   const { data } = useFetchCurrentUserQuery();
   const currentUser = data?.fetchCurrentUser;
   const { data: chatsData } = useFetchChatsQuery();
-  const count = useQuery(FETCH_MESSAGES_COUNT, {
+  const count = useFetchMessagesCountQuery({
     variables: {
       userIDs: (chatsData?.fetchChats || []).map((c) =>
         c.sender._id === (currentUser && currentUser._id) ? c.recipient._id : c.sender._id
