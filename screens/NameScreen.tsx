@@ -14,8 +14,6 @@ import {
 import { Ionicons, FontAwesome, Octicons, AntDesign } from '@expo/vector-icons';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import inspect from '../inspect';
-import { useLazyQuery, useMutation } from '@apollo/client';
-import { REGISTER_USER } from '../graphql/mutations';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   useFetchChatsLazyQuery,
@@ -24,6 +22,7 @@ import {
   useFetchMessagesCountLazyQuery,
   useFetchUnreadGroupMsgsLazyQuery,
   useFetchUsersLazyQuery,
+  useRegisterUserMutation,
 } from '../generated/graphql';
 
 interface Params {
@@ -83,7 +82,7 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [fetchUsers] = useFetchUsersLazyQuery();
   const [fetchGroups] = useFetchGroupLazyQuery();
   const [fetchUnreadGroupMsgs] = useFetchUnreadGroupMsgsLazyQuery();
-  const [registerUser] = useMutation(REGISTER_USER, {
+  const [registerUser] = useRegisterUserMutation({
     async onCompleted(data) {
       await AsyncStorage.setItem('token', data.registerUser.token);
       fetchCurrentUser();
