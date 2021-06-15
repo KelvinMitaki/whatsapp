@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -6,56 +6,55 @@ import {
   StyleSheet,
   ToastAndroid,
   TouchableNativeFeedback,
-  View
-} from "react-native";
-import { Input, Text } from "react-native-elements";
-import { FontAwesome, Fontisto, Ionicons } from "@expo/vector-icons";
-import { NavigationStackScreenComponent } from "react-navigation-stack";
-import inspect from "../inspect";
-import { useDispatch, useSelector } from "react-redux";
-import { Redux } from "../interfaces/Redux";
-import { NavigationEvents } from "react-navigation";
-import AppColors from "../Colors/color";
-import LoadingModal from "../components/Modals/LoadingModal";
-import { useMutation } from "@apollo/client";
-import { ADD_NEW_GROUP } from "../graphql/mutations";
+  View,
+} from 'react-native';
+import { Input, Text } from 'react-native-elements';
+import { FontAwesome, Fontisto, Ionicons } from '@expo/vector-icons';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
+import inspect from '../inspect';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redux } from '../interfaces/Redux';
+import { NavigationEvents } from 'react-navigation';
+import AppColors from '../Colors/color';
+import LoadingModal from '../components/Modals/LoadingModal';
+import { useAddNewGroupMutation } from '../generated/graphql';
 
 export interface ResetContacts {
-  type: "resetContacts";
+  type: 'resetContacts';
 }
 
 const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
-  const [subject, setSubject] = useState<string>("");
+  const [subject, setSubject] = useState<string>('');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const Contacts = useSelector((state: Redux) => state.chat.Contacts);
-  const [addNewGroup] = useMutation(ADD_NEW_GROUP, {
-    variables: { participants: Contacts.map(c => c._id), name: subject },
+  const [addNewGroup] = useAddNewGroupMutation({
+    variables: { participants: Contacts.map((c) => c._id), name: subject },
     onCompleted(data) {
       const groupID = data.addNewGroup._id;
-      setSubject("");
+      setSubject('');
       setModalVisible(false);
-      navigation.navigate("GroupChat", { groupID });
+      navigation.navigate('GroupChat', { groupID });
     },
     onError(err) {
       setModalVisible(false);
-    }
+    },
   });
   const dispatch = useDispatch();
   return (
     <View style={{ flex: 1 }}>
-      <NavigationEvents onDidBlur={() => dispatch<ResetContacts>({ type: "resetContacts" })} />
+      <NavigationEvents onDidBlur={() => dispatch<ResetContacts>({ type: 'resetContacts' })} />
       <LoadingModal isVisible={modalVisible} text="Creating group..." />
       <View
         style={{
           height: 125,
-          justifyContent: "center",
-          backgroundColor: AppColors.primary
+          justifyContent: 'center',
+          backgroundColor: AppColors.primary,
         }}
       >
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-around"
+            flexDirection: 'row',
+            justifyContent: 'space-around',
           }}
         >
           <TouchableNativeFeedback onPress={() => {}}>
@@ -65,7 +64,7 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
           </TouchableNativeFeedback>
           <View
             style={{
-              width: "70%"
+              width: '70%',
             }}
           >
             <Input
@@ -86,7 +85,7 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
             </TouchableNativeFeedback>
           </View>
         </View>
-        <Text style={{ color: "rgba(255,255,255,.5)", paddingLeft: 10 }}>
+        <Text style={{ color: 'rgba(255,255,255,.5)', paddingLeft: 10 }}>
           Provide a group subject and optional group icon
         </Text>
       </View>
@@ -95,7 +94,7 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
           background={TouchableNativeFeedback.Ripple(AppColors.white, true)}
           onPress={() => {
             if (!subject.trim().length) {
-              ToastAndroid.show("Group subject is required", ToastAndroid.LONG);
+              ToastAndroid.show('Group subject is required', ToastAndroid.LONG);
             } else {
               setModalVisible(true);
               addNewGroup();
@@ -108,26 +107,26 @@ const NewGroupInfoScreen: NavigationStackScreenComponent = ({ navigation }) => {
         </TouchableNativeFeedback>
       </View>
       <View style={{ flex: 1 }}>
-        <Text style={{ color: "rgba(255,255,255,.5)", margin: 20 }}>
+        <Text style={{ color: 'rgba(255,255,255,.5)', margin: 20 }}>
           Participants: {Contacts.length}
         </Text>
-        <View style={{ flex: 1, alignItems: "center" }}>
+        <View style={{ flex: 1, alignItems: 'center' }}>
           <FlatList
             data={Contacts}
-            keyExtractor={u => u._id}
-            numColumns={Math.floor(Dimensions.get("screen").width / 60)}
+            keyExtractor={(u) => u._id}
+            numColumns={Math.floor(Dimensions.get('screen').width / 60)}
             renderItem={({ item }) => (
               <View
                 style={{
                   width: 60,
                   height: 70,
-                  alignItems: "center"
+                  alignItems: 'center',
                 }}
               >
                 <View style={styles.person}>
                   <Ionicons name="person" size={35} color="rgba(241, 241, 242, 0.8)" />
                 </View>
-                <Text numberOfLines={1} style={{ color: "rgba(255,255,255,.8)" }}>
+                <Text numberOfLines={1} style={{ color: 'rgba(255,255,255,.8)' }}>
                   {item.name}
                 </Text>
               </View>
@@ -147,58 +146,58 @@ NewGroupInfoScreen.navigationOptions = {
       </Text>
       <Text style={{ color: AppColors.white }}>Add subject</Text>
     </View>
-  )
+  ),
 };
 
 export default NewGroupInfoScreen;
 
 const styles = StyleSheet.create({
   camera: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#ccc",
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ccc',
     height: 55,
     width: 55,
-    borderRadius: 55
+    borderRadius: 55,
   },
   selectedContact: {
-    position: "absolute",
-    right: "2%",
-    top: "14.5%",
-    backgroundColor: "#00af9c",
+    position: 'absolute',
+    right: '2%',
+    top: '14.5%',
+    backgroundColor: '#00af9c',
     borderRadius: 500,
     height: 50,
     width: 50,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     zIndex: 10,
-    elevation: 10
+    elevation: 10,
   },
   smiley: {
     height: 35,
     width: 35,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   smileyPrt: {
     height: 40,
     width: 40,
     borderRadius: 500,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   checkMark: {
     height: 50,
     width: 50,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   person: {
     height: 45,
     width: 45,
     borderRadius: 500,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "grey"
-  }
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'grey',
+  },
 });
