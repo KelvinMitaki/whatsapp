@@ -7,20 +7,15 @@ import HomeChat from '../components/Home/HomeChat';
 import { useHeaderHeight } from 'react-navigation-stack';
 import { useDispatch } from 'react-redux';
 import { NavigationEvents } from 'react-navigation';
-import { useMutation, useQuery, useSubscription } from '@apollo/client';
-import { FETCH_CHATS, FETCH_CURRENT_USER } from '../graphql/queries';
+import { useSubscription } from '@apollo/client';
 import StartChat from '../components/Home/StartChat';
-import {
-  ADD_NEW_CHAT_SUB,
-  UPDATE_USER_ONLINE_SUB,
-  UPDATE_USER_TYPING_SUB,
-} from '../graphql/subscriptions';
-import { Chat, CurrentUser, UserOnline } from '../interfaces/ChatInterface';
-import { UPDATE_USER_ONLINE } from '../graphql/mutations';
+import { ADD_NEW_CHAT_SUB, UPDATE_USER_ONLINE_SUB } from '../graphql/subscriptions';
+import { Chat, UserOnline } from '../interfaces/ChatInterface';
 import {
   FetchChatsQuery,
   useFetchChatsQuery,
   useFetchCurrentUserQuery,
+  useUpdateUserOnlineMutation,
 } from '../generated/graphql';
 
 export interface SetHeaderHeight {
@@ -37,7 +32,7 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   const { data } = useFetchChatsQuery();
   const userOnlineSub = useSubscription(UPDATE_USER_ONLINE_SUB);
   const user = useFetchCurrentUserQuery();
-  const [updateUserOnline] = useMutation(UPDATE_USER_ONLINE);
+  const [updateUserOnline] = useUpdateUserOnlineMutation();
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const [chatSub, setChatSub] = useState<Chat[]>([]);
