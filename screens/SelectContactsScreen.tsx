@@ -8,19 +8,13 @@ import {
   TouchableNativeFeedback,
   View,
 } from 'react-native';
-import { Text } from 'react-native-elements';
-import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { NavigationStackScreenComponent, useHeaderHeight } from 'react-navigation-stack';
-import { users } from '../data/data';
 import SelectedContact from '../components/SelectContacts/SelectedContact';
-import SearchModal from '../components/Modals/SearchModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dispatch } from 'redux';
 import { SetSearchModal } from './HomeScreen';
 import SelectContactsHeader from '../components/SelectContacts/SelectContactsHeader';
-import { User } from '../interfaces/ChatInterface';
-import { useQuery } from '@apollo/client';
-import { FETCH_USERS } from '../graphql/queries';
 import { NavigationEvents } from 'react-navigation';
 import { Redux } from '../interfaces/Redux';
 import { FetchUsersQuery, useFetchUsersQuery } from '../generated/graphql';

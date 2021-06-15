@@ -6,17 +6,12 @@ import {
   TouchableNativeFeedback,
   View,
   Animated,
-  Dimensions,
 } from 'react-native';
 import { NavigationStackScreenComponent, useHeaderHeight } from 'react-navigation-stack';
-import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import inspect from '../inspect';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Contact from '../components/Contacts/Contact';
-import { FETCH_USERS } from '../graphql/queries';
-import { useQuery } from '@apollo/client';
 import { Dispatch } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
-import SearchModal from '../components/Modals/SearchModal';
 import { SetSearchModal } from './HomeScreen';
 import { NavigationEvents } from 'react-navigation';
 import { Redux } from '../interfaces/Redux';

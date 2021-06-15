@@ -1,24 +1,25 @@
-import { SetIncommingUnread } from "../components/Group/GroupChat";
-import { GroupUserTyping, UnreadGroupMsg } from "../interfaces/GroupInterface";
-import { SetGroupUserTyping } from "../screens/GroupChatScreen";
+import { SetIncommingUnread } from '../components/Group/GroupChat';
+import { FetchUnreadGroupMsgsQuery } from '../generated/graphql';
+import { GroupUserTyping } from '../interfaces/GroupInterface';
+import { SetGroupUserTyping } from '../screens/GroupChatScreen';
 
 export interface GroupState {
-  incommingUnread: UnreadGroupMsg[];
+  incommingUnread: FetchUnreadGroupMsgsQuery['fetchUnreadGroupMsgs'];
   groupUserTypingChats: GroupUserTyping[];
 }
 
 type Action = SetIncommingUnread | SetGroupUserTyping;
 const INITIAL_STATE: GroupState = {
   incommingUnread: [],
-  groupUserTypingChats: []
+  groupUserTypingChats: [],
 };
 const groupReducer = (state = INITIAL_STATE, action: Action): GroupState => {
   switch (action.type) {
-    case "setIncommingUnread":
+    case 'setIncommingUnread':
       return { ...state, incommingUnread: action.payload };
-    case "setGroupUserTyping":
+    case 'setGroupUserTyping':
       let chats = [...state.groupUserTypingChats];
-      const index = chats.findIndex(c => c.groupID === action.payload.groupID);
+      const index = chats.findIndex((c) => c.groupID === action.payload.groupID);
       if (index !== -1) {
         chats[index] = action.payload;
       } else {

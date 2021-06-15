@@ -3,32 +3,27 @@ import { FlatList, ListRenderItemInfo, StyleSheet, View } from 'react-native';
 import { Badge, Text, Card } from 'react-native-elements';
 import { TouchableNativeFeedback } from 'react-native';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
-import inspect from '../../inspect';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
-import { Group, UnreadGroupMsg } from '../../interfaces/GroupInterface';
 import { formatDate } from '../Home/ChatComponent';
-import { useQuery, useSubscription } from '@apollo/client';
-import { FETCH_CURRENT_USER } from '../../graphql/queries';
-import { CurrentUser } from '../../interfaces/ChatInterface';
-import { ADD_NEW_GROUP_SUB } from '../../graphql/subscriptions';
 import AppColors from '../../Colors/color';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redux } from '../../interfaces/Redux';
 import { useHeaderHeight } from 'react-navigation-stack';
 import {
   FetchGroupsQuery,
+  FetchUnreadGroupMsgsQuery,
   useAddNewGroupSubSubscription,
   useFetchCurrentUserQuery,
 } from '../../generated/graphql';
 
 interface Props {
   groups: FetchGroupsQuery['fetchGroups'];
-  unread: UnreadGroupMsg[];
+  unread: FetchUnreadGroupMsgsQuery['fetchUnreadGroupMsgs'];
 }
 
 export interface SetIncommingUnread {
   type: 'setIncommingUnread';
-  payload: UnreadGroupMsg[];
+  payload: FetchUnreadGroupMsgsQuery['fetchUnreadGroupMsgs'];
 }
 
 const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, groups, unread }) => {

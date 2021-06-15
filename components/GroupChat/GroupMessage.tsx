@@ -9,14 +9,9 @@ import {
   TouchableNativeFeedback,
 } from 'react-native';
 import { Ionicons, Entypo } from '@expo/vector-icons';
-import inspect from '../../inspect';
-import { GroupMsg } from '../../interfaces/GroupInterface';
-import { LazyQueryResult, OperationVariables, useQuery, useSubscription } from '@apollo/client';
-import { FETCH_CURRENT_USER } from '../../graphql/queries';
-import { CurrentUser } from '../../interfaces/ChatInterface';
+import { LazyQueryResult, OperationVariables } from '@apollo/client';
 import { format } from 'date-fns';
 import AppColors from '../../Colors/color';
-import { ADD_NEW_GROUP_MSG_SUB } from '../../graphql/subscriptions';
 import { MESSAGE_LIMIT } from '../Chat/Input';
 import { SetShouldScrollToBottomOnNewMessages } from '../Chat/Message';
 import { useDispatch, useSelector } from 'react-redux';

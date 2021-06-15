@@ -9,17 +9,8 @@ import {
   TouchableNativeFeedback,
 } from 'react-native';
 import { Ionicons, Entypo } from '@expo/vector-icons';
-import inspect from '../../inspect';
-import {
-  Chat,
-  CurrentUser,
-  MessageCountInterface,
-  MessageInterface,
-} from '../../interfaces/ChatInterface';
-import { LazyQueryResult, OperationVariables, useQuery, useSubscription } from '@apollo/client';
-import { FETCH_CHATS, FETCH_CURRENT_USER, FETCH_MESSAGES_COUNT } from '../../graphql/queries';
+import { LazyQueryResult, OperationVariables } from '@apollo/client';
 import format from 'date-fns/format';
-import { ADD_NEW_MESSAGE_SUB } from '../../graphql/subscriptions';
 import AppColors from '../../Colors/color';
 import { MESSAGE_LIMIT } from './Input';
 import { useDispatch, useSelector } from 'react-redux';
@@ -116,9 +107,8 @@ const Message: React.FC<Props> = (props) => {
             isCloseToTop(nativeEvent) &&
             fetchMore &&
             count.data &&
-            ((count.data.fetchMessagesCount as MessageCountInterface[]).find(
-              (mc) => mc.chatID === chatID
-            )?.messageCount || 0) > filteredMsgs.length
+            (count.data.fetchMessagesCount.find((mc) => mc.chatID === chatID)?.messageCount || 0) >
+              filteredMsgs.length
           ) {
             if (!shouldScrollToBottomOnNewMessages) {
               dispatch<SetShouldScrollToBottomOnNewMessages>({
@@ -153,9 +143,8 @@ const Message: React.FC<Props> = (props) => {
             <View style={{ marginVertical: 5 }}>
               {index === 0 &&
                 count.data &&
-                ((count.data.fetchMessagesCount as MessageCountInterface[]).find(
-                  (mc) => mc.chatID === chatID
-                )?.messageCount || 0) > filteredMsgs.length &&
+                (count.data.fetchMessagesCount.find((mc) => mc.chatID === chatID)?.messageCount ||
+                  0) > filteredMsgs.length &&
                 filteredMsgs.length > 20 && (
                   <ActivityIndicator size="large" color={AppColors.secodary} />
                 )}

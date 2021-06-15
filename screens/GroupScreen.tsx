@@ -3,10 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { TouchableNativeFeedback } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NavigationMaterialTabScreenComponent } from 'react-navigation-tabs';
-import inspect from '../inspect';
 import GroupChat from '../components/Group/GroupChat';
-import { useQuery } from '@apollo/client';
-import { FETCH_GROUPS, FETCH_UNREAD_GROUP_MSGS } from '../graphql/queries';
 import AppColors from '../Colors/color';
 import { useFetchGroupsQuery, useFetchUnreadGroupMsgsQuery } from '../generated/graphql';
 

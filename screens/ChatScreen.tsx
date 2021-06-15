@@ -11,23 +11,10 @@ import {
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import Message, { SetShouldScrollToBottomOnNewMessages } from '../components/Chat/Message';
 import Input, { MESSAGE_LIMIT } from '../components/Chat/Input';
-import {
-  MutationTuple,
-  OperationVariables,
-  useLazyQuery,
-  useMutation,
-  useQuery,
-  useSubscription,
-} from '@apollo/client';
+import { MutationTuple } from '@apollo/client';
 import { FETCH_MESSAGES } from '../graphql/queries';
-import { ADD_STARRED_MESSAGES, REMOVE_STARRED_MESSAGES } from '../graphql/mutations';
-import { Chat, MessageInterface, UserOnline, UserTyping } from '../interfaces/ChatInterface';
+import { Chat, MessageInterface, UserTyping } from '../interfaces/ChatInterface';
 import ChatScreenHeader from '../components/Chat/ChatScreenHeader';
-import {
-  UPDATE_READ_MESSAGES_SUB,
-  UPDATE_USER_ONLINE_SUB,
-  UPDATE_USER_TYPING_SUB,
-} from '../graphql/subscriptions';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavigationEvents } from 'react-navigation';
 import { Redux } from '../interfaces/Redux';

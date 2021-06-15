@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client';
 import React from 'react';
 import { ActivityIndicator, Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
 import { NavigationStackScreenComponent, useHeaderHeight } from 'react-navigation-stack';
@@ -7,9 +6,6 @@ import AppColors from '../Colors/color';
 import HomeHeaderRight from '../components/Home/HomeHeaderRight';
 import StarredMessage from '../components/Starred/StarredMessage';
 import { useFetchStarredMsgsQuery } from '../generated/graphql';
-import { FETCH_STARRED_MESSAGES } from '../graphql/queries';
-import inspect from '../inspect';
-import { StarredMessagesInterface } from '../interfaces/ChatInterface';
 import { Redux } from '../interfaces/Redux';
 
 const StarredMessagesScreen: NavigationStackScreenComponent = () => {

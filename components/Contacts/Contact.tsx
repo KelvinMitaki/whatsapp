@@ -2,10 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native';
 import { Ionicons, Octicons } from '@expo/vector-icons';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
-import inspect from '../../inspect';
-import { useQuery } from '@apollo/client';
-import { FETCH_CHATS, FETCH_USERS } from '../../graphql/queries';
-import { Chat, User } from '../../interfaces/ChatInterface';
 import { FetchUsersQuery, useFetchChatsQuery, useFetchUsersQuery } from '../../generated/graphql';
 
 interface Props {

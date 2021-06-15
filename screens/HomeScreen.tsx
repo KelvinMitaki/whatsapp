@@ -1,22 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, View, AppState, AppStateStatus, Text } from 'react-native';
+import { StyleSheet, View, AppState, AppStateStatus } from 'react-native';
 import { NavigationMaterialTabScreenComponent } from 'react-navigation-tabs';
-import { users } from '../data/data';
-import inspect from '../inspect';
 import HomeChat from '../components/Home/HomeChat';
 import { useHeaderHeight } from 'react-navigation-stack';
 import { useDispatch } from 'react-redux';
 import { NavigationEvents } from 'react-navigation';
-import { useSubscription } from '@apollo/client';
 import StartChat from '../components/Home/StartChat';
-import { ADD_NEW_CHAT_SUB, UPDATE_USER_ONLINE_SUB } from '../graphql/subscriptions';
-import { Chat, UserOnline } from '../interfaces/ChatInterface';
+import { UserOnline } from '../interfaces/ChatInterface';
 import {
   FetchChatsQuery,
   useAddNewChatSubSubscription,
   useFetchChatsQuery,
   useFetchCurrentUserQuery,
   useUpdateUserOnlineMutation,
+  useUpdateUserOnlineSubSubscription,
 } from '../generated/graphql';
 
 export interface SetHeaderHeight {
@@ -29,9 +26,9 @@ export interface SetSearchModal {
   payload: boolean;
 }
 
-const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
+const HomeScreen: NavigationMaterialTabScreenComponent = () => {
   const { data } = useFetchChatsQuery();
-  const userOnlineSub = useSubscription(UPDATE_USER_ONLINE_SUB);
+  const userOnlineSub = useUpdateUserOnlineSubSubscription();
   const user = useFetchCurrentUserQuery();
   const [updateUserOnline] = useUpdateUserOnlineMutation();
   const appState = useRef(AppState.currentState);
