@@ -45,6 +45,7 @@ import {
   useUpdateReadMessagesMutation,
   useUpdateUserOnlineSubSubscription,
   useUpdateUserTypingMutation,
+  useUpdateUserTypingSubSubscription,
 } from '../generated/graphql';
 
 interface Params {
@@ -95,13 +96,15 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       }
     },
   });
-  useSubscription(UPDATE_USER_TYPING_SUB, {
+  useUpdateUserTypingSubSubscription({
     variables: { chatID },
     onSubscriptionData(subData) {
-      const userTyping: UserTyping = subData.subscriptionData.data.updateUserTyping;
-      if (chatID === userTyping.chatID && userTyping.typingUserID !== currentUser?._id) {
-        dispatch<SetUserTyping>({ type: 'setUserTyping', payload: userTyping });
-        navigation.setParams({ recipient: { ...recipient, typing: userTyping.typing } });
+      if (subData.subscriptionData.data) {
+        const userTyping = subData.subscriptionData.data.updateUserTyping;
+        if (chatID === userTyping.chatID && userTyping.typingUserID !== currentUser?._id) {
+          dispatch<SetUserTyping>({ type: 'setUserTyping', payload: userTyping });
+          navigation.setParams({ recipient: { ...recipient, typing: userTyping.typing } });
+        }
       }
     },
   });
