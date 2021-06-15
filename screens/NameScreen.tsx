@@ -21,6 +21,7 @@ import { FETCH_GROUPS, FETCH_MESSAGES_COUNT, FETCH_UNREAD_GROUP_MSGS } from '../
 import {
   useFetchChatsLazyQuery,
   useFetchCurrentUserLazyQuery,
+  useFetchGroupLazyQuery,
   useFetchUsersLazyQuery,
 } from '../generated/graphql';
 
@@ -79,7 +80,7 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
     },
   });
   const [fetchUsers] = useFetchUsersLazyQuery();
-  const [fetchGroups] = useLazyQuery(FETCH_GROUPS);
+  const [fetchGroups] = useFetchGroupLazyQuery();
   const [fetchUnreadGroupMsgs] = useLazyQuery(FETCH_UNREAD_GROUP_MSGS);
   const [registerUser] = useMutation(REGISTER_USER, {
     async onCompleted(data) {
