@@ -56,6 +56,7 @@ import {
   useFetchCurrentUserQuery,
   useFetchMessagesCountQuery,
   useFetchMessagesLazyQuery,
+  useUpdateReadMessagesMutation,
 } from '../generated/graphql';
 
 interface Params {
@@ -171,7 +172,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       }
     },
   });
-  const [updateReadMessages] = useMutation(UPDATE_READ_MESSAGES);
+  const [updateReadMessages] = useUpdateReadMessagesMutation();
   const [updateUserTyping] = useMutation(UPDATE_USER_TYPING);
   const [addStarredMessages] = useMutation(ADD_STARRED_MESSAGES, {
     update(cache, { data: { addStarredMessages } }) {
