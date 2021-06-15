@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Keyboard, StyleSheet, Text, TextInput, TouchableNativeFeedback, View } from 'react-native';
+import { Keyboard, StyleSheet, TextInput, TouchableNativeFeedback, View } from 'react-native';
 import { Fontisto, Ionicons } from '@expo/vector-icons';
 import inspect from '../../inspect';
-import { useMutation } from '@apollo/client';
-import { ADD_NEW_GROUP_MSG, ADD_NEW_MESSAGE } from '../../graphql/mutations';
 import AppColors from '../../Colors/color';
-import { useAddNewMessageMutation } from '../../generated/graphql';
+import { useAddNewGroupMsgMutation, useAddNewMessageMutation } from '../../generated/graphql';
 
 export const MESSAGE_LIMIT = 50;
 
@@ -19,7 +17,7 @@ interface Props {
 const Input: React.FC<Props> = ({ screen, recipient, group, setKeyboardShown }) => {
   const [inp, setInp] = useState<string>('');
   const [addNewMessage] = useAddNewMessageMutation();
-  const [addNewGroupMsg] = useMutation(ADD_NEW_GROUP_MSG);
+  const [addNewGroupMsg] = useAddNewGroupMsgMutation();
 
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', () => {
