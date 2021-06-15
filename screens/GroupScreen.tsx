@@ -1,16 +1,17 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { TouchableNativeFeedback } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { NavigationMaterialTabScreenComponent } from "react-navigation-tabs";
-import inspect from "../inspect";
-import GroupChat from "../components/Group/GroupChat";
-import { useQuery } from "@apollo/client";
-import { FETCH_GROUPS, FETCH_UNREAD_GROUP_MSGS } from "../graphql/queries";
-import AppColors from "../Colors/color";
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { TouchableNativeFeedback } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { NavigationMaterialTabScreenComponent } from 'react-navigation-tabs';
+import inspect from '../inspect';
+import GroupChat from '../components/Group/GroupChat';
+import { useQuery } from '@apollo/client';
+import { FETCH_GROUPS, FETCH_UNREAD_GROUP_MSGS } from '../graphql/queries';
+import AppColors from '../Colors/color';
+import { useFetchGroupsQuery } from '../generated/graphql';
 
 const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
-  const { data, loading } = useQuery(FETCH_GROUPS);
+  const { data, loading } = useFetchGroupsQuery();
   const { data: data2 } = useQuery(FETCH_UNREAD_GROUP_MSGS);
   return (
     <View style={styles.prt}>
@@ -20,7 +21,7 @@ const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
       />
       {!data ||
         (data && !data.fetchGroups && !loading && (
-          <View style={{ height: "100%", alignItems: "center", justifyContent: "center" }}>
+          <View style={{ height: '100%', alignItems: 'center', justifyContent: 'center' }}>
             <Text style={{ color: AppColors.dull_white }}>
               You are currently not in any groups.
             </Text>
@@ -29,8 +30,8 @@ const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
       <View style={styles.withChatsPrt}>
         <View style={styles.messageNavPrt}>
           <TouchableNativeFeedback
-            onPress={() => navigation.navigate("Contact")}
-            background={TouchableNativeFeedback.Ripple("#fff", true)}
+            onPress={() => navigation.navigate('Contact')}
+            background={TouchableNativeFeedback.Ripple('#fff', true)}
           >
             <View style={styles.message}>
               <MaterialCommunityIcons
@@ -48,38 +49,38 @@ const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
 };
 
 GroupScreen.navigationOptions = {
-  title: "GROUPS"
+  title: 'GROUPS',
 };
 
 export default GroupScreen;
 
 const styles = StyleSheet.create({
   prt: {
-    height: "100%"
+    height: '100%',
   },
   withChatsPrt: {
-    width: "100%",
-    alignItems: "flex-end",
-    position: "absolute",
+    width: '100%',
+    alignItems: 'flex-end',
+    position: 'absolute',
     bottom: 20,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   messageNavPrt: {
     height: 55,
     width: 55,
     borderRadius: 55,
-    borderColor: "transparent"
+    borderColor: 'transparent',
   },
   message: {
-    right: "5%",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#00af9c",
+    right: '5%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#00af9c',
     height: 55,
     width: 55,
-    borderRadius: 55
+    borderRadius: 55,
   },
   msgIcon: {
-    transform: [{ scaleX: -1 }, { scaleY: 1 }]
-  }
+    transform: [{ scaleX: -1 }, { scaleY: 1 }],
+  },
 });
