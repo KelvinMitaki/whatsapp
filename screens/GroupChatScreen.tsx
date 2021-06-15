@@ -41,6 +41,7 @@ import {
   FetchGroupMsgsQuery,
   FetchGroupQuery,
   useFetchCurrentUserQuery,
+  useFetchGroupMessageCountQuery,
   useFetchGroupMsgsLazyQuery,
   useFetchGroupQuery,
 } from '../generated/graphql';
@@ -128,7 +129,7 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
       dispatch<SetIncommingUnread>({ type: 'setIncommingUnread', payload: [] });
     },
   });
-  const { loading, data: countData } = useQuery(FETCH_GROUP_MSG_COUNT, {
+  const { loading, data: countData } = useFetchGroupMessageCountQuery({
     fetchPolicy: 'network-only',
     variables: { groupID },
     onCompleted(data) {
@@ -234,7 +235,7 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
           <GroupMessage
             messages={data!.fetchGroupMsgs}
             groupID={groupID}
-            count={countData.fetchGroupMessageCount.count}
+            count={countData!.fetchGroupMessageCount.count}
             fetchMore={fetchMore}
             setShowLoading={setShowLoading}
             showLoading={showLoading}
