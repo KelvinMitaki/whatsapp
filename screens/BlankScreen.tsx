@@ -7,6 +7,7 @@ import {
   useFetchChatsLazyQuery,
   useFetchCurrentUserLazyQuery,
   useFetchGroupsLazyQuery,
+  useFetchUnreadGroupMsgsLazyQuery,
   useFetchUsersLazyQuery,
 } from '../generated/graphql';
 import {
@@ -49,7 +50,7 @@ const BlankScreen: NavigationStackScreenComponent = ({ navigation }) => {
   });
   const [fetchUsers] = useFetchUsersLazyQuery();
   const [fetchGroups] = useFetchGroupsLazyQuery();
-  const [fetchUnreadGroupMsgs] = useLazyQuery(FETCH_UNREAD_GROUP_MSGS);
+  const [fetchUnreadGroupMsgs] = useFetchUnreadGroupMsgsLazyQuery();
   useEffect(() => {
     loginUser();
   }, []);
