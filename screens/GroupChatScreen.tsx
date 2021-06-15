@@ -1,34 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, BackHandler, ActivityIndicator, ToastAndroid } from 'react-native';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
-import { Avatar } from 'react-native-elements/dist/avatar/Avatar';
-import inspect from '../inspect';
-import { TouchableNativeFeedback } from 'react-native';
 import Input, { MESSAGE_LIMIT } from '../components/Chat/Input';
 import GroupMessage from '../components/GroupChat/GroupMessage';
 import AppColors from '../Colors/color';
-import {
-  MutationTuple,
-  OperationVariables,
-  useLazyQuery,
-  useMutation,
-  useQuery,
-  useSubscription,
-} from '@apollo/client';
-import {
-  FETCH_CURRENT_USER,
-  FETCH_GROUP,
-  FETCH_GROUP_MSGS,
-  FETCH_GROUP_MSG_COUNT,
-  FETCH_UNREAD_GROUP_MSGS,
-} from '../graphql/queries';
-import { GroupMsg, GroupWithParticipants, GroupUserTyping } from '../interfaces/GroupInterface';
-import {
-  ADD_STARRED_GROUP_MSGS,
-  REMOVE_STARRED_GROUP_MESSAGES,
-  UPDATE_GROUP_MESSAGES_READ,
-  UPDATE_GROUP_TYPING,
-} from '../graphql/mutations';
+import { MutationTuple, OperationVariables, useMutation, useSubscription } from '@apollo/client';
+import { FETCH_GROUP_MSGS, FETCH_UNREAD_GROUP_MSGS } from '../graphql/queries';
+import { GroupMsg, GroupUserTyping } from '../interfaces/GroupInterface';
+import { ADD_STARRED_GROUP_MSGS, REMOVE_STARRED_GROUP_MESSAGES } from '../graphql/mutations';
 import { useDispatch, useSelector } from 'react-redux';
 import { SetIncommingUnread } from '../components/Group/GroupChat';
 import GroupChatScreenHeader from '../components/GroupChat/GroupChatScreenHeader';
@@ -45,6 +24,7 @@ import {
   useFetchGroupMsgsLazyQuery,
   useFetchGroupQuery,
   useUpdateGroupMessagesReadMutation,
+  useUpdateGroupTypingMutation,
 } from '../generated/graphql';
 
 interface Params {
@@ -164,7 +144,7 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
       }
     },
   });
-  const [updateGroupTyping] = useMutation(UPDATE_GROUP_TYPING);
+  const [updateGroupTyping] = useUpdateGroupTypingMutation();
   useSubscription(UPDATE_GROUP_TYPING_SUB, {
     variables: { groupID },
     onSubscriptionData({ subscriptionData: { data } }) {
@@ -198,9 +178,9 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
   }, [group.data]);
   useEffect(() => {
     if (keyboardShown) {
-      updateGroupTyping({ variables: { groupID, typing: true, typingUserID: currentUser?._id } });
+      updateGroupTyping({ variables: { groupID, typing: true, typingUserID: currentUser!._id } });
     } else {
-      updateGroupTyping({ variables: { groupID, typing: false, typingUserID: currentUser?._id } });
+      updateGroupTyping({ variables: { groupID, typing: false, typingUserID: currentUser!._id } });
     }
   }, [keyboardShown]);
   const handleBackBtnPressAndroid = () => {
