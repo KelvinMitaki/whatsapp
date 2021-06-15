@@ -25,6 +25,7 @@ import {
   useFetchGroupMessageCountQuery,
   useFetchGroupMsgsLazyQuery,
   useFetchGroupQuery,
+  useRemoveStarredGroupMessagesMutation,
   useUpdateGroupMessagesReadMutation,
   useUpdateGroupTypingMutation,
 } from '../generated/graphql';
@@ -36,7 +37,7 @@ interface Params {
   setSelectedMsgs: React.Dispatch<React.SetStateAction<FetchGroupMsgsQuery['fetchGroupMsgs']>>;
   selectedMsgs: FetchGroupMsgsQuery['fetchGroupMsgs'];
   addStarredGroupMessages: MutationTuple<any, Exact<{ groupMsgIDs: string | string[] }>>[0];
-  removeStarredGroupMessages: MutationTuple<any, OperationVariables>[0];
+  removeStarredGroupMessages: MutationTuple<any, Exact<{ groupMsgIDs: string | string[] }>>[0];
   currentUser: FetchCurrentUserQuery['fetchCurrentUser'];
 }
 
@@ -81,29 +82,31 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
       }
     },
   });
-  const [removeStarredGroupMessages] = useMutation(REMOVE_STARRED_GROUP_MESSAGES, {
-    update(cache, { data: { removeStarredGroupMessages } }) {
-      const incommingMessages: GroupMsg[] = removeStarredGroupMessages;
-      const msgs: { fetchGroupMsgs: GroupMsg[] } | null = cache.readQuery({
-        query: FETCH_GROUP_MSGS,
-      });
+  const [removeStarredGroupMessages] = useRemoveStarredGroupMessagesMutation({
+    update(cache, { data }) {
+      if (data) {
+        const incommingMessages = data.removeStarredGroupMessages;
+        const msgs: FetchGroupMsgsQuery | null = cache.readQuery({
+          query: FETCH_GROUP_MSGS,
+        });
 
-      let existingMessages = [...(msgs?.fetchGroupMsgs || [])];
-      incommingMessages.forEach((msg) => {
-        const index = existingMessages.findIndex((m) => m._id === msg._id);
-        if (index !== -1) {
-          existingMessages[index] = msg;
-        }
-      });
-      dispatch<SetShouldScrollToBottomOnNewMessages>({
-        type: 'setShouldScrollToBottomOnNewMessages',
-        payload: false,
-      });
-      cache.writeQuery({ query: FETCH_GROUP_MSGS, data: { fetchGroupMsgs: existingMessages } });
-      ToastAndroid.show(
-        `Unstarred ${incommingMessages.length === 1 ? 'message' : 'messages'} `,
-        ToastAndroid.LONG
-      );
+        let existingMessages = [...(msgs?.fetchGroupMsgs || [])];
+        incommingMessages.forEach((msg) => {
+          const index = existingMessages.findIndex((m) => m._id === msg._id);
+          if (index !== -1) {
+            existingMessages[index] = msg;
+          }
+        });
+        dispatch<SetShouldScrollToBottomOnNewMessages>({
+          type: 'setShouldScrollToBottomOnNewMessages',
+          payload: false,
+        });
+        cache.writeQuery({ query: FETCH_GROUP_MSGS, data: { fetchGroupMsgs: existingMessages } });
+        ToastAndroid.show(
+          `Unstarred ${incommingMessages.length === 1 ? 'message' : 'messages'} `,
+          ToastAndroid.LONG
+        );
+      }
     },
   });
   const { data: userData } = useFetchCurrentUserQuery();

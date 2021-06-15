@@ -11,8 +11,8 @@ import {
   Entypo,
 } from '@expo/vector-icons';
 import { TouchableNativeFeedback } from 'react-native';
-import { GroupMsg, GroupUserTyping, GroupWithParticipants } from '../../interfaces/GroupInterface';
-import { MutationTuple, OperationVariables } from '@apollo/client';
+import { GroupMsg, GroupUserTyping } from '../../interfaces/GroupInterface';
+import { MutationTuple } from '@apollo/client';
 import AppColors from '../../Colors/color';
 import {
   Exact,
@@ -28,7 +28,7 @@ interface Params {
   setSelectedMsgs: React.Dispatch<React.SetStateAction<FetchGroupMsgsQuery['fetchGroupMsgs']>>;
   selectedMsgs: FetchGroupMsgsQuery['fetchGroupMsgs'];
   addStarredGroupMessages: MutationTuple<any, Exact<{ groupMsgIDs: string | string[] }>>[0];
-  removeStarredGroupMessages: MutationTuple<any, OperationVariables>[0];
+  removeStarredGroupMessages: MutationTuple<any, Exact<{ groupMsgIDs: string | string[] }>>[0];
   currentUser: FetchCurrentUserQuery['fetchCurrentUser'];
 }
 
