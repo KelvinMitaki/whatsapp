@@ -32,9 +32,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavigationEvents } from 'react-navigation';
 import { Redux } from '../interfaces/Redux';
 import {
+  Exact,
   FetchCurrentUserQuery,
   FetchMessagesCountQuery,
   FetchMessagesQuery,
+  useAddStarredMessagesMutation,
   useFetchChatsQuery,
   useFetchCurrentUserQuery,
   useFetchMessagesCountQuery,
@@ -54,7 +56,7 @@ interface Params {
   chatID: string;
   setSelectedMsgs: React.Dispatch<React.SetStateAction<FetchMessagesQuery['fetchMessages']>>;
   selectedMsgs: FetchMessagesQuery['fetchMessages'];
-  addStarredMessages: MutationTuple<any, OperationVariables>[0];
+  addStarredMessages: MutationTuple<any, Exact<{ messageIDs: string | string[] }>>[0];
   removeStarredMessages: MutationTuple<any, OperationVariables>[0];
   currentUser: FetchCurrentUserQuery['fetchCurrentUser'];
 }
@@ -158,28 +160,30 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   });
   const [updateReadMessages] = useUpdateReadMessagesMutation();
   const [updateUserTyping] = useUpdateUserTypingMutation();
-  const [addStarredMessages] = useMutation(ADD_STARRED_MESSAGES, {
-    update(cache, { data: { addStarredMessages } }) {
-      const incommingMsgs: MessageInterface[] = addStarredMessages;
-      const msgs: { fetchMessages: MessageInterface[] } | null = cache.readQuery({
-        query: FETCH_MESSAGES,
-      });
-      let existingMessages = [...(msgs?.fetchMessages || [])];
-      incommingMsgs.forEach((msg) => {
-        const index = existingMessages.findIndex((m) => m._id === msg._id);
-        if (index !== -1) {
-          existingMessages[index] = msg;
-        }
-      });
-      dispatch<SetShouldScrollToBottomOnNewMessages>({
-        type: 'setShouldScrollToBottomOnNewMessages',
-        payload: false,
-      });
-      cache.writeQuery({ query: FETCH_MESSAGES, data: { fetchMessages: existingMessages } });
-      ToastAndroid.show(
-        `Starred ${incommingMsgs.length === 1 ? 'message' : 'messages'}`,
-        ToastAndroid.LONG
-      );
+  const [addStarredMessages] = useAddStarredMessagesMutation({
+    update(cache, { data }) {
+      if (data) {
+        const incommingMsgs = data.addStarredMessages;
+        const msgs: FetchMessagesQuery | null = cache.readQuery({
+          query: FETCH_MESSAGES,
+        });
+        let existingMessages = [...(msgs?.fetchMessages || [])];
+        incommingMsgs.forEach((msg) => {
+          const index = existingMessages.findIndex((m) => m._id === msg._id);
+          if (index !== -1) {
+            existingMessages[index] = msg;
+          }
+        });
+        dispatch<SetShouldScrollToBottomOnNewMessages>({
+          type: 'setShouldScrollToBottomOnNewMessages',
+          payload: false,
+        });
+        cache.writeQuery({ query: FETCH_MESSAGES, data: { fetchMessages: existingMessages } });
+        ToastAndroid.show(
+          `Starred ${incommingMsgs.length === 1 ? 'message' : 'messages'}`,
+          ToastAndroid.LONG
+        );
+      }
     },
   });
   const [removeStarredMessages] = useMutation(REMOVE_STARRED_MESSAGES, {
