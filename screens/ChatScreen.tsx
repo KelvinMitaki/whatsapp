@@ -43,6 +43,7 @@ import {
   useFetchMessagesLazyQuery,
   useRemoveStarredMessagesMutation,
   useUpdateReadMessagesMutation,
+  useUpdateReadMessagesSubSubscription,
   useUpdateUserOnlineSubSubscription,
   useUpdateUserTypingMutation,
   useUpdateUserTypingSubSubscription,
@@ -108,28 +109,30 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       }
     },
   });
-  useSubscription(UPDATE_READ_MESSAGES_SUB, {
-    variables: { sender: currentUser?._id, recipient: recipient._id },
+  useUpdateReadMessagesSubSubscription({
+    variables: { sender: currentUser!._id, recipient: recipient._id },
     onSubscriptionData({ client: { writeQuery, readQuery }, subscriptionData: { data } }) {
-      const incommingMsgs: MessageInterface[] = data.updateReadMessages;
-      const msgs: { fetchMessages: MessageInterface[] } | null = readQuery({
-        query: FETCH_MESSAGES,
-      });
-      let existingMessages = [...(msgs?.fetchMessages || [])];
-      incommingMsgs.forEach((msg) => {
-        const index = existingMessages.findIndex((m) => m._id === msg._id);
-        if (index !== -1) {
-          existingMessages[index] = msg;
-        }
-      });
-      dispatch<SetShouldScrollToBottomOnNewMessages>({
-        type: 'setShouldScrollToBottomOnNewMessages',
-        payload: false,
-      });
-      writeQuery({
-        query: FETCH_MESSAGES,
-        data: { fetchMessages: existingMessages },
-      });
+      if (data) {
+        const incommingMsgs = data.updateReadMessages;
+        const msgs: FetchMessagesQuery | null = readQuery({
+          query: FETCH_MESSAGES,
+        });
+        let existingMessages = [...(msgs?.fetchMessages || [])];
+        incommingMsgs.forEach((msg) => {
+          const index = existingMessages.findIndex((m) => m._id === msg._id);
+          if (index !== -1) {
+            existingMessages[index] = msg;
+          }
+        });
+        dispatch<SetShouldScrollToBottomOnNewMessages>({
+          type: 'setShouldScrollToBottomOnNewMessages',
+          payload: false,
+        });
+        writeQuery({
+          query: FETCH_MESSAGES,
+          data: { fetchMessages: existingMessages },
+        });
+      }
     },
   });
   const { data: chatsData } = useFetchChatsQuery();
