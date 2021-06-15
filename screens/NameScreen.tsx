@@ -17,11 +17,11 @@ import inspect from '../inspect';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { REGISTER_USER } from '../graphql/mutations';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FETCH_GROUPS, FETCH_MESSAGES_COUNT, FETCH_UNREAD_GROUP_MSGS } from '../graphql/queries';
 import {
   useFetchChatsLazyQuery,
   useFetchCurrentUserLazyQuery,
   useFetchGroupLazyQuery,
+  useFetchMessagesCountLazyQuery,
   useFetchUnreadGroupMsgsLazyQuery,
   useFetchUsersLazyQuery,
 } from '../generated/graphql';
@@ -74,7 +74,7 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       });
     },
   });
-  const [fetchMessagesCount] = useLazyQuery(FETCH_MESSAGES_COUNT, {
+  const [fetchMessagesCount] = useFetchMessagesCountLazyQuery({
     onCompleted() {
       setdDataLoading(false);
       navigation.replace('Tab');
