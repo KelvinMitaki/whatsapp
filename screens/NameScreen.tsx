@@ -22,6 +22,7 @@ import {
   useFetchChatsLazyQuery,
   useFetchCurrentUserLazyQuery,
   useFetchGroupLazyQuery,
+  useFetchUnreadGroupMsgsLazyQuery,
   useFetchUsersLazyQuery,
 } from '../generated/graphql';
 
@@ -81,7 +82,7 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   });
   const [fetchUsers] = useFetchUsersLazyQuery();
   const [fetchGroups] = useFetchGroupLazyQuery();
-  const [fetchUnreadGroupMsgs] = useLazyQuery(FETCH_UNREAD_GROUP_MSGS);
+  const [fetchUnreadGroupMsgs] = useFetchUnreadGroupMsgsLazyQuery();
   const [registerUser] = useMutation(REGISTER_USER, {
     async onCompleted(data) {
       await AsyncStorage.setItem('token', data.registerUser.token);
