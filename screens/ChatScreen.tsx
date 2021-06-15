@@ -43,6 +43,7 @@ import {
   useFetchMessagesLazyQuery,
   useRemoveStarredMessagesMutation,
   useUpdateReadMessagesMutation,
+  useUpdateUserOnlineSubSubscription,
   useUpdateUserTypingMutation,
 } from '../generated/graphql';
 
@@ -82,13 +83,15 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const dispatch = useDispatch();
   const chatID = navigation.getParam('chatID');
   const recipient = navigation.getParam('recipient');
-  useSubscription(UPDATE_USER_ONLINE_SUB, {
+  useUpdateUserOnlineSubSubscription({
     onSubscriptionData(subData) {
-      const onlineData: UserOnline = subData.subscriptionData.data.updateUserOnline;
-      if (onlineData.userID === recipient._id) {
-        navigation.setParams({
-          recipient: { ...recipient, online: onlineData.online, lastSeen: new Date().toString() },
-        });
+      if (subData.subscriptionData.data) {
+        const onlineData = subData.subscriptionData.data.updateUserOnline;
+        if (onlineData.userID === recipient._id) {
+          navigation.setParams({
+            recipient: { ...recipient, online: onlineData.online, lastSeen: new Date().toString() },
+          });
+        }
       }
     },
   });
