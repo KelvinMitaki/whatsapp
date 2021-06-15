@@ -13,6 +13,7 @@ import { ADD_NEW_CHAT_SUB, UPDATE_USER_ONLINE_SUB } from '../graphql/subscriptio
 import { Chat, UserOnline } from '../interfaces/ChatInterface';
 import {
   FetchChatsQuery,
+  useAddNewChatSubSubscription,
   useFetchChatsQuery,
   useFetchCurrentUserQuery,
   useUpdateUserOnlineMutation,
@@ -35,9 +36,9 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   const [updateUserOnline] = useUpdateUserOnlineMutation();
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const [chatSub, setChatSub] = useState<Chat[]>([]);
+  const [chatSub, setChatSub] = useState<FetchChatsQuery['fetchChats']>([]);
   const currentUser = user.data?.fetchCurrentUser;
-  const chat = useSubscription(ADD_NEW_CHAT_SUB, { variables: { userID: currentUser?._id } });
+  const chat = useAddNewChatSubSubscription({ variables: { userID: currentUser!._id } });
   const dispatch = useDispatch();
   const headerHeight = useHeaderHeight();
   useEffect(() => {
@@ -58,7 +59,7 @@ const HomeScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   };
   useEffect(() => {
     if (chat.data && chat.data.addNewChat) {
-      setChatSub((c) => [chat.data.addNewChat, ...c]);
+      setChatSub((c) => [chat.data!.addNewChat, ...c]);
     }
   }, [chat.data]);
   const renderData = (): { fetchChats: FetchChatsQuery['fetchChats'] } => {

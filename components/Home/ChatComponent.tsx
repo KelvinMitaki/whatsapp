@@ -11,10 +11,10 @@ import { format } from 'date-fns/esm';
 import AppColors from '../../Colors/color';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redux } from '../../interfaces/Redux';
-import { FetchCurrentUserQuery } from '../../generated/graphql';
+import { FetchChatsQuery, FetchCurrentUserQuery } from '../../generated/graphql';
 
 interface Props {
-  item: Chat;
+  item: FetchChatsQuery['fetchChats'][0];
   currentUser: FetchCurrentUserQuery['fetchCurrentUser'];
 }
 
