@@ -6,6 +6,7 @@ import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import {
   useFetchChatsLazyQuery,
   useFetchCurrentUserLazyQuery,
+  useFetchGroupsLazyQuery,
   useFetchUsersLazyQuery,
 } from '../generated/graphql';
 import {
@@ -47,7 +48,7 @@ const BlankScreen: NavigationStackScreenComponent = ({ navigation }) => {
     },
   });
   const [fetchUsers] = useFetchUsersLazyQuery();
-  const [fetchGroups] = useLazyQuery(FETCH_GROUPS);
+  const [fetchGroups] = useFetchGroupsLazyQuery();
   const [fetchUnreadGroupMsgs] = useLazyQuery(FETCH_UNREAD_GROUP_MSGS);
   useEffect(() => {
     loginUser();
