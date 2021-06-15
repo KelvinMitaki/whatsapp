@@ -26,6 +26,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Redux } from '../../interfaces/Redux';
 import {
   FetchMessagesQuery,
+  useAddNewMessageSubSubscription,
   useFetchChatsQuery,
   useFetchCurrentUserQuery,
   useFetchMessagesCountQuery,
@@ -74,17 +75,19 @@ const Message: React.FC<Props> = (props) => {
     (state: Redux) => state.chat.shouldScrollToBottomOnNewMessages
   );
   const dispatch = useDispatch();
-  const [subScriptionMsgs, setSubScriptionMsgs] = useState<MessageInterface[]>([]);
-  useSubscription(ADD_NEW_MESSAGE_SUB, {
-    variables: { sender: currentUser?._id, recipient },
-    onSubscriptionData(data) {
+  const [subScriptionMsgs, setSubScriptionMsgs] = useState<FetchMessagesQuery['fetchMessages']>([]);
+  useAddNewMessageSubSubscription({
+    variables: { sender: currentUser!._id, recipient },
+    onSubscriptionData(subData) {
       if (!shouldScrollToBottomOnNewMessages) {
         dispatch<SetShouldScrollToBottomOnNewMessages>({
           type: 'setShouldScrollToBottomOnNewMessages',
           payload: true,
         });
       }
-      setSubScriptionMsgs((m) => [...m, data.subscriptionData.data.addNewMessage]);
+      if (subData.subscriptionData.data && subData.subscriptionData.data.addNewMessage) {
+        setSubScriptionMsgs((m) => [...m, subData.subscriptionData.data!.addNewMessage]);
+      }
     },
   });
   const scrollViewRef = useRef<ScrollView>(null);
