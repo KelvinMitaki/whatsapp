@@ -16,9 +16,11 @@ import { SetShouldScrollToBottomOnNewMessages } from '../components/Chat/Message
 import { NavigationEvents } from 'react-navigation';
 import { Redux } from '../interfaces/Redux';
 import {
+  Exact,
   FetchCurrentUserQuery,
   FetchGroupMsgsQuery,
   FetchGroupQuery,
+  useAddStarredGroupMessagesMutation,
   useFetchCurrentUserQuery,
   useFetchGroupMessageCountQuery,
   useFetchGroupMsgsLazyQuery,
@@ -33,7 +35,7 @@ interface Params {
   typingData: GroupUserTyping | undefined;
   setSelectedMsgs: React.Dispatch<React.SetStateAction<FetchGroupMsgsQuery['fetchGroupMsgs']>>;
   selectedMsgs: FetchGroupMsgsQuery['fetchGroupMsgs'];
-  addStarredGroupMessages: MutationTuple<any, OperationVariables>[0];
+  addStarredGroupMessages: MutationTuple<any, Exact<{ groupMsgIDs: string | string[] }>>[0];
   removeStarredGroupMessages: MutationTuple<any, OperationVariables>[0];
   currentUser: FetchCurrentUserQuery['fetchCurrentUser'];
 }
@@ -52,29 +54,31 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
   );
   const dispatch = useDispatch();
   const groupID = navigation.getParam('groupID');
-  const [addStarredGroupMessages] = useMutation(ADD_STARRED_GROUP_MSGS, {
-    update(cache, { data: { addStarredGroupMessages } }) {
-      const incommingMessages: GroupMsg[] = addStarredGroupMessages;
-      const msgs: { fetchGroupMsgs: GroupMsg[] } | null = cache.readQuery({
-        query: FETCH_GROUP_MSGS,
-      });
+  const [addStarredGroupMessages] = useAddStarredGroupMessagesMutation({
+    update(cache, { data }) {
+      if (data) {
+        const incommingMessages = data.addStarredGroupMessages;
+        const msgs: FetchGroupMsgsQuery | null = cache.readQuery({
+          query: FETCH_GROUP_MSGS,
+        });
 
-      let existingMessages = [...(msgs?.fetchGroupMsgs || [])];
-      incommingMessages.forEach((msg) => {
-        const index = existingMessages.findIndex((m) => m._id === msg._id);
-        if (index !== -1) {
-          existingMessages[index] = msg;
-        }
-      });
-      dispatch<SetShouldScrollToBottomOnNewMessages>({
-        type: 'setShouldScrollToBottomOnNewMessages',
-        payload: false,
-      });
-      cache.writeQuery({ query: FETCH_GROUP_MSGS, data: { fetchGroupMsgs: existingMessages } });
-      ToastAndroid.show(
-        `Starred ${incommingMessages.length === 1 ? 'message' : 'messages'}`,
-        ToastAndroid.LONG
-      );
+        let existingMessages = [...(msgs?.fetchGroupMsgs || [])];
+        incommingMessages.forEach((msg) => {
+          const index = existingMessages.findIndex((m) => m._id === msg._id);
+          if (index !== -1) {
+            existingMessages[index] = msg;
+          }
+        });
+        dispatch<SetShouldScrollToBottomOnNewMessages>({
+          type: 'setShouldScrollToBottomOnNewMessages',
+          payload: false,
+        });
+        cache.writeQuery({ query: FETCH_GROUP_MSGS, data: { fetchGroupMsgs: existingMessages } });
+        ToastAndroid.show(
+          `Starred ${incommingMessages.length === 1 ? 'message' : 'messages'}`,
+          ToastAndroid.LONG
+        );
+      }
     },
   });
   const [removeStarredGroupMessages] = useMutation(REMOVE_STARRED_GROUP_MESSAGES, {

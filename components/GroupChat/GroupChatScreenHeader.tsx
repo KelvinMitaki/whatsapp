@@ -15,6 +15,7 @@ import { GroupMsg, GroupUserTyping, GroupWithParticipants } from '../../interfac
 import { MutationTuple, OperationVariables } from '@apollo/client';
 import AppColors from '../../Colors/color';
 import {
+  Exact,
   FetchCurrentUserQuery,
   FetchGroupMsgsQuery,
   FetchGroupQuery,
@@ -26,7 +27,7 @@ interface Params {
   typingData: GroupUserTyping | undefined;
   setSelectedMsgs: React.Dispatch<React.SetStateAction<FetchGroupMsgsQuery['fetchGroupMsgs']>>;
   selectedMsgs: FetchGroupMsgsQuery['fetchGroupMsgs'];
-  addStarredGroupMessages: MutationTuple<any, OperationVariables>[0];
+  addStarredGroupMessages: MutationTuple<any, Exact<{ groupMsgIDs: string | string[] }>>[0];
   removeStarredGroupMessages: MutationTuple<any, OperationVariables>[0];
   currentUser: FetchCurrentUserQuery['fetchCurrentUser'];
 }
