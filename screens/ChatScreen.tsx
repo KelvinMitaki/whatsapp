@@ -50,9 +50,11 @@ import { NavigationEvents } from 'react-navigation';
 import { Redux } from '../interfaces/Redux';
 import {
   FetchCurrentUserQuery,
+  FetchMessagesCountQuery,
   FetchMessagesQuery,
   useFetchChatsQuery,
   useFetchCurrentUserQuery,
+  useFetchMessagesCountQuery,
   useFetchMessagesLazyQuery,
 } from '../generated/graphql';
 
@@ -137,7 +139,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
     },
   });
   const { data: chatsData } = useFetchChatsQuery();
-  const count = useQuery(FETCH_MESSAGES_COUNT, {
+  const count = useFetchMessagesCountQuery({
     variables: {
       userIDs: (chatsData?.fetchChats as Chat[]).map((c) =>
         c.sender._id === currentUser?._id ? c.recipient._id : c.sender._id
@@ -150,7 +152,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
           offset: 0,
           limit: MESSAGE_LIMIT,
           messageCount:
-            (count.data.fetchMessagesCount as MessageCountInterface[]).find(
+            (count.data?.fetchMessagesCount as FetchMessagesCountQuery['fetchMessagesCount']).find(
               (mc) => mc.chatID === chatID
             )?.messageCount || MESSAGE_LIMIT,
         },
