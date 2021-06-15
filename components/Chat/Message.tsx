@@ -24,16 +24,20 @@ import AppColors from '../../Colors/color';
 import { MESSAGE_LIMIT } from './Input';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redux } from '../../interfaces/Redux';
-import { useFetchChatsQuery, useFetchCurrentUserQuery } from '../../generated/graphql';
+import {
+  FetchMessagesQuery,
+  useFetchChatsQuery,
+  useFetchCurrentUserQuery,
+} from '../../generated/graphql';
 
 interface Props {
-  messages: MessageInterface[];
+  messages: FetchMessagesQuery['fetchMessages'];
   recipient: string;
   fetchMore: LazyQueryResult<any, OperationVariables>['fetchMore'] | undefined;
   setShowLoading: React.Dispatch<React.SetStateAction<boolean>>;
   showLoading: boolean;
   keyboardShown: boolean;
-  setSelectedMsgs: React.Dispatch<React.SetStateAction<MessageInterface[]>>;
+  setSelectedMsgs: React.Dispatch<React.SetStateAction<FetchMessagesQuery['fetchMessages']>>;
   selectedMsgs: MessageInterface[];
   chatID: string;
 }
@@ -162,7 +166,7 @@ const Message: React.FC<Props> = (props) => {
                 <View style={styles.me}>
                   <Text style={{ color: '#fff' }}>{item.message}</Text>
                   <Text style={styles.meta}>
-                    {item.starredBy.some((id) => id === currentUser?._id) && (
+                    {item.starredBy?.some((id) => id === currentUser?._id) && (
                       <Entypo name="star" size={13} />
                     )}{' '}
                     {format(new Date(parseInt(item.createdAt)), 'p')}{' '}
@@ -177,7 +181,7 @@ const Message: React.FC<Props> = (props) => {
                 <View style={styles.sender}>
                   <Text style={{ color: '#fff' }}>{item.message}</Text>
                   <Text style={styles.meta}>
-                    {item.starredBy.some((id) => id === currentUser?._id) && (
+                    {item.starredBy?.some((id) => id === currentUser?._id) && (
                       <Entypo name="star" size={13} />
                     )}{' '}
                     {format(new Date(parseInt(item.createdAt)), 'p')}
