@@ -52,6 +52,7 @@ import {
   FetchCurrentUserQuery,
   useFetchChatsQuery,
   useFetchCurrentUserQuery,
+  useFetchMessagesLazyQuery,
 } from '../generated/graphql';
 
 interface Params {
@@ -155,7 +156,8 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       });
     },
   });
-  const [fetchMessages, { loading, data, fetchMore }] = useLazyQuery(FETCH_MESSAGES, {
+
+  const [fetchMessages, { loading, data, fetchMore }] = useFetchMessagesLazyQuery({
     fetchPolicy:
       previousSelectedChatIds.length && previousSelectedChatIds.find((id) => id === chatID)
         ? 'cache-first'
