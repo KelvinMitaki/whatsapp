@@ -8,11 +8,11 @@ import GroupChat from '../components/Group/GroupChat';
 import { useQuery } from '@apollo/client';
 import { FETCH_GROUPS, FETCH_UNREAD_GROUP_MSGS } from '../graphql/queries';
 import AppColors from '../Colors/color';
-import { useFetchGroupsQuery } from '../generated/graphql';
+import { useFetchGroupsQuery, useFetchUnreadGroupMsgsQuery } from '../generated/graphql';
 
 const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   const { data, loading } = useFetchGroupsQuery();
-  const { data: data2 } = useQuery(FETCH_UNREAD_GROUP_MSGS);
+  const { data: data2 } = useFetchUnreadGroupMsgsQuery();
   return (
     <View style={styles.prt}>
       <GroupChat
