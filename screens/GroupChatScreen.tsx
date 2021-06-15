@@ -27,6 +27,7 @@ import {
   useRemoveStarredGroupMessagesMutation,
   useUpdateGroupMessagesReadMutation,
   useUpdateGroupTypingMutation,
+  useUpdateGroupTypingSubSubscription,
 } from '../generated/graphql';
 
 interface Params {
@@ -151,13 +152,15 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
     },
   });
   const [updateGroupTyping] = useUpdateGroupTypingMutation();
-  useSubscription(UPDATE_GROUP_TYPING_SUB, {
+  useUpdateGroupTypingSubSubscription({
     variables: { groupID },
     onSubscriptionData({ subscriptionData: { data } }) {
-      const parsedData: GroupUserTyping = data.updateGroupTyping;
-      if (parsedData.typingUserID !== currentUser?._id) {
-        dispatch<SetGroupUserTyping>({ type: 'setGroupUserTyping', payload: parsedData });
-        navigation.setParams({ typingData: parsedData });
+      if (data) {
+        const parsedData = data.updateGroupTyping;
+        if (parsedData.typingUserID !== currentUser?._id) {
+          dispatch<SetGroupUserTyping>({ type: 'setGroupUserTyping', payload: parsedData });
+          navigation.setParams({ typingData: parsedData });
+        }
       }
     },
   });
