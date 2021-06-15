@@ -15,7 +15,11 @@ import AppColors from '../../Colors/color';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redux } from '../../interfaces/Redux';
 import { useHeaderHeight } from 'react-navigation-stack';
-import { FetchGroupsQuery, useFetchCurrentUserQuery } from '../../generated/graphql';
+import {
+  FetchGroupsQuery,
+  useAddNewGroupSubSubscription,
+  useFetchCurrentUserQuery,
+} from '../../generated/graphql';
 
 interface Props {
   groups: FetchGroupsQuery['fetchGroups'];
@@ -35,30 +39,32 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
   const incommingUnread = useSelector((state: Redux) => state.group.incommingUnread);
   const searchModal = useSelector((state: Redux) => state.chat.searchModal);
   const [subscriptionGroups, setSubscriptionGroups] = useState<FetchGroupsQuery['fetchGroups']>([]);
-  useSubscription(ADD_NEW_GROUP_SUB, {
+  useAddNewGroupSubSubscription({
     onSubscriptionData(subdata) {
-      const group: FetchGroupsQuery['fetchGroups'][0] = subdata.subscriptionData.data.addNewGroup;
-      setSubscriptionGroups((g) => [group, ...g]);
-      if (group.message?.sender._id !== currentUser?._id) {
-        let incommingUnreadGroups = [...incommingUnread];
-        const groupExistIndex = incommingUnreadGroups.findIndex((g) => g.group === group._id);
-        if (groupExistIndex !== -1) {
-          const grp = incommingUnreadGroups[groupExistIndex];
-          incommingUnreadGroups[groupExistIndex] = { ...grp, messageCount: grp.messageCount + 1 };
-        } else {
-          const count = unread.find((u) => u.group === group._id)?.messageCount;
-          incommingUnreadGroups = [
-            { group: group._id, messageCount: count ? count + 1 : 1 },
-            ...incommingUnreadGroups,
-          ];
+      if (subdata.subscriptionData.data) {
+        const group: FetchGroupsQuery['fetchGroups'][0] = subdata.subscriptionData.data.addNewGroup;
+        setSubscriptionGroups((g) => [group, ...g]);
+        if (group.message?.sender._id !== currentUser?._id) {
+          let incommingUnreadGroups = [...incommingUnread];
+          const groupExistIndex = incommingUnreadGroups.findIndex((g) => g.group === group._id);
+          if (groupExistIndex !== -1) {
+            const grp = incommingUnreadGroups[groupExistIndex];
+            incommingUnreadGroups[groupExistIndex] = { ...grp, messageCount: grp.messageCount + 1 };
+          } else {
+            const count = unread.find((u) => u.group === group._id)?.messageCount;
+            incommingUnreadGroups = [
+              { group: group._id, messageCount: count ? count + 1 : 1 },
+              ...incommingUnreadGroups,
+            ];
+          }
+          dispatch<SetIncommingUnread>({
+            type: 'setIncommingUnread',
+            payload: incommingUnreadGroups,
+          });
         }
-        dispatch<SetIncommingUnread>({
-          type: 'setIncommingUnread',
-          payload: incommingUnreadGroups,
-        });
       }
     },
-    variables: { userID: currentUser?._id },
+    variables: { userID: currentUser!._id },
   });
   const syncGroups = (): FetchGroupsQuery['fetchGroups'] => {
     return [...subscriptionGroups, ...groups].filter(
