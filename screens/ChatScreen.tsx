@@ -19,26 +19,9 @@ import {
   useQuery,
   useSubscription,
 } from '@apollo/client';
-import {
-  FETCH_CHATS,
-  FETCH_CURRENT_USER,
-  FETCH_MESSAGES,
-  FETCH_MESSAGES_COUNT,
-} from '../graphql/queries';
-import {
-  ADD_STARRED_MESSAGES,
-  REMOVE_STARRED_MESSAGES,
-  UPDATE_READ_MESSAGES,
-  UPDATE_USER_TYPING,
-} from '../graphql/mutations';
-import {
-  Chat,
-  CurrentUser,
-  MessageCountInterface,
-  MessageInterface,
-  UserOnline,
-  UserTyping,
-} from '../interfaces/ChatInterface';
+import { FETCH_MESSAGES } from '../graphql/queries';
+import { ADD_STARRED_MESSAGES, REMOVE_STARRED_MESSAGES } from '../graphql/mutations';
+import { Chat, MessageInterface, UserOnline, UserTyping } from '../interfaces/ChatInterface';
 import ChatScreenHeader from '../components/Chat/ChatScreenHeader';
 import {
   UPDATE_READ_MESSAGES_SUB,
@@ -57,6 +40,7 @@ import {
   useFetchMessagesCountQuery,
   useFetchMessagesLazyQuery,
   useUpdateReadMessagesMutation,
+  useUpdateUserTypingMutation,
 } from '../generated/graphql';
 
 interface Params {
@@ -173,7 +157,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
     },
   });
   const [updateReadMessages] = useUpdateReadMessagesMutation();
-  const [updateUserTyping] = useMutation(UPDATE_USER_TYPING);
+  const [updateUserTyping] = useUpdateUserTypingMutation();
   const [addStarredMessages] = useMutation(ADD_STARRED_MESSAGES, {
     update(cache, { data: { addStarredMessages } }) {
       const incommingMsgs: MessageInterface[] = addStarredMessages;
@@ -254,9 +238,9 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   }, [data]);
   useEffect(() => {
     if (keyboardShown) {
-      updateUserTyping({ variables: { typing: true, chatID, typingUserID: currentUser?._id } });
+      updateUserTyping({ variables: { typing: true, chatID, typingUserID: currentUser!._id } });
     } else {
-      updateUserTyping({ variables: { typing: false, chatID, typingUserID: currentUser?._id } });
+      updateUserTyping({ variables: { typing: false, chatID, typingUserID: currentUser!._id } });
     }
   }, [keyboardShown]);
   const handleBackBtnPressAndroid = () => {
@@ -271,7 +255,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
     <View>
       <NavigationEvents
         onWillBlur={() =>
-          updateUserTyping({ variables: { typing: false, chatID, typingUserID: currentUser?._id } })
+          updateUserTyping({ variables: { typing: false, chatID, typingUserID: currentUser!._id } })
         }
         onDidFocus={() =>
           dispatch<SetShouldScrollToBottomOnNewMessages>({
