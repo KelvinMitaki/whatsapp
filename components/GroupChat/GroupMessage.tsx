@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,34 +7,34 @@ import {
   ScrollView,
   ActivityIndicator,
   TouchableNativeFeedback,
-} from 'react-native'
-import { Ionicons, Entypo } from '@expo/vector-icons'
-import inspect from '../../inspect'
-import { GroupMsg } from '../../interfaces/GroupInterface'
-import { LazyQueryResult, OperationVariables, useQuery, useSubscription } from '@apollo/client'
-import { FETCH_CURRENT_USER } from '../../graphql/queries'
-import { CurrentUser } from '../../interfaces/ChatInterface'
-import { format } from 'date-fns'
-import AppColors from '../../Colors/color'
-import { ADD_NEW_GROUP_MSG_SUB } from '../../graphql/subscriptions'
-import { MESSAGE_LIMIT } from '../Chat/Input'
-import { SetShouldScrollToBottomOnNewMessages } from '../Chat/Message'
-import { useDispatch, useSelector } from 'react-redux'
-import { Redux } from '../../interfaces/Redux'
-import { useFetchCurrentUserQuery } from '../../generated/graphql'
+} from 'react-native';
+import { Ionicons, Entypo } from '@expo/vector-icons';
+import inspect from '../../inspect';
+import { GroupMsg } from '../../interfaces/GroupInterface';
+import { LazyQueryResult, OperationVariables, useQuery, useSubscription } from '@apollo/client';
+import { FETCH_CURRENT_USER } from '../../graphql/queries';
+import { CurrentUser } from '../../interfaces/ChatInterface';
+import { format } from 'date-fns';
+import AppColors from '../../Colors/color';
+import { ADD_NEW_GROUP_MSG_SUB } from '../../graphql/subscriptions';
+import { MESSAGE_LIMIT } from '../Chat/Input';
+import { SetShouldScrollToBottomOnNewMessages } from '../Chat/Message';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redux } from '../../interfaces/Redux';
+import { FetchGroupMsgsQuery, useFetchCurrentUserQuery } from '../../generated/graphql';
 
-export const genRandomNum = () => Math.random() * (255 - 1) + 1
+export const genRandomNum = () => Math.random() * (255 - 1) + 1;
 
 interface Props {
-  messages: GroupMsg[]
-  groupID: string
-  fetchMore: LazyQueryResult<any, OperationVariables>['fetchMore'] | undefined
-  count: number
-  setShowLoading: React.Dispatch<React.SetStateAction<boolean>>
-  showLoading: boolean
-  keyboardShown: boolean
-  setSelectedMsgs: React.Dispatch<React.SetStateAction<GroupMsg[]>>
-  selectedMsgs: GroupMsg[]
+  messages: FetchGroupMsgsQuery['fetchGroupMsgs'];
+  groupID: string;
+  fetchMore: LazyQueryResult<any, OperationVariables>['fetchMore'] | undefined;
+  count: number;
+  setShowLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  showLoading: boolean;
+  keyboardShown: boolean;
+  setSelectedMsgs: React.Dispatch<React.SetStateAction<FetchGroupMsgsQuery['fetchGroupMsgs']>>;
+  selectedMsgs: FetchGroupMsgsQuery['fetchGroupMsgs'];
 }
 
 const GroupMessage: React.FC<Props> = (props) => {
@@ -48,44 +48,46 @@ const GroupMessage: React.FC<Props> = (props) => {
     keyboardShown,
     selectedMsgs,
     setSelectedMsgs,
-  } = props
-  const { data } = useFetchCurrentUserQuery()
-  const scrollViewRef = useRef<ScrollView>(null)
-  const [incommingMessages, setIncommingMessages] = useState<GroupMsg[]>([])
-  const currentUser = data?.fetchCurrentUser
-  const dispatch = useDispatch()
+  } = props;
+  const { data } = useFetchCurrentUserQuery();
+  const scrollViewRef = useRef<ScrollView>(null);
+  const [incommingMessages, setIncommingMessages] = useState<FetchGroupMsgsQuery['fetchGroupMsgs']>(
+    []
+  );
+  const currentUser = data?.fetchCurrentUser;
+  const dispatch = useDispatch();
   const shouldScrollToBottomOnNewMessages = useSelector(
     (state: Redux) => state.chat.shouldScrollToBottomOnNewMessages
-  )
+  );
   useSubscription(ADD_NEW_GROUP_MSG_SUB, {
     variables: { groupID },
     onSubscriptionData(data) {
       dispatch<SetShouldScrollToBottomOnNewMessages>({
         type: 'setShouldScrollToBottomOnNewMessages',
         payload: true,
-      })
-      setIncommingMessages((m) => [...m, data.subscriptionData.data.addNewGroupMsg])
+      });
+      setIncommingMessages((m) => [...m, data.subscriptionData.data.addNewGroupMsg]);
     },
-  })
+  });
   useEffect(() => {
     if (messages && scrollViewRef.current && showLoading && shouldScrollToBottomOnNewMessages) {
-      scrollViewRef.current.scrollToEnd()
+      scrollViewRef.current.scrollToEnd();
     }
-  }, [messages, incommingMessages, keyboardShown])
+  }, [messages, incommingMessages, keyboardShown]);
   const isCloseToTop = ({ contentOffset }: NativeScrollEvent) => {
-    return contentOffset.y === 0
-  }
+    return contentOffset.y === 0;
+  };
   const genHue = (phoneNumber: number) => {
-    const numString = phoneNumber.toString().slice(phoneNumber.toString().length - 3)
+    const numString = phoneNumber.toString().slice(phoneNumber.toString().length - 3);
     if (parseInt(numString) > 360) {
-      return -parseInt(numString)
+      return -parseInt(numString);
     }
-    return parseInt(numString)
-  }
-  const syncedMessages: GroupMsg[] = [...messages, ...incommingMessages]
+    return parseInt(numString);
+  };
+  const syncedMessages = [...messages, ...incommingMessages]
     .filter((m, i, s) => i === s.findIndex((ms) => ms._id === m._id))
     .filter((msg) => msg.group === groupID)
-    .sort((a, b) => parseInt(a.createdAt) - parseInt(b.createdAt))
+    .sort((a, b) => parseInt(a.createdAt) - parseInt(b.createdAt));
   return (
     <View style={{ height: keyboardShown ? '85%' : '90%' }}>
       <ScrollView
@@ -95,9 +97,9 @@ const GroupMessage: React.FC<Props> = (props) => {
             dispatch<SetShouldScrollToBottomOnNewMessages>({
               type: 'setShouldScrollToBottomOnNewMessages',
               payload: true,
-            })
-            setShowLoading(false)
-            fetchMore({ variables: { offset: syncedMessages.length, limit: MESSAGE_LIMIT } })
+            });
+            setShowLoading(false);
+            fetchMore({ variables: { offset: syncedMessages.length, limit: MESSAGE_LIMIT } });
           }
         }}
       >
@@ -107,14 +109,14 @@ const GroupMessage: React.FC<Props> = (props) => {
             onPress={() =>
               selectedMsgs.length &&
               setSelectedMsgs((msgs) => {
-                let selectedMsgs = [...msgs]
-                const selectedMsgIndex = selectedMsgs.findIndex((msg) => msg._id === item._id)
+                let selectedMsgs = [...msgs];
+                const selectedMsgIndex = selectedMsgs.findIndex((msg) => msg._id === item._id);
                 if (selectedMsgIndex !== -1) {
-                  selectedMsgs.splice(selectedMsgIndex, 1)
+                  selectedMsgs.splice(selectedMsgIndex, 1);
                 } else {
-                  selectedMsgs = [item, ...selectedMsgs]
+                  selectedMsgs = [item, ...selectedMsgs];
                 }
-                return selectedMsgs
+                return selectedMsgs;
               })
             }
             key={item._id}
@@ -136,7 +138,7 @@ const GroupMessage: React.FC<Props> = (props) => {
                   <Text style={{ color: AppColors.white }}>{item.message}</Text>
                   <Text style={styles.meta}>
                     {' '}
-                    {item.starredBy.some((id) => id === currentUser?._id) && (
+                    {item.starredBy?.some((id) => id === currentUser?._id) && (
                       <Entypo name="star" size={13} />
                     )}{' '}
                     {format(new Date(parseInt(item.createdAt)), 'p')}{' '}
@@ -171,7 +173,7 @@ const GroupMessage: React.FC<Props> = (props) => {
                     <Text style={{ color: AppColors.white }}>{item.message}</Text>
                     <Text style={styles.meta}>
                       {' '}
-                      {item.starredBy.some((id) => id === currentUser?._id) && (
+                      {item.starredBy?.some((id) => id === currentUser?._id) && (
                         <Entypo name="star" size={13} />
                       )}{' '}
                       {format(new Date(parseInt(item.createdAt)), 'p')}
@@ -184,10 +186,10 @@ const GroupMessage: React.FC<Props> = (props) => {
         ))}
       </ScrollView>
     </View>
-  )
-}
+  );
+};
 
-export default GroupMessage
+export default GroupMessage;
 
 const styles = StyleSheet.create({
   prt: {
@@ -250,4 +252,4 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginRight: 10,
   },
-})
+});

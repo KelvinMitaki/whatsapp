@@ -14,14 +14,14 @@ import { TouchableNativeFeedback } from 'react-native';
 import { GroupMsg, GroupUserTyping, GroupWithParticipants } from '../../interfaces/GroupInterface';
 import { MutationTuple, OperationVariables } from '@apollo/client';
 import AppColors from '../../Colors/color';
-import { FetchCurrentUserQuery } from '../../generated/graphql';
+import { FetchCurrentUserQuery, FetchGroupMsgsQuery } from '../../generated/graphql';
 
 interface Params {
   groupID: string;
   group: GroupWithParticipants | undefined;
   typingData: GroupUserTyping | undefined;
-  setSelectedMsgs: React.Dispatch<React.SetStateAction<GroupMsg[]>>;
-  selectedMsgs: GroupMsg[];
+  setSelectedMsgs: React.Dispatch<React.SetStateAction<FetchGroupMsgsQuery['fetchGroupMsgs']>>;
+  selectedMsgs: FetchGroupMsgsQuery['fetchGroupMsgs'];
   addStarredGroupMessages: MutationTuple<any, OperationVariables>[0];
   removeStarredGroupMessages: MutationTuple<any, OperationVariables>[0];
   currentUser: FetchCurrentUserQuery['fetchCurrentUser'];
@@ -42,13 +42,15 @@ const GroupChatScreenHeader: NavigationStackScreenComponent<Params>['navigationO
   const starred =
     selectedMsgs &&
     selectedMsgs.length ===
-      selectedMsgs.filter((m) => m.starredBy.some((id) => id === currentUser._id)).length;
+      selectedMsgs.filter((m) => m.starredBy?.some((id) => id === currentUser._id)).length;
   const starredMsgs =
     selectedMsgs &&
-    selectedMsgs.filter((m) => m.starredBy.some((id) => id === currentUser._id)).map((m) => m._id);
+    selectedMsgs.filter((m) => m.starredBy?.some((id) => id === currentUser._id)).map((m) => m._id);
   const unstarredMsgs =
     selectedMsgs &&
-    selectedMsgs.filter((m) => !m.starredBy.some((id) => id === currentUser._id)).map((m) => m._id);
+    selectedMsgs
+      .filter((m) => !m.starredBy?.some((id) => id === currentUser._id))
+      .map((m) => m._id);
   if (!selectedMsgs || (selectedMsgs && !selectedMsgs.length)) {
     return {
       headerShown: !!group,

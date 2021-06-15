@@ -36,14 +36,19 @@ import { UPDATE_GROUP_TYPING_SUB } from '../graphql/subscriptions';
 import { SetShouldScrollToBottomOnNewMessages } from '../components/Chat/Message';
 import { NavigationEvents } from 'react-navigation';
 import { Redux } from '../interfaces/Redux';
-import { FetchCurrentUserQuery, useFetchCurrentUserQuery } from '../generated/graphql';
+import {
+  FetchCurrentUserQuery,
+  FetchGroupMsgsQuery,
+  useFetchCurrentUserQuery,
+  useFetchGroupMsgsLazyQuery,
+} from '../generated/graphql';
 
 interface Params {
   groupID: string;
   group: GroupWithParticipants | undefined;
   typingData: GroupUserTyping | undefined;
-  setSelectedMsgs: React.Dispatch<React.SetStateAction<GroupMsg[]>>;
-  selectedMsgs: GroupMsg[];
+  setSelectedMsgs: React.Dispatch<React.SetStateAction<FetchGroupMsgsQuery['fetchGroupMsgs']>>;
+  selectedMsgs: FetchGroupMsgsQuery['fetchGroupMsgs'];
   addStarredGroupMessages: MutationTuple<any, OperationVariables>[0];
   removeStarredGroupMessages: MutationTuple<any, OperationVariables>[0];
   currentUser: FetchCurrentUserQuery['fetchCurrentUser'];
@@ -57,7 +62,7 @@ export interface SetGroupUserTyping {
 const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [showLoading, setShowLoading] = useState<boolean>(true);
   const [keyboardShown, setKeyboardShown] = useState<boolean>(false);
-  const [selectedMsgs, setSelectedMsgs] = useState<GroupMsg[]>([]);
+  const [selectedMsgs, setSelectedMsgs] = useState<FetchGroupMsgsQuery['fetchGroupMsgs']>([]);
   const shouldScrollToBottomOnNewMessages = useSelector(
     (state: Redux) => state.chat.shouldScrollToBottomOnNewMessages
   );
@@ -135,29 +140,26 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
       });
     },
   });
-  const [fetchGroupMsgs, { data, fetchMore, loading: msgsLoading }] = useLazyQuery(
-    FETCH_GROUP_MSGS,
-    {
-      fetchPolicy: 'cache-and-network',
-      onCompleted(incommingData) {
-        const groupMsgs: GroupMsg[] = incommingData.fetchGroupMsgs;
-        const messageIDs = groupMsgs
-          .filter(
-            (msg) =>
-              msg.sender._id !== currentUser?._id && !msg.read.some((id) => id === currentUser?._id)
-          )
-          .map((msg) => msg._id);
-        if (groupID && messageIDs.length) {
-          updateGroupMessagesRead({
-            variables: {
-              messageIDs,
-              groupID,
-            },
-          });
-        }
-      },
-    }
-  );
+  const [fetchGroupMsgs, { data, fetchMore, loading: msgsLoading }] = useFetchGroupMsgsLazyQuery({
+    fetchPolicy: 'cache-and-network',
+    onCompleted(incommingData) {
+      const groupMsgs = incommingData.fetchGroupMsgs;
+      const messageIDs = groupMsgs
+        .filter(
+          (msg) =>
+            msg.sender._id !== currentUser?._id && !msg.read.some((id) => id === currentUser?._id)
+        )
+        .map((msg) => msg._id);
+      if (groupID && messageIDs.length) {
+        updateGroupMessagesRead({
+          variables: {
+            messageIDs,
+            groupID,
+          },
+        });
+      }
+    },
+  });
   const [updateGroupTyping] = useMutation(UPDATE_GROUP_TYPING);
   useSubscription(UPDATE_GROUP_TYPING_SUB, {
     variables: { groupID },
@@ -228,7 +230,7 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
       ) : (
         <>
           <GroupMessage
-            messages={data.fetchGroupMsgs}
+            messages={data!.fetchGroupMsgs}
             groupID={groupID}
             count={countData.fetchGroupMessageCount.count}
             fetchMore={fetchMore}
