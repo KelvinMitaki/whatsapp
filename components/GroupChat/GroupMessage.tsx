@@ -21,7 +21,11 @@ import { MESSAGE_LIMIT } from '../Chat/Input';
 import { SetShouldScrollToBottomOnNewMessages } from '../Chat/Message';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redux } from '../../interfaces/Redux';
-import { FetchGroupMsgsQuery, useFetchCurrentUserQuery } from '../../generated/graphql';
+import {
+  FetchGroupMsgsQuery,
+  useAddNewGroupMsgSubSubscription,
+  useFetchCurrentUserQuery,
+} from '../../generated/graphql';
 
 export const genRandomNum = () => Math.random() * (255 - 1) + 1;
 
@@ -59,14 +63,16 @@ const GroupMessage: React.FC<Props> = (props) => {
   const shouldScrollToBottomOnNewMessages = useSelector(
     (state: Redux) => state.chat.shouldScrollToBottomOnNewMessages
   );
-  useSubscription(ADD_NEW_GROUP_MSG_SUB, {
+  useAddNewGroupMsgSubSubscription({
     variables: { groupID },
-    onSubscriptionData(data) {
+    onSubscriptionData(subData) {
       dispatch<SetShouldScrollToBottomOnNewMessages>({
         type: 'setShouldScrollToBottomOnNewMessages',
         payload: true,
       });
-      setIncommingMessages((m) => [...m, data.subscriptionData.data.addNewGroupMsg]);
+      if (subData.subscriptionData.data) {
+        setIncommingMessages((m) => [...m, subData.subscriptionData.data!.addNewGroupMsg]);
+      }
     },
   });
   useEffect(() => {
