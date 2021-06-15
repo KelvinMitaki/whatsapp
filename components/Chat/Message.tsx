@@ -38,7 +38,7 @@ interface Props {
   showLoading: boolean;
   keyboardShown: boolean;
   setSelectedMsgs: React.Dispatch<React.SetStateAction<FetchMessagesQuery['fetchMessages']>>;
-  selectedMsgs: MessageInterface[];
+  selectedMsgs: FetchMessagesQuery['fetchMessages'];
   chatID: string;
 }
 

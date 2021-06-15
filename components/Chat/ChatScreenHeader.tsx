@@ -15,7 +15,7 @@ import { CurrentUser, MessageInterface } from '../../interfaces/ChatInterface';
 import AppColors from '../../Colors/color';
 import inspect from '../../inspect';
 import { MutationTuple, OperationVariables } from '@apollo/client';
-import { FetchCurrentUserQuery } from '../../generated/graphql';
+import { FetchCurrentUserQuery, FetchMessagesQuery } from '../../generated/graphql';
 
 interface Params {
   recipient: {
@@ -26,8 +26,8 @@ interface Params {
     online: boolean;
   };
   chatID: string;
-  setSelectedMsgs: React.Dispatch<React.SetStateAction<MessageInterface[]>>;
-  selectedMsgs: MessageInterface[];
+  setSelectedMsgs: React.Dispatch<React.SetStateAction<FetchMessagesQuery['fetchMessages']>>;
+  selectedMsgs: FetchMessagesQuery['fetchMessages'];
   addStarredMessages: MutationTuple<any, OperationVariables>[0];
   removeStarredMessages: MutationTuple<any, OperationVariables>[0];
   currentUser: FetchCurrentUserQuery['fetchCurrentUser'];
@@ -45,13 +45,15 @@ const ChatScreenHeader: NavigationStackScreenComponent<Params>['navigationOption
   const starred =
     selectedMsgs &&
     selectedMsgs.length ===
-      selectedMsgs.filter((m) => m.starredBy.some((id) => id === currentUser._id)).length;
+      selectedMsgs.filter((m) => m.starredBy?.some((id) => id === currentUser._id)).length;
   const starredMsgs =
     selectedMsgs &&
-    selectedMsgs.filter((m) => m.starredBy.some((id) => id === currentUser._id)).map((m) => m._id);
+    selectedMsgs.filter((m) => m.starredBy?.some((id) => id === currentUser._id)).map((m) => m._id);
   const unstarredMsgs =
     selectedMsgs &&
-    selectedMsgs.filter((m) => !m.starredBy.some((id) => id === currentUser._id)).map((m) => m._id);
+    selectedMsgs
+      .filter((m) => !m.starredBy?.some((id) => id === currentUser._id))
+      .map((m) => m._id);
   if (!selectedMsgs || (selectedMsgs && !selectedMsgs.length)) {
     return {
       headerTitle: () => (

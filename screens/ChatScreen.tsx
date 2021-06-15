@@ -50,6 +50,7 @@ import { NavigationEvents } from 'react-navigation';
 import { Redux } from '../interfaces/Redux';
 import {
   FetchCurrentUserQuery,
+  FetchMessagesQuery,
   useFetchChatsQuery,
   useFetchCurrentUserQuery,
   useFetchMessagesLazyQuery,
@@ -64,8 +65,8 @@ interface Params {
     online: boolean;
   };
   chatID: string;
-  setSelectedMsgs: React.Dispatch<React.SetStateAction<MessageInterface[]>>;
-  selectedMsgs: MessageInterface[];
+  setSelectedMsgs: React.Dispatch<React.SetStateAction<FetchMessagesQuery['fetchMessages']>>;
+  selectedMsgs: FetchMessagesQuery['fetchMessages'];
   addStarredMessages: MutationTuple<any, OperationVariables>[0];
   removeStarredMessages: MutationTuple<any, OperationVariables>[0];
   currentUser: FetchCurrentUserQuery['fetchCurrentUser'];
@@ -84,7 +85,7 @@ export interface SetPreviousSelectedChat {
 const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [showLoading, setShowLoading] = useState<boolean>(true);
   const [keyboardShown, setKeyboardShown] = useState<boolean>(false);
-  const [selectedMsgs, setSelectedMsgs] = useState<MessageInterface[]>([]);
+  const [selectedMsgs, setSelectedMsgs] = useState<FetchMessagesQuery['fetchMessages']>([]);
   const previousSelectedChatIds = useSelector((state: Redux) => state.chat.previousSelectedChatIds);
   const user = useFetchCurrentUserQuery();
   const currentUser = user.data?.fetchCurrentUser;
