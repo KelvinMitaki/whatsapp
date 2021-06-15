@@ -44,6 +44,7 @@ import {
   useFetchGroupMessageCountQuery,
   useFetchGroupMsgsLazyQuery,
   useFetchGroupQuery,
+  useUpdateGroupMessagesReadMutation,
 } from '../generated/graphql';
 
 interface Params {
@@ -123,7 +124,7 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
   });
   const { data: userData } = useFetchCurrentUserQuery();
   const currentUser = userData?.fetchCurrentUser;
-  const [updateGroupMessagesRead] = useMutation(UPDATE_GROUP_MESSAGES_READ, {
+  const [updateGroupMessagesRead] = useUpdateGroupMessagesReadMutation({
     refetchQueries: [{ query: FETCH_UNREAD_GROUP_MSGS }],
     onCompleted() {
       dispatch<SetIncommingUnread>({ type: 'setIncommingUnread', payload: [] });
