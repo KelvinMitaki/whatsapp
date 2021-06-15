@@ -11,7 +11,6 @@ import {
   MaterialCommunityIcons,
 } from '@expo/vector-icons';
 import { formatRelative } from 'date-fns';
-import { CurrentUser, MessageInterface } from '../../interfaces/ChatInterface';
 import AppColors from '../../Colors/color';
 import inspect from '../../inspect';
 import { MutationTuple, OperationVariables } from '@apollo/client';
@@ -29,7 +28,7 @@ interface Params {
   setSelectedMsgs: React.Dispatch<React.SetStateAction<FetchMessagesQuery['fetchMessages']>>;
   selectedMsgs: FetchMessagesQuery['fetchMessages'];
   addStarredMessages: MutationTuple<any, Exact<{ messageIDs: string | string[] }>>[0];
-  removeStarredMessages: MutationTuple<any, OperationVariables>[0];
+  removeStarredMessages: MutationTuple<any, Exact<{ messageIDs: string | string[] }>>[0];
   currentUser: FetchCurrentUserQuery['fetchCurrentUser'];
 }
 

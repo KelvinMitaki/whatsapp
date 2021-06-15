@@ -41,6 +41,7 @@ import {
   useFetchCurrentUserQuery,
   useFetchMessagesCountQuery,
   useFetchMessagesLazyQuery,
+  useRemoveStarredMessagesMutation,
   useUpdateReadMessagesMutation,
   useUpdateUserTypingMutation,
 } from '../generated/graphql';
@@ -57,7 +58,7 @@ interface Params {
   setSelectedMsgs: React.Dispatch<React.SetStateAction<FetchMessagesQuery['fetchMessages']>>;
   selectedMsgs: FetchMessagesQuery['fetchMessages'];
   addStarredMessages: MutationTuple<any, Exact<{ messageIDs: string | string[] }>>[0];
-  removeStarredMessages: MutationTuple<any, OperationVariables>[0];
+  removeStarredMessages: MutationTuple<any, Exact<{ messageIDs: string | string[] }>>[0];
   currentUser: FetchCurrentUserQuery['fetchCurrentUser'];
 }
 
@@ -186,28 +187,30 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       }
     },
   });
-  const [removeStarredMessages] = useMutation(REMOVE_STARRED_MESSAGES, {
-    update(cache, { data: { removeStarredMessages } }) {
-      const incommingMsgs: MessageInterface[] = removeStarredMessages;
-      const msgs: { fetchMessages: MessageInterface[] } | null = cache.readQuery({
-        query: FETCH_MESSAGES,
-      });
-      let existingMessages = [...(msgs?.fetchMessages || [])];
-      incommingMsgs.forEach((msg) => {
-        const index = existingMessages.findIndex((m) => m._id === msg._id);
-        if (index !== -1) {
-          existingMessages[index] = msg;
-        }
-      });
-      dispatch<SetShouldScrollToBottomOnNewMessages>({
-        type: 'setShouldScrollToBottomOnNewMessages',
-        payload: false,
-      });
-      cache.writeQuery({ query: FETCH_MESSAGES, data: { fetchMessages: existingMessages } });
-      ToastAndroid.show(
-        `Unstarred ${incommingMsgs.length === 1 ? 'message' : 'messages'}`,
-        ToastAndroid.LONG
-      );
+  const [removeStarredMessages] = useRemoveStarredMessagesMutation({
+    update(cache, { data }) {
+      if (data) {
+        const incommingMsgs = data.removeStarredMessages;
+        const msgs: FetchMessagesQuery | null = cache.readQuery({
+          query: FETCH_MESSAGES,
+        });
+        let existingMessages = [...(msgs?.fetchMessages || [])];
+        incommingMsgs.forEach((msg) => {
+          const index = existingMessages.findIndex((m) => m._id === msg._id);
+          if (index !== -1) {
+            existingMessages[index] = msg;
+          }
+        });
+        dispatch<SetShouldScrollToBottomOnNewMessages>({
+          type: 'setShouldScrollToBottomOnNewMessages',
+          payload: false,
+        });
+        cache.writeQuery({ query: FETCH_MESSAGES, data: { fetchMessages: existingMessages } });
+        ToastAndroid.show(
+          `Unstarred ${incommingMsgs.length === 1 ? 'message' : 'messages'}`,
+          ToastAndroid.LONG
+        );
+      }
     },
   });
   useEffect(() => {
