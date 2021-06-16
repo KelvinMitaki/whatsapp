@@ -1,27 +1,4 @@
-import { GroupMsg } from "./GroupInterface";
-
-export interface Chat {
-  _id: string;
-  sender: {
-    _id: string;
-    name: string;
-    online: boolean;
-    typing: boolean;
-    lastSeen: string;
-  };
-  recipient: {
-    _id: string;
-    name: string;
-    online: boolean;
-    typing: boolean;
-    lastSeen: string;
-  };
-  message: string;
-  createdAt: string;
-  updatedAt: string;
-  unread: number;
-  type: "message" | "broadcast";
-}
+import { GroupMsg } from './GroupInterface';
 
 export interface CurrentUser {
   _id: string;
@@ -60,11 +37,6 @@ export interface MessageInterface {
   createdAt: string;
   starredBy: string[];
   deleted: boolean;
-}
-
-export interface UserOnline {
-  userID: string;
-  online: boolean;
 }
 
 export interface UserTyping {

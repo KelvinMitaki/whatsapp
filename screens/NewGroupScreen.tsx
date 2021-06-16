@@ -1,33 +1,30 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  FlatList,
   StyleSheet,
   TouchableNativeFeedback,
   View,
   ScrollView,
   Animated,
-  Easing,
-  Dimensions
-} from "react-native";
-import { Text } from "react-native-elements";
-import { NavigationStackScreenComponent, useHeaderHeight } from "react-navigation-stack";
-import { MaterialIcons } from "@expo/vector-icons";
-import inspect from "../inspect";
-import Contact from "../components/Contacts/Contact";
-import { users } from "../data/data";
-import { useDispatch, useSelector } from "react-redux";
-import { Redux } from "../interfaces/Redux";
-import HorizontalScrollContacts from "../components/Contacts/HorizontalScrollContacts";
-import { NavigationEvents } from "react-navigation";
-import { ResetContacts } from "./NewGroupInfoScreen";
-import { User } from "../interfaces/ChatInterface";
-import { Dispatch } from "redux";
-import { SetSearchModal } from "./HomeScreen";
-import SearchModal from "../components/Modals/SearchModal";
+  Dimensions,
+} from 'react-native';
+import { Text } from 'react-native-elements';
+import { NavigationStackScreenComponent, useHeaderHeight } from 'react-navigation-stack';
+import { MaterialIcons } from '@expo/vector-icons';
+import inspect from '../inspect';
+import Contact from '../components/Contacts/Contact';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redux } from '../interfaces/Redux';
+import HorizontalScrollContacts from '../components/Contacts/HorizontalScrollContacts';
+import { NavigationEvents } from 'react-navigation';
+import { ResetContacts } from './NewGroupInfoScreen';
+import { Dispatch } from 'redux';
+import { SetSearchModal } from './HomeScreen';
+import SearchModal from '../components/Modals/SearchModal';
+import { FetchUsersQuery } from '../generated/graphql';
 
 export interface SetContacts {
-  type: "setContacts";
-  payload: User;
+  type: 'setContacts';
+  payload: FetchUsersQuery['fetchUsers'][0];
 }
 
 interface Params {
@@ -41,7 +38,7 @@ interface Params {
 const NewGroupScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
   const Contacts = useSelector((state: Redux) => state.chat.Contacts);
-  const [inp, setInp] = useState<string>("");
+  const [inp, setInp] = useState<string>('');
   const dispatch = useDispatch();
   const searchHeight = useRef(new Animated.Value(20)).current;
   const searchWidth = useRef(new Animated.Value(20)).current;
@@ -58,13 +55,13 @@ const NewGroupScreen: NavigationStackScreenComponent<Params> = ({ navigation }) 
       Animated.spring(position, {
         toValue: { x: 0, y: -20 },
         useNativeDriver: false,
-        friction: 4
+        friction: 4,
       }).start();
     } else {
       Animated.spring(position, {
         toValue: { x: 0, y: 70 },
         useNativeDriver: false,
-        friction: 4
+        friction: 4,
       }).start();
     }
   }, [Contacts]);
@@ -72,16 +69,16 @@ const NewGroupScreen: NavigationStackScreenComponent<Params> = ({ navigation }) 
     <>
       <NavigationEvents
         onWillFocus={() => {
-          dispatch<ResetContacts>({ type: "resetContacts" });
-          dispatch<SetSearchModal>({ type: "setSearchModal", payload: false });
+          dispatch<ResetContacts>({ type: 'resetContacts' });
+          dispatch<SetSearchModal>({ type: 'setSearchModal', payload: false });
         }}
       />
       {searchModal && <View style={{ height: headerHeight / 3 }}></View>}
       <HorizontalScrollContacts Contacts={Contacts} />
       <ScrollView>
         <Contact
-          setContacts={usr => {
-            dispatch<SetContacts>({ type: "setContacts", payload: usr });
+          setContacts={(usr) => {
+            dispatch<SetContacts>({ type: 'setContacts', payload: usr });
           }}
           Contacts={Contacts}
           inp={inp}
@@ -90,8 +87,8 @@ const NewGroupScreen: NavigationStackScreenComponent<Params> = ({ navigation }) 
       <Animated.View style={position.getLayout()}>
         <View style={styles.continue}>
           <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple("#fff", true)}
-            onPress={() => Contacts.length && navigation.navigate("NewGroupInfo")}
+            background={TouchableNativeFeedback.Ripple('#fff', true)}
+            onPress={() => Contacts.length && navigation.navigate('NewGroupInfo')}
           >
             <View style={styles.foward}>
               <MaterialIcons name="arrow-forward" size={25} color="#fff" />
@@ -104,23 +101,23 @@ const NewGroupScreen: NavigationStackScreenComponent<Params> = ({ navigation }) 
 };
 
 NewGroupScreen.navigationOptions = ({ navigation }) => {
-  const searchHeight = navigation.getParam("searchHeight");
-  const searchWidth = navigation.getParam("searchWidth");
-  const dispatch = navigation.getParam("dispatch");
-  const inp = navigation.getParam("inp");
-  const setInp = navigation.getParam("setInp");
-  const headerHeight = navigation.getParam("headerHeight");
+  const searchHeight = navigation.getParam('searchHeight');
+  const searchWidth = navigation.getParam('searchWidth');
+  const dispatch = navigation.getParam('dispatch');
+  const inp = navigation.getParam('inp');
+  const setInp = navigation.getParam('setInp');
+  const headerHeight = navigation.getParam('headerHeight');
   return {
     headerTitle: () => (
       <View>
-        <Text h4Style={{ color: "#fff" }} h4>
+        <Text h4Style={{ color: '#fff' }} h4>
           New group
         </Text>
-        <Text style={{ color: "#fff" }}>Add participants</Text>
+        <Text style={{ color: '#fff' }}>Add participants</Text>
       </View>
     ),
     headerRight: () => (
-      <View style={{ width: "125%", alignItems: "center" }}>
+      <View style={{ width: '125%', alignItems: 'center' }}>
         <SearchModal
           inp={inp}
           setInp={setInp}
@@ -131,21 +128,21 @@ NewGroupScreen.navigationOptions = ({ navigation }) => {
         <View style={styles.searchBorder}>
           <TouchableNativeFeedback
             onPress={() => {
-              dispatch<SetSearchModal>({ type: "setSearchModal", payload: true });
+              dispatch<SetSearchModal>({ type: 'setSearchModal', payload: true });
               Animated.parallel([
                 Animated.timing(searchHeight, {
                   toValue: headerHeight,
                   useNativeDriver: false,
-                  duration: 300
+                  duration: 300,
                 }),
                 Animated.timing(searchWidth, {
-                  toValue: Dimensions.get("screen").width,
+                  toValue: Dimensions.get('screen').width,
                   useNativeDriver: false,
-                  duration: 300
-                })
+                  duration: 300,
+                }),
               ]).start();
             }}
-            background={TouchableNativeFeedback.Ripple("#fff", true)}
+            background={TouchableNativeFeedback.Ripple('#fff', true)}
           >
             <View>
               <MaterialIcons name="search" size={25} color="#fff" />
@@ -153,7 +150,7 @@ NewGroupScreen.navigationOptions = ({ navigation }) => {
           </TouchableNativeFeedback>
         </View>
       </View>
-    )
+    ),
   };
 };
 {
@@ -173,26 +170,26 @@ const styles = StyleSheet.create({
   searchBorder: {
     borderRadius: 500,
     borderWidth: 1,
-    borderColor: "transparent",
+    borderColor: 'transparent',
     height: 50,
     width: 50,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   continue: {
-    position: "absolute",
-    right: "2%",
-    bottom: "2%",
-    backgroundColor: "#00af9c",
+    position: 'absolute',
+    right: '2%',
+    bottom: '2%',
+    backgroundColor: '#00af9c',
     borderRadius: 500,
     height: 50,
     width: 50,
-    zIndex: 10
+    zIndex: 10,
   },
   foward: {
-    height: "100%",
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center"
-  }
+    height: '100%',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

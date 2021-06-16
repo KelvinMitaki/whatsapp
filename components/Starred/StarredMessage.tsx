@@ -3,8 +3,6 @@ import { StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native';
 import { Ionicons, MaterialIcons, Entypo } from '@expo/vector-icons';
 import inspect from '../../inspect';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
-import { GroupMsg } from '../../interfaces/GroupInterface';
-import { MessageInterface } from '../../interfaces/ChatInterface';
 import { formatDate } from '../Home/ChatComponent';
 import { format } from 'date-fns';
 import { FetchStarredMsgsQuery } from '../../generated/graphql';

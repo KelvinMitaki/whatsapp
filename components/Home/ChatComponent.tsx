@@ -6,10 +6,9 @@ import { TouchableNativeFeedback } from 'react-native';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { isToday, isYesterday } from 'date-fns';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
-import { Chat, CurrentUser } from '../../interfaces/ChatInterface';
 import { format } from 'date-fns/esm';
 import AppColors from '../../Colors/color';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Redux } from '../../interfaces/Redux';
 import { FetchChatsQuery, FetchCurrentUserQuery } from '../../generated/graphql';
 

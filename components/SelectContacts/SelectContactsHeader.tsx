@@ -6,7 +6,6 @@ import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import SearchModal from '../Modals/SearchModal';
 import { SetSearchModal } from '../../screens/HomeScreen';
 import { Dispatch } from 'redux';
-import { User } from '../../interfaces/ChatInterface';
 import { FetchUsersQuery } from '../../generated/graphql';
 
 interface Params {

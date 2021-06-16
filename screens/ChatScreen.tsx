@@ -13,7 +13,7 @@ import Message, { SetShouldScrollToBottomOnNewMessages } from '../components/Cha
 import Input, { MESSAGE_LIMIT } from '../components/Chat/Input';
 import { MutationTuple } from '@apollo/client';
 import { FETCH_MESSAGES } from '../graphql/queries';
-import { Chat, MessageInterface, UserTyping } from '../interfaces/ChatInterface';
+import { MessageInterface, UserTyping } from '../interfaces/ChatInterface';
 import ChatScreenHeader from '../components/Chat/ChatScreenHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavigationEvents } from 'react-navigation';

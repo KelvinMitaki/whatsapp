@@ -6,7 +6,6 @@ import { useHeaderHeight } from 'react-navigation-stack';
 import { useDispatch } from 'react-redux';
 import { NavigationEvents } from 'react-navigation';
 import StartChat from '../components/Home/StartChat';
-import { UserOnline } from '../interfaces/ChatInterface';
 import {
   FetchChatsQuery,
   useAddNewChatSubSubscription,
@@ -61,7 +60,7 @@ const HomeScreen: NavigationMaterialTabScreenComponent = () => {
   }, [chat.data]);
   const renderData = (): { fetchChats: FetchChatsQuery['fetchChats'] } => {
     if (data && data.fetchChats && userOnlineSub.data && userOnlineSub.data.updateUserOnline) {
-      const onlineData: UserOnline = userOnlineSub.data.updateUserOnline;
+      const onlineData = userOnlineSub.data.updateUserOnline;
       const chats = data.fetchChats;
       return {
         ...data,
