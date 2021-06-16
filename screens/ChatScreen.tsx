@@ -13,7 +13,6 @@ import Message, { SetShouldScrollToBottomOnNewMessages } from '../components/Cha
 import Input, { MESSAGE_LIMIT } from '../components/Chat/Input';
 import { MutationTuple } from '@apollo/client';
 import { FETCH_MESSAGES } from '../graphql/queries';
-import { MessageInterface, UserTyping } from '../interfaces/ChatInterface';
 import ChatScreenHeader from '../components/Chat/ChatScreenHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavigationEvents } from 'react-navigation';
@@ -29,6 +28,7 @@ import {
   useFetchMessagesCountQuery,
   useFetchMessagesLazyQuery,
   useRemoveStarredMessagesMutation,
+  UserTyping,
   useUpdateReadMessagesMutation,
   useUpdateReadMessagesSubSubscription,
   useUpdateUserOnlineSubSubscription,
@@ -125,7 +125,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const { data: chatsData } = useFetchChatsQuery();
   const count = useFetchMessagesCountQuery({
     variables: {
-      userIDs: (chatsData?.fetchChats as Chat[]).map((c) =>
+      userIDs: chatsData!.fetchChats.map((c) =>
         c.sender._id === currentUser?._id ? c.recipient._id : c.sender._id
       ),
     },
@@ -226,7 +226,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   }, [selectedMsgs]);
   useEffect(() => {
     if (data && data.fetchMessages && data.fetchMessages.length) {
-      const messageIDs = (data.fetchMessages as MessageInterface[])
+      const messageIDs = data.fetchMessages
         .filter((m) => !m.read && m.sender !== currentUser?._id)
         .map((m) => m._id);
       messageIDs.length &&

@@ -6,7 +6,6 @@ import GroupMessage from '../components/GroupChat/GroupMessage';
 import AppColors from '../Colors/color';
 import { MutationTuple } from '@apollo/client';
 import { FETCH_GROUP_MSGS, FETCH_UNREAD_GROUP_MSGS } from '../graphql/queries';
-import { GroupUserTyping } from '../interfaces/GroupInterface';
 import { useDispatch, useSelector } from 'react-redux';
 import { SetIncommingUnread } from '../components/Group/GroupChat';
 import GroupChatScreenHeader from '../components/GroupChat/GroupChatScreenHeader';
@@ -18,6 +17,7 @@ import {
   FetchCurrentUserQuery,
   FetchGroupMsgsQuery,
   FetchGroupQuery,
+  GroupTyping,
   useAddStarredGroupMessagesMutation,
   useFetchCurrentUserQuery,
   useFetchGroupMessageCountQuery,
@@ -32,7 +32,7 @@ import {
 interface Params {
   groupID: string;
   group: FetchGroupQuery['fetchGroup'];
-  typingData: GroupUserTyping | undefined;
+  typingData: GroupTyping | undefined;
   setSelectedMsgs: React.Dispatch<React.SetStateAction<FetchGroupMsgsQuery['fetchGroupMsgs']>>;
   selectedMsgs: FetchGroupMsgsQuery['fetchGroupMsgs'];
   addStarredGroupMessages: MutationTuple<any, Exact<{ groupMsgIDs: string | string[] }>>[0];
@@ -42,7 +42,7 @@ interface Params {
 
 export interface SetGroupUserTyping {
   type: 'setGroupUserTyping';
-  payload: GroupUserTyping;
+  payload: GroupTyping;
 }
 
 const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {

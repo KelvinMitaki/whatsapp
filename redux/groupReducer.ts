@@ -1,11 +1,10 @@
 import { SetIncommingUnread } from '../components/Group/GroupChat';
-import { FetchUnreadGroupMsgsQuery } from '../generated/graphql';
-import { GroupUserTyping } from '../interfaces/GroupInterface';
+import { FetchUnreadGroupMsgsQuery, GroupTyping } from '../generated/graphql';
 import { SetGroupUserTyping } from '../screens/GroupChatScreen';
 
 export interface GroupState {
   incommingUnread: FetchUnreadGroupMsgsQuery['fetchUnreadGroupMsgs'];
-  groupUserTypingChats: GroupUserTyping[];
+  groupUserTypingChats: GroupTyping[];
 }
 
 type Action = SetIncommingUnread | SetGroupUserTyping;
