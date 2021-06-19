@@ -22,6 +22,7 @@ import {
   useFetchCurrentUserQuery,
   useFetchMessagesCountQuery,
 } from '../../generated/graphql';
+import { FETCH_MESSAGES } from '../../graphql/queries';
 
 interface Props {
   messages: FetchMessagesQuery['fetchMessages'];
@@ -66,18 +67,37 @@ const Message: React.FC<Props> = (props) => {
     (state: Redux) => state.chat.shouldScrollToBottomOnNewMessages
   );
   const dispatch = useDispatch();
-  const [subScriptionMsgs, setSubScriptionMsgs] = useState<FetchMessagesQuery['fetchMessages']>([]);
   useAddNewMessageSubSubscription({
     variables: { sender: currentUser!._id, recipient },
-    onSubscriptionData(subData) {
+    onSubscriptionData({ client, subscriptionData }) {
       if (!shouldScrollToBottomOnNewMessages) {
         dispatch<SetShouldScrollToBottomOnNewMessages>({
           type: 'setShouldScrollToBottomOnNewMessages',
           payload: true,
         });
       }
-      if (subData.subscriptionData.data && subData.subscriptionData.data.addNewMessage) {
-        setSubScriptionMsgs((m) => [...m, subData.subscriptionData.data!.addNewMessage]);
+      if (subscriptionData.data && subscriptionData.data.addNewMessage) {
+        const variables = {
+          recipient,
+          offset: messages.length || 0,
+          limit: MESSAGE_LIMIT,
+          messageCount:
+            count.data?.fetchMessagesCount.find((mc) => mc.chatID === chatID)?.messageCount ||
+            MESSAGE_LIMIT,
+        };
+        const existingMessages = client.readQuery<FetchMessagesQuery>({
+          query: FETCH_MESSAGES,
+          variables,
+        });
+        const newMsgs = [
+          ...(existingMessages?.fetchMessages || []),
+          subscriptionData.data!.addNewMessage,
+        ];
+        client.writeQuery<FetchMessagesQuery>({
+          query: FETCH_MESSAGES,
+          data: { fetchMessages: newMsgs },
+          variables,
+        });
       }
     },
   });
@@ -86,11 +106,11 @@ const Message: React.FC<Props> = (props) => {
     if (scrollViewRef.current && showLoading && shouldScrollToBottomOnNewMessages) {
       scrollViewRef.current.scrollToEnd();
     }
-  }, [messages, subScriptionMsgs, keyboardShown]);
+  }, [messages, keyboardShown]);
   const isCloseToTop = ({ contentOffset }: NativeScrollEvent) => {
     return contentOffset.y === 0;
   };
-  const filteredMsgs = [...messages, ...subScriptionMsgs]
+  const filteredMsgs = messages
     .filter((m, i, s) => i === s.findIndex((ms) => ms._id === m._id))
     .filter(
       (msg) =>

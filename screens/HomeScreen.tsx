@@ -34,7 +34,12 @@ const HomeScreen: NavigationMaterialTabScreenComponent = () => {
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const [chatSub, setChatSub] = useState<FetchChatsQuery['fetchChats']>([]);
   const currentUser = user.data?.fetchCurrentUser;
-  const chat = useAddNewChatSubSubscription({ variables: { userID: currentUser!._id } });
+  const chat = useAddNewChatSubSubscription({
+    variables: { userID: currentUser!._id },
+    onSubscriptionData(data) {
+      // console.log(data.subscriptionData.data);
+    },
+  });
   const dispatch = useDispatch();
   const headerHeight = useHeaderHeight();
   useEffect(() => {

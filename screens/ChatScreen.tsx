@@ -20,7 +20,6 @@ import { Redux } from '../interfaces/Redux';
 import {
   Exact,
   FetchCurrentUserQuery,
-  FetchMessagesCountQuery,
   FetchMessagesQuery,
   useAddStarredMessagesMutation,
   useFetchChatsQuery,
@@ -136,9 +135,8 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
           offset: 0,
           limit: MESSAGE_LIMIT,
           messageCount:
-            (count.data?.fetchMessagesCount as FetchMessagesCountQuery['fetchMessagesCount']).find(
-              (mc) => mc.chatID === chatID
-            )?.messageCount || MESSAGE_LIMIT,
+            count.data?.fetchMessagesCount.find((mc) => mc.chatID === chatID)?.messageCount ||
+            MESSAGE_LIMIT,
         },
       });
     },
@@ -229,14 +227,15 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       const messageIDs = data.fetchMessages
         .filter((m) => !m.read && m.sender !== currentUser?._id)
         .map((m) => m._id);
-      messageIDs.length &&
-        chatID &&
-        updateReadMessages({
-          variables: {
-            messageIDs,
-            chatID,
-          },
-        });
+      console.log(messageIDs);
+      // messageIDs.length &&
+      //   chatID &&
+      //   updateReadMessages({
+      //     variables: {
+      //       messageIDs,
+      //       chatID,
+      //     },
+      //   });
     }
   }, [data]);
   useEffect(() => {
