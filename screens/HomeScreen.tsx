@@ -36,8 +36,31 @@ const HomeScreen: NavigationMaterialTabScreenComponent = () => {
   const currentUser = user.data?.fetchCurrentUser;
   const chat = useAddNewChatSubSubscription({
     variables: { userID: currentUser!._id },
-    onSubscriptionData(data) {
-      // console.log(data.subscriptionData.data);
+    onSubscriptionData({ subscriptionData }) {
+      console.log(subscriptionData.data!.addNewChat);
+      //   if (subscriptionData.data && subscriptionData.data.addNewChat) {
+      //   const variables = {
+      //     recipient: subscriptionData.data.addNewChat.recipient._id,
+      //     offset: count.data?.fetchMessagesCount.find(mc=>mc.chatID===subscriptionData.data!.addNewChat._id) || 0,
+      //     limit: MESSAGE_LIMIT,
+      //     messageCount:
+      //       count.data?.fetchMessagesCount.find((mc) => mc.chatID === subscriptionData.data!.addNewChat._id)?.messageCount ||
+      //       MESSAGE_LIMIT,
+      //   };
+      //   const existingMessages = client.readQuery<FetchMessagesQuery>({
+      //     query: FETCH_MESSAGES,
+      //     variables,
+      //   });
+      //   const newMsgs = [
+      //     ...(existingMessages?.fetchMessages || []),
+      //     subscriptionData.data!.addNewMessage,
+      //   ];
+      //   client.writeQuery<FetchMessagesQuery>({
+      //     query: FETCH_MESSAGES,
+      //     data: { fetchMessages: newMsgs },
+      //     variables,
+      //   });
+      // }
     },
   });
   const dispatch = useDispatch();

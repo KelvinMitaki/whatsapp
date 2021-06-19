@@ -97,11 +97,20 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   });
   useUpdateReadMessagesSubSubscription({
     variables: { sender: currentUser!._id, recipient: recipient._id },
-    onSubscriptionData({ client: { writeQuery, readQuery }, subscriptionData: { data } }) {
+    onSubscriptionData({ client, subscriptionData }) {
       if (data) {
-        const incommingMsgs = data.updateReadMessages;
-        const msgs: FetchMessagesQuery | null = readQuery({
+        const variables = {
+          recipient,
+          offset: data.fetchMessages.length || 0,
+          limit: MESSAGE_LIMIT,
+          messageCount:
+            count.data?.fetchMessagesCount.find((mc) => mc.chatID === chatID)?.messageCount ||
+            MESSAGE_LIMIT,
+        };
+        const incommingMsgs = subscriptionData.data?.updateReadMessages || [];
+        const msgs = client.readQuery<FetchMessagesQuery>({
           query: FETCH_MESSAGES,
+          variables,
         });
         let existingMessages = [...(msgs?.fetchMessages || [])];
         incommingMsgs.forEach((msg) => {
@@ -114,9 +123,10 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
           type: 'setShouldScrollToBottomOnNewMessages',
           payload: false,
         });
-        writeQuery({
+        client.writeQuery<FetchMessagesQuery>({
           query: FETCH_MESSAGES,
           data: { fetchMessages: existingMessages },
+          variables,
         });
       }
     },
@@ -227,15 +237,14 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       const messageIDs = data.fetchMessages
         .filter((m) => !m.read && m.sender !== currentUser?._id)
         .map((m) => m._id);
-      console.log(messageIDs);
-      // messageIDs.length &&
-      //   chatID &&
-      //   updateReadMessages({
-      //     variables: {
-      //       messageIDs,
-      //       chatID,
-      //     },
-      //   });
+      messageIDs.length &&
+        chatID &&
+        updateReadMessages({
+          variables: {
+            messageIDs,
+            chatID,
+          },
+        });
     }
   }, [data]);
   useEffect(() => {
