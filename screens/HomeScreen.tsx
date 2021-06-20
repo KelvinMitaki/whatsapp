@@ -8,12 +8,16 @@ import { NavigationEvents } from 'react-navigation';
 import StartChat from '../components/Home/StartChat';
 import {
   FetchChatsQuery,
+  FetchMessagesQuery,
   useAddNewChatSubSubscription,
   useFetchChatsQuery,
   useFetchCurrentUserQuery,
+  useFetchMessagesCountQuery,
   useUpdateUserOnlineMutation,
   useUpdateUserOnlineSubSubscription,
 } from '../generated/graphql';
+import { MESSAGE_LIMIT } from '../components/Chat/Input';
+import { FETCH_CHATS, FETCH_MESSAGES } from '../graphql/queries';
 
 export interface SetHeaderHeight {
   type: 'setHeaderHeight';
@@ -28,39 +32,53 @@ export interface SetSearchModal {
 const HomeScreen: NavigationMaterialTabScreenComponent = () => {
   const { data } = useFetchChatsQuery();
   const userOnlineSub = useUpdateUserOnlineSubSubscription();
+  const count = useFetchMessagesCountQuery({
+    variables: { userIDs: data?.fetchChats.map((ch) => ch._id) || [] },
+  });
   const user = useFetchCurrentUserQuery();
   const [updateUserOnline] = useUpdateUserOnlineMutation();
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const [chatSub, setChatSub] = useState<FetchChatsQuery['fetchChats']>([]);
   const currentUser = user.data?.fetchCurrentUser;
-  const chat = useAddNewChatSubSubscription({
+  useAddNewChatSubSubscription({
     variables: { userID: currentUser!._id },
-    onSubscriptionData({ subscriptionData }) {
-      console.log(subscriptionData.data!.addNewChat);
-      //   if (subscriptionData.data && subscriptionData.data.addNewChat) {
-      //   const variables = {
-      //     recipient: subscriptionData.data.addNewChat.recipient._id,
-      //     offset: count.data?.fetchMessagesCount.find(mc=>mc.chatID===subscriptionData.data!.addNewChat._id) || 0,
-      //     limit: MESSAGE_LIMIT,
-      //     messageCount:
-      //       count.data?.fetchMessagesCount.find((mc) => mc.chatID === subscriptionData.data!.addNewChat._id)?.messageCount ||
-      //       MESSAGE_LIMIT,
-      //   };
-      //   const existingMessages = client.readQuery<FetchMessagesQuery>({
-      //     query: FETCH_MESSAGES,
-      //     variables,
-      //   });
-      //   const newMsgs = [
-      //     ...(existingMessages?.fetchMessages || []),
-      //     subscriptionData.data!.addNewMessage,
-      //   ];
-      //   client.writeQuery<FetchMessagesQuery>({
-      //     query: FETCH_MESSAGES,
-      //     data: { fetchMessages: newMsgs },
-      //     variables,
-      //   });
-      // }
+    onSubscriptionData({ subscriptionData, client }) {
+      if (subscriptionData.data && subscriptionData.data.addNewChat) {
+        const { chat } = subscriptionData.data.addNewChat;
+        const variables = {
+          recipient: chat.recipient._id,
+          offset: count.data?.fetchMessagesCount.find((mc) => mc.chatID === chat._id) || 0,
+          limit: MESSAGE_LIMIT,
+          messageCount:
+            count.data?.fetchMessagesCount.find((mc) => mc.chatID === chat._id)?.messageCount ||
+            MESSAGE_LIMIT,
+        };
+        const existingMessages = client.readQuery<FetchMessagesQuery>({
+          query: FETCH_MESSAGES,
+          variables,
+        });
+        const newMsgs = [
+          ...(existingMessages?.fetchMessages || []),
+          subscriptionData.data!.addNewChat.message,
+        ];
+        client.writeQuery<FetchMessagesQuery>({
+          query: FETCH_MESSAGES,
+          data: { fetchMessages: newMsgs },
+          variables,
+        });
+        const existingChatsReadOnly = client.readQuery<FetchChatsQuery>({ query: FETCH_CHATS });
+        let existingChats = [...(existingChatsReadOnly?.fetchChats || [])];
+        const chatIndex = existingChats.findIndex((ch) => ch._id === chat._id);
+        if (chatIndex !== -1) {
+          existingChats[chatIndex] = chat;
+        } else {
+          existingChats = [...existingChats, chat];
+        }
+        client.writeQuery<FetchChatsQuery>({
+          query: FETCH_CHATS,
+          data: { fetchChats: existingChats },
+        });
+      }
     },
   });
   const dispatch = useDispatch();
@@ -81,11 +99,6 @@ const HomeScreen: NavigationMaterialTabScreenComponent = () => {
     appState.current = nextAppState;
     setAppStateVisible(appState.current);
   };
-  useEffect(() => {
-    if (chat.data && chat.data.addNewChat) {
-      setChatSub((c) => [chat.data!.addNewChat, ...c]);
-    }
-  }, [chat.data]);
   const renderData = (): { fetchChats: FetchChatsQuery['fetchChats'] } => {
     if (data && data.fetchChats && userOnlineSub.data && userOnlineSub.data.updateUserOnline) {
       const onlineData = userOnlineSub.data.updateUserOnline;
@@ -121,11 +134,7 @@ const HomeScreen: NavigationMaterialTabScreenComponent = () => {
         onDidBlur={() => dispatch<SetSearchModal>({ type: 'setSearchModal', payload: false })}
         onWillFocus={() => dispatch<SetSearchModal>({ type: 'setSearchModal', payload: false })}
       />
-      <HomeChat
-        chatSub={chatSub}
-        chat={chat.data && chat.data.addNewChat ? chat.data.addNewChat : null}
-        data={renderData()}
-      />
+      <HomeChat data={renderData()} />
       {data && data.fetchChats && (
         <View
           style={{ ...(!data.fetchChats.length && { height: '100%', justifyContent: 'flex-end' }) }}

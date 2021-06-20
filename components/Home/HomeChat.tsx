@@ -11,12 +11,10 @@ import { Redux } from '../../interfaces/Redux';
 import { FetchChatsQuery, useFetchCurrentUserQuery } from '../../generated/graphql';
 
 interface Props {
-  chatSub: FetchChatsQuery['fetchChats'];
-  chat: FetchChatsQuery['fetchChats'][0] | null;
-  data: any;
+  data: FetchChatsQuery;
 }
 
-const HomeChat: React.FC<NavigationInjectedProps & Props> = ({ chatSub, chat, data }) => {
+const HomeChat: React.FC<NavigationInjectedProps & Props> = ({ data }) => {
   const user = useFetchCurrentUserQuery();
   const searchModal = useSelector((state: Redux) => state.chat.searchModal);
   const headerHeight = useHeaderHeight();
@@ -30,33 +28,13 @@ const HomeChat: React.FC<NavigationInjectedProps & Props> = ({ chatSub, chat, da
     []
   );
   const keyExtractor = ({ _id }: FetchChatsQuery['fetchChats'][0]) => _id;
-  const renderChats = (): FetchChatsQuery['fetchChats'] => {
-    if (!chat) {
-      let existingChats: FetchChatsQuery['fetchChats'] = data.fetchChats;
-      chatSub.forEach((c) => {
-        const chatIndex = existingChats.findIndex((ch) => ch._id === c._id);
-        if (chatIndex !== -1) {
-          existingChats.splice(chatIndex, 1);
-          existingChats = [c, ...existingChats];
-        } else {
-          existingChats = [c, ...existingChats];
-        }
-      });
-      return existingChats;
-    }
-    if (chat) {
-      return [...chatSub, ...(data.fetchChats as FetchChatsQuery['fetchChats'])].filter(
-        (c, i, s) => i === s.findIndex((ch) => ch._id === c._id)
-      );
-    }
-    return data.fetchChats;
-  };
+
   return (
     <View>
       {searchModal && <View style={{ height: headerHeight / 2 }}></View>}
       {data && data.fetchChats && data.fetchChats.length ? (
         <FlatList
-          data={renderChats()}
+          data={data.fetchChats}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
           getItemLayout={getItemLayout}
