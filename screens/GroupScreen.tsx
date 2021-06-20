@@ -7,6 +7,11 @@ import GroupChat from '../components/Group/GroupChat';
 import AppColors from '../Colors/color';
 import { useFetchGroupsQuery, useFetchUnreadGroupMsgsQuery } from '../generated/graphql';
 
+export interface SetPreviousSelectedGroup {
+  type: 'setPreviousSelectedGroup';
+  payload: string;
+}
+
 const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
   const { data, loading } = useFetchGroupsQuery();
   const { data: data2 } = useFetchUnreadGroupMsgsQuery();
