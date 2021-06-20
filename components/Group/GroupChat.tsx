@@ -15,6 +15,7 @@ import {
   useAddNewGroupSubSubscription,
   useFetchCurrentUserQuery,
 } from '../../generated/graphql';
+import { FETCH_GROUPS } from '../../graphql/queries';
 
 interface Props {
   groups: FetchGroupsQuery['fetchGroups'];
@@ -33,12 +34,13 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
   const headerHeight = useHeaderHeight();
   const incommingUnread = useSelector((state: Redux) => state.group.incommingUnread);
   const searchModal = useSelector((state: Redux) => state.chat.searchModal);
-  const [subscriptionGroups, setSubscriptionGroups] = useState<FetchGroupsQuery['fetchGroups']>([]);
   useAddNewGroupSubSubscription({
-    onSubscriptionData(subdata) {
-      if (subdata.subscriptionData.data) {
-        const group: FetchGroupsQuery['fetchGroups'][0] = subdata.subscriptionData.data.addNewGroup;
-        setSubscriptionGroups((g) => [group, ...g]);
+    onSubscriptionData({ subscriptionData, client }) {
+      if (subscriptionData.data) {
+        const group = subscriptionData.data.addNewGroup;
+        const existingGroupsReadOnly = client.readQuery<FetchGroupsQuery>({ query: FETCH_GROUPS });
+        const groups = [group, ...(existingGroupsReadOnly?.fetchGroups || [])];
+        client.writeQuery<FetchGroupsQuery>({ query: FETCH_GROUPS, data: { fetchGroups: groups } });
         if (group.message?.sender._id !== currentUser?._id) {
           let incommingUnreadGroups = [...incommingUnread];
           const groupExistIndex = incommingUnreadGroups.findIndex((g) => g.group === group._id);
@@ -62,9 +64,7 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
     variables: { userID: currentUser!._id },
   });
   const syncGroups = (): FetchGroupsQuery['fetchGroups'] => {
-    return [...subscriptionGroups, ...groups].filter(
-      (g, i, s) => i === s.findIndex((gr) => gr._id === g._id)
-    );
+    return groups.filter((g, i, s) => i === s.findIndex((gr) => gr._id === g._id));
   };
   const renderUnreadCount = (groupID: string): number => {
     const group = [...incommingUnread, ...unread].find((u) => u.group === groupID);
