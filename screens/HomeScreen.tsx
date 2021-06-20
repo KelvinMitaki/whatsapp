@@ -44,7 +44,7 @@ const HomeScreen: NavigationMaterialTabScreenComponent = () => {
     variables: { userID: currentUser!._id },
     onSubscriptionData({ subscriptionData, client }) {
       if (subscriptionData.data && subscriptionData.data.addNewChat) {
-        const { chat } = subscriptionData.data.addNewChat;
+        const { chat, message } = subscriptionData.data.addNewChat;
         const variables = {
           recipient: chat.recipient._id,
           offset: count.data?.fetchMessagesCount.find((mc) => mc.chatID === chat._id) || 0,
@@ -53,17 +53,18 @@ const HomeScreen: NavigationMaterialTabScreenComponent = () => {
             count.data?.fetchMessagesCount.find((mc) => mc.chatID === chat._id)?.messageCount ||
             MESSAGE_LIMIT,
         };
-        const existingMessages = client.readQuery<FetchMessagesQuery>({
+        const existingMessagesReadOnly = client.readQuery<FetchMessagesQuery>({
           query: FETCH_MESSAGES,
           variables,
         });
-        const newMsgs = [
-          ...(existingMessages?.fetchMessages || []),
-          subscriptionData.data!.addNewChat.message,
-        ];
+        let existingMessages = [...(existingMessagesReadOnly?.fetchMessages || [])];
+        const msgIndex = existingMessages.findIndex((msg) => msg._id === message._id);
+        if (msgIndex === -1) {
+          existingMessages = [...existingMessages, message];
+        }
         client.writeQuery<FetchMessagesQuery>({
           query: FETCH_MESSAGES,
-          data: { fetchMessages: newMsgs },
+          data: { fetchMessages: existingMessages },
           variables,
         });
         const existingChatsReadOnly = client.readQuery<FetchChatsQuery>({ query: FETCH_CHATS });
