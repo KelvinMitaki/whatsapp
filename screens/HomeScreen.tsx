@@ -8,6 +8,7 @@ import { NavigationEvents } from 'react-navigation';
 import StartChat from '../components/Home/StartChat';
 import {
   FetchChatsQuery,
+  FetchMessagesCountQuery,
   FetchMessagesQuery,
   useAddNewChatSubSubscription,
   useFetchChatsQuery,
@@ -17,7 +18,7 @@ import {
   useUpdateUserOnlineSubSubscription,
 } from '../generated/graphql';
 import { MESSAGE_LIMIT } from '../components/Chat/Input';
-import { FETCH_CHATS, FETCH_MESSAGES } from '../graphql/queries';
+import { FETCH_CHATS, FETCH_MESSAGES, FETCH_MESSAGES_COUNT } from '../graphql/queries';
 
 export interface SetHeaderHeight {
   type: 'setHeaderHeight';
@@ -66,6 +67,30 @@ const HomeScreen: NavigationMaterialTabScreenComponent = () => {
         const msgIndex = existingMessages.findIndex((msg) => msg._id === message._id);
         if (msgIndex === -1) {
           existingMessages = [...existingMessages, message];
+          const msgsCountReadOnly = client.readQuery<FetchMessagesCountQuery>({
+            query: FETCH_MESSAGES_COUNT,
+            variables: {
+              userIDs:
+                data?.fetchChats.map((ch) =>
+                  ch.sender._id !== currentUser?._id ? ch.sender._id : ch.recipient._id
+                ) || [],
+            },
+          });
+          let msgsCount = [...(msgsCountReadOnly?.fetchMessagesCount || [])];
+          const countIndex = msgsCount.findIndex((c) => c.chatID === chat._id);
+          if (countIndex !== -1) {
+            let count = msgsCount[countIndex];
+            count = { ...count, messageCount: count.messageCount + 1 };
+          } else {
+            msgsCount = [
+              ...msgsCount,
+              { __typename: 'MessageCount', chatID: chat._id, messageCount: 1 },
+            ];
+          }
+          client.writeQuery<FetchMessagesCountQuery>({
+            query: FETCH_MESSAGES_COUNT,
+            data: { fetchMessagesCount: msgsCount },
+          });
         }
         client.writeQuery<FetchMessagesQuery>({
           query: FETCH_MESSAGES,
