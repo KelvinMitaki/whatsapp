@@ -112,6 +112,7 @@ export type Message = {
   sender: Scalars['String'];
   recipient: Scalars['String'];
   message: Scalars['String'];
+  chatID: Scalars['String'];
   read: Scalars['Boolean'];
   deleted: Scalars['Boolean'];
   received: Scalars['Boolean'];
@@ -435,7 +436,7 @@ export type AddNewMessageMutation = (
   { __typename?: 'Mutation' }
   & { addNewMessage: (
     { __typename?: 'Message' }
-    & Pick<Message, '_id' | 'sender' | 'recipient' | 'message' | 'read' | 'createdAt' | 'deleted' | 'starredBy'>
+    & Pick<Message, '_id' | 'sender' | 'recipient' | 'message' | 'read' | 'chatID' | 'createdAt' | 'deleted' | 'starredBy'>
   ) }
 );
 
@@ -449,7 +450,7 @@ export type UpdateReadMessagesMutation = (
   { __typename?: 'Mutation' }
   & { updateReadMessages: Array<(
     { __typename?: 'Message' }
-    & Pick<Message, '_id' | 'sender' | 'recipient' | 'message' | 'read' | 'createdAt' | 'deleted'>
+    & Pick<Message, '_id' | 'sender' | 'recipient' | 'message' | 'read' | 'chatID' | 'createdAt' | 'deleted'>
   )> }
 );
 
@@ -563,7 +564,7 @@ export type AddStarredMessagesMutation = (
   { __typename?: 'Mutation' }
   & { addStarredMessages: Array<(
     { __typename?: 'Message' }
-    & Pick<Message, '_id' | 'sender' | 'recipient' | 'message' | 'read' | 'createdAt' | 'deleted' | 'starredBy'>
+    & Pick<Message, '_id' | 'sender' | 'recipient' | 'message' | 'chatID' | 'read' | 'createdAt' | 'deleted' | 'starredBy'>
   )> }
 );
 
@@ -576,7 +577,7 @@ export type RemoveStarredMessagesMutation = (
   { __typename?: 'Mutation' }
   & { removeStarredMessages: Array<(
     { __typename?: 'Message' }
-    & Pick<Message, '_id' | 'sender' | 'recipient' | 'message' | 'read' | 'createdAt' | 'deleted' | 'starredBy'>
+    & Pick<Message, '_id' | 'sender' | 'recipient' | 'message' | 'chatID' | 'read' | 'createdAt' | 'deleted' | 'starredBy'>
   )> }
 );
 
@@ -674,7 +675,7 @@ export type FetchMessagesQuery = (
   { __typename?: 'Query' }
   & { fetchMessages: Array<(
     { __typename?: 'Message' }
-    & Pick<Message, '_id' | 'sender' | 'recipient' | 'message' | 'read' | 'createdAt' | 'deleted' | 'starredBy'>
+    & Pick<Message, '_id' | 'sender' | 'recipient' | 'message' | 'chatID' | 'read' | 'createdAt' | 'deleted' | 'starredBy'>
   )> }
 );
 
@@ -823,7 +824,7 @@ export type AddNewMessageSubSubscription = (
   { __typename?: 'Subscription' }
   & { addNewMessage: (
     { __typename?: 'Message' }
-    & Pick<Message, '_id' | 'sender' | 'recipient' | 'message' | 'read' | 'createdAt' | 'deleted' | 'starredBy'>
+    & Pick<Message, '_id' | 'sender' | 'recipient' | 'message' | 'chatID' | 'read' | 'createdAt' | 'deleted' | 'starredBy'>
   ) }
 );
 
@@ -848,7 +849,7 @@ export type AddNewChatSubSubscription = (
       ) }
     ), message: (
       { __typename?: 'Message' }
-      & Pick<Message, '_id' | 'sender' | 'recipient' | 'message' | 'read' | 'createdAt' | 'deleted' | 'starredBy'>
+      & Pick<Message, '_id' | 'sender' | 'recipient' | 'message' | 'chatID' | 'read' | 'createdAt' | 'deleted' | 'starredBy'>
     ) }
   ) }
 );
@@ -938,7 +939,7 @@ export type UpdateReadMessagesSubSubscription = (
   { __typename?: 'Subscription' }
   & { updateReadMessages: Array<(
     { __typename?: 'Message' }
-    & Pick<Message, '_id' | 'sender' | 'recipient' | 'message' | 'read' | 'createdAt' | 'deleted' | 'starredBy'>
+    & Pick<Message, '_id' | 'sender' | 'recipient' | 'message' | 'chatID' | 'read' | 'createdAt' | 'deleted' | 'starredBy'>
   )> }
 );
 
@@ -990,6 +991,7 @@ export const AddNewMessageDocument = gql`
     recipient
     message
     read
+    chatID
     createdAt
     deleted
     starredBy
@@ -1031,6 +1033,7 @@ export const UpdateReadMessagesDocument = gql`
     recipient
     message
     read
+    chatID
     createdAt
     deleted
   }
@@ -1332,6 +1335,7 @@ export const AddStarredMessagesDocument = gql`
     sender
     recipient
     message
+    chatID
     read
     createdAt
     deleted
@@ -1372,6 +1376,7 @@ export const RemoveStarredMessagesDocument = gql`
     sender
     recipient
     message
+    chatID
     read
     createdAt
     deleted
@@ -1658,6 +1663,7 @@ export const FetchMessagesDocument = gql`
     sender
     recipient
     message
+    chatID
     read
     createdAt
     deleted
@@ -2071,6 +2077,7 @@ export const AddNewMessageSubDocument = gql`
     sender
     recipient
     message
+    chatID
     read
     createdAt
     deleted
@@ -2132,10 +2139,12 @@ export const AddNewChatSubDocument = gql`
       sender
       recipient
       message
+      chatID
       read
       createdAt
       deleted
       starredBy
+      chatID
     }
   }
 }
@@ -2359,6 +2368,7 @@ export const UpdateReadMessagesSubDocument = gql`
     sender
     recipient
     message
+    chatID
     read
     createdAt
     deleted

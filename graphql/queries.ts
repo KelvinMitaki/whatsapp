@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
 export const FETCH_USERS = gql`
   query FetchUsers {
@@ -18,7 +18,7 @@ export const FETCH_USERS = gql`
       online
     }
   }
-`
+`;
 
 export const FETCH_CURRENT_USER = gql`
   query FetchCurrentUser {
@@ -40,7 +40,7 @@ export const FETCH_CURRENT_USER = gql`
       online
     }
   }
-`
+`;
 
 export const FETCH_CHATS = gql`
   query FetchChats {
@@ -67,7 +67,7 @@ export const FETCH_CHATS = gql`
       type
     }
   }
-`
+`;
 
 export const FETCH_MESSAGES = gql`
   query FetchMessages($recipient: String!, $offset: Int!, $limit: Int!, $messageCount: Int!) {
@@ -81,13 +81,14 @@ export const FETCH_MESSAGES = gql`
       sender
       recipient
       message
+      chatID
       read
       createdAt
       deleted
       starredBy
     }
   }
-`
+`;
 
 export const FETCH_GROUPS = gql`
   query FetchGroups {
@@ -116,7 +117,7 @@ export const FETCH_GROUPS = gql`
       createdAt
     }
   }
-`
+`;
 
 export const FETCH_GROUP_MSGS = gql`
   query FetchGroupMsgs($groupID: String!, $offset: Int!, $limit: Int!, $messageCount: Int!) {
@@ -138,7 +139,7 @@ export const FETCH_GROUP_MSGS = gql`
       starredBy
     }
   }
-`
+`;
 
 export const FETCH_GROUP = gql`
   query FetchGroup($groupID: String!) {
@@ -159,7 +160,7 @@ export const FETCH_GROUP = gql`
       }
     }
   }
-`
+`;
 
 export const FETCH_UNREAD_GROUP_MSGS = gql`
   query FetchUnreadGroupMsgs {
@@ -168,7 +169,7 @@ export const FETCH_UNREAD_GROUP_MSGS = gql`
       group
     }
   }
-`
+`;
 
 export const FETCH_GROUP_MSG_COUNT = gql`
   query FetchGroupMessageCount($groupID: String!) {
@@ -176,7 +177,7 @@ export const FETCH_GROUP_MSG_COUNT = gql`
       count
     }
   }
-`
+`;
 
 export const FETCH_STARRED_MESSAGES = gql`
   query FetchStarredMsgs {
@@ -217,7 +218,7 @@ export const FETCH_STARRED_MESSAGES = gql`
       }
     }
   }
-`
+`;
 
 export const FETCH_MESSAGES_COUNT = gql`
   query FetchMessagesCount($userIDs: [String!]!) {
@@ -226,7 +227,7 @@ export const FETCH_MESSAGES_COUNT = gql`
       chatID
     }
   }
-`
+`;
 
 export const FETCH_GROUP_MESSAGES_COUNT = gql`
   query FetchGroupMessagesCount {
@@ -235,4 +236,4 @@ export const FETCH_GROUP_MESSAGES_COUNT = gql`
       groupID
     }
   }
-`
+`;

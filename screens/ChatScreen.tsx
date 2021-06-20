@@ -275,19 +275,21 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
           })
         }
       />
-      {((loading && showLoading) || count.loading) && (
-        <View
-          style={{
-            height: screen.height,
-            width: screen.width,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <ActivityIndicator size="large" color="#00af9c" />
-          <Text style={{ color: 'rgba(255,255,255,.8)' }}>Fetching Messages...</Text>
-        </View>
-      )}
+      {(loading && showLoading) ||
+        count.loading ||
+        (!data && (
+          <View
+            style={{
+              height: screen.height,
+              width: screen.width,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <ActivityIndicator size="large" color="#00af9c" />
+            <Text style={{ color: 'rgba(255,255,255,.8)' }}>Fetching Messages...</Text>
+          </View>
+        ))}
       {data && (
         <View style={{ height: '100%' }}>
           <Message

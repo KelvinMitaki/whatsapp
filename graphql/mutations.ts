@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const REGISTER_USER = gql`
   mutation RegisterUser(
@@ -30,6 +30,7 @@ export const ADD_NEW_MESSAGE = gql`
       recipient
       message
       read
+      chatID
       createdAt
       deleted
       starredBy
@@ -45,6 +46,7 @@ export const UPDATE_READ_MESSAGES = gql`
       recipient
       message
       read
+      chatID
       createdAt
       deleted
     }
@@ -159,6 +161,7 @@ export const ADD_STARRED_MESSAGES = gql`
       sender
       recipient
       message
+      chatID
       read
       createdAt
       deleted
@@ -174,6 +177,7 @@ export const REMOVE_STARRED_MESSAGES = gql`
       sender
       recipient
       message
+      chatID
       read
       createdAt
       deleted

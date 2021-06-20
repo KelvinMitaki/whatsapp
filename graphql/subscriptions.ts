@@ -7,6 +7,7 @@ export const ADD_NEW_MESSAGE_SUB = gql`
       sender
       recipient
       message
+      chatID
       read
       createdAt
       deleted
@@ -45,10 +46,12 @@ export const ADD_NEW_CHAT_SUB = gql`
         sender
         recipient
         message
+        chatID
         read
         createdAt
         deleted
         starredBy
+        chatID
       }
     }
   }
@@ -141,6 +144,7 @@ export const UPDATE_READ_MESSAGES_SUB = gql`
       sender
       recipient
       message
+      chatID
       read
       createdAt
       deleted
