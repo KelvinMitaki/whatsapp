@@ -34,6 +34,12 @@ export type Chat = {
   updatedAt: Scalars['String'];
 };
 
+export type ChatWithMessage = {
+  __typename?: 'ChatWithMessage';
+  chat: Chat;
+  message: Message;
+};
+
 export type Count = {
   __typename?: 'Count';
   count: Scalars['Int'];
@@ -309,7 +315,7 @@ export type Subscription = {
   __typename?: 'Subscription';
   addNewMessage: Message;
   addNewGroup: Group;
-  addNewChat: Chat;
+  addNewChat: ChatWithMessage;
   addNewGroupMsg: GroupMsg;
   deleteMessage: Message;
   deleteGroupMsg: GroupMsg;
@@ -829,14 +835,20 @@ export type AddNewChatSubSubscriptionVariables = Exact<{
 export type AddNewChatSubSubscription = (
   { __typename?: 'Subscription' }
   & { addNewChat: (
-    { __typename?: 'Chat' }
-    & Pick<Chat, '_id' | 'message' | 'createdAt' | 'updatedAt' | 'unread' | 'type'>
-    & { sender: (
-      { __typename?: 'User' }
-      & Pick<User, '_id' | 'name' | 'typing' | 'lastSeen' | 'online'>
-    ), recipient: (
-      { __typename?: 'User' }
-      & Pick<User, '_id' | 'name' | 'typing' | 'lastSeen' | 'online'>
+    { __typename?: 'ChatWithMessage' }
+    & { chat: (
+      { __typename?: 'Chat' }
+      & Pick<Chat, '_id' | 'message' | 'createdAt' | 'updatedAt' | 'unread' | 'type'>
+      & { sender: (
+        { __typename?: 'User' }
+        & Pick<User, '_id' | 'name' | 'typing' | 'lastSeen' | 'online'>
+      ), recipient: (
+        { __typename?: 'User' }
+        & Pick<User, '_id' | 'name' | 'typing' | 'lastSeen' | 'online'>
+      ) }
+    ), message: (
+      { __typename?: 'Message' }
+      & Pick<Message, '_id' | 'sender' | 'recipient' | 'message' | 'read' | 'createdAt' | 'deleted' | 'starredBy'>
     ) }
   ) }
 );
@@ -2093,26 +2105,38 @@ export type AddNewMessageSubSubscriptionResult = Apollo.SubscriptionResult<AddNe
 export const AddNewChatSubDocument = gql`
     subscription AddNewChatSub($userID: String!) {
   addNewChat(userID: $userID) {
-    _id
-    sender {
+    chat {
       _id
-      name
-      typing
-      lastSeen
-      online
+      sender {
+        _id
+        name
+        typing
+        lastSeen
+        online
+      }
+      recipient {
+        _id
+        name
+        typing
+        lastSeen
+        online
+      }
+      message
+      createdAt
+      updatedAt
+      unread
+      type
     }
-    recipient {
+    message {
       _id
-      name
-      typing
-      lastSeen
-      online
+      sender
+      recipient
+      message
+      read
+      createdAt
+      deleted
+      starredBy
     }
-    message
-    createdAt
-    updatedAt
-    unread
-    type
   }
 }
     `;
