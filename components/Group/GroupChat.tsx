@@ -27,6 +27,11 @@ export interface SetIncommingUnread {
   payload: FetchUnreadGroupMsgsQuery['fetchUnreadGroupMsgs'];
 }
 
+export interface SetPreviousSelectedGroup {
+  type: 'setPreviousSelectedGroup';
+  payload: string;
+}
+
 const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, groups, unread }) => {
   const dispatch = useDispatch();
   const { data } = useFetchCurrentUserQuery();

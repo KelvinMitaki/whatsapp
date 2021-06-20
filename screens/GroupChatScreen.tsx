@@ -7,7 +7,7 @@ import AppColors from '../Colors/color';
 import { MutationTuple } from '@apollo/client';
 import { FETCH_GROUP_MSGS, FETCH_UNREAD_GROUP_MSGS } from '../graphql/queries';
 import { useDispatch, useSelector } from 'react-redux';
-import { SetIncommingUnread } from '../components/Group/GroupChat';
+import { SetIncommingUnread, SetPreviousSelectedGroup } from '../components/Group/GroupChat';
 import GroupChatScreenHeader from '../components/GroupChat/GroupChatScreenHeader';
 import { SetShouldScrollToBottomOnNewMessages } from '../components/Chat/Message';
 import { NavigationEvents } from 'react-navigation';
@@ -108,6 +108,9 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
       }
     },
   });
+  const previousSelectedGroupIds = useSelector(
+    (state: Redux) => state.group.previousSelectedGroupIds
+  );
   const { data: userData } = useFetchCurrentUserQuery();
   const currentUser = userData?.fetchCurrentUser;
   const [updateGroupMessagesRead] = useUpdateGroupMessagesReadMutation({
@@ -131,7 +134,9 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
     },
   });
   const [fetchGroupMsgs, { data, fetchMore, loading: msgsLoading }] = useFetchGroupMsgsLazyQuery({
-    fetchPolicy: 'cache-only',
+    fetchPolicy: previousSelectedGroupIds.some((id) => id === groupID)
+      ? 'cache-first'
+      : 'network-only',
     onCompleted(incommingData) {
       const groupMsgs = incommingData.fetchGroupMsgs;
       const messageIDs = groupMsgs
@@ -148,6 +153,7 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
           },
         });
       }
+      dispatch<SetPreviousSelectedGroup>({ type: 'setPreviousSelectedGroup', payload: groupID });
     },
   });
   const [updateGroupTyping] = useUpdateGroupTypingMutation();

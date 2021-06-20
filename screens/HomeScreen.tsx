@@ -32,14 +32,19 @@ export interface SetSearchModal {
 const HomeScreen: NavigationMaterialTabScreenComponent = () => {
   const { data } = useFetchChatsQuery();
   const userOnlineSub = useUpdateUserOnlineSubSubscription();
-  const count = useFetchMessagesCountQuery({
-    variables: { userIDs: data?.fetchChats.map((ch) => ch._id) || [] },
-  });
   const user = useFetchCurrentUserQuery();
+  const currentUser = user.data?.fetchCurrentUser;
+  const count = useFetchMessagesCountQuery({
+    variables: {
+      userIDs:
+        data?.fetchChats.map((ch) =>
+          ch.sender._id !== currentUser?._id ? ch.sender._id : ch.recipient._id
+        ) || [],
+    },
+  });
   const [updateUserOnline] = useUpdateUserOnlineMutation();
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const currentUser = user.data?.fetchCurrentUser;
   useAddNewChatSubSubscription({
     variables: { userID: currentUser!._id },
     onSubscriptionData({ subscriptionData, client }) {

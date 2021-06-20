@@ -1,7 +1,6 @@
-import { SetIncommingUnread } from '../components/Group/GroupChat';
+import { SetIncommingUnread, SetPreviousSelectedGroup } from '../components/Group/GroupChat';
 import { FetchUnreadGroupMsgsQuery, GroupTyping } from '../generated/graphql';
 import { SetGroupUserTyping } from '../screens/GroupChatScreen';
-import { SetPreviousSelectedGroup } from '../screens/GroupScreen';
 
 export interface GroupState {
   incommingUnread: FetchUnreadGroupMsgsQuery['fetchUnreadGroupMsgs'];

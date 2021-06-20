@@ -35,7 +35,7 @@ const BlankScreen: NavigationStackScreenComponent = ({ navigation }) => {
     },
   });
   const [fetchMessagesCount] = useFetchMessagesCountLazyQuery({
-    onCompleted() {
+    onCompleted(data) {
       navigation.replace('Tab');
     },
   });
