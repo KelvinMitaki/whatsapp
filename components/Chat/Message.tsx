@@ -16,13 +16,14 @@ import { MESSAGE_LIMIT } from './Input';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redux } from '../../interfaces/Redux';
 import {
+  FetchMessagesCountQuery,
   FetchMessagesQuery,
   useAddNewMessageSubSubscription,
   useFetchChatsQuery,
   useFetchCurrentUserQuery,
   useFetchMessagesCountQuery,
 } from '../../generated/graphql';
-import { FETCH_MESSAGES } from '../../graphql/queries';
+import { FETCH_MESSAGES, FETCH_MESSAGES_COUNT } from '../../graphql/queries';
 
 interface Props {
   messages: FetchMessagesQuery['fetchMessages'];
@@ -77,6 +78,7 @@ const Message: React.FC<Props> = (props) => {
         });
       }
       if (subscriptionData.data && subscriptionData.data.addNewMessage) {
+        const { addNewMessage: newMessage } = subscriptionData.data;
         const variables = {
           recipient,
           offset: messages.length || 0,
@@ -85,17 +87,41 @@ const Message: React.FC<Props> = (props) => {
             count.data?.fetchMessagesCount.find((mc) => mc.chatID === chatID)?.messageCount ||
             MESSAGE_LIMIT,
         };
-        const existingMessages = client.readQuery<FetchMessagesQuery>({
+        const existingMessagesReadOnly = client.readQuery<FetchMessagesQuery>({
           query: FETCH_MESSAGES,
           variables,
         });
-        const newMsgs = [
-          ...(existingMessages?.fetchMessages || []),
-          subscriptionData.data!.addNewMessage,
-        ];
+        let existingMessages = [...(existingMessagesReadOnly?.fetchMessages || [])];
+        const msgIndex = existingMessages.findIndex((m) => m._id === newMessage._id);
+        console.log(existingMessages.length);
+        if (msgIndex === -1) {
+          existingMessages = [...existingMessages, newMessage];
+          const msgsCountReadOnly = client.readQuery<FetchMessagesCountQuery>({
+            query: FETCH_MESSAGES_COUNT,
+            variables: {
+              userIDs: [recipient],
+            },
+          });
+          console.log(msgsCountReadOnly?.fetchMessagesCount);
+          // let msgsCount = [...(msgsCountReadOnly?.fetchMessagesCount || [])];
+          //   const countIndex = msgsCount.findIndex((c) => c.chatID === chat._id);
+          //   if (countIndex !== -1) {
+          //     let count = msgsCount[countIndex];
+          //     count = { ...count, messageCount: count.messageCount + 1 };
+          //   } else {
+          //     msgsCount = [
+          //       ...msgsCount,
+          //       { __typename: 'MessageCount', chatID: chat._id, messageCount: 1 },
+          //     ];
+          //   }
+          //   client.writeQuery<FetchMessagesCountQuery>({
+          //     query: FETCH_MESSAGES_COUNT,
+          //     data: { fetchMessagesCount: msgsCount },
+          //   });
+        }
         client.writeQuery<FetchMessagesQuery>({
           query: FETCH_MESSAGES,
-          data: { fetchMessages: newMsgs },
+          data: { fetchMessages: existingMessages },
           variables,
         });
       }
