@@ -66,7 +66,6 @@ const HomeScreen: NavigationMaterialTabScreenComponent = () => {
         let existingMessages = [...(existingMessagesReadOnly?.fetchMessages || [])];
         const msgIndex = existingMessages.findIndex((msg) => msg._id === message._id);
         if (msgIndex === -1) {
-          existingMessages = [...existingMessages, message];
           const msgsCountReadOnly = client.readQuery<FetchMessagesCountQuery>({
             query: FETCH_MESSAGES_COUNT,
             variables: {
@@ -87,16 +86,16 @@ const HomeScreen: NavigationMaterialTabScreenComponent = () => {
               { __typename: 'MessageCount', chatID: chat._id, messageCount: 1 },
             ];
           }
-          client.writeQuery<FetchMessagesCountQuery>({
-            query: FETCH_MESSAGES_COUNT,
-            data: { fetchMessagesCount: msgsCount },
-          });
+          // client.writeQuery<FetchMessagesCountQuery>({
+          //   query: FETCH_MESSAGES_COUNT,
+          //   data: { fetchMessagesCount: msgsCount },
+          // });
+          // client.writeQuery<FetchMessagesQuery>({
+          //   query: FETCH_MESSAGES,
+          //   data: { fetchMessages: [message] },
+          //   variables,
+          // });
         }
-        client.writeQuery<FetchMessagesQuery>({
-          query: FETCH_MESSAGES,
-          data: { fetchMessages: existingMessages },
-          variables,
-        });
         const existingChatsReadOnly = client.readQuery<FetchChatsQuery>({ query: FETCH_CHATS });
         let existingChats = [...(existingChatsReadOnly?.fetchChats || [])];
         const chatIndex = existingChats.findIndex((ch) => ch._id === chat._id);

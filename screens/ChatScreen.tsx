@@ -123,11 +123,11 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
           type: 'setShouldScrollToBottomOnNewMessages',
           payload: false,
         });
-        client.writeQuery<FetchMessagesQuery>({
-          query: FETCH_MESSAGES,
-          data: { fetchMessages: existingMessages },
-          variables,
-        });
+        // client.writeQuery<FetchMessagesQuery>({
+        //   query: FETCH_MESSAGES,
+        //   data: { fetchMessages: existingMessages },
+        //   variables,
+        // });
       }
     },
   });

@@ -92,38 +92,37 @@ const Message: React.FC<Props> = (props) => {
           variables,
         });
         let existingMessages = [...(existingMessagesReadOnly?.fetchMessages || [])];
-        const msgIndex = existingMessages.findIndex((m) => m._id === newMessage._id);
+        // const msgIndex = existingMessages.findIndex((m) => m._id === newMessage._id);
         console.log(existingMessages.length);
-        if (msgIndex === -1) {
-          existingMessages = [...existingMessages, newMessage];
-          const msgsCountReadOnly = client.readQuery<FetchMessagesCountQuery>({
-            query: FETCH_MESSAGES_COUNT,
-            variables: {
-              userIDs: [recipient],
-            },
-          });
-          console.log(msgsCountReadOnly?.fetchMessagesCount);
-          // let msgsCount = [...(msgsCountReadOnly?.fetchMessagesCount || [])];
-          //   const countIndex = msgsCount.findIndex((c) => c.chatID === chat._id);
-          //   if (countIndex !== -1) {
-          //     let count = msgsCount[countIndex];
-          //     count = { ...count, messageCount: count.messageCount + 1 };
-          //   } else {
-          //     msgsCount = [
-          //       ...msgsCount,
-          //       { __typename: 'MessageCount', chatID: chat._id, messageCount: 1 },
-          //     ];
-          //   }
-          //   client.writeQuery<FetchMessagesCountQuery>({
-          //     query: FETCH_MESSAGES_COUNT,
-          //     data: { fetchMessagesCount: msgsCount },
-          //   });
-        }
+        // if (msgIndex === -1) {
+        //   const msgsCountReadOnly = client.readQuery<FetchMessagesCountQuery>({
+        //     query: FETCH_MESSAGES_COUNT,
+        //     variables: {
+        //       userIDs: [recipient],
+        //     },
+        //   });
+        //   console.log(msgsCountReadOnly?.fetchMessagesCount);
+        //   // let msgsCount = [...(msgsCountReadOnly?.fetchMessagesCount || [])];
+        //   //   const countIndex = msgsCount.findIndex((c) => c.chatID === chat._id);
+        //   //   if (countIndex !== -1) {
+        //   //     let count = msgsCount[countIndex];
+        //   //     count = { ...count, messageCount: count.messageCount + 1 };
+        //   //   } else {
+        //   //     msgsCount = [
+        //   //       ...msgsCount,
+        //   //       { __typename: 'MessageCount', chatID: chat._id, messageCount: 1 },
+        //   //     ];
+        //   //   }
+        //   //   client.writeQuery<FetchMessagesCountQuery>({
+        //   //     query: FETCH_MESSAGES_COUNT,
+        //   //     data: { fetchMessagesCount: msgsCount },
+        //   //   });
         client.writeQuery<FetchMessagesQuery>({
           query: FETCH_MESSAGES,
-          data: { fetchMessages: existingMessages },
+          data: { fetchMessages: [...existingMessages, newMessage] },
           variables,
         });
+        // }
       }
     },
   });
