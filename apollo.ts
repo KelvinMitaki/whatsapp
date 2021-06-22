@@ -3,6 +3,7 @@ import { setContext } from '@apollo/client/link/context';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { GroupMsg, Message } from './generated/graphql';
 const httpLink = createHttpLink({
   uri: 'https://kevin-whatsapp-api.herokuapp.com/graphql',
 });
@@ -37,14 +38,32 @@ const client = new ApolloClient({
         fields: {
           fetchMessages: {
             keyArgs: false,
-            merge(existing = [], incoming) {
-              return [...incoming, ...existing];
+            merge(existing: Message[] = [], incoming: Message[]) {
+              let existingMessages = [...existing];
+              incoming.forEach((msg) => {
+                const msgIndex = existingMessages.findIndex((exMsg) => exMsg._id === msg._id);
+                if (msgIndex !== -1) {
+                  existingMessages[msgIndex] = msg;
+                } else {
+                  existingMessages = [msg, ...existingMessages];
+                }
+              });
+              return existingMessages;
             },
           },
           fetchGroupMsgs: {
             keyArgs: false,
-            merge(existing = [], incoming) {
-              return [...incoming, ...existing];
+            merge(existing: GroupMsg[] = [], incoming: GroupMsg[]) {
+              let existingMessages = [...existing];
+              incoming.forEach((msg) => {
+                const msgIndex = existingMessages.findIndex((exMsg) => exMsg._id === msg._id);
+                if (msgIndex !== -1) {
+                  existingMessages[msgIndex] = msg;
+                } else {
+                  existingMessages = [msg, ...existingMessages];
+                }
+              });
+              return existingMessages;
             },
           },
           fetchUnreadGroupMsgs: {
