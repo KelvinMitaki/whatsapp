@@ -108,26 +108,16 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
             MESSAGE_LIMIT,
         };
         const incommingMsgs = subscriptionData.data?.updateReadMessages || [];
-        const msgs = client.readQuery<FetchMessagesQuery>({
-          query: FETCH_MESSAGES,
-          variables,
-        });
-        let existingMessages = [...(msgs?.fetchMessages || [])];
-        incommingMsgs.forEach((msg) => {
-          const index = existingMessages.findIndex((m) => m._id === msg._id);
-          if (index !== -1) {
-            existingMessages[index] = msg;
-          }
-        });
+
         dispatch<SetShouldScrollToBottomOnNewMessages>({
           type: 'setShouldScrollToBottomOnNewMessages',
           payload: false,
         });
-        // client.writeQuery<FetchMessagesQuery>({
-        //   query: FETCH_MESSAGES,
-        //   data: { fetchMessages: existingMessages },
-        //   variables,
-        // });
+        client.writeQuery<FetchMessagesQuery>({
+          query: FETCH_MESSAGES,
+          data: { fetchMessages: incommingMsgs },
+          variables,
+        });
       }
     },
   });

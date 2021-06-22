@@ -52,8 +52,7 @@ const client = new ApolloClient({
                   existingMessages = [msg, ...existingMessages];
                 }
               });
-              console.log(existingMessages.length);
-              return [...existing, ...incoming];
+              return existingMessages;
             },
           },
           fetchGroupMsgs: {
