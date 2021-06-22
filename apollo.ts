@@ -35,12 +35,12 @@ const client = new ApolloClient({
     typePolicies: {
       Query: {
         fields: {
-          // fetchMessages: {
-          //   keyArgs: false,
-          //   merge(existing = [], incoming) {
-          //     return [...incoming, ...existing];
-          //   },
-          // },
+          fetchMessages: {
+            keyArgs: false,
+            merge(existing = [], incoming) {
+              return [...incoming, ...existing];
+            },
+          },
           fetchGroupMsgs: {
             keyArgs: false,
             merge(existing = [], incoming) {

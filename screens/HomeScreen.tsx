@@ -64,6 +64,7 @@ const HomeScreen: NavigationMaterialTabScreenComponent = () => {
           variables,
         });
         let existingMessages = [...(existingMessagesReadOnly?.fetchMessages || [])];
+        console.log(existingMessages.length);
         const msgIndex = existingMessages.findIndex((msg) => msg._id === message._id);
         if (msgIndex === -1) {
           const msgsCountReadOnly = client.readQuery<FetchMessagesCountQuery>({
