@@ -77,8 +77,6 @@ const Message: React.FC<Props> = (props) => {
           payload: true,
         });
       }
-      if (subscriptionData.data && subscriptionData.data.addNewMessage) {
-      }
     },
   });
   const scrollViewRef = useRef<ScrollView>(null);

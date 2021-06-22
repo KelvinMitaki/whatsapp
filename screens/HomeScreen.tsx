@@ -59,44 +59,35 @@ const HomeScreen: NavigationMaterialTabScreenComponent = () => {
             count.data?.fetchMessagesCount.find((mc) => mc.chatID === chat._id)?.messageCount ||
             MESSAGE_LIMIT,
         };
-        const existingMessagesReadOnly = client.readQuery<FetchMessagesQuery>({
+        const msgsCountReadOnly = client.readQuery<FetchMessagesCountQuery>({
+          query: FETCH_MESSAGES_COUNT,
+          variables: {
+            userIDs:
+              data?.fetchChats.map((ch) =>
+                ch.sender._id !== currentUser?._id ? ch.sender._id : ch.recipient._id
+              ) || [],
+          },
+        });
+        let msgsCount = [...(msgsCountReadOnly?.fetchMessagesCount || [])];
+        const countIndex = msgsCount.findIndex((c) => c.chatID === chat._id);
+        let msgCount: FetchMessagesCountQuery['fetchMessagesCount'] = [];
+        if (countIndex !== -1) {
+          let count = msgsCount[countIndex];
+          count = { ...count, messageCount: count.messageCount + 1 };
+          msgCount = [count];
+        } else {
+          msgCount = [{ __typename: 'MessageCount', chatID: chat._id, messageCount: 1 }];
+        }
+        client.writeQuery<FetchMessagesCountQuery>({
+          query: FETCH_MESSAGES_COUNT,
+          data: { fetchMessagesCount: msgCount },
+        });
+        client.writeQuery<FetchMessagesQuery>({
           query: FETCH_MESSAGES,
+          data: { fetchMessages: [message] },
           variables,
         });
-        let existingMessages = [...(existingMessagesReadOnly?.fetchMessages || [])];
-        console.log(existingMessages.length);
-        const msgIndex = existingMessages.findIndex((msg) => msg._id === message._id);
-        if (msgIndex === -1) {
-          const msgsCountReadOnly = client.readQuery<FetchMessagesCountQuery>({
-            query: FETCH_MESSAGES_COUNT,
-            variables: {
-              userIDs:
-                data?.fetchChats.map((ch) =>
-                  ch.sender._id !== currentUser?._id ? ch.sender._id : ch.recipient._id
-                ) || [],
-            },
-          });
-          let msgsCount = [...(msgsCountReadOnly?.fetchMessagesCount || [])];
-          const countIndex = msgsCount.findIndex((c) => c.chatID === chat._id);
-          if (countIndex !== -1) {
-            let count = msgsCount[countIndex];
-            count = { ...count, messageCount: count.messageCount + 1 };
-          } else {
-            msgsCount = [
-              ...msgsCount,
-              { __typename: 'MessageCount', chatID: chat._id, messageCount: 1 },
-            ];
-          }
-          // client.writeQuery<FetchMessagesCountQuery>({
-          //   query: FETCH_MESSAGES_COUNT,
-          //   data: { fetchMessagesCount: msgsCount },
-          // });
-          // client.writeQuery<FetchMessagesQuery>({
-          //   query: FETCH_MESSAGES,
-          //   data: { fetchMessages: [message] },
-          //   variables,
-          // });
-        }
+
         const existingChatsReadOnly = client.readQuery<FetchChatsQuery>({ query: FETCH_CHATS });
         let existingChats = [...(existingChatsReadOnly?.fetchChats || [])];
         const chatIndex = existingChats.findIndex((ch) => ch._id === chat._id);
