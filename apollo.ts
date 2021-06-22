@@ -3,7 +3,11 @@ import { setContext } from '@apollo/client/link/context';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GroupMsg, Message } from './generated/graphql';
+
+interface MergeObject {
+  __ref: string;
+}
+
 const httpLink = createHttpLink({
   uri: 'https://kevin-whatsapp-api.herokuapp.com/graphql',
 });
@@ -38,25 +42,26 @@ const client = new ApolloClient({
         fields: {
           fetchMessages: {
             keyArgs: false,
-            merge(existing: Message[] = [], incoming: Message[]) {
+            merge(existing: MergeObject[] = [], incoming: MergeObject[]) {
               let existingMessages = [...existing];
               incoming.forEach((msg) => {
-                const msgIndex = existingMessages.findIndex((exMsg) => exMsg._id === msg._id);
+                const msgIndex = existingMessages.findIndex((exMsg) => exMsg.__ref === msg.__ref);
                 if (msgIndex !== -1) {
                   existingMessages[msgIndex] = msg;
                 } else {
                   existingMessages = [msg, ...existingMessages];
                 }
               });
-              return existingMessages;
+              console.log(existingMessages.length);
+              return [...existing, ...incoming];
             },
           },
           fetchGroupMsgs: {
             keyArgs: false,
-            merge(existing: GroupMsg[] = [], incoming: GroupMsg[]) {
+            merge(existing: MergeObject[] = [], incoming: MergeObject[]) {
               let existingMessages = [...existing];
               incoming.forEach((msg) => {
-                const msgIndex = existingMessages.findIndex((exMsg) => exMsg._id === msg._id);
+                const msgIndex = existingMessages.findIndex((exMsg) => exMsg.__ref === msg.__ref);
                 if (msgIndex !== -1) {
                   existingMessages[msgIndex] = msg;
                 } else {
