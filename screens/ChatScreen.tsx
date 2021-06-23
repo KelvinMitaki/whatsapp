@@ -135,6 +135,14 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       previousSelectedChatIds.length && previousSelectedChatIds.find((id) => id === chatID)
         ? 'cache-first'
         : 'network-only',
+    variables: {
+      recipient: recipient._id,
+      offset: 0,
+      limit: MESSAGE_LIMIT,
+      messageCount:
+        count.data?.fetchMessagesCount.find((mc) => mc.chatID === chatID)?.messageCount ||
+        MESSAGE_LIMIT,
+    },
     onCompleted() {
       if (!previousSelectedChatIds.find((id) => id === chatID)) {
         dispatch<SetPreviousSelectedChat>({ type: 'setPreviousSelectedChat', payload: chatID });
@@ -245,6 +253,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
     count.loading ||
     !data ||
     (data && !data.fetchMessages.find((msg) => msg.chatID === chatID));
+
   return (
     <View>
       <NavigationEvents
