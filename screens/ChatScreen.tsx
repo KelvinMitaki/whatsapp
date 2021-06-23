@@ -25,7 +25,7 @@ import {
   useFetchChatsQuery,
   useFetchCurrentUserQuery,
   useFetchMessagesCountQuery,
-  useFetchMessagesLazyQuery,
+  useFetchMessagesQuery,
   useRemoveStarredMessagesMutation,
   UserTyping,
   useUpdateReadMessagesMutation,
@@ -128,21 +128,9 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
         c.sender._id === currentUser?._id ? c.recipient._id : c.sender._id
       ),
     },
-    onCompleted() {
-      fetchMessages({
-        variables: {
-          recipient: recipient._id,
-          offset: 0,
-          limit: MESSAGE_LIMIT,
-          messageCount:
-            count.data?.fetchMessagesCount.find((mc) => mc.chatID === chatID)?.messageCount ||
-            MESSAGE_LIMIT,
-        },
-      });
-    },
   });
 
-  const [fetchMessages, { loading, data, fetchMore }] = useFetchMessagesLazyQuery({
+  const { loading, data, fetchMore } = useFetchMessagesQuery({
     fetchPolicy:
       previousSelectedChatIds.length && previousSelectedChatIds.find((id) => id === chatID)
         ? 'cache-first'
@@ -257,7 +245,6 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
     count.loading ||
     !data ||
     (data && !data.fetchMessages.find((msg) => msg.chatID === chatID));
-  console.log(data?.fetchMessages.find((msg) => msg.chatID === chatID));
   return (
     <View>
       <NavigationEvents
