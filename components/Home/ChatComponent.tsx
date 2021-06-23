@@ -121,10 +121,11 @@ const ChatComponent: React.FC<Props & NavigationInjectedProps> = (props) => {
               <Badge value={unread} badgeStyle={{ backgroundColor: '#00af9c' }} />
             ) : null}
           </View>
-          <Card.Divider
+          <View
             style={{
               marginTop: 15,
-              backgroundColor: 'rgba(255,255,255,.3)',
+              backgroundColor: 'rgba(255,255,255,.2)',
+              height: 0.5,
             }}
           />
         </View>

@@ -156,10 +156,11 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
                 />
               )}
             </View>
-            <Card.Divider
+            <View
               style={{
                 marginTop: 15,
-                backgroundColor: 'rgba(255,255,255,.3)',
+                backgroundColor: 'rgba(255,255,255,.2)',
+                height: 0.5,
               }}
             />
           </View>
