@@ -1,4 +1,4 @@
-import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache, split } from '@apollo/client';
+import { ApolloClient, createHttpLink, InMemoryCache, split } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
@@ -7,6 +7,25 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 interface MergeObject {
   __ref: string;
 }
+
+const defaultMerge = ({
+  existing,
+  incoming,
+}: {
+  existing: MergeObject[];
+  incoming: MergeObject[];
+}): MergeObject[] => {
+  let existingData = [...existing];
+  incoming.forEach((msg) => {
+    const msgIndex = existingData.findIndex((exMsg) => exMsg.__ref === msg.__ref);
+    if (msgIndex !== -1) {
+      existingData[msgIndex] = msg;
+    } else {
+      existingData = [msg, ...existingData];
+    }
+  });
+  return existingData;
+};
 
 const httpLink = createHttpLink({
   uri: 'https://kevin-whatsapp-api.herokuapp.com/graphql',
@@ -43,37 +62,25 @@ const client = new ApolloClient({
           fetchMessages: {
             keyArgs: false,
             merge(existing: MergeObject[] = [], incoming: MergeObject[]) {
-              let existingMessages = [...existing];
-              incoming.forEach((msg) => {
-                const msgIndex = existingMessages.findIndex((exMsg) => exMsg.__ref === msg.__ref);
-                if (msgIndex !== -1) {
-                  existingMessages[msgIndex] = msg;
-                } else {
-                  existingMessages = [msg, ...existingMessages];
-                }
-              });
-              return existingMessages;
+              return defaultMerge({ existing, incoming });
             },
           },
           fetchGroupMsgs: {
             keyArgs: false,
             merge(existing: MergeObject[] = [], incoming: MergeObject[]) {
-              let existingMessages = [...existing];
-              incoming.forEach((msg) => {
-                const msgIndex = existingMessages.findIndex((exMsg) => exMsg.__ref === msg.__ref);
-                if (msgIndex !== -1) {
-                  existingMessages[msgIndex] = msg;
-                } else {
-                  existingMessages = [msg, ...existingMessages];
-                }
-              });
-              return existingMessages;
+              return defaultMerge({ existing, incoming });
             },
           },
           fetchUnreadGroupMsgs: {
             keyArgs: false,
             merge(existing = [], incoming) {
               return incoming;
+            },
+          },
+          fetchMessagesCount: {
+            keyArgs: false,
+            merge(existing: MergeObject[] = [], incoming: MergeObject[]) {
+              return defaultMerge({ existing, incoming });
             },
           },
         },
