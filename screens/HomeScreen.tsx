@@ -69,7 +69,6 @@ const HomeScreen: NavigationMaterialTabScreenComponent = () => {
           },
         });
         let msgsCount = [...(msgsCountReadOnly?.fetchMessagesCount || [])];
-        console.log(msgsCount);
         const countIndex = msgsCount.findIndex((c) => c.chatID === chat._id);
         let msgCount: FetchMessagesCountQuery['fetchMessagesCount'] = [];
         if (countIndex !== -1) {

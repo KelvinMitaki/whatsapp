@@ -34,7 +34,9 @@ const HomeChat: React.FC<NavigationInjectedProps & Props> = ({ data }) => {
       {searchModal && <View style={{ height: headerHeight / 2 }}></View>}
       {data && data.fetchChats && data.fetchChats.length ? (
         <FlatList
-          data={data.fetchChats}
+          data={data.fetchChats
+            .map((c) => c)
+            .sort((a, b) => parseInt(b.updatedAt) - parseInt(a.updatedAt))}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
           getItemLayout={getItemLayout}
