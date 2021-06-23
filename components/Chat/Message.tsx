@@ -89,7 +89,6 @@ const Message: React.FC<Props> = (props) => {
     return contentOffset.y === 0;
   };
   const filteredMsgs = messages
-    .filter((m, i, s) => i === s.findIndex((ms) => ms._id === m._id))
     .filter(
       (msg) =>
         (msg.sender === currentUser?._id && msg.recipient === recipient) ||
