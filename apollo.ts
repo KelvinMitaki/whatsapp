@@ -95,6 +95,16 @@ const client = new ApolloClient({
           },
         },
       },
+      Subscription: {
+        fields: {
+          updateReadMessages: {
+            keyArgs: false,
+            merge(existing: MergeObject[], incoming: MergeObject[]) {
+              return defaultMerge({ existing, incoming });
+            },
+          },
+        },
+      },
     },
   }),
 });

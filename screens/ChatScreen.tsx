@@ -257,6 +257,7 @@ const ChatScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
     count.loading ||
     !data ||
     (data && !data.fetchMessages.find((msg) => msg.chatID === chatID));
+  console.log(data?.fetchMessages.find((msg) => msg.chatID === chatID));
   return (
     <View>
       <NavigationEvents
