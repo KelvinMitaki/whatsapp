@@ -3,7 +3,7 @@ import { setContext } from '@apollo/client/link/context';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { MessageCount } from './generated/graphql';
+import { GroupMessageCount, MessageCount } from './generated/graphql';
 
 interface MergeObject {
   __ref: string;
@@ -84,6 +84,21 @@ const client = new ApolloClient({
               let existingData = [...existing];
               incoming.forEach((msg) => {
                 const msgIndex = existingData.findIndex((exMsg) => exMsg.chatID === msg.chatID);
+                if (msgIndex !== -1) {
+                  existingData[msgIndex] = msg;
+                } else {
+                  existingData = [msg, ...existingData];
+                }
+              });
+              return existingData;
+            },
+          },
+          fetchGroupMessagesCount: {
+            keyArgs: false,
+            merge(existing: GroupMessageCount[] = [], incoming: GroupMessageCount[]) {
+              let existingData = [...existing];
+              incoming.forEach((msg) => {
+                const msgIndex = existingData.findIndex((exMsg) => exMsg.groupID === msg.groupID);
                 if (msgIndex !== -1) {
                   existingData[msgIndex] = msg;
                 } else {
