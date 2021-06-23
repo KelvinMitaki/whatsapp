@@ -19,6 +19,7 @@ import {
   useFetchChatsLazyQuery,
   useFetchCurrentUserLazyQuery,
   useFetchGroupLazyQuery,
+  useFetchGroupMessagesCountLazyQuery,
   useFetchMessagesCountLazyQuery,
   useFetchUnreadGroupMsgsLazyQuery,
   useFetchUsersLazyQuery,
@@ -83,6 +84,7 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
   const [fetchUsers] = useFetchUsersLazyQuery();
   const [fetchGroups] = useFetchGroupLazyQuery();
   const [fetchUnreadGroupMsgs] = useFetchUnreadGroupMsgsLazyQuery();
+  const [fetchGroupMessagesCount] = useFetchGroupMessagesCountLazyQuery();
   const [registerUser] = useRegisterUserMutation({
     async onCompleted(data) {
       await AsyncStorage.setItem('token', data.registerUser.token);
@@ -91,6 +93,7 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
       fetchUsers();
       fetchGroups();
       fetchUnreadGroupMsgs();
+      fetchGroupMessagesCount();
     },
     onError(err) {
       setdDataLoading(false);

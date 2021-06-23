@@ -5,6 +5,7 @@ import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import {
   useFetchChatsLazyQuery,
   useFetchCurrentUserLazyQuery,
+  useFetchGroupMessagesCountLazyQuery,
   useFetchGroupsLazyQuery,
   useFetchMessagesCountLazyQuery,
   useFetchUnreadGroupMsgsLazyQuery,
@@ -42,6 +43,7 @@ const BlankScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [fetchUsers] = useFetchUsersLazyQuery();
   const [fetchGroups] = useFetchGroupsLazyQuery();
   const [fetchUnreadGroupMsgs] = useFetchUnreadGroupMsgsLazyQuery();
+  const [fetchGroupMessagesCount] = useFetchGroupMessagesCountLazyQuery();
   useEffect(() => {
     loginUser();
   }, []);
@@ -52,6 +54,7 @@ const BlankScreen: NavigationStackScreenComponent = ({ navigation }) => {
     } else {
       fetchCurrentUser();
       fetchUsers();
+      fetchGroupMessagesCount();
     }
   };
   return (
