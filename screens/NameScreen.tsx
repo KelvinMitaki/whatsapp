@@ -24,6 +24,7 @@ import {
   useFetchUsersLazyQuery,
   useRegisterUserMutation,
 } from '../generated/graphql';
+import AppColors from '../Colors/color';
 
 interface Params {
   code: string;
@@ -113,7 +114,7 @@ const NameScreen: NavigationStackScreenComponent<Params> = ({ navigation }) => {
             <View style={[styles.cameraPrt]}>
               <TouchableNativeFeedback
                 onPress={() => {}}
-                background={TouchableNativeFeedback.Ripple('#fff', true)}
+                background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, true)}
               >
                 <View style={styles.camera}>
                   <FontAwesome name="camera" size={20} color="#fff" />

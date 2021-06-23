@@ -90,7 +90,7 @@ const GroupChatScreenHeader: NavigationStackScreenComponent<Params>['navigationO
             }}
           >
             <TouchableNativeFeedback
-              background={TouchableNativeFeedback.Ripple('#fff', true)}
+              background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, true)}
               onPress={() => {}}
             >
               <View>
@@ -100,7 +100,7 @@ const GroupChatScreenHeader: NavigationStackScreenComponent<Params>['navigationO
           </View>
           <View style={styles.ellipsis}>
             <TouchableNativeFeedback
-              background={TouchableNativeFeedback.Ripple('#fff', true)}
+              background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, true)}
               onPress={() => {}}
             >
               <View>
@@ -167,7 +167,7 @@ const GroupChatScreenHeader: NavigationStackScreenComponent<Params>['navigationO
         </Ellipsis>
         <View style={[styles.ellipsis]}>
           <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple('#fff', true)}
+            background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, true)}
             onPress={() => {}}
           >
             <View>
@@ -225,7 +225,7 @@ interface Props {
 const Ellipsis: React.FC<Props> = ({ children, onPress }) => (
   <View style={styles.ellipsis}>
     <TouchableNativeFeedback
-      background={TouchableNativeFeedback.Ripple('#fff', true)}
+      background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, true)}
       onPress={(e) => onPress && onPress()}
     >
       <View style={{ height: 45, width: 45, alignItems: 'center', justifyContent: 'center' }}>

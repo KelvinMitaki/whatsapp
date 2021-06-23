@@ -17,6 +17,7 @@ import { NavigationEvents } from 'react-navigation';
 import { Redux } from '../interfaces/Redux';
 import ContactScreenHeader from '../components/Contacts/ContactScreenHeader';
 import { useFetchUsersQuery } from '../generated/graphql';
+import AppColors from '../Colors/color';
 
 interface Params {
   contacts: number;
@@ -54,7 +55,7 @@ const ContactScreen: NavigationStackScreenComponent<Params> = ({ navigation }) =
         />
         <View>
           <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple('#fff', false)}
+            background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, false)}
             onPress={() => navigation.navigate('NewGroup')}
           >
             <View style={styles.meta}>
@@ -71,7 +72,7 @@ const ContactScreen: NavigationStackScreenComponent<Params> = ({ navigation }) =
         </View>
         <View>
           <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple('#fff', false)}
+            background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, false)}
             onPress={() => {}}
           >
             <View style={styles.meta}>

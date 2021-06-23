@@ -7,6 +7,7 @@ import SearchModal from '../Modals/SearchModal';
 import { SetSearchModal } from '../../screens/HomeScreen';
 import { Dispatch } from 'redux';
 import { FetchUsersQuery } from '../../generated/graphql';
+import AppColors from '../../Colors/color';
 
 interface Params {
   slctn: 'myContactsExc' | 'onlyShareWith';
@@ -65,7 +66,7 @@ const SelectContactsHeader: NavigationStackScreenComponent<Params>['navigationOp
         <View style={styles.headerIconsPrt}>
           <View style={styles.ellipsis}>
             <TouchableNativeFeedback
-              background={TouchableNativeFeedback.Ripple('#fff', true)}
+              background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, true)}
               onPress={() => {
                 dispatch<SetSearchModal>({ type: 'setSearchModal', payload: true });
                 Animated.parallel([
@@ -89,7 +90,7 @@ const SelectContactsHeader: NavigationStackScreenComponent<Params>['navigationOp
           </View>
           <View style={styles.ellipsis}>
             <TouchableNativeFeedback
-              background={TouchableNativeFeedback.Ripple('#fff', true)}
+              background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, true)}
               onPress={() => {
                 navigation.setParams({ selectAll: !selectAll });
                 if (!selectAll) {

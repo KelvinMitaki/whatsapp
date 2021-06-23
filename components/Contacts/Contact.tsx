@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native';
 import { Ionicons, Octicons } from '@expo/vector-icons';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { FetchUsersQuery, useFetchChatsQuery, useFetchUsersQuery } from '../../generated/graphql';
+import AppColors from '../../Colors/color';
 
 interface Props {
   setContacts?: (usr: FetchUsersQuery['fetchUsers'][0]) => void;
@@ -25,7 +26,7 @@ const Contact: React.FC<NavigationInjectedProps & Props> = (props) => {
           )
           .map((usr) => (
             <TouchableNativeFeedback
-              background={TouchableNativeFeedback.Ripple('#FFFFFF', false)}
+              background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, false)}
               onPress={() => {
                 if (!setContacts) {
                   navigation.navigate('Chat', {

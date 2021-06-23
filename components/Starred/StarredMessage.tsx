@@ -6,6 +6,7 @@ import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { formatDate } from '../Home/ChatComponent';
 import { format } from 'date-fns';
 import { FetchStarredMsgsQuery } from '../../generated/graphql';
+import AppColors from '../../Colors/color';
 
 interface props {
   starredMsg:
@@ -17,7 +18,7 @@ const StarredMessage: React.FC<NavigationInjectedProps & props> = React.memo(
   ({ navigation, starredMsg }) => {
     return (
       <TouchableNativeFeedback
-        background={TouchableNativeFeedback.Ripple('#fff', false)}
+        background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, false)}
         onPress={() => {
           // navigation.navigate("Chat",{recipient})
         }}

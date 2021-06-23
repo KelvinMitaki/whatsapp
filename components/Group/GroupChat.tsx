@@ -104,7 +104,7 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
   const renderItem = useCallback(
     ({ item }: ListRenderItemInfo<FetchGroupsQuery['fetchGroups'][0]>) => (
       <TouchableNativeFeedback
-        background={TouchableNativeFeedback.Ripple('#FFFFFF', false)}
+        background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, false)}
         onPress={() => navigation.navigate('GroupChat', { groupID: item._id })}
       >
         <View style={styles.contact}>

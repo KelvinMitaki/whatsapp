@@ -4,6 +4,7 @@ import { TouchableNativeFeedback } from 'react-native';
 import inspect from '../inspect';
 import { DashedCircularIndicator } from './Status/DashedCircularIndicator';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+import AppColors from '../Colors/color';
 
 const StatusList: React.FC<NavigationInjectedProps> = ({ navigation }) => {
   const status = [];
@@ -18,7 +19,7 @@ const StatusList: React.FC<NavigationInjectedProps> = ({ navigation }) => {
         <TouchableNativeFeedback
           key={i}
           onPress={() => navigation.navigate('StatusView')}
-          background={TouchableNativeFeedback.Ripple('#fff', false)}
+          background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, false)}
         >
           <View style={styles.statusPrt}>
             <DashedCircularIndicator
@@ -43,7 +44,7 @@ const StatusList: React.FC<NavigationInjectedProps> = ({ navigation }) => {
         <TouchableNativeFeedback
           key={i}
           onPress={() => {}}
-          background={TouchableNativeFeedback.Ripple('#fff', false)}
+          background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, false)}
         >
           <View style={styles.statusPrt}>
             <DashedCircularIndicator

@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { FetchUsersQuery } from '../../generated/graphql';
+import AppColors from '../../Colors/color';
 
 interface Props {
   setChecked: React.Dispatch<React.SetStateAction<FetchUsersQuery['fetchUsers']>>;
@@ -12,7 +13,7 @@ interface Props {
 const SelectedContact: React.FC<Props> = ({ setChecked, item, checked }) => {
   return (
     <TouchableNativeFeedback
-      background={TouchableNativeFeedback.Ripple('#fff', false)}
+      background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, false)}
       onPress={() => {
         setChecked((c) => {
           const items = [...c];

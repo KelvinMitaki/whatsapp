@@ -45,7 +45,7 @@ const StartChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, chat
         <View style={styles.messageNavPrt}>
           <TouchableNativeFeedback
             onPress={() => navigation.navigate('Contact')}
-            background={TouchableNativeFeedback.Ripple('#fff', true)}
+            background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, true)}
           >
             <View style={styles.message}>
               <MaterialCommunityIcons
@@ -65,7 +65,7 @@ const StartChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, chat
       <View style={styles.messageNavPrt}>
         <TouchableNativeFeedback
           onPress={() => navigation.navigate('Contact')}
-          background={TouchableNativeFeedback.Ripple('#fff', true)}
+          background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, true)}
         >
           <View style={styles.message}>
             <MaterialCommunityIcons

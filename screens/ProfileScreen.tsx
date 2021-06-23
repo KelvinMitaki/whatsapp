@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Ionicons, FontAwesome, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useFetchCurrentUserQuery } from '../generated/graphql';
+import AppColors from '../Colors/color';
 
 const ProfileScreen = () => {
   const { data: userData } = useFetchCurrentUserQuery();
@@ -43,7 +44,7 @@ const ProfileScreen = () => {
         <Animated.View style={[styles.cameraPrt, { transform: [{ scale: cameraScale }] }]}>
           <TouchableNativeFeedback
             onPress={() => {}}
-            background={TouchableNativeFeedback.Ripple('#fff', true)}
+            background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, true)}
           >
             <View style={styles.camera}>
               <FontAwesome name="camera" size={20} color="#fff" />
@@ -52,7 +53,7 @@ const ProfileScreen = () => {
         </Animated.View>
       </View>
       <TouchableNativeFeedback
-        background={TouchableNativeFeedback.Ripple('#fff', false)}
+        background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, false)}
         onPress={() => {}}
       >
         <View>
@@ -76,7 +77,7 @@ const ProfileScreen = () => {
         </View>
       </TouchableNativeFeedback>
       <TouchableNativeFeedback
-        background={TouchableNativeFeedback.Ripple('#fff', false)}
+        background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, false)}
         onPress={() => {}}
       >
         <View style={{ flexDirection: 'row', paddingTop: 20 }}>
@@ -116,7 +117,7 @@ const ProfileScreen = () => {
         </View>
       </TouchableNativeFeedback>
       <TouchableNativeFeedback
-        background={TouchableNativeFeedback.Ripple('#fff', false)}
+        background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, false)}
         onPress={() => {}}
       >
         <View style={{ flexDirection: 'row', paddingVertical: 20 }}>

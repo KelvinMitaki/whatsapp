@@ -21,6 +21,7 @@ import { Dispatch } from 'redux';
 import { SetSearchModal } from './HomeScreen';
 import SearchModal from '../components/Modals/SearchModal';
 import { FetchUsersQuery } from '../generated/graphql';
+import AppColors from '../Colors/color';
 
 export interface SetContacts {
   type: 'setContacts';
@@ -87,7 +88,7 @@ const NewGroupScreen: NavigationStackScreenComponent<Params> = ({ navigation }) 
       <Animated.View style={position.getLayout()}>
         <View style={styles.continue}>
           <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple('#fff', true)}
+            background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, true)}
             onPress={() => Contacts.length && navigation.navigate('NewGroupInfo')}
           >
             <View style={styles.foward}>
@@ -142,7 +143,7 @@ NewGroupScreen.navigationOptions = ({ navigation }) => {
                 }),
               ]).start();
             }}
-            background={TouchableNativeFeedback.Ripple('#fff', true)}
+            background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, true)}
           >
             <View>
               <MaterialIcons name="search" size={25} color="#fff" />

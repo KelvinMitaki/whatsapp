@@ -4,6 +4,7 @@ import { Ionicons, Foundation, MaterialIcons } from '@expo/vector-icons';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import inspect from '../inspect';
 import { useFetchCurrentUserQuery } from '../generated/graphql';
+import AppColors from '../Colors/color';
 
 const SettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const { data: userData } = useFetchCurrentUserQuery();
@@ -12,7 +13,7 @@ const SettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
     <View>
       <TouchableNativeFeedback
         onPress={() => navigation.navigate('Profile')}
-        background={TouchableNativeFeedback.Ripple('#fff', false)}
+        background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, false)}
       >
         <View style={styles.profile}>
           <View style={styles.person}>
@@ -31,7 +32,7 @@ const SettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
         </View>
       </TouchableNativeFeedback>
       <TouchableNativeFeedback
-        background={TouchableNativeFeedback.Ripple('#fff', false)}
+        background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, false)}
         onPress={() => navigation.navigate('Privacy')}
       >
         <View style={styles.settingsItem}>
@@ -47,7 +48,7 @@ const SettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
         </View>
       </TouchableNativeFeedback>
       <TouchableNativeFeedback
-        background={TouchableNativeFeedback.Ripple('#fff', false)}
+        background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, false)}
         onPress={() => {}}
       >
         <View style={styles.settingsItem}>
@@ -63,7 +64,7 @@ const SettingsScreen: NavigationStackScreenComponent = ({ navigation }) => {
         </View>
       </TouchableNativeFeedback>
       <TouchableNativeFeedback
-        background={TouchableNativeFeedback.Ripple('#fff', false)}
+        background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, false)}
         onPress={() => {}}
       >
         <View style={styles.settingsItem}>

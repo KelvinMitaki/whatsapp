@@ -28,7 +28,7 @@ const GroupScreen: NavigationMaterialTabScreenComponent = ({ navigation }) => {
         <View style={styles.messageNavPrt}>
           <TouchableNativeFeedback
             onPress={() => navigation.navigate('Contact')}
-            background={TouchableNativeFeedback.Ripple('#fff', true)}
+            background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, true)}
           >
             <View style={styles.message}>
               <MaterialCommunityIcons

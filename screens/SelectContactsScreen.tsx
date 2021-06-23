@@ -18,6 +18,7 @@ import SelectContactsHeader from '../components/SelectContacts/SelectContactsHea
 import { NavigationEvents } from 'react-navigation';
 import { Redux } from '../interfaces/Redux';
 import { FetchUsersQuery, useFetchUsersQuery } from '../generated/graphql';
+import AppColors from '../Colors/color';
 
 interface Params {
   slctn: 'myContactsExc' | 'onlyShareWith';
@@ -111,7 +112,7 @@ const SelectContactsScreen: NavigationStackScreenComponent<Params> = ({ navigati
       <Animated.View style={position.getLayout()}>
         <View style={styles.checkmarkPrt}>
           <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple('#fff', true)}
+            background={TouchableNativeFeedback.Ripple(AppColors.tap_bg, true)}
             onPress={() => {
               ToastAndroid.show('Settings updated', ToastAndroid.LONG);
               navigation.goBack();
