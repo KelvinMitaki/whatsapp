@@ -21,7 +21,9 @@ import {
   useAddStarredGroupMessagesMutation,
   useFetchCurrentUserQuery,
   useFetchGroupMessageCountQuery,
+  useFetchGroupMessagesCountQuery,
   useFetchGroupMsgsLazyQuery,
+  useFetchGroupMsgsQuery,
   useFetchGroupQuery,
   useRemoveStarredGroupMessagesMutation,
   useUpdateGroupMessagesReadMutation,
@@ -119,24 +121,23 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
       dispatch<SetIncommingUnread>({ type: 'setIncommingUnread', payload: [] });
     },
   });
-  const { loading, data: countData } = useFetchGroupMessageCountQuery({
-    fetchPolicy: 'network-only',
-    variables: { groupID },
-    onCompleted(data) {
-      fetchGroupMsgs({
-        variables: {
-          groupID,
-          offset: 0,
-          limit: MESSAGE_LIMIT,
-          messageCount: data.fetchGroupMessageCount.count,
-        },
-      });
-    },
-  });
-  const [fetchGroupMsgs, { data, fetchMore, loading: msgsLoading }] = useFetchGroupMsgsLazyQuery({
+  const { loading, data: countData } = useFetchGroupMessagesCountQuery();
+  const {
+    data,
+    fetchMore,
+    loading: msgsLoading,
+  } = useFetchGroupMsgsQuery({
     fetchPolicy: previousSelectedGroupIds.some((id) => id === groupID)
       ? 'cache-first'
       : 'network-only',
+    variables: {
+      groupID,
+      offset: 0,
+      limit: MESSAGE_LIMIT,
+      messageCount:
+        countData?.fetchGroupMessagesCount.find((count) => count.groupID === groupID)
+          ?.messageCount || 0,
+    },
     onCompleted(incommingData) {
       const groupMsgs = incommingData.fetchGroupMsgs;
       const messageIDs = groupMsgs
@@ -230,7 +231,10 @@ const GroupChatScreen: NavigationStackScreenComponent<Params> = ({ navigation })
           <GroupMessage
             messages={data!.fetchGroupMsgs}
             groupID={groupID}
-            count={countData!.fetchGroupMessageCount.count}
+            count={
+              countData!.fetchGroupMessagesCount.find((grp) => grp.groupID === groupID)
+                ?.messageCount || 0
+            }
             fetchMore={fetchMore}
             setShowLoading={setShowLoading}
             showLoading={showLoading}
