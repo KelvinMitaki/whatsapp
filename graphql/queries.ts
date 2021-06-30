@@ -171,14 +171,6 @@ export const FETCH_UNREAD_GROUP_MSGS = gql`
   }
 `;
 
-export const FETCH_GROUP_MSG_COUNT = gql`
-  query FetchGroupMessageCount($groupID: String!) {
-    fetchGroupMessageCount(groupID: $groupID) {
-      count
-    }
-  }
-`;
-
 export const FETCH_STARRED_MESSAGES = gql`
   query FetchStarredMsgs {
     fetchStarredMsgs {

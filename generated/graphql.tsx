@@ -40,11 +40,6 @@ export type ChatWithMessage = {
   message: Message;
 };
 
-export type Count = {
-  __typename?: 'Count';
-  count: Scalars['Int'];
-};
-
 export type Group = {
   __typename?: 'Group';
   _id: Scalars['String'];
@@ -256,7 +251,6 @@ export type Query = {
   fetchGroups: Array<Group>;
   fetchGroup: GroupWithParticipants;
   fetchMessages: Array<Message>;
-  fetchGroupMessageCount: Count;
   fetchGroupMsgs: Array<GroupMsg>;
   fetchUnreadGroupMsgs: Array<UnreadGroupMsg>;
   fetchChats: Array<Chat>;
@@ -277,11 +271,6 @@ export type QueryFetchMessagesArgs = {
   offset: Scalars['Int'];
   limit: Scalars['Int'];
   messageCount: Scalars['Int'];
-};
-
-
-export type QueryFetchGroupMessageCountArgs = {
-  groupID: Scalars['String'];
 };
 
 
@@ -744,19 +733,6 @@ export type FetchUnreadGroupMsgsQuery = (
     { __typename?: 'UnreadGroupMsg' }
     & Pick<UnreadGroupMsg, 'messageCount' | 'group'>
   )> }
-);
-
-export type FetchGroupMessageCountQueryVariables = Exact<{
-  groupID: Scalars['String'];
-}>;
-
-
-export type FetchGroupMessageCountQuery = (
-  { __typename?: 'Query' }
-  & { fetchGroupMessageCount: (
-    { __typename?: 'Count' }
-    & Pick<Count, 'count'>
-  ) }
 );
 
 export type FetchStarredMsgsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1897,41 +1873,6 @@ export function useFetchUnreadGroupMsgsLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type FetchUnreadGroupMsgsQueryHookResult = ReturnType<typeof useFetchUnreadGroupMsgsQuery>;
 export type FetchUnreadGroupMsgsLazyQueryHookResult = ReturnType<typeof useFetchUnreadGroupMsgsLazyQuery>;
 export type FetchUnreadGroupMsgsQueryResult = Apollo.QueryResult<FetchUnreadGroupMsgsQuery, FetchUnreadGroupMsgsQueryVariables>;
-export const FetchGroupMessageCountDocument = gql`
-    query FetchGroupMessageCount($groupID: String!) {
-  fetchGroupMessageCount(groupID: $groupID) {
-    count
-  }
-}
-    `;
-
-/**
- * __useFetchGroupMessageCountQuery__
- *
- * To run a query within a React component, call `useFetchGroupMessageCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useFetchGroupMessageCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFetchGroupMessageCountQuery({
- *   variables: {
- *      groupID: // value for 'groupID'
- *   },
- * });
- */
-export function useFetchGroupMessageCountQuery(baseOptions: Apollo.QueryHookOptions<FetchGroupMessageCountQuery, FetchGroupMessageCountQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FetchGroupMessageCountQuery, FetchGroupMessageCountQueryVariables>(FetchGroupMessageCountDocument, options);
-      }
-export function useFetchGroupMessageCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FetchGroupMessageCountQuery, FetchGroupMessageCountQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FetchGroupMessageCountQuery, FetchGroupMessageCountQueryVariables>(FetchGroupMessageCountDocument, options);
-        }
-export type FetchGroupMessageCountQueryHookResult = ReturnType<typeof useFetchGroupMessageCountQuery>;
-export type FetchGroupMessageCountLazyQueryHookResult = ReturnType<typeof useFetchGroupMessageCountLazyQuery>;
-export type FetchGroupMessageCountQueryResult = Apollo.QueryResult<FetchGroupMessageCountQuery, FetchGroupMessageCountQueryVariables>;
 export const FetchStarredMsgsDocument = gql`
     query FetchStarredMsgs {
   fetchStarredMsgs {
