@@ -11,12 +11,14 @@ import { Redux } from '../../interfaces/Redux';
 import { useHeaderHeight } from 'react-navigation-stack';
 import {
   FetchGroupMessagesCountQuery,
+  FetchGroupMsgsQuery,
   FetchGroupsQuery,
   FetchUnreadGroupMsgsQuery,
   useAddNewGroupSubSubscription,
   useFetchCurrentUserQuery,
 } from '../../generated/graphql';
-import { FETCH_GROUPS, FETCH_GROUP_MESSAGES_COUNT } from '../../graphql/queries';
+import { FETCH_GROUPS, FETCH_GROUP_MESSAGES_COUNT, FETCH_GROUP_MSGS } from '../../graphql/queries';
+import { MESSAGE_LIMIT } from '../Chat/Input';
 
 interface Props {
   groups: FetchGroupsQuery['fetchGroups'];
@@ -78,6 +80,18 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
             ],
           },
         });
+        if (group.message) {
+          client.writeQuery<FetchGroupMsgsQuery>({
+            query: FETCH_GROUP_MSGS,
+            variables: {
+              groupID: group._id,
+              offset: 0,
+              limit: MESSAGE_LIMIT,
+              messageCount: grpMsgCount ? grpMsgCount.messageCount + 1 : 1,
+            },
+            data: { fetchGroupMsgs: [group.message] },
+          });
+        }
       }
     },
     variables: { userID: currentUser!._id },
