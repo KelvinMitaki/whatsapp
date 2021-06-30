@@ -10,12 +10,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Redux } from '../../interfaces/Redux';
 import { useHeaderHeight } from 'react-navigation-stack';
 import {
+  FetchGroupMessagesCountQuery,
   FetchGroupsQuery,
   FetchUnreadGroupMsgsQuery,
   useAddNewGroupSubSubscription,
   useFetchCurrentUserQuery,
 } from '../../generated/graphql';
-import { FETCH_GROUPS } from '../../graphql/queries';
+import { FETCH_GROUPS, FETCH_GROUP_MESSAGES_COUNT } from '../../graphql/queries';
 
 interface Props {
   groups: FetchGroupsQuery['fetchGroups'];
@@ -64,6 +65,19 @@ const GroupChat: React.FC<NavigationInjectedProps & Props> = ({ navigation, grou
             payload: incommingUnreadGroups,
           });
         }
+        const existingGrpMsgsCountReadOnly = client.readQuery<FetchGroupMessagesCountQuery>({
+          query: FETCH_GROUP_MESSAGES_COUNT,
+        });
+        const grpMsgsCount = [...(existingGrpMsgsCountReadOnly?.fetchGroupMessagesCount || [])];
+        const grpMsgCount = grpMsgsCount.find((grp) => grp.groupID === group._id);
+        client.writeQuery<FetchGroupMessagesCountQuery>({
+          query: FETCH_GROUP_MESSAGES_COUNT,
+          data: {
+            fetchGroupMessagesCount: [
+              { groupID: group._id, messageCount: grpMsgCount ? grpMsgCount.messageCount + 1 : 1 },
+            ],
+          },
+        });
       }
     },
     variables: { userID: currentUser!._id },
